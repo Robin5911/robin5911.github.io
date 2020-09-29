@@ -15,7 +15,7 @@
 <meta property="og:description" content="基于rbd存储, 上传glance镜像 12345678openstack image create &quot;CentOS 7.6 64bit&quot; \ --disk-format raw --container-format bare \ --public --min-disk 50 \ --property hw_disk_bus&#x3D;scsi --property hw_sc">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-09-29T14:26:42.000Z">
-<meta property="article:modified_time" content="2020-09-29T14:37:28.984Z">
+<meta property="article:modified_time" content="2020-09-29T14:42:19.838Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
@@ -95,7 +95,7 @@
 <p>#rbd -p sata_pool1 import –image-format 2 CentOS76.raw</p>
 <p>#rbd -p sata_pool1 snap create –image  CentOS76.raw –snap snap  </p>
 <p>#rbd -p sata_pool1 snap protect –image  CentOS76.raw –snap snap</p>
-<p>#glance location-add –url rbd://<ceph fsid>/sata_pool1/CentOS76.raw/snap <image uuid></p>
+<p>#glance location-add –url rbd://$ceph_fsid/sata_pool1/CentOS76.raw/snap $image_uuid</p>
 
       
     </div>

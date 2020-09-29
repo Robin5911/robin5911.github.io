@@ -94,7 +94,7 @@
 <p>#rbd -p sata_pool1 import –image-format 2 CentOS76.raw</p>
 <p>#rbd -p sata_pool1 snap create –image  CentOS76.raw –snap snap  </p>
 <p>#rbd -p sata_pool1 snap protect –image  CentOS76.raw –snap snap</p>
-<p>#glance location-add –url rbd://<ceph fsid>/sata_pool1/CentOS76.raw/snap <image uuid></p>
+<p>#glance location-add –url rbd://$ceph_fsid/sata_pool1/CentOS76.raw/snap $image_uuid</p>
 
       
     </div>
