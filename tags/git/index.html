@@ -5,19 +5,16 @@
   
 
   
-  <title>docker 安装MySQL 8.0 | 那个少年</title>
+  <title>Tag: git | 那个少年</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用docker安装MySQL 8.0 12345678910111213141516171819#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo#yum -y install docker-ce#systemctl restart docker#docker pull my">
-<meta property="og:type" content="article">
-<meta property="og:title" content="docker 安装MySQL 8.0">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/index.html">
+  <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
+<meta property="og:type" content="website">
+<meta property="og:title" content="那个少年">
+<meta property="og:url" content="https://tonyzhang1989.github.io/tags/git/index.html">
 <meta property="og:site_name" content="那个少年">
-<meta property="og:description" content="使用docker安装MySQL 8.0 12345678910111213141516171819#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo#yum -y install docker-ce#systemctl restart docker#docker pull my">
+<meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-09-29T09:13:41.000Z">
-<meta property="article:modified_time" content="2020-09-29T11:14:47.510Z">
 <meta property="article:author" content="Tonyzhang1989">
-<meta property="article:tag" content="docker">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="那个少年" type="application/atom+xml">
@@ -67,67 +64,40 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-docker-安装MySQL-8-0" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/" class="article-date">
-  <time datetime="2020-09-29T09:13:41.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="article-title" itemprop="name">
-      docker 安装MySQL 8.0
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2020/09/29/git-%E4%BB%A3%E7%A0%81%E5%9B%9E%E9%80%80/" class="archive-article-date">
+  <time datetime="2020-09-29T03:55:17.000Z" itemprop="datePublished">Sep 29</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/09/29/git-%E4%BB%A3%E7%A0%81%E5%9B%9E%E9%80%80/">git 代码回退</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用docker安装MySQL 8.0</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">#yum -y install docker-ce</span><br><span class="line">#systemctl restart docker</span><br><span class="line">#docker pull mysql:8.0</span><br><span class="line">#mkdir &#x2F;data&#x2F;mysql&#x2F;&#123;conf,data&#125;</span><br><span class="line">#docker run -p 3306:3306 --name mysql8 -e MYSQL_ROOT_PASSWORD&#x3D;123456  -d mysql:8.0</span><br><span class="line">#docker cp mysql8:&#x2F;etc&#x2F;mysql &#x2F;data&#x2F;mysql&#x2F;conf</span><br><span class="line">#docker rm -f mysql8</span><br><span class="line">#docker run \</span><br><span class="line">-p 3306:3306 \</span><br><span class="line">--name mysql8 \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--restart unless-stopped \</span><br><span class="line">-v &#x2F;data&#x2F;mysql&#x2F;conf&#x2F;mysql:&#x2F;etc&#x2F;mysql \</span><br><span class="line">-v &#x2F;data&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql \</span><br><span class="line">-v &#x2F;etc&#x2F;localtime:&#x2F;etc&#x2F;localtime \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD&#x3D;123456 \</span><br><span class="line">-d mysql:8.0</span><br><span class="line">#docker restart mysql8</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it mysql8 bash</span><br><span class="line">#mysql -uroot -p</span><br><span class="line"></span><br><span class="line">&gt;CREATE USER &#39;stack&#39;@&#39;%&#39; identified by &#39;123456&#39;;</span><br><span class="line">&gt;grant all on *.* to&#39;stack&#39;@&#39;%&#39;;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/" data-id="ckfnrz2kw0000dg162a00999k" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Linux 更改CentOS 7 网卡名称
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2020/09/29/git-%E4%BB%A3%E7%A0%81%E5%9B%9E%E9%80%80/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">git 代码回退</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
+
 
 </section>
         

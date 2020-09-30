@@ -5,19 +5,19 @@
   
 
   
-  <title>docker 安装MySQL 8.0 | 那个少年</title>
+  <title>django 3.0 使用swagger | 那个少年</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="使用docker安装MySQL 8.0 12345678910111213141516171819#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo#yum -y install docker-ce#systemctl restart docker#docker pull my">
+  <meta name="description" content="以前我们熟知的swaggger已经不再支持 django 3.0，可以使用 drf_yasg支持如下： Django Rest Framework: 3.8, 3.9, 3.10, 3.11Django: 1.11, 2.2, 3.0Python: 2.7, 3.6, 3.7, 3.8 安装drf_yasg 1pip3 install -U drf-yasg settings.py 开启app 1">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker 安装MySQL 8.0">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/index.html">
+<meta property="og:title" content="django 3.0 使用swagger">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/index.html">
 <meta property="og:site_name" content="那个少年">
-<meta property="og:description" content="使用docker安装MySQL 8.0 12345678910111213141516171819#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo#yum -y install docker-ce#systemctl restart docker#docker pull my">
+<meta property="og:description" content="以前我们熟知的swaggger已经不再支持 django 3.0，可以使用 drf_yasg支持如下： Django Rest Framework: 3.8, 3.9, 3.10, 3.11Django: 1.11, 2.2, 3.0Python: 2.7, 3.6, 3.7, 3.8 安装drf_yasg 1pip3 install -U drf-yasg settings.py 开启app 1">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-09-29T09:13:41.000Z">
-<meta property="article:modified_time" content="2020-09-29T11:14:47.510Z">
+<meta property="article:published_time" content="2020-09-30T08:34:36.000Z">
+<meta property="article:modified_time" content="2020-09-30T08:39:12.588Z">
 <meta property="article:author" content="Tonyzhang1989">
-<meta property="article:tag" content="docker">
+<meta property="article:tag" content="django">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="那个少年" type="application/atom+xml">
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-docker-安装MySQL-8-0" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-django-3-0-启用swagger" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/" class="article-date">
-  <time datetime="2020-09-29T09:13:41.000Z" itemprop="datePublished">2020-09-29</time>
+    <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" class="article-date">
+  <time datetime="2020-09-30T08:34:36.000Z" itemprop="datePublished">2020-09-30</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      docker 安装MySQL 8.0
+      django 3.0 使用swagger
     </h1>
   
 
@@ -89,19 +89,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>使用docker安装MySQL 8.0</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">#yum -y install docker-ce</span><br><span class="line">#systemctl restart docker</span><br><span class="line">#docker pull mysql:8.0</span><br><span class="line">#mkdir &#x2F;data&#x2F;mysql&#x2F;&#123;conf,data&#125;</span><br><span class="line">#docker run -p 3306:3306 --name mysql8 -e MYSQL_ROOT_PASSWORD&#x3D;123456  -d mysql:8.0</span><br><span class="line">#docker cp mysql8:&#x2F;etc&#x2F;mysql &#x2F;data&#x2F;mysql&#x2F;conf</span><br><span class="line">#docker rm -f mysql8</span><br><span class="line">#docker run \</span><br><span class="line">-p 3306:3306 \</span><br><span class="line">--name mysql8 \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--restart unless-stopped \</span><br><span class="line">-v &#x2F;data&#x2F;mysql&#x2F;conf&#x2F;mysql:&#x2F;etc&#x2F;mysql \</span><br><span class="line">-v &#x2F;data&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql \</span><br><span class="line">-v &#x2F;etc&#x2F;localtime:&#x2F;etc&#x2F;localtime \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD&#x3D;123456 \</span><br><span class="line">-d mysql:8.0</span><br><span class="line">#docker restart mysql8</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it mysql8 bash</span><br><span class="line">#mysql -uroot -p</span><br><span class="line"></span><br><span class="line">&gt;CREATE USER &#39;stack&#39;@&#39;%&#39; identified by &#39;123456&#39;;</span><br><span class="line">&gt;grant all on *.* to&#39;stack&#39;@&#39;%&#39;;</span><br></pre></td></tr></table></figure>
-
+        <p>以前我们熟知的swaggger已经不再支持 django 3.0，可以使用 drf_yasg<br>支持如下：</p>
+<p>Django Rest Framework: 3.8, 3.9, 3.10, 3.11<br>Django: 1.11, 2.2, 3.0<br>Python: 2.7, 3.6, 3.7, 3.8</p>
+<p>安装drf_yasg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -U drf-yasg</span><br></pre></td></tr></table></figure>
+<p>settings.py 开启app</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS &#x3D; [</span><br><span class="line">   ...</span><br><span class="line">   &#39;drf_yasg&#39;,</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>根 url.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework import permissions</span><br><span class="line">from drf_yasg.views import get_schema_view</span><br><span class="line">from drf_yasg import openapi</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">schema_view &#x3D; get_schema_view(</span><br><span class="line">   openapi.Info(</span><br><span class="line">      title&#x3D;&quot;Snippets API&quot;,</span><br><span class="line">      default_version&#x3D;&#39;v1&#39;,</span><br><span class="line">      description&#x3D;&quot;Test description&quot;,</span><br><span class="line">      terms_of_service&#x3D;&quot;https:&#x2F;&#x2F;www.google.com&#x2F;policies&#x2F;terms&#x2F;&quot;,</span><br><span class="line">      contact&#x3D;openapi.Contact(email&#x3D;&quot;contact@snippets.local&quot;),</span><br><span class="line">      license&#x3D;openapi.License(name&#x3D;&quot;BSD License&quot;),</span><br><span class="line">   ),</span><br><span class="line">   public&#x3D;True,</span><br><span class="line">   permission_classes&#x3D;(permissions.AllowAny,),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">   url(r&#39;^swagger(?P&lt;format&gt;\.json|\.yaml)$&#39;, schema_view.without_ui(cache_timeout&#x3D;0), name&#x3D;&#39;schema-json&#39;),</span><br><span class="line">   url(r&#39;^swagger&#x2F;$&#39;, schema_view.with_ui(&#39;swagger&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-swagger-ui&#39;),</span><br><span class="line">   url(r&#39;^redoc&#x2F;$&#39;, schema_view.with_ui(&#39;redoc&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-redoc&#39;),</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>访问/swagger 看一下吧 </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/" data-id="ckfnrz2kw0000dg162a00999k" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" data-id="ckfp4vvi8000734163scq55rl" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
 
     </footer>
   </div>
@@ -109,19 +113,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Linux 更改CentOS 7 网卡名称
+          容器虚拟化 linux namespace及虚拟网卡/路由网络
         
       </div>
     </a>
   
   
-    <a href="/2020/09/29/git-%E4%BB%A3%E7%A0%81%E5%9B%9E%E9%80%80/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">git 代码回退</div>
+      <div class="article-nav-title">glance 镜像导入</div>
     </a>
   
 </nav>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>容器虚拟化 linux namespace及虚拟网卡/路由网络 | 那个少年</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="网络命名空间在 Linux 中，网络名字空间可以被认为是隔离的拥有单独网络栈（网卡、路由转发表、iptables）的环境。网络名字空间经常用来隔离网络设备和服务，只有拥有同样网络名字空间的设备，才能看到彼此。 从逻辑上说，网络命名空间是网络栈的副本，有自己的网络设备、路由选择表、邻接表、Netfilter表、网络套接字、网络procfs条目、网络sysfs条目和其他网络资源。 从系统的角度来看，当">
+<meta property="og:type" content="article">
+<meta property="og:title" content="容器虚拟化 linux namespace及虚拟网卡&#x2F;路由网络">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/index.html">
+<meta property="og:site_name" content="那个少年">
+<meta property="og:description" content="网络命名空间在 Linux 中，网络名字空间可以被认为是隔离的拥有单独网络栈（网卡、路由转发表、iptables）的环境。网络名字空间经常用来隔离网络设备和服务，只有拥有同样网络名字空间的设备，才能看到彼此。 从逻辑上说，网络命名空间是网络栈的副本，有自己的网络设备、路由选择表、邻接表、Netfilter表、网络套接字、网络procfs条目、网络sysfs条目和其他网络资源。 从系统的角度来看，当">
+<meta property="og:locale">
+<meta property="og:image" content="https://tonyzhang1989.github.io/2020/09/30/images/2020-09-30_17h44_36.png">
+<meta property="og:image" content="https://tonyzhang1989.github.io/2020/09/30/images/2020-09-30_17h55_58.png">
+<meta property="article:published_time" content="2020-09-30T09:23:26.000Z">
+<meta property="article:modified_time" content="2020-09-30T09:59:01.125Z">
+<meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="容器&#x2F;虚拟化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tonyzhang1989.github.io/2020/09/30/images/2020-09-30_17h44_36.png">
+  
+    <link rel="alternate" href="/atom.xml" title="那个少年" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">那个少年</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-容器-linux-namespace及网络" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" class="article-date">
+  <time datetime="2020-09-30T09:23:26.000Z" itemprop="datePublished">2020-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      容器虚拟化 linux namespace及虚拟网卡/路由网络
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网络命名空间<br>在 Linux 中，网络名字空间可以被认为是隔离的拥有单独网络栈（网卡、路由转发表、iptables）的环境。网络名字空间经常用来隔离网络设备和服务，只有拥有同样网络名字空间的设备，才能看到彼此。</p>
+<p>从逻辑上说，网络命名空间是网络栈的副本，有自己的网络设备、路由选择表、邻接表、Netfilter表、网络套接字、网络procfs条目、网络sysfs条目和其他网络资源。</p>
+<p>从系统的角度来看，当通过clone()系统调用创建新进程时，传递标志CLONE_NEWNET将在新进程中创建一个全新的网络命名空间。</p>
+<p>从用户的角度来看，我们只需使用工具ip（package is iproute2）来创建一个新的持久网络命名空间。</p>
+<p>创建netns<br>查看是否存在命名空间：ip netns list</p>
+<p>若报错，需要更新系统内核，以及 ip 工具程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">列出网卡</span><br><span class="line">#ip netns list</span><br><span class="line">添加命名空间</span><br><span class="line">#ip netns add ns1</span><br></pre></td></tr></table></figure>
+
+<p>创建新的虚拟网卡：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link add veth0 type veth peer name veth1</span><br></pre></td></tr></table></figure>
+
+<p>同时创建veth0和veth1两个虚拟网卡<br>这个时候这两个网卡还都属于“default”或“global”命名空间，和物理网卡一样。<br>把其中一个网卡转移到命名空间ns1中：ip link set veth1 netns ns1</p>
+<p>验证：ip netns exec ns1 ip link list<br>删除：ip netns exec ns1 ip link del veth1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link set veth1 netns ns1</span><br></pre></td></tr></table></figure>
+
+<p>配置命名空间中的端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip addr add 10.1.1.100&#x2F;24 dev veth1</span><br><span class="line">#ip netns exec ns1 ip link set veth1 up</span><br><span class="line">#ip netns exec ns1 ip link set lo up</span><br></pre></td></tr></table></figure>
+
+<p>配置宿主机上网卡ip：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ip addr add 10.1.1.101&#x2F;24 dev veth0</span><br><span class="line">#ip link set veth0 up</span><br></pre></td></tr></table></figure>
+<p>此时在ns1中ping自己10.1.1.100能通： (掩码都是24,网络在一个二层内)<br>ip netns exec ns1 ping 10.1.1.100<br>PING 10.1.1.100 (10.1.1.100) 56(84) bytes of data.<br>64 bytes from 10.1.1.100: icmp_seq=1 ttl=64 time=0.058 ms</p>
+<p>但还不能ping通10.1.1.101，因为ns1中未设置路由。<br><img src="../images/2020-09-30_17h44_36.png"><br>设置命名空间路由<br>设置默认路由</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip route add default via 10.1.1.100</span><br><span class="line">#ip netns exec ns1 ip route show</span><br><span class="line">default via 10.1.1.100 dev veth1</span><br></pre></td></tr></table></figure>
+<p>此时能够ping通主机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping 10.1.1.101</span><br><span class="line">PING 10.1.1.2 (10.1.1.101) 56(84) bytes of data.</span><br><span class="line">64 bytes from 10.1.1.101: icmp_seq&#x3D;1 ttl&#x3D;64 time&#x3D;0.086 ms</span><br></pre></td></tr></table></figure>
+
+<p>使能IP转发<br>但是到了这里依旧还不够，ns1命名空间中已经可以联通主机上的网络，但是依旧连不同主机以外的外部网络。这个时候必须在host主机上启动转发，并且在iptables中设置伪装。</p>
+<p>Linux系统的IP转发的意思是，当Linux主机存在多个网卡的时候，允许一个网卡的数据包转发到另外一张网卡；在linux系统中默认禁止IP转发功能，可以打开如下文件查看，如果值为0说明禁止进行IP转发：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward：</span><br><span class="line"></span><br><span class="line">#使能ip转发</span><br><span class="line"></span><br><span class="line">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward</span><br></pre></td></tr></table></figure>
+<p>#刷新forward规则<br>iptables -F FORWARD<br>iptables -t nat -F</p>
+<p>#刷新nat规则<br>iptables -t nat -L -n</p>
+<p>#使能IP伪装<br>iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -o ens32 -j MASQUERADE # ens32连接外网<br><img src="../images/2020-09-30_17h55_58.png"><br>#允许veth0和ens32之间的转发<br>iptables -A FORWARD -i ens32 -o veth0 -j ACCEPT<br>iptables -A FORWARD -o ens32 -i veth0 -j ACCEPT</p>
+<p>使能IP伪装这条语句，添加了一条规则到NAT表的POSTROUTING链中，对于源IP地址为10.1.1.0网段的数据包，用ens32网口的IP地址替换并发送。<br>iptables -A FORWARD这两条语句使能物理网口ens32和veth0之间的数据转发<br>总结<br>Linux网络命名空间提供了强大的虚拟化功能，使用得当能够达到事半功倍的效果。</p>
+<p>本文简要介绍了Linux提供的6种命名空间，对命名空间的作用和使用场景作了详细的介绍。</p>
+<p>着重对Linux网络命名空间进行了讲解，包括命名空间的创建、使用，与主机通信以及与外部网络的连接等。</p>
+<p>对于一般的应用而言，掌握网络命名空间的创建、使用、ip命令等就能顺当使用命名空间了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" data-id="ckfp6mo1h00093416fkok412j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">容器/虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">django 3.0 使用swagger</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">容器/虚拟化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CentOS/" style="font-size: 20px;">CentOS</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/kubernetes/" style="font-size: 10px;">kubernetes</a> <a href="/tags/openstack/" style="font-size: 10px;">openstack</a> <a href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">容器/虚拟化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/">容器虚拟化 linux namespace及虚拟网卡/路由网络</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/">django 3.0 使用swagger</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/">glance 镜像导入</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/">go goproxy代理</a>
+          </li>
+        
+          <li>
+            <a href="/2020/09/29/Linux-%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91yum%E6%BA%90/">Linux 使用阿里云yum源</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Tonyzhang1989<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
