@@ -5,16 +5,19 @@
   
 
   
-  <title>Tag: kubernetes | 那个少年</title>
+  <title>linux 定位IO过高进程 | 那个少年</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
-<meta property="og:type" content="website">
-<meta property="og:title" content="那个少年">
-<meta property="og:url" content="https://tonyzhang1989.github.io/tags/kubernetes/index.html">
+  <meta name="description" content="操作系统IO过高，可以通过基础工具 top&#x2F;iostat 查看  通过 top 的 %cpu 的wa（wait）指标 1#top       iostat 的%util 指标 1#iostat -dx 1      如何定位具体哪个进程&#x2F;服务造成io过高呢？  最简单的可以通过 iotop 定位， 通过IO百分比定位进程  通过判断进程是 D状态 定位 1for x in &#96;seq 1 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux 定位IO过高进程">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/index.html">
 <meta property="og:site_name" content="那个少年">
-<meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
+<meta property="og:description" content="操作系统IO过高，可以通过基础工具 top&#x2F;iostat 查看  通过 top 的 %cpu 的wa（wait）指标 1#top       iostat 的%util 指标 1#iostat -dx 1      如何定位具体哪个进程&#x2F;服务造成io过高呢？  最简单的可以通过 iotop 定位， 通过IO百分比定位进程  通过判断进程是 D状态 定位 1for x in &#96;seq 1 1">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-10-09T01:54:02.000Z">
+<meta property="article:modified_time" content="2020-10-09T02:15:22.275Z">
 <meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="那个少年" type="application/atom+xml">
@@ -64,59 +67,92 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="archive-article-date">
-  <time datetime="2020-09-29T03:52:57.000Z" itemprop="datePublished">Sep 29</time>
+        <section id="main"><article id="post-linux-定位IO过高进程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
+  <time datetime="2020-10-09T01:54:02.000Z" itemprop="datePublished">2020-10-09</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">kubernetes calico 网络分析</a>
+    <h1 class="article-title" itemprop="name">
+      linux 定位IO过高进程
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
+      </header>
     
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="archive-article-date">
-  <time datetime="2020-09-29T02:58:45.000Z" itemprop="datePublished">Sep 29</time>
-</a>
+    <div class="article-entry" itemprop="articleBody">
       
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">kubernetes flannel 网络分析</a>
-    </h1>
-  
+        <p>操作系统IO过高，可以通过基础工具 top/iostat 查看</p>
+<ol>
+<li><p>通过 top 的 %cpu 的wa（wait）指标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#top</span><br></pre></td></tr></table></figure>
 
-    </header>
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>iostat 的%util 指标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#iostat -dx 1</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>如何定位具体哪个进程/服务造成io过高呢？</p>
+<ol>
+<li><p>最简单的可以通过 iotop 定位， 通过IO百分比定位进程</p>
+</li>
+<li><p>通过判断进程是 D状态 定位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for x in &#96;seq 1 1 10&#96;; do ps -eo state,pid,cmd | grep &quot;^D&quot;; echo &quot;----&quot;; sleep 5; done</span><br></pre></td></tr></table></figure>
+
+<p>ps 进程状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PROCESS STATE CODES </span><br><span class="line">    D uninterruptible sleep (usually IO) </span><br><span class="line">    R running or runnable (on run queue) </span><br><span class="line">    S interruptible sleep (waiting for an event to complete) </span><br><span class="line">    T stopped, either by a job control signal or because it is being traced. </span><br><span class="line">    W paging (not valid since the 2.6.xx kernel) </span><br><span class="line">    X dead (should never be seen) </span><br><span class="line">    Z defunct (&quot;zombie&quot;) process, terminated but not reaped by its parent.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>定位哪个文件造成IO过高，可以通过 lsof 或者 pt-ioprofile 跟踪进程pid来继续定位</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" data-id="ckg1lssot0000hc1600955y6u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
   </div>
-</article>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          linux 定位流量过高进程
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">容器虚拟化 linux namespace及虚拟网卡/路由网络</div>
+    </a>
   
+</nav>
 
+  
+</article>
 
 </section>
         
