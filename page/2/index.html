@@ -218,7 +218,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Calico架构"><a href="#Calico架构" class="headerlink" title="Calico架构"></a>Calico架构</h2><p><img src="../images/calico.png"></p>
+        <h2 id="Calico架构"><a href="#Calico架构" class="headerlink" title="Calico架构"></a>Calico架构</h2><p><img src="/images/calico.png"></p>
+<p>Calico主要由Felix、etcd、BGP client、BGP Route Reflector组成。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">Etcd</a>：负责存储网络信息</li>
+<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">BGP client</a>：负责将Felix配置的路由信息分发到其他节点</li>
+<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">Felix</a>：Calico Agent，每个节点都需要运行，主要负责配置路由、配置ACLs、报告状态</li>
+<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">BGP Route Reflector</a>：大规模部署时需要用到，作为BGP client的中心连接点，可以避免每个节点互联</li>
+</ul>
 
       
     </div>
@@ -294,7 +301,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>flannel实质上是一种主机overlay网络, 是CoreOS提供用于解决Docker集群跨主机通讯的覆盖网络工具。它的主要思路是：预先留出一个网段，每个主机使用其中一部分，然后每个容器被分配不同的ip；让所有的容器认为大家在同一个直连的网络，底层通过UDP/VxLAN等进行报文的封装和转发。</p>
-<p><img src="../images/flannel-01.png"></p>
+<p><img src="/images/flannel-01.png"></p>
 <p>我们这里假设flannel使用udp VXLAN协议。每台主机都安装有flannel。k8s定义的flannel网络(POD CIDR) 为172.20.0.0/16，各主机的flannel从这个网络申请一个子网。pod1所在的主机的flannel子网为172.20.0.1/24，pod2所在主机的flannel子网为172.20.1.1/24, pod3 所在主机的flannel1子网为172.20.2.1/24。每台主机有cni0和flannel.1虚拟网卡。cni0为在同一主机pod共用的网桥，当kubelet创建容器时，将为此容器创建虚拟网卡vethxxx，并桥接到cni0网桥。flannel.1是一个tun虚拟网卡，接收不在同一主机的POD的数据，然后将收到的数据转发给flanneld进程， 并作为vtep节点, 同不同的物理机组成overlay网络, 大二层VXLAN网络。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pod3 </span><br><span class="line">#kubectl -n stack exec -it pod1 -- bash</span><br><span class="line">#ip route show</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">default via 172.20.2.1 dev eth0 </span><br><span class="line">172.20.0.0&#x2F;16 via 172.20.2.1 dev eth0 </span><br><span class="line">172.20.2.0&#x2F;24 dev eth0 proto kernel scope link src 172.20.2.234</span><br></pre></td></tr></table></figure>
