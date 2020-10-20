@@ -66,6 +66,525 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-mysql-开启关闭外键约束" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/20/mysql-%E5%BC%80%E5%90%AF%E5%85%B3%E9%97%AD%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F/" class="article-date">
+  <time datetime="2020-10-20T08:09:20.000Z" itemprop="datePublished">2020-10-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/20/mysql-%E5%BC%80%E5%90%AF%E5%85%B3%E9%97%AD%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F/">mysql 开启关闭外键约束</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在MySQL中删除一张表或一条数据的时候，出现</p>
+<p>[Err] 1451 -Cannot delete or update a parent row: a foreign key constraint fails (…)</p>
+<p>这是因为MySQL中设置了foreign key关联，造成无法更新或删除数据。可以通过设置FOREIGN_KEY_CHECKS变量来避免这种情况。</p>
+<p>我们可以使用</p>
+<p>  SET FOREIGN_KEY_CHECKS=0;<br>来禁用外键约束.</p>
+<p>之后再用<br>  SET FOREIGN_KEY_CHECKS=1;<br>来启动外键约束.</p>
+<p>查看当前FOREIGN_KEY_CHECKS的值可用如下命令</p>
+<p>  SELECT  @@FOREIGN_KEY_CHECKS;</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/20/mysql-%E5%BC%80%E5%90%AF%E5%85%B3%E9%97%AD%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F/" data-id="ckghw8m6t00009o166stg6cfk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-iptables-常见用法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/16/iptables-%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/" class="article-date">
+  <time datetime="2020-10-16T01:57:47.000Z" itemprop="datePublished">2020-10-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/16/iptables-%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/">iptables 常见用法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>d</p>
+<h4 id="iptables-本地转发"><a href="#iptables-本地转发" class="headerlink" title="iptables 本地转发"></a>iptables 本地转发</h4><ol>
+<li><p>转发本机端口 80 =&gt; 8080</p>
+<p>#/sbin/iptables -t nat -A PREROUTING -p tcp –dport 80 -j REDIRECT –to-ports 8080</p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/16/iptables-%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/" data-id="ckgbuomc800007g1673cr8lvu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-kolla-适配aarch64" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/15/openstack-kolla-%E9%80%82%E9%85%8Daarch64/" class="article-date">
+  <time datetime="2020-10-15T04:32:51.000Z" itemprop="datePublished">2020-10-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/15/openstack-kolla-%E9%80%82%E9%85%8Daarch64/">openstack kolla 适配aarch64</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>部署openstack 基于kolla-ansible的方式，架构为鲲鹏 aarch64</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/15/openstack-kolla-%E9%80%82%E9%85%8Daarch64/" data-id="ckgbuomcm00067g164nus5mef" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux-IPMITool常用命令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/14/linux-IPMITool%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="article-date">
+  <time datetime="2020-10-14T10:57:31.000Z" itemprop="datePublished">2020-10-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/14/linux-IPMITool%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">linux IPMITool常用命令</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/zygblock/article/details/53367664">参考链接</a></p>
+<p>IPMITool和其中常用的命令</p>
+<p>IPMI（Intelligent Platform Management Interface）即智能平台管理接口是使硬件管理具备“智能化”的新一代通用接口标准。用户可以利用 IPMI 监视服务器的物理特征，如温度、电压、电扇工作状态、电源供应以及机箱入侵等。Ipmi 最大的优势在于它是独立于 CPU BIOS 和 OS 的，所以用户无论在开机还是关机的状态下，只要接通电源就可以实现对服务器的监控。Ipmi 是一种规范的标准，其中最重要的物理部件就是BMC(Baseboard Management Controller 如图1)，一种嵌入式管理微控制器，它相当于整个平台管理的“大脑”，通过它 ipmi 可以监控各个传感器的数据并记录各种事件的日志。</p>
+<p>ipmitool 是一种可用在 Linux/Unix 系统下的基于命令行方式的 ipmi 平台管理工具。它支持 ipmi 1.5 和ipmi 2.0 规范（最新的规范为 ipmi 2.0）。利用它可以实现获取传感器的信息、显示系统日志内容、网络远程开关机等功能。其主要功能包括读取和显示传感器数据（SDR），显示System Evernt Log（SEL）的内容，显示打印Field Replaceable Unit（FRU）信息，读取和设置BMC模块的LAN配置，远程控制服务器主机的电源。</p>
+<p>ipmitool支持IPMI-over-LAN和系统Kernel中的设备驱动（openIPMI in Linux, BMC in Solaris, openIPMI in FreeBSD) 接口。即可以本地运行，也可以在远程机器上运行，实现对服务器主机的管理和控制。</p>
+<p>最新版本的ipmitool可以去<a target="_blank" rel="noopener" href="http://ipmitool.sourceforge.net/%E4%B8%8B%E8%BD%BD%E3%80%82%E7%9B%AE%E5%89%8D%E7%9A%84%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC%E4%B8%BA1.8.11(2012-04-29)%E3%80%82ipmitool%E7%9A%84man%E6%89%8B%E5%86%8C%E5%8F%AF%E4%BB%A5%E5%8E%BBhttp://ipmitool.sourceforge.net/manpage.html%E8%AE%BF%E9%97%AEweb%E7%89%88%E6%9C%AC%E3%80%82">http://ipmitool.sourceforge.net/下载。目前的最新版本为1.8.11(2012-04-29)。ipmitool的man手册可以去http://ipmitool.sourceforge.net/manpage.html访问web版本。</a></p>
+<p>常用的管理命令包括：</p>
+<p>================</p>
+<p>系统管理命令</p>
+<p>================</p>
+<p>1.</p>
+<p>查看设备信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin chassis status</p>
+<p>\2. 查看用户</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user list</p>
+<p>\3. 增加用户</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user set name 3 test1</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user list</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user set password 3 test1</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user priv 3 20</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user list</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U test1 -P test1 user list</p>
+<p>设置用户权限</p>
+<p>权限范围取值2：user 3：operator 4:administrator,创建用于默认权限是NO ACCSS，无访问权限。如将用户id为3设置为管理员，命令为</p>
+<p>ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user priv3 4 ##### 3为用户号，4为权限值。</p>
+<p>开启用户</p>
+<p>ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user enabled 3</p>
+<p>\4. disable/enable用户</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user disable 3</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U test1 -P test1 user list</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user enable 3</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U test1 -P test1 user list</p>
+<p>\5. 查看服务器当前开电状态</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power status</p>
+<p>\6. 服务器的开机，关机，reset和power cycle</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power on</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power off</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power cycle</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power reset</p>
+<p>\7. 查看服务器的80 Port当前状态</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x30 0xB2</p>
+<p>\8. 查看服务器的传感器状态所有传感器状态详细信息：</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sensor</p>
+<p>传感器SDR summary信息：</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr info</p>
+<p>传感器SDR 列表信息：</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr list</p>
+<p>FRU</p>
+<p>传感器SDR 列表信息：</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr list fru</p>
+<p>下载RAW SDR信息到文件：</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr dump sdr.raw</p>
+<p>\9. 查看服务器的FRU信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin fru</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin fru print</p>
+<p>================</p>
+<p>BMC</p>
+<p>自身配置命令</p>
+<p>================</p>
+<p>1.</p>
+<p>查看BMC的信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc info</p>
+<p>\2. 查看BMC的LAN信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin lan print 1</p>
+<p>（一般channel 1为LAN）</p>
+<p>\3. 修改BMC的MAC信息（只能在本地以root用户做，因为在此之前没IP）</p>
+<p>enable BMC MAC SET mode:</p>
+<p>/usr/bin/ipmitool raw 0x0c 0x01 0x01 0xc2 0x00</p>
+<p>Write MAC to BMC (BMC MAC=d0:27:88:a4:e4:37):</p>
+<p>/usr/bin/ipmitool raw 0x0c 0x01 0x01 0x05 0xD0 0x27 0x88 0xA4 0xE4 0x37</p>
+<p>\4. 修改BMC的网络为自动从DHCP获得IP地址，而不是静态的（只能在本地以root用户做，因为在此之前没IP）确定channel 1为LAN:</p>
+<p>/usr/bin/ipmitool lan print 1</p>
+<p>设定channel 1从DHCP获得IP:</p>
+<p>/usr/bin/ipmitool lan set 1 ipsrc dhcp</p>
+<p>\5. 重启BMC自己（不是服务器）（小心BMC挂掉hang）</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc reset</p>
+<p>================</p>
+<p>SOL</p>
+<p>和通过IPMItool访问系统终端(Serial-Over-LAN)</p>
+<p>================</p>
+<p>1.</p>
+<p>查看当前的SOL summary信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol info 1</p>
+<p>\2. 修改SOL配置信息查看所有可能的配置</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol set</p>
+<p>修改波特率配置</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol set non-volatile-bit-rate 38.4 1</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol set volatile-bit-rate 38.4 1</p>
+<p>\3. 开启远程终端</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol activate</p>
+<p>(</p>
+<p>可以使用<del>.退出,</del>?显示帮助信息)</p>
+<p>================</p>
+<p>Watchdog</p>
+<p>配置命令</p>
+<p>================</p>
+<p>1.</p>
+<p>查看当前的watchdog信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
+<p>\2. 设置，开启一个watchdog</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
+<p>设置一个OS WDT的watchdog, 超时时间为60秒（自己看IPMI 2.0手册,351页的27.6 Set Watchdog Timer Command）(60x10=600 = 0x258)</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x06 0x24 0x04 0x01 0x00 0x10 0x58 0x2</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
+<p>开启该watchdog</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog reset</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
+<p>禁止该watchdog的动作(Hard reset-&gt; no action)</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.32.228.187 -U sysadmin -P admin raw 0x06 0x24 0x04 0x00 0x00 0x10 0x58 0xFF</p>
+<p>上面的命令把时间改为非常大，提示第1个0x00表示没有动作，0x04表示是SMS/OS的watchdog, 0xFF58是超时的时间，单位为100ms。</p>
+<p>================</p>
+<p>SEL</p>
+<p>命令</p>
+<p>================</p>
+<p>1.</p>
+<p>查看当前的SEL summary信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel info</p>
+<p>\2. 列示所有SEL记录详细信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel list</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel list 10</p>
+<p>\3. 删除指定的SEL记录</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel delete 1</p>
+<p>\4. 清除所有的SEL记录</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel clear</p>
+<p>\5. 获取和修改SEL当前时钟</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel time get</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel time set “04/24/2012 18:44:44”</p>
+<p>\6. 以RAW方式查看制定的SEL数据</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0xa 0x43 0 0 111 0 0 0xFF</p>
+<p>0xa 0x43为Get SEL Entry Command； 0 0 保留值，111 0 表示取第112条记录（从0开始），0 为offset，保留；0xFF为读取的字节数，FF表示取整条记录</p>
+<p>================</p>
+<p>PEF</p>
+<p>命令</p>
+<p>================</p>
+<p>1.</p>
+<p>查看BMC当前的PEF 支持信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef info</p>
+<p>\2. 查看BMC当前的PEF 配置表信息（配置表也是可以修改的）</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef list</p>
+<p>\3. 查看BMC当前的PEF 状态信息(BMC处理的最后一条SEL记录)</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef status</p>
+<p>\4. 修改BMC当前的PEF 配置表查看当前的PEF 配置表</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef list</p>
+<p>假定我们要删除下面这条配置项</p>
+<p>1 | active, pre-configured | 0x11 | Voltage | Any | None | OEM | Any | Power-off,OEM-defined</p>
+<p>获取该配置项的配置信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x04 0x13 0x07 0x01 0x00</p>
+<p>11 01 40</p>
+<p>修改该配置项的配置信息</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x04 0x12 0x07 0x01 0x40</p>
+<p>检查修改后的PEF配置表</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef list</p>
+<p>================</p>
+<p>特殊命令</p>
+<p>================</p>
+<p>1.</p>
+<p>查看ipmi服务器端当前活动的session会话</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin session info active</p>
+<p>\2. 执行一个保存在文件中的所有ipmitool命令</p>
+<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin exec myipmi.cmd</p>
+<p>=====================================总结======================================================</p>
+<p>#service ipmi start</p>
+<p>#ipmitool -I open shell</p>
+<p>#### 可以直接进入本地BMC shell</p>
+<p>#ipmitool -I lan -H -U shell</p>
+<p>#### 输入password,进入IPMI交互模式,当然这里也可以把shell直接换成bmc命令 , 另外ipmitool支持端口,所以是否可以先做DNAT，然后远程直接管理内网机器.</p>
+<p>#### ipmitool提供的功能要比windows下ipmish提供的功能多得多，用法相对复杂一些</p>
+<p>参考下面转摘的文章来详细了解命令</p>
+<p>引用</p>
+<p>Ipmitool本地监控使用命令：ipmitool –I open command，其中-I open表示使用OpenIPMI接口，command有以下项：</p>
+<p>a) raw：发送一个原始的IPMI请求，并且打印回复信息。</p>
+<p>b) Lan：配置网络（lan）信道(channel)</p>
+<p>c) chassis ：查看底盘的状态和设置电源</p>
+<p>d) event：向BMC发送一个已经定义的事件（event），可用于测试配置的SNMP是否成功</p>
+<p>e) mc： 查看MC（Management Contollor）状态和各种允许的项</p>
+<p>f) sdr：打印传感器仓库中的所有监控项和从传感器读取到的值。</p>
+<p>g) Sensor：打印详细的传感器信息。</p>
+<p>h) Fru：打印内建的Field Replaceable Unit (FRU)信息</p>
+<p>i) Sel： 打印 System Event Log (SEL)</p>
+<p>j) Pef： 设置 Platform Event Filtering (PEF)，事件过滤平台用于在监控系统发现有event时候，用PEF中的策略进行事件过滤，然后看是否需要报警。</p>
+<p>k) Sol/isol：用于配置通过串口的Lan进行监控</p>
+<p>l) User：设置BMC中用户的信息 。</p>
+<p>m) Channel：设置Management Controller信道。</p>
+<p>Ipmitool –I open sensor list命令可以获取传感器中的各种监测值和该值的监测阈值，包括（CPU温度，电压，风扇转速，电源调制模块温度，电源电压等信息）</p>
+<p>Ipmitool –I open sensor get “CPU0Temp”可以获取ID为CPU0Temp监测值，CPU0Temp是sensor的ID，服务器不同，ID表示也不同。</p>
+<p>Ipmitool –I open sensor thresh 设置ID值等于id的监测项的各种限制值。</p>
+<p>Ipmitool –I open chassis status查看底盘状态，其中包括了底盘电源信息，底盘工作状态等</p>
+<p>Ipmitool –I open chassis restart_cause查看上次系统重启的原因</p>
+<p>Ipmitool –I open chassis policy list 查看支持的底盘电源相关策略。</p>
+<p>Ipmitool –I open chassis power on启动底盘，用此命令可以远程开机</p>
+<p>Ipmitool –I open chassis power off关闭底盘，用此命令可以远程开机</p>
+<p>Ipmitool –I open chassis power reset实现硬重启，用此命令可以远程开机</p>
+<p>Ipmi还可以设置系统启动boot的设备，具体见ipmitool帮助文档。</p>
+<p>Ipmitool –I open mc reset 使BMC重新硬启动</p>
+<p>Ipmitool –I open mc info 查看BMC硬件信息</p>
+<p>Ipmitool –I open mc getenables 列出BMC所有允许的选项</p>
+<p>Ipmitool –I open mc setenables =[on|off]，设置bmc相应的允许/禁止选项。</p>
+<p>Ipmitool-I open event 1 发送一个温度过高的消息到System Event Log中，可以发送的Event有：</p>
+<p>1 Temperature: Upper Critical: Going High</p>
+<p>2 Voltage Threshold: Lower Critical: Going Low</p>
+<p>3 Memory: Correctable ECC Error Detected</p>
+<p>Ipmitool-I open event命令可以用测试配置的IPMI中的snmp功能是否成功。</p>
+<p>Ipmitool -I open lan print 1 打印现咱channel 1的信息 。</p>
+<p>Ipmitool -I open lan set 1 ipaddr 10.10.113.95设置channel 1 的地址为10.10.113.95</p>
+<p>Ipmitool -I open lan set 1 snmp public设置channel 1 上snmp的community为public。</p>
+<p>Ipmitool -I open lan set 1 access on设置channel 1允许访问。</p>
+<p>Ipmitool -I open pef info打印Platform Event Filtering （pef）信息</p>
+<p>Ipmitool -I open pef status查看Platform Event Filtering （pef）状态</p>
+<p>Ipmitool -I open pef policy查看Platform Event Filtering （pef）策略设置</p>
+<p>Ipmitool -I open sdr list fru 读取fru信息并显示。</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zyghero/article/details/53432479">BMC之<em>ipmitool</em> <em>命令</em>收集</a></p>
+<p> ipmi的介绍此处省略… ipmi能够不依赖服务器的CPU,内存,存储,电源等独立工作,是一种廉价远程管理方案 以一台未安装OS的DELL PE2950 (ipmi v2.0)为实验机…</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/14/linux-IPMITool%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-id="ckgbuomcl00047g165bh13z68" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kubernetes-POD生命周期" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/14/kubernetes-POD%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" class="article-date">
+  <time datetime="2020-10-14T10:54:59.000Z" itemprop="datePublished">2020-10-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/14/kubernetes-POD%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">kubernetes POD生命周期</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/14/kubernetes-POD%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" data-id="ckgbuomcj00027g161ea1fabg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kubernetes-架构刨析" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/" class="article-date">
+  <time datetime="2020-10-14T09:29:46.000Z" itemprop="datePublished">2020-10-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/">kubernetes 架构刨析</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Kubernetes主要由以下几个核心组件组成：</p>
+<ul>
+<li>etcd保存了整个集群的状态；</li>
+<li>apiserver提供了资源操作的唯一入口，并提供认证、授权、访问控制、API注册和发现等机制；</li>
+<li>controller manager负责维护集群的状态，比如故障检测、自动扩展、滚动更新等；</li>
+<li>scheduler负责资源的调度，按照预定的调度策略将Pod调度到相应的机器上；</li>
+<li>kubelet负责维护容器的生命周期，同时也负责Volume（CVI）和网络（CNI）的管理；</li>
+<li>Container runtime负责镜像管理以及Pod和容器的真正运行（CRI）；</li>
+<li>kube-proxy负责为Service提供cluster内部的服务发现和负载均衡；</li>
+</ul>
+<p>除了核心组件，还有一些推荐的Add-ons：</p>
+<ul>
+<li>kube-dns负责为整个集群提供DNS服务</li>
+<li>Ingress Controller为服务提供外网入口</li>
+<li>Heapster提供资源监控</li>
+<li>Dashboard提供GUI</li>
+<li>Federation提供跨可用区的集群</li>
+<li>Fluentd-elasticsearch提供集群日志采集、存储与查询</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/" data-id="ckgbuomck00037g164ph2dv3u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vmware-ovf转qcow2导入openstack" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/" class="article-date">
+  <time datetime="2020-10-09T08:53:44.000Z" itemprop="datePublished">2020-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/">vmware ovf转qcow2导入openstack</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>将vmware虚机Win2003 导出ovf格式，并导入openstack 镜像中使用</p>
+<p>文件列表：</p>
+<p>  Win2K3-disk1.vmdk</p>
+<p>  Win2K3.ovf</p>
+<p>  Win2K3.mf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#yum -y install qemu-img</span><br><span class="line">#openstack image create &quot;win2k3-fvm&quot; \</span><br><span class="line"> --file Win2K3-disk1.raw \</span><br><span class="line"> --disk-format raw --container-format bare \</span><br><span class="line"> --public --min-disk 50 \</span><br><span class="line"> --property hw_disk_bus&#x3D;virtio --property hw_scsi_model&#x3D;virtio-scsi \</span><br><span class="line"> --property hw_video_model&#x3D;qxl --property vm_mode&#x3D;hvm \</span><br><span class="line"> --property os_distro&#x3D;win2k3 \</span><br><span class="line"> --property os_type&#x3D;windows</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/" data-id="ckgbuomco000b7g16hewxhgl1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-grpc-python-安装grpc" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" class="article-date">
@@ -215,381 +734,11 @@
 
 
   
-    <article id="post-linux-定位IO过高进程" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
-  <time datetime="2020-10-09T01:54:02.000Z" itemprop="datePublished">2020-10-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位IO过高进程</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>操作系统IO过高，可以通过基础工具 top/iostat 查看</p>
-<ol>
-<li><p>通过 top 的 %cpu 的wa（wait）指标</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#top</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<ol start="2">
-<li><p>iostat 的%util 指标</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#iostat -dx 1</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<p>如何定位具体哪个进程/服务造成io过高呢？</p>
-<ol>
-<li><p>最简单的可以通过 iotop 定位， 通过IO百分比定位进程</p>
-</li>
-<li><p>通过判断进程是 D状态 定位</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for x in &#96;seq 1 1 10&#96;; do ps -eo state,pid,cmd | grep &quot;^D&quot;; echo &quot;----&quot;; sleep 5; done</span><br></pre></td></tr></table></figure>
-
-<p>ps 进程状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PROCESS STATE CODES </span><br><span class="line">    D uninterruptible sleep (usually IO) </span><br><span class="line">    R running or runnable (on run queue) </span><br><span class="line">    S interruptible sleep (waiting for an event to complete) </span><br><span class="line">    T stopped, either by a job control signal or because it is being traced. </span><br><span class="line">    W paging (not valid since the 2.6.xx kernel) </span><br><span class="line">    X dead (should never be seen) </span><br><span class="line">    Z defunct (&quot;zombie&quot;) process, terminated but not reaped by its parent.</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>定位哪个文件造成IO过高，可以通过 lsof 或者 pt-ioprofile 跟踪进程pid来继续定位</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" data-id="ckg1lssot0000hc1600955y6u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-容器-linux-namespace及网络" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" class="article-date">
-  <time datetime="2020-09-30T09:23:26.000Z" itemprop="datePublished">2020-09-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/">容器虚拟化 linux namespace及虚拟网卡/路由网络</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>网络命名空间<br>在 Linux 中，网络名字空间可以被认为是隔离的拥有单独网络栈（网卡、路由转发表、iptables）的环境。网络名字空间经常用来隔离网络设备和服务，只有拥有同样网络名字空间的设备，才能看到彼此。</p>
-<p>从逻辑上说，网络命名空间是网络栈的副本，有自己的网络设备、路由选择表、邻接表、Netfilter表、网络套接字、网络procfs条目、网络sysfs条目和其他网络资源。</p>
-<p>从系统的角度来看，当通过clone()系统调用创建新进程时，传递标志CLONE_NEWNET将在新进程中创建一个全新的网络命名空间。</p>
-<p>从用户的角度来看，我们只需使用工具ip（package is iproute2）来创建一个新的持久网络命名空间。</p>
-<p>创建netns<br>查看是否存在命名空间：ip netns list</p>
-<p>若报错，需要更新系统内核，以及 ip 工具程序。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">列出网卡</span><br><span class="line">#ip netns list</span><br><span class="line">添加命名空间</span><br><span class="line">#ip netns add ns1</span><br></pre></td></tr></table></figure>
-
-<p>创建新的虚拟网卡：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link add veth0 type veth peer name veth1</span><br></pre></td></tr></table></figure>
-
-<p>同时创建veth0和veth1两个虚拟网卡<br>这个时候这两个网卡还都属于“default”或“global”命名空间，和物理网卡一样。<br>把其中一个网卡转移到命名空间ns1中：ip link set veth1 netns ns1</p>
-<p>验证：ip netns exec ns1 ip link list<br>删除：ip netns exec ns1 ip link del veth1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link set veth1 netns ns1</span><br></pre></td></tr></table></figure>
-
-<p>配置命名空间中的端口：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip addr add 10.1.1.100&#x2F;24 dev veth1</span><br><span class="line">#ip netns exec ns1 ip link set veth1 up</span><br><span class="line">#ip netns exec ns1 ip link set lo up</span><br></pre></td></tr></table></figure>
-
-<p>配置宿主机上网卡ip：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ip addr add 10.1.1.101&#x2F;24 dev veth0</span><br><span class="line">#ip link set veth0 up</span><br></pre></td></tr></table></figure>
-<p>此时在ns1中ping自己10.1.1.100能通： (掩码都是24,网络在一个二层内)<br>ip netns exec ns1 ping 10.1.1.100<br>PING 10.1.1.100 (10.1.1.100) 56(84) bytes of data.<br>64 bytes from 10.1.1.100: icmp_seq=1 ttl=64 time=0.058 ms</p>
-<p>但还不能ping通10.1.1.101，因为ns1中未设置路由。<br><img src="../images/2020-09-30_17h44_36.png"><br>设置命名空间路由<br>设置默认路由</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip route add default via 10.1.1.100</span><br><span class="line">#ip netns exec ns1 ip route show</span><br><span class="line">default via 10.1.1.100 dev veth1</span><br></pre></td></tr></table></figure>
-<p>此时能够ping通主机：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping 10.1.1.101</span><br><span class="line">PING 10.1.1.2 (10.1.1.101) 56(84) bytes of data.</span><br><span class="line">64 bytes from 10.1.1.101: icmp_seq&#x3D;1 ttl&#x3D;64 time&#x3D;0.086 ms</span><br></pre></td></tr></table></figure>
-
-<p>使能IP转发<br>但是到了这里依旧还不够，ns1命名空间中已经可以联通主机上的网络，但是依旧连不同主机以外的外部网络。这个时候必须在host主机上启动转发，并且在iptables中设置伪装。</p>
-<p>Linux系统的IP转发的意思是，当Linux主机存在多个网卡的时候，允许一个网卡的数据包转发到另外一张网卡；在linux系统中默认禁止IP转发功能，可以打开如下文件查看，如果值为0说明禁止进行IP转发：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward：</span><br><span class="line"></span><br><span class="line">#使能ip转发</span><br><span class="line"></span><br><span class="line">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward</span><br></pre></td></tr></table></figure>
-<p>#刷新forward规则<br>iptables -F FORWARD<br>iptables -t nat -F</p>
-<p>#刷新nat规则<br>iptables -t nat -L -n</p>
-<p>#使能IP伪装<br>iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -o ens32 -j MASQUERADE # ens32连接外网<br><img src="../images/2020-09-30_17h55_58.png"><br>#允许veth0和ens32之间的转发<br>iptables -A FORWARD -i ens32 -o veth0 -j ACCEPT<br>iptables -A FORWARD -o ens32 -i veth0 -j ACCEPT</p>
-<p>使能IP伪装这条语句，添加了一条规则到NAT表的POSTROUTING链中，对于源IP地址为10.1.1.0网段的数据包，用ens32网口的IP地址替换并发送。<br>iptables -A FORWARD这两条语句使能物理网口ens32和veth0之间的数据转发<br>总结<br>Linux网络命名空间提供了强大的虚拟化功能，使用得当能够达到事半功倍的效果。</p>
-<p>本文简要介绍了Linux提供的6种命名空间，对命名空间的作用和使用场景作了详细的介绍。</p>
-<p>着重对Linux网络命名空间进行了讲解，包括命名空间的创建、使用，与主机通信以及与外部网络的连接等。</p>
-<p>对于一般的应用而言，掌握网络命名空间的创建、使用、ip命令等就能顺当使用命名空间了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" data-id="ckfp8dl5e000jpg16b1q5glwf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">容器/虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-django-3-0-启用swagger" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" class="article-date">
-  <time datetime="2020-09-30T08:34:36.000Z" itemprop="datePublished">2020-09-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/">django 3.0 使用swagger</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>以前我们熟知的swaggger已经不再支持 django 3.0，可以使用 drf_yasg<br>支持如下：</p>
-<p>Django Rest Framework: 3.8, 3.9, 3.10, 3.11<br>Django: 1.11, 2.2, 3.0<br>Python: 2.7, 3.6, 3.7, 3.8</p>
-<p>安装drf_yasg</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -U drf-yasg</span><br></pre></td></tr></table></figure>
-<p>settings.py 开启app</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS &#x3D; [</span><br><span class="line">   ...</span><br><span class="line">   &#39;drf_yasg&#39;,</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>根 url.py</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework import permissions</span><br><span class="line">from drf_yasg.views import get_schema_view</span><br><span class="line">from drf_yasg import openapi</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">schema_view &#x3D; get_schema_view(</span><br><span class="line">   openapi.Info(</span><br><span class="line">      title&#x3D;&quot;Snippets API&quot;,</span><br><span class="line">      default_version&#x3D;&#39;v1&#39;,</span><br><span class="line">      description&#x3D;&quot;Test description&quot;,</span><br><span class="line">      terms_of_service&#x3D;&quot;https:&#x2F;&#x2F;www.google.com&#x2F;policies&#x2F;terms&#x2F;&quot;,</span><br><span class="line">      contact&#x3D;openapi.Contact(email&#x3D;&quot;contact@snippets.local&quot;),</span><br><span class="line">      license&#x3D;openapi.License(name&#x3D;&quot;BSD License&quot;),</span><br><span class="line">   ),</span><br><span class="line">   public&#x3D;True,</span><br><span class="line">   permission_classes&#x3D;(permissions.AllowAny,),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">   url(r&#39;^swagger(?P&lt;format&gt;\.json|\.yaml)$&#39;, schema_view.without_ui(cache_timeout&#x3D;0), name&#x3D;&#39;schema-json&#39;),</span><br><span class="line">   url(r&#39;^swagger&#x2F;$&#39;, schema_view.with_ui(&#39;swagger&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-swagger-ui&#39;),</span><br><span class="line">   url(r&#39;^redoc&#x2F;$&#39;, schema_view.with_ui(&#39;redoc&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-redoc&#39;),</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>访问/swagger 看一下吧 </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" data-id="ckfp8dl580009pg169tgxf6dl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-glance-镜像导入" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" class="article-date">
-  <time datetime="2020-09-29T14:26:42.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/">glance 镜像导入</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基于rbd存储, 上传glance镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">openstack image create &quot;CentOS 7.6 64bit&quot; \</span><br><span class="line"> --disk-format raw --container-format bare \</span><br><span class="line"> --public --min-disk 50 \</span><br><span class="line"> --property hw_disk_bus&#x3D;scsi --property hw_scsi_model&#x3D;virtio-scsi \</span><br><span class="line"> --property hw_video_model&#x3D;qxl --property vm_mode&#x3D;hvm \</span><br><span class="line"> --property os_distro&#x3D;centos \</span><br><span class="line"> --property os_type&#x3D;linux \</span><br><span class="line"> --property hw_qemu_guest_agent&#x3D;yes</span><br></pre></td></tr></table></figure>
-
-<p>#rbd -p sata_pool1 import –image-format 2 CentOS76.raw</p>
-<p>#rbd -p sata_pool1 snap create –image  CentOS76.raw –snap snap  </p>
-<p>#rbd -p sata_pool1 snap protect –image  CentOS76.raw –snap snap</p>
-<p>#glance location-add –url rbd://$ceph_fsid/sata_pool1/CentOS76.raw/snap $image_uuid</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" data-id="ckfp8dl540005pg16enu18g1f" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-goproxy代理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" class="article-date">
-  <time datetime="2020-09-29T14:23:55.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/">go goproxy代理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> In Linux or macOS, you can execute the below commands. </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Enable the go modules feature</span><br><span class="line">export GO111MODULE&#x3D;on</span><br><span class="line"># Set the GOPROXY environment variable</span><br><span class="line">export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br></pre></td></tr></table></figure>
-
-<p>Or, write it into the <code>.bashrc</code> or <code>.bash_profile</code> file.</p>
-<p>In Windows, you can execute the below commands.</p>
-<p>PowerShell Copy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;</span><br><span class="line"># Set the GOPROXY environment variable</span><br><span class="line">$env:GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;goproxy.io&quot;</span><br></pre></td></tr></table></figure>
-
-<p>Now, when you build and run your applications, go will fetch dependencies via goproxy.io. See more information in the <a target="_blank" rel="noopener" href="https://github.com/goproxyio/goproxy">goproxy repository</a>.</p>
-<p>If your Go version &gt;= 1.13, the GOPRIVATE environment variable controls which modules the go command considers to be private (not available publicly) and should therefore not use the proxy or checksum database. For example:</p>
-<p>Go version &gt;= 1.13 Copy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io,direct</span><br><span class="line"># Set environment variable allow bypassing the proxy for selected modules</span><br><span class="line">go env -w GOPRIVATE&#x3D;*.corp.example.com</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" data-id="ckfp8dl5c000gpg169sii8jcg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Linux-使用阿里云yum源" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/Linux-%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91yum%E6%BA%90/" class="article-date">
-  <time datetime="2020-09-29T14:21:56.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/Linux-%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91yum%E6%BA%90/">Linux 使用阿里云yum源</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基于CentOS 7 x86_64</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;aliyun-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo </span><br><span class="line"></span><br><span class="line">#wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;aliyun-epel.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;epel-7.repo </span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/Linux-%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91yum%E6%BA%90/" data-id="ckfp8dl4c0000pg166lpj36em" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Linux-vim-报错-E437" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/Linux-vim-%E6%8A%A5%E9%94%99-E437/" class="article-date">
-  <time datetime="2020-09-29T14:21:00.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/Linux-vim-%E6%8A%A5%E9%94%99-E437/">Linux vim 报错 E437</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>E437: terminal capability “cm” required</p>
-<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
-<p>解决办法：</p>
-<p>执行export TERM=xterm;</p>
-<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
-<p>或者</p>
-<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
-<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/Linux-vim-%E6%8A%A5%E9%94%99-E437/" data-id="ckfp8dl4h0001pg16borw2ny0" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -603,7 +752,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">容器/虚拟化</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">容器/虚拟化</a></li></ul>
     </div>
   </div>
 
@@ -613,7 +762,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CentOS/" style="font-size: 20px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/grpc/" style="font-size: 15px;">grpc</a> <a href="/tags/kubernetes/" style="font-size: 15px;">kubernetes</a> <a href="/tags/openstack/" style="font-size: 10px;">openstack</a> <a href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">容器/虚拟化</a>
+      <a href="/tags/CentOS/" style="font-size: 20px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 15px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 10px;">go</a> <a href="/tags/grpc/" style="font-size: 15px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/mysql/" style="font-size: 10px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">容器/虚拟化</a>
     </div>
   </div>
 
@@ -635,23 +784,23 @@
       <ul>
         
           <li>
-            <a href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/">grpc python 安装grpc</a>
+            <a href="/2020/10/20/mysql-%E5%BC%80%E5%90%AF%E5%85%B3%E9%97%AD%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F/">mysql 开启关闭外键约束</a>
           </li>
         
           <li>
-            <a href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/">grpc简介</a>
+            <a href="/2020/10/16/iptables-%E5%B8%B8%E8%A7%81%E7%94%A8%E6%B3%95/">iptables 常见用法</a>
           </li>
         
           <li>
-            <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位流量过高进程</a>
+            <a href="/2020/10/15/openstack-kolla-%E9%80%82%E9%85%8Daarch64/">openstack kolla 适配aarch64</a>
           </li>
         
           <li>
-            <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位IO过高进程</a>
+            <a href="/2020/10/14/linux-IPMITool%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">linux IPMITool常用命令</a>
           </li>
         
           <li>
-            <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/">容器虚拟化 linux namespace及虚拟网卡/路由网络</a>
+            <a href="/2020/10/14/kubernetes-POD%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/">kubernetes POD生命周期</a>
           </li>
         
       </ul>
