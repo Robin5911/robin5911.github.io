@@ -5,17 +5,17 @@
   
 
   
-  <title>kubernetes 架构刨析 | 那个少年</title>
+  <title>kubernetes之minikube 安装 | 那个少年</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Kubernetes主要由以下几个核心组件组成：  etcd保存了整个集群的状态； apiserver提供了资源操作的唯一入口，并提供认证、授权、访问控制、API注册和发现等机制； controller manager负责维护集群的状态，比如故障检测、自动扩展、滚动更新等； scheduler负责资源的调度，按照预定的调度策略将Pod调度到相应的机器上； kubelet负责维护容器的生命周期，同时">
+  <meta name="description" content="首先挑选一台能翻墙的CentOS 7 x86_64 服务器 #yum -y install conntrack #minikube start –driver&#x3D;none #minikube kubectl – get pods -A  安装kubectl #curl -LO “https:&#x2F;&#x2F;storage.googleapis.com&#x2F;kubernetes-release&#x2F;release&#x2F;$(c">
 <meta property="og:type" content="article">
-<meta property="og:title" content="kubernetes 架构刨析">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/index.html">
+<meta property="og:title" content="kubernetes之minikube 安装">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/10/28/kubernetes%E4%B9%8Bminikube-%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="那个少年">
-<meta property="og:description" content="Kubernetes主要由以下几个核心组件组成：  etcd保存了整个集群的状态； apiserver提供了资源操作的唯一入口，并提供认证、授权、访问控制、API注册和发现等机制； controller manager负责维护集群的状态，比如故障检测、自动扩展、滚动更新等； scheduler负责资源的调度，按照预定的调度策略将Pod调度到相应的机器上； kubelet负责维护容器的生命周期，同时">
+<meta property="og:description" content="首先挑选一台能翻墙的CentOS 7 x86_64 服务器 #yum -y install conntrack #minikube start –driver&#x3D;none #minikube kubectl – get pods -A  安装kubectl #curl -LO “https:&#x2F;&#x2F;storage.googleapis.com&#x2F;kubernetes-release&#x2F;release&#x2F;$(c">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-10-14T09:29:46.000Z">
-<meta property="article:modified_time" content="2020-10-14T09:31:08.276Z">
+<meta property="article:published_time" content="2020-10-28T07:57:26.000Z">
+<meta property="article:modified_time" content="2020-10-28T08:00:28.806Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="kubernetes">
 <meta name="twitter:card" content="summary">
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-kubernetes-架构刨析" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-kubernetes之minikube-安装" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/" class="article-date">
-  <time datetime="2020-10-14T09:29:46.000Z" itemprop="datePublished">2020-10-14</time>
+    <a href="/2020/10/28/kubernetes%E4%B9%8Bminikube-%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2020-10-28T07:57:26.000Z" itemprop="datePublished">2020-10-28</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      kubernetes 架构刨析
+      kubernetes之minikube 安装
     </h1>
   
 
@@ -89,30 +89,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Kubernetes主要由以下几个核心组件组成：</p>
-<ul>
-<li>etcd保存了整个集群的状态；</li>
-<li>apiserver提供了资源操作的唯一入口，并提供认证、授权、访问控制、API注册和发现等机制；</li>
-<li>controller manager负责维护集群的状态，比如故障检测、自动扩展、滚动更新等；</li>
-<li>scheduler负责资源的调度，按照预定的调度策略将Pod调度到相应的机器上；</li>
-<li>kubelet负责维护容器的生命周期，同时也负责Volume（CVI）和网络（CNI）的管理；</li>
-<li>Container runtime负责镜像管理以及Pod和容器的真正运行（CRI）；</li>
-<li>kube-proxy负责为Service提供cluster内部的服务发现和负载均衡；</li>
-</ul>
-<p>除了核心组件，还有一些推荐的Add-ons：</p>
-<ul>
-<li>kube-dns负责为整个集群提供DNS服务</li>
-<li>Ingress Controller为服务提供外网入口</li>
-<li>Heapster提供资源监控</li>
-<li>Dashboard提供GUI</li>
-<li>Federation提供跨可用区的集群</li>
-<li>Fluentd-elasticsearch提供集群日志采集、存储与查询</li>
-</ul>
+        <p>首先挑选一台能翻墙的CentOS 7 x86_64 服务器</p>
+<p>#yum -y install conntrack</p>
+<p>#minikube start –driver=none</p>
+<p>#minikube kubectl – get pods -A </p>
+<p>安装kubectl</p>
+<p>#curl -LO “<a target="_blank" rel="noopener" href="https://storage.googleapis.com/kubernetes-release/release/$">https://storage.googleapis.com/kubernetes-release/release/$</a>(curl -s <a target="_blank" rel="noopener" href="https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl&quot;">https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl&quot;</a></p>
+<p>#chmod 755 kubectl</p>
+<p>#mv kubectl /usr/bin/</p>
+<p>安装helm</p>
+<p>#curl <a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3">https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3</a> | bash</p>
+<p>查看集群</p>
+<p>#kubectl get nodes</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/" data-id="ckgbuomck00037g164ph2dv3u" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2020/10/28/kubernetes%E4%B9%8Bminikube-%E5%AE%89%E8%A3%85/" data-id="ckh48kl1z00001w1667o76cln" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
@@ -123,19 +116,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/10/14/kubernetes-POD%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/11/04/neutron-qos-%E9%99%90%E9%80%9F%E8%99%9A%E6%8B%9F%E6%9C%BA/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          kubernetes POD生命周期
+          neutron qos 限速虚拟机
         
       </div>
     </a>
   
   
-    <a href="/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/10/20/mysql-%E5%BC%80%E5%90%AF%E5%85%B3%E9%97%AD%E5%A4%96%E9%94%AE%E7%BA%A6%E6%9D%9F/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">vmware ovf转qcow2导入openstack</div>
+      <div class="article-nav-title">mysql 开启关闭外键约束</div>
     </a>
   
 </nav>
