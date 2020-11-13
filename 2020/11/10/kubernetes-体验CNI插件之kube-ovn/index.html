@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>kubernetes-体验CNI插件之kube-ovn | 酷客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="特性介绍kube-ovn 提供了针对企业应用场景下容器网络实用功能，并为实现更高级的网络管理控制提供了可能性；现有主要功能:  1.Namespace 和子网的绑定，以及子网间的访问控制; 2.静态IP分配; 3.动态QoS; 4.分布式和集中式网关; 5.内嵌 LoadBalancer; 6.Pod IP对外直接暴露 7.流量镜像 8.IPv6  默认kubespray 部署kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubernetes-体验CNI插件之kube-ovn">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/11/10/kubernetes-%E4%BD%93%E9%AA%8CCNI%E6%8F%92%E4%BB%B6%E4%B9%8Bkube-ovn/index.html">
+<meta property="og:site_name" content="酷客">
+<meta property="og:description" content="特性介绍kube-ovn 提供了针对企业应用场景下容器网络实用功能，并为实现更高级的网络管理控制提供了可能性；现有主要功能:  1.Namespace 和子网的绑定，以及子网间的访问控制; 2.静态IP分配; 3.动态QoS; 4.分布式和集中式网关; 5.内嵌 LoadBalancer; 6.Pod IP对外直接暴露 7.流量镜像 8.IPv6  默认kubespray 部署kubernetes">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-11-10T02:12:38.000Z">
+<meta property="article:modified_time" content="2020-11-10T07:41:29.809Z">
+<meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="kube-ovn">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="酷客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">酷客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-kubernetes-体验CNI插件之kube-ovn" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/10/kubernetes-%E4%BD%93%E9%AA%8CCNI%E6%8F%92%E4%BB%B6%E4%B9%8Bkube-ovn/" class="article-date">
+  <time datetime="2020-11-10T02:12:38.000Z" itemprop="datePublished">2020-11-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      kubernetes-体验CNI插件之kube-ovn
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="特性介绍"><a href="#特性介绍" class="headerlink" title="特性介绍"></a>特性介绍</h4><p>kube-ovn 提供了针对企业应用场景下容器网络实用功能，并为实现更高级的网络管理控制提供了可能性；现有主要功能:</p>
+<ul>
+<li>1.Namespace 和子网的绑定，以及子网间的访问控制;</li>
+<li>2.静态IP分配;</li>
+<li>3.动态QoS;</li>
+<li>4.分布式和集中式网关;</li>
+<li>5.内嵌 LoadBalancer;</li>
+<li>6.Pod IP对外直接暴露</li>
+<li>7.流量镜像</li>
+<li>8.IPv6</li>
+</ul>
+<p>默认kubespray 部署kubernetes支持kube-ovn</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/10/kubernetes-%E4%BD%93%E9%AA%8CCNI%E6%8F%92%E4%BB%B6%E4%B9%8Bkube-ovn/" data-id="ckhg7z9cb0003do163rhvcx67" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          mysql8.0 新增用户授权
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/09/gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%88%90%E5%8A%9F%E5%A4%B1%E8%B4%A5response%E8%BE%93%E5%87%BA/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">gin 自定义成功失败response输出</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/baremetal-ironic-kubernetes/" rel="tag">baremetal/ironic/kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetesd/" rel="tag">kubernetesd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neutron/" rel="tag">neutron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">容器/虚拟化</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CentOS/" style="font-size: 16.67px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 13.33px;">Linux</a> <a href="/tags/baremetal-ironic-kubernetes/" style="font-size: 10px;">baremetal/ironic/kubernetes</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 16.67px;">go</a> <a href="/tags/grpc/" style="font-size: 13.33px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/kubernetesd/" style="font-size: 10px;">kubernetesd</a> <a href="/tags/linux/" style="font-size: 13.33px;">linux</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/neutron/" style="font-size: 10px;">neutron</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E5%AE%B9%E5%99%A8-%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 10px;">容器/虚拟化</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/">网络虚拟化-通过macvlan 虚拟出新网卡</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/13/kolla-ansible-build-openstack-arm%E9%95%9C%E5%83%8F/">kolla-ansible build openstack arm镜像</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/">初试 baremetal-operator 部署裸金属服务器</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/12/%E4%BD%BF%E7%94%A8-Kustomize-%E9%85%8D%E7%BD%AE-Kubernetes-%E5%BA%94%E7%94%A8/">使用 Kustomize 配置 Kubernetes 应用</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/11/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">linux 源码安装go</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Tonyzhang1989<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
