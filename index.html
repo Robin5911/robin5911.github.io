@@ -96,9 +96,9 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kubectl get svc </span><br><span class="line">kubernetes   ClusterIP   172.30.0.1     &lt;none&gt;        443&#x2F;TCP   32d</span><br></pre></td></tr></table></figure>
 
 <p>发现172.30.0.1 是kubernetes svc的地址</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#kubectl describe svc kubernetes </span><br><span class="line">发现该svc指向了三个endpoint</span><br><span class="line">192.168.38.245:6443,192.168.38.246:6443,192.168.38.247:6443</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#kubectl describe svc kubernetes </span><br><span class="line">发现该svc指向了三个endpoint</span><br><span class="line">10.19.114.110:6443,10.19.114.111:6443,10.19.114.112:6443</span><br></pre></td></tr></table></figure>
 
-<p>才发现这三个endpoitn不对</p>
+<p>才发现这三个endpoint不对, （服务器IP已经改为 192.168.**了。。。。）</p>
 <p>原因是 什么呢？</p>
 <p>想起 eth0 换IP地址了，所以肯定和换IP地址有关。</p>
 <p>解决办法:</p>
