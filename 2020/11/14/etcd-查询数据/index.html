@@ -5,19 +5,19 @@
   
 
   
-  <title>mysql8.0 新增用户授权 | 酷客</title>
+  <title>etcd 查询数据 | 酷客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="MySQL 8.0 的用户授权语句和之前版本有所区别, mysql 8.0 新增用户并授权访问 12&gt;CREATE USER &#39;lining&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;; &gt;GRANT ALL ON kubestack.* TO &#39;lining&#39;@&#39;%&#39; WITH GRANT O">
+  <meta name="description" content="etcd2和etcd3是不兼容的，两者的api参数也不一样，详细请查看 etcdctl -h api2 使用方法 ETCDCTL_API&#x3D;2 etcdctl ls &#x2F; api3 使用方法 从kubernetes 1.6开始，etcd集群使用version 3, 现在生产很多集群都是1.18的了。。。 1234567#export ETCDCTL_API&#x3D;3#export ETCD_END">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mysql8.0 新增用户授权">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/index.html">
+<meta property="og:title" content="etcd 查询数据">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/index.html">
 <meta property="og:site_name" content="酷客">
-<meta property="og:description" content="MySQL 8.0 的用户授权语句和之前版本有所区别, mysql 8.0 新增用户并授权访问 12&gt;CREATE USER &#39;lining&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;; &gt;GRANT ALL ON kubestack.* TO &#39;lining&#39;@&#39;%&#39; WITH GRANT O">
+<meta property="og:description" content="etcd2和etcd3是不兼容的，两者的api参数也不一样，详细请查看 etcdctl -h api2 使用方法 ETCDCTL_API&#x3D;2 etcdctl ls &#x2F; api3 使用方法 从kubernetes 1.6开始，etcd集群使用version 3, 现在生产很多集群都是1.18的了。。。 1234567#export ETCDCTL_API&#x3D;3#export ETCD_END">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-11-10T04:15:07.000Z">
-<meta property="article:modified_time" content="2020-11-10T04:16:35.408Z">
+<meta property="article:published_time" content="2020-11-14T12:07:25.000Z">
+<meta property="article:modified_time" content="2020-11-14T12:32:11.926Z">
 <meta property="article:author" content="Tonyzhang1989">
-<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="etcd">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="酷客" type="application/atom+xml">
@@ -67,10 +67,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-mysql8-0-新增用户授权" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-etcd-查询数据" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/" class="article-date">
-  <time datetime="2020-11-10T04:15:07.000Z" itemprop="datePublished">2020-11-10</time>
+    <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" class="article-date">
+  <time datetime="2020-11-14T12:07:25.000Z" itemprop="datePublished">2020-11-14</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      mysql8.0 新增用户授权
+      etcd 查询数据
     </h1>
   
 
@@ -89,17 +89,24 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>MySQL 8.0 的用户授权语句和之前版本有所区别, mysql 8.0 新增用户并授权访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;CREATE USER &#39;lining&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;; </span><br><span class="line">&gt;GRANT ALL ON kubestack.* TO &#39;lining&#39;@&#39;%&#39; WITH GRANT OPTION;</span><br></pre></td></tr></table></figure>
+        <p>etcd2和etcd3是不兼容的，两者的api参数也不一样，详细请查看 etcdctl -h</p>
+<p>api2 使用方法<br> ETCDCTL_API=2 etcdctl ls /</p>
+<p>api3 使用方法<br> 从kubernetes 1.6开始，etcd集群使用version 3, 现在生产很多集群都是1.18的了。。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#export ETCDCTL_API&#x3D;3</span><br><span class="line">#export ETCD_ENDPOINTS&#x3D;https:&#x2F;&#x2F;192.168.132.2:2379、</span><br><span class="line">#export ETCDCTL_CACERT&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;ca.pem</span><br><span class="line">#export ETCDCTL_CERT&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;etcd.pem</span><br><span class="line">#export ETCDCTL_KEY&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;etcd-key.pem</span><br><span class="line">#etcdctl --endpoints&#x3D;$&#123;ETCD_ENDPOINTS&#125; --cacert&#x3D;$&#123;ETCDCTL_CACERT&#125; --cert&#x3D;$&#123;ETCDCTL_CERT&#125; --key&#x3D;$&#123;ETCDCTL_KEY&#125; get &#x2F; --prefix --keys-only&#x3D;true</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看某个具体的key的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#etcdctl --endpoints&#x3D;$&#123;ETCD_ENDPOINTS&#125; --cacert&#x3D;$&#123;ETCDCTL_CACERT&#125; --cert&#x3D;$&#123;ETCDCTL_CERT&#125; --key&#x3D;$&#123;ETCDCTL_KEY&#125; get &#x2F;registry&#x2F;services&#x2F;endpoints&#x2F;default&#x2F;kubernetes --keys-only&#x3D;false</span><br></pre></td></tr></table></figure>
+
+
 
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/" data-id="ckhg7z9ck0008do16hc8w7tj6" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" data-id="ckhhotkek0000lk16h5ouaoiq" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li></ul>
 
     </footer>
   </div>
@@ -107,19 +114,19 @@
     
 <nav id="article-nav">
   
-    <a href="/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          pip加速使用国内源
+          通过ssh隧道转发本地ssh
         
       </div>
     </a>
   
   
-    <a href="/2020/11/10/kubernetes-%E4%BD%93%E9%AA%8CCNI%E6%8F%92%E4%BB%B6%E4%B9%8Bkube-ovn/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">kubernetes-体验CNI插件之kube-ovn</div>
+      <div class="article-nav-title">网络虚拟化-通过macvlan 虚拟出新网卡</div>
     </a>
   
 </nav>
