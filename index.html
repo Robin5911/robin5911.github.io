@@ -66,6 +66,119 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-centos7-rabbitmq-3-8-集群部署" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2020-11-17T01:57:00.000Z" itemprop="datePublished">2020-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>基于CentOS 7 x86_64 rabbitmq 3.8</p>
+<h5 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">安装docker-ce环境</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-database </span><br><span class="line">#vim &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts</span><br><span class="line"></span><br><span class="line">10.250.250.120 rabbit1 ostack120</span><br><span class="line">10.250.250.121 rabbit2 ostack121</span><br><span class="line">10.250.250.122 rabbit3 ostack122 </span><br></pre></td></tr></table></figure>
+
+<h4 id="3-安装rabbitmq"><a href="#3-安装rabbitmq" class="headerlink" title="3. 安装rabbitmq"></a>3. 安装rabbitmq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主节点 120 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit1 --name myrabbit1  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br><span class="line">从节点 121 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit2 --name myrabbit2  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-加入集群"><a href="#4-加入集群" class="headerlink" title="4. 加入集群"></a>4. 加入集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it myrabbit2 bash # 进入镜像命令行</span><br><span class="line">#rabbitmqctl stop_app</span><br><span class="line">&#x2F;&#x2F;rabbitmqctl reset</span><br><span class="line">#rabbitmqctl join_cluster rabbit@rabbit1 #rabbit1为主节点的hostname</span><br><span class="line">#rabbitmqctl start_app</span><br><span class="line">#rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-权限初始化"><a href="#5-权限初始化" class="headerlink" title="5. 权限初始化"></a>5. 权限初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">新增账号权限</span><br><span class="line">#rabbitmqctl add_user openstack Openstack</span><br><span class="line">#rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;;</span><br><span class="line">#rabbitmqctl set_policy ha-all &quot;&quot; &#39;&#123;&quot;ha-mode&quot;:&quot;all&quot;, &quot;ha-sync-mode&quot;: &quot;automatic&quot;&#125;&#39;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><p>rabbitmq1 可能会挂掉，可能需要重启 myrabbit1</p>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">启动rabbitmq</span><br><span class="line">rabbitmqctl start_app</span><br><span class="line"></span><br><span class="line">停止rabbitmq</span><br><span class="line">rabbitmqctl stop_app</span><br><span class="line"></span><br><span class="line">rabbitmq 查看所有队列信息</span><br><span class="line">rabbitmqctl list_queues</span><br><span class="line"></span><br><span class="line">还原 rabbitmq 清除所有队列</span><br><span class="line">rabbitmqctl reset</span><br><span class="line"></span><br><span class="line">rabbitmq 查看用户</span><br><span class="line">rabbitmqctl list_users</span><br><span class="line"></span><br><span class="line">rabbitmq添加用户</span><br><span class="line">rabbitmqctl add_user root root</span><br><span class="line"></span><br><span class="line">rabbitmq设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &#x2F; root &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line"></span><br><span class="line">rabbitmq查看集群状态信息</span><br><span class="line">rabbitmqctl cluster_status</span><br><span class="line"></span><br><span class="line">移除某个集群节点：一般情况当节点故障时，在正常的节点中，移除该故障节点</span><br><span class="line">rabbitmqctl  -n rabbit@rabbit1 forget_cluster_node rabbit@rabbit3</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" data-id="ckhlp9nv500009416acw2fdk4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-使用disk-image-builder（DIB）制作Ironic-裸金属镜像" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" class="article-date">
+  <time datetime="2020-11-16T09:50:39.000Z" itemprop="datePublished">2020-11-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/">使用disk-image-builder（DIB）制作Ironic 裸金属镜像</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+
+<p>Diskimage-builder 是openstack社区用于制作镜像的工具。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install diskimage-builder ironic-python-agent-builder</span><br><span class="line">#yum -y install qemu-img</span><br><span class="line">#yum install -y libguestfs-tools-c  #提供virt-sysprep</span><br><span class="line">#export DIB_DEV_USER_USERNAME&#x3D;devuser   #初始用户名centos</span><br><span class="line">#export DIB_DEV_USER_PASSWORD&#x3D;password   #初始密码password</span><br><span class="line">#export DIB_DEV_USER_PWDLESS_SUDO&#x3D;YES   #允许sudo</span><br><span class="line">#export DIB_CLOUD_INIT_DATASOURCES&#x3D;&quot;ConfigDrive, OpenStack&quot;   #cloud-init 的datasource是ConfigDrive, OpenStack</span><br><span class="line">#export AUTHORIZE_SSH&#x3D;true</span><br><span class="line">构建IPA引导镜像</span><br><span class="line">#ironic-python-agent-builder -o centos-ipa-x86 --release 8 centos -e &quot;devuser dynamic-login dhcp-all-interfaces&quot;</span><br><span class="line">构建裸机镜像</span><br><span class="line">#disk-image-create centos8 centos8 dhcp-all-interfaces grub2 install-static devuser -o CentOS8 cloud-init-datasources</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS8.qcow2</span><br></pre></td></tr></table></figure>
+
+<p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
+<p>引导内核</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos7&#x2F;stein&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" data-id="ckhlp9nve00029416h3st524i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-记一次kubernetes-flannel-coredns-pod异常" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/" class="article-date">
@@ -88,7 +201,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>某一集群，双网卡，突然很多业务POD异常，排查发现DNS无法解析，进而怀疑coredns出现了问题。。。</p>
+        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+
+<p>某一集群，双网卡，突然很多业务POD异常，排查发现DNS无法解析，进而怀疑coredns出现了问题。。。</p>
 <p>查看coredns pod日志<br>1 reflector.go:134] github.com/coredns/coredns/plugin/kubernetes/controller.go:317: Failed to list *v1.Endpoints: Get <a target="_blank" rel="noopener" href="https://172.30.0.1/api/v1/endpoints?limit=500&amp;resourceVersion=0">https://172.30.0.1:443/api/v1/endpoints?limit=500&amp;resourceVersion=0</a>: dial tcp 172.30.0.1:443: connect: no route to host</p>
 <p>问题来了，172.30.0.1 是谁 ？</p>
 <p>想起 Kuberntes svc的cidr是 172.30.0.0/16， pod的cidr是 172.20.0.0/16</p>
@@ -284,7 +399,7 @@
 
 
 
-<h5 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#git clone https:&#x2F;&#x2F;github.com&#x2F;openstack&#x2F;kolla -b stable&#x2F;stein</span><br><span class="line">#pip2 install jinja2</span><br><span class="line">#pip2 install docker</span><br><span class="line">#pip2 install gitpython  </span><br><span class="line">#tools&#x2F;build.py --base centos --base-arch aarch64 --tag stein --type source --registry 10.16.57.168:4000 --push</span><br></pre></td></tr></table></figure>
+<h5 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#git clone https:&#x2F;&#x2F;github.com&#x2F;openstack&#x2F;kolla -b stable&#x2F;stein</span><br><span class="line">#cd kolla</span><br><span class="line">#pip2 install jinja2</span><br><span class="line">#pip2 install docker</span><br><span class="line">#pip2 install gitpython  </span><br><span class="line">#tools&#x2F;build.py --base centos --base-arch aarch64 --tag stein --type source --registry 10.16.57.168:4000 --push</span><br></pre></td></tr></table></figure>
 
 
       
@@ -316,7 +431,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/">初试 baremetal-operator 部署裸金属服务器</a>
+      <a class="article-title" href="/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/">初试 baremetal-operator 部署裸金属服务器（一）</a>
     </h1>
   
 
@@ -342,7 +457,7 @@
 <p><img src="/images/baremetal-operator-deploy.png"></p>
 <p><img src="/images/baremtal-operator-pods.png"></p>
 <h3 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h3><p>由上图我们能够发现metal3 下面的pod卡在了init状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n metal3 get pods metal3-ironic-64fd7499cc-nwwhb  --template &#39;&#123;&#123;.status.initContainerStatuses&#125;&#125;&#39;</span><br><span class="line">[map[containerID:docker:&#x2F;&#x2F;4fe7c1aeeb1f07c9e2c4b3209687d858e7572376104cdb6ab70b545e33601d16 image:quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader:latest imageID:docker-pullable:&#x2F;&#x2F;quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader@sha256:7429ffaa87de653bcae90fc857a02d160276fd828ace2cc49ea0b5ba70de44bb lastState:map[] name:ironic-ipa-downloader ready:false restartCount:0 state:map[running:map[startedAt:2020-11-12T03:32:41Z]]]]</span><br><span class="line"></span><br><span class="line">判断 卡在了 ironic-ipa-downloader的容器上，查看日志及进入容器 定位，日志一直输出curl下载进度</span><br><span class="line">##kubectl -n metal3 logs metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">日志输出好多 nocontent</span><br><span class="line"></span><br><span class="line">     45  497M   45  228M    0     0  11768      0 12:19:07  5:38:44  6:40:23 16797* TLSv1.3 (IN), TLS app data, [no content] (0):</span><br><span class="line"> </span><br><span class="line">#kubectl -n metal3 exec -it metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">#ps -ef -c  </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n metal3 get pods metal3-ironic-64fd7499cc-nwwhb  --template &#39;&#123;&#123;.status.initContainerStatuses&#125;&#125;&#39;</span><br><span class="line">[map[containerID:docker:&#x2F;&#x2F;4fe7c1aeeb1f07c9e2c4b3209687d858e7572376104cdb6ab70b545e33601d16 image:quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader:latest imageID:docker-pullable:&#x2F;&#x2F;quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader@sha256:7429ffaa87de653bcae90fc857a02d160276fd828ace2cc49ea0b5ba70de44bb lastState:map[] name:ironic-ipa-downloader ready:false restartCount:0 state:map[running:map[startedAt:2020-11-12T03:32:41Z]]]]</span><br><span class="line"></span><br><span class="line">判断 卡在了 ironic-ipa-downloader的容器上，查看日志及进入容器 定位，日志一直输出curl下载进度</span><br><span class="line">#kubectl -n metal3 logs metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">日志输出好多 nocontent</span><br><span class="line"></span><br><span class="line">     45  497M   45  228M    0     0  11768      0 12:19:07  5:38:44  6:40:23 16797* TLSv1.3 (IN), TLS app data, [no content] (0):</span><br><span class="line"> </span><br><span class="line">#kubectl -n metal3 exec -it metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">#ps -ef -c  </span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/metal3-pods-status.png"></p>
 <p>手动执行启动脚本，发现卡在了  curl -g –verbose –fail -O <a target="_blank" rel="noopener" href="http://172.22.0.1/images/ironic-python-agent.tar.headers">http://172.22.0.1/images/ironic-python-agent.tar.headers</a></p>
@@ -371,25 +486,24 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;nginx&#x2F;images -p</span><br><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos8&#x2F;master&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar -O &#x2F;data&#x2F;nginx&#x2F;images&#x2F;ironic-python-agent.tar</span><br></pre></td></tr></table></figure>
 
 <ol>
-<li></li>
-<li><p>裸机</p>
+<li><p>K8S上开启nginx</p>
 </li>
-<li></li>
+<li><p>DNSMASQ分配</p>
+</li>
+<li><p>K8S上的ironic地址</p>
+</li>
 <li><p>裸机使用 eth5 网卡部署（eth4 为带内管理网, 裸机数据走业务网卡）</p>
 <p>   CACHEURL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images">http://10.145.69.37:9090/images</a></p>
-<p>  DEPLOY_KERNEL_URL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images/ironic-python-agent.kernel">http://10.145.69.37:9090/images/ironic-python-agent.kernel</a><br>  DEPLOY_RAMDISK_URL: <a target="_blank" rel="noopener" href="http://10.145.69.38:9090/images/ironic-python-agent.initramfs">http://10.145.69.38:9090/images/ironic-python-agent.initramfs</a>        DHCP_RANGE: 172.22.0.10,172.22.0.100<br>  HTTP_PORT: “6180”<br>  IRONIC_ENDPOINT: <a target="_blank" rel="noopener" href="http://172.22.0.2:6385/v1/">http://172.22.0.2:6385/v1/</a><br>  IRONIC_FAST_TRACK: “true”<br>  IRONIC_INSPECTOR_ENDPOINT: <a target="_blank" rel="noopener" href="http://172.22.0.2:5050/v1/">http://172.22.0.2:5050/v1/</a><br>  PROVISIONING_INTERFACE: eth4</p>
+<p>  DEPLOY_KERNEL_URL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images/ironic-python-agent.kernel">http://10.145.69.37:9090/images/ironic-python-agent.kernel</a><br>  DEPLOY_RAMDISK_URL: <a target="_blank" rel="noopener" href="http://10.145.69.38:9090/images/ironic-python-agent.initramfs">http://10.145.69.38:9090/images/ironic-python-agent.initramfs</a>        DHCP_RANGE: 10.145.69.3，10.145.69.4<br>  HTTP_PORT: “6180”<br>  IRONIC_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:6385/v1/">http://10.145.69.37:6385/v1/</a><br>  IRONIC_FAST_TRACK: “true”<br>  IRONIC_INSPECTOR_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:5050/v1/">http://10.145.69.37:5050/v1/</a><br>  PROVISIONING_INTERFACE: eth4</p>
 </li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go run cmd&#x2F;make-bm-worker&#x2F;main.go -address 10.142.65.41 -password *****_***stack -user ***** worker-615|kubectl apply -f</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/barehosts-1.png"></p>
-<p>DEBUG:</p>
-<ol>
-<li><p>报错 ：Waiting for eth5 interface to be configured</p>
-<p>默认</p>
-</li>
-<li></li>
-</ol>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错:"></a>排错:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. ironic-conductor 报错</span><br><span class="line">2020-11-18 08:11:47.742 1 DEBUG ironic.conductor.task_manager [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] Attempting to get shared lock on node 6b808b17-7127-4ec6-8bb9-17b970e075d9 (for heartbeat) __init__ &#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;ironic&#x2F;conductor&#x2F;task_manager.py:222</span><br><span class="line">2020-11-18 08:11:47.756 1 DEBUG ironic.common.json_rpc.server [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] RPC heartbeat returned None _handle_requests &#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;ironic&#x2F;common&#x2F;json_rpc&#x2F;server.py:264</span><br><span class="line">2020-11-18 08:11:47.757 1 INFO eventlet.wsgi.server [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] 127.0.0.1 &quot;POST &#x2F; HTTP&#x2F;1.1&quot; status: 200  len: 211 time: 0.0283191</span><br><span class="line">2020-11-18 08:11:47.757 1 ERROR ironic.drivers.modules.agent_base [-] Heartbeat from node 6b808b17-7127-4ec6-8bb9-17b970e075d9 in unsupported provision state clean failed, not taking any action.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
 <p><img src="/images/baremtal-run.png"></p>
 
       
@@ -490,118 +604,6 @@
 
 
   
-    <article id="post-pip加速使用国内源" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/" class="article-date">
-  <time datetime="2020-11-11T01:51:01.000Z" itemprop="datePublished">2020-11-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/">pip加速使用国内源</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="pip国内的一些镜像"><a href="#pip国内的一些镜像" class="headerlink" title="pip国内的一些镜像"></a>pip国内的一些镜像</h3><ul>
-<li>阿里云 <a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/pypi/simple/">http://mirrors.aliyun.com/pypi/simple/</a></li>
-<li>中国科技大学 <a target="_blank" rel="noopener" href="https://pypi.mirrors.ustc.edu.cn/simple/">https://pypi.mirrors.ustc.edu.cn/simple/</a></li>
-<li>豆瓣(douban) <a target="_blank" rel="noopener" href="http://pypi.douban.com/simple/">http://pypi.douban.com/simple/</a></li>
-<li>清华大学 <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple/">https://pypi.tuna.tsinghua.edu.cn/simple/</a></li>
-<li>中国科学技术大学 <a target="_blank" rel="noopener" href="http://pypi.mirrors.ustc.edu.cn/simple/">http://pypi.mirrors.ustc.edu.cn/simple/</a></li>
-</ul>
-<p><strong>提示：若担心安全问题请使用HTTPS加密源</strong></p>
-<h3 id="修改源方法："><a href="#修改源方法：" class="headerlink" title="修改源方法："></a>修改源方法：</h3><h4 id="临时使用："><a href="#临时使用：" class="headerlink" title="临时使用："></a>临时使用：</h4><p><strong>Linux Mac Windows 通用命令</strong></p>
-<p>可以在使用pip的时候在后面加上-i参数，指定pip源</p>
-<p>#pip install scrapy -i <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
-<h4 id="永久修改："><a href="#永久修改：" class="headerlink" title="永久修改："></a>永久修改：</h4><p><strong>Linux:</strong></p>
-<p>修改 pip.conf 文件 (没有就创建一个)</p>
-<p>$HOME/.config/pip/pip.conf</p>
-<p>修改内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line"></span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple12</span><br></pre></td></tr></table></figure>
-
-<p><strong>Mac:</strong></p>
-<p>修改 pip.conf 文件</p>
-<p>$HOME/Library/Application Support/pip/pip.conf</p>
-<p>如果没有上面的目录,在如下目录创建 pip.conf</p>
-<p>$HOME/.config/pip/pip.conf</p>
-<p>修改内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line"></span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple12</span><br></pre></td></tr></table></figure>
-
-<p><strong>Windows:</strong></p>
-<p>修改 pip.conf 文件 (没有就创建一个)</p>
-<p>%APPDATA%\pip\pip.ini</p>
-<p>修改内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line"></span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改文件后，执行命令发生错误"><a href="#修改文件后，执行命令发生错误" class="headerlink" title="修改文件后，执行命令发生错误"></a>修改文件后，执行命令发生错误</h3><p>使用非HTTPS加密源（如豆瓣源），在执行命令发生错误，在命令最后加上<code>--trusted-host pypi.douban.com</code></p>
-<p>pip install django -i <a target="_blank" rel="noopener" href="http://pypi.douban.com/simple">http://pypi.douban.com/simple</a> –trusted-host <a target="_blank" rel="noopener" href="http://pypi.douban.com/">pypi.douban.com</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/" data-id="ckhg7z9cm000cdo161iang6it" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql8-0-新增用户授权" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/" class="article-date">
-  <time datetime="2020-11-10T04:15:07.000Z" itemprop="datePublished">2020-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/">mysql8.0 新增用户授权</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MySQL 8.0 的用户授权语句和之前版本有所区别, mysql 8.0 新增用户并授权访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;CREATE USER &#39;lining&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;; </span><br><span class="line">&gt;GRANT ALL ON kubestack.* TO &#39;lining&#39;@&#39;%&#39; WITH GRANT OPTION;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/" data-id="ckhg7z9ck0008do16hc8w7tj6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -652,6 +654,14 @@
       <ul>
         
           <li>
+            <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/">使用disk-image-builder（DIB）制作Ironic 裸金属镜像</a>
+          </li>
+        
+          <li>
             <a href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/">记一次kubernetes flannel/coredns pod异常</a>
           </li>
         
@@ -661,14 +671,6 @@
         
           <li>
             <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/">网络虚拟化-通过macvlan 虚拟出新网卡</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/13/kolla-ansible-build-openstack-arm%E9%95%9C%E5%83%8F/">kolla-ansible build openstack arm镜像</a>
           </li>
         
       </ul>

@@ -5,11 +5,11 @@
   
 
   
-  <title>初试 baremetal-operator 部署裸金属服务器 | 酷客</title>
+  <title>初试 baremetal-operator 部署裸金属服务器（一） | 酷客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="宿主机开启ipv6 部署kubernetescalico 网络方案 (步骤略) 部署 baremetal-operator-master 源码安装 go14环境(略) 安装新版kubectl (新版本已经默认集成)  123#curl -LO https:&#x2F;&#x2F;storage.googleapis.com&#x2F;kubernetes-release&#x2F;release&amp;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="初试 baremetal-operator 部署裸金属服务器">
+<meta property="og:title" content="初试 baremetal-operator 部署裸金属服务器（一）">
 <meta property="og:url" content="https://tonyzhang1989.github.io/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
 <meta property="og:site_name" content="酷客">
 <meta property="og:description" content="宿主机开启ipv6 部署kubernetescalico 网络方案 (步骤略) 部署 baremetal-operator-master 源码安装 go14环境(略) 安装新版kubectl (新版本已经默认集成)  123#curl -LO https:&#x2F;&#x2F;storage.googleapis.com&#x2F;kubernetes-release&#x2F;release&amp;">
@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/barehosts-1.png">
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/baremtal-run.png">
 <meta property="article:published_time" content="2020-11-12T02:41:58.000Z">
-<meta property="article:modified_time" content="2020-11-14T12:32:26.222Z">
+<meta property="article:modified_time" content="2020-11-18T08:35:22.353Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="kubernetes">
 <meta name="twitter:card" content="summary">
@@ -87,7 +87,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      初试 baremetal-operator 部署裸金属服务器
+      初试 baremetal-operator 部署裸金属服务器（一）
     </h1>
   
 
@@ -113,7 +113,7 @@
 <p><img src="/images/baremetal-operator-deploy.png"></p>
 <p><img src="/images/baremtal-operator-pods.png"></p>
 <h3 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h3><p>由上图我们能够发现metal3 下面的pod卡在了init状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n metal3 get pods metal3-ironic-64fd7499cc-nwwhb  --template &#39;&#123;&#123;.status.initContainerStatuses&#125;&#125;&#39;</span><br><span class="line">[map[containerID:docker:&#x2F;&#x2F;4fe7c1aeeb1f07c9e2c4b3209687d858e7572376104cdb6ab70b545e33601d16 image:quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader:latest imageID:docker-pullable:&#x2F;&#x2F;quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader@sha256:7429ffaa87de653bcae90fc857a02d160276fd828ace2cc49ea0b5ba70de44bb lastState:map[] name:ironic-ipa-downloader ready:false restartCount:0 state:map[running:map[startedAt:2020-11-12T03:32:41Z]]]]</span><br><span class="line"></span><br><span class="line">判断 卡在了 ironic-ipa-downloader的容器上，查看日志及进入容器 定位，日志一直输出curl下载进度</span><br><span class="line">##kubectl -n metal3 logs metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">日志输出好多 nocontent</span><br><span class="line"></span><br><span class="line">     45  497M   45  228M    0     0  11768      0 12:19:07  5:38:44  6:40:23 16797* TLSv1.3 (IN), TLS app data, [no content] (0):</span><br><span class="line"> </span><br><span class="line">#kubectl -n metal3 exec -it metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">#ps -ef -c  </span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n metal3 get pods metal3-ironic-64fd7499cc-nwwhb  --template &#39;&#123;&#123;.status.initContainerStatuses&#125;&#125;&#39;</span><br><span class="line">[map[containerID:docker:&#x2F;&#x2F;4fe7c1aeeb1f07c9e2c4b3209687d858e7572376104cdb6ab70b545e33601d16 image:quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader:latest imageID:docker-pullable:&#x2F;&#x2F;quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader@sha256:7429ffaa87de653bcae90fc857a02d160276fd828ace2cc49ea0b5ba70de44bb lastState:map[] name:ironic-ipa-downloader ready:false restartCount:0 state:map[running:map[startedAt:2020-11-12T03:32:41Z]]]]</span><br><span class="line"></span><br><span class="line">判断 卡在了 ironic-ipa-downloader的容器上，查看日志及进入容器 定位，日志一直输出curl下载进度</span><br><span class="line">#kubectl -n metal3 logs metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">日志输出好多 nocontent</span><br><span class="line"></span><br><span class="line">     45  497M   45  228M    0     0  11768      0 12:19:07  5:38:44  6:40:23 16797* TLSv1.3 (IN), TLS app data, [no content] (0):</span><br><span class="line"> </span><br><span class="line">#kubectl -n metal3 exec -it metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">#ps -ef -c  </span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/metal3-pods-status.png"></p>
 <p>手动执行启动脚本，发现卡在了  curl -g –verbose –fail -O <a target="_blank" rel="noopener" href="http://172.22.0.1/images/ironic-python-agent.tar.headers">http://172.22.0.1/images/ironic-python-agent.tar.headers</a></p>
@@ -142,25 +142,24 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;nginx&#x2F;images -p</span><br><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos8&#x2F;master&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar -O &#x2F;data&#x2F;nginx&#x2F;images&#x2F;ironic-python-agent.tar</span><br></pre></td></tr></table></figure>
 
 <ol>
-<li></li>
-<li><p>裸机</p>
+<li><p>K8S上开启nginx</p>
 </li>
-<li></li>
+<li><p>DNSMASQ分配</p>
+</li>
+<li><p>K8S上的ironic地址</p>
+</li>
 <li><p>裸机使用 eth5 网卡部署（eth4 为带内管理网, 裸机数据走业务网卡）</p>
 <p>   CACHEURL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images">http://10.145.69.37:9090/images</a></p>
-<p>  DEPLOY_KERNEL_URL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images/ironic-python-agent.kernel">http://10.145.69.37:9090/images/ironic-python-agent.kernel</a><br>  DEPLOY_RAMDISK_URL: <a target="_blank" rel="noopener" href="http://10.145.69.38:9090/images/ironic-python-agent.initramfs">http://10.145.69.38:9090/images/ironic-python-agent.initramfs</a>        DHCP_RANGE: 172.22.0.10,172.22.0.100<br>  HTTP_PORT: “6180”<br>  IRONIC_ENDPOINT: <a target="_blank" rel="noopener" href="http://172.22.0.2:6385/v1/">http://172.22.0.2:6385/v1/</a><br>  IRONIC_FAST_TRACK: “true”<br>  IRONIC_INSPECTOR_ENDPOINT: <a target="_blank" rel="noopener" href="http://172.22.0.2:5050/v1/">http://172.22.0.2:5050/v1/</a><br>  PROVISIONING_INTERFACE: eth4</p>
+<p>  DEPLOY_KERNEL_URL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images/ironic-python-agent.kernel">http://10.145.69.37:9090/images/ironic-python-agent.kernel</a><br>  DEPLOY_RAMDISK_URL: <a target="_blank" rel="noopener" href="http://10.145.69.38:9090/images/ironic-python-agent.initramfs">http://10.145.69.38:9090/images/ironic-python-agent.initramfs</a>        DHCP_RANGE: 10.145.69.3，10.145.69.4<br>  HTTP_PORT: “6180”<br>  IRONIC_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:6385/v1/">http://10.145.69.37:6385/v1/</a><br>  IRONIC_FAST_TRACK: “true”<br>  IRONIC_INSPECTOR_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:5050/v1/">http://10.145.69.37:5050/v1/</a><br>  PROVISIONING_INTERFACE: eth4</p>
 </li>
 </ol>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go run cmd&#x2F;make-bm-worker&#x2F;main.go -address 10.142.65.41 -password *****_***stack -user ***** worker-615|kubectl apply -f</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/barehosts-1.png"></p>
-<p>DEBUG:</p>
-<ol>
-<li><p>报错 ：Waiting for eth5 interface to be configured</p>
-<p>默认</p>
-</li>
-<li></li>
-</ol>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错:"></a>排错:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. ironic-conductor 报错</span><br><span class="line">2020-11-18 08:11:47.742 1 DEBUG ironic.conductor.task_manager [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] Attempting to get shared lock on node 6b808b17-7127-4ec6-8bb9-17b970e075d9 (for heartbeat) __init__ &#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;ironic&#x2F;conductor&#x2F;task_manager.py:222</span><br><span class="line">2020-11-18 08:11:47.756 1 DEBUG ironic.common.json_rpc.server [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] RPC heartbeat returned None _handle_requests &#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;ironic&#x2F;common&#x2F;json_rpc&#x2F;server.py:264</span><br><span class="line">2020-11-18 08:11:47.757 1 INFO eventlet.wsgi.server [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] 127.0.0.1 &quot;POST &#x2F; HTTP&#x2F;1.1&quot; status: 200  len: 211 time: 0.0283191</span><br><span class="line">2020-11-18 08:11:47.757 1 ERROR ironic.drivers.modules.agent_base [-] Heartbeat from node 6b808b17-7127-4ec6-8bb9-17b970e075d9 in unsupported provision state clean failed, not taking any action.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
 <p><img src="/images/baremtal-run.png"></p>
 
       
@@ -240,6 +239,14 @@
       <ul>
         
           <li>
+            <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
+          </li>
+        
+          <li>
+            <a href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/">使用disk-image-builder（DIB）制作Ironic 裸金属镜像</a>
+          </li>
+        
+          <li>
             <a href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/">记一次kubernetes flannel/coredns pod异常</a>
           </li>
         
@@ -249,14 +256,6 @@
         
           <li>
             <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/">网络虚拟化-通过macvlan 虚拟出新网卡</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/13/kolla-ansible-build-openstack-arm%E9%95%9C%E5%83%8F/">kolla-ansible build openstack arm镜像</a>
           </li>
         
       </ul>

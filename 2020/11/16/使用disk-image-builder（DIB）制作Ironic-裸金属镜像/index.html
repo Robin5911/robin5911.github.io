@@ -5,16 +5,19 @@
   
 
   
-  <title>Tag: etcd | 酷客</title>
+  <title>使用disk-image-builder（DIB）制作Ironic 裸金属镜像 | 酷客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
-<meta property="og:type" content="website">
-<meta property="og:title" content="酷客">
-<meta property="og:url" content="https://tonyzhang1989.github.io/tags/etcd/index.html">
+  <meta name="description" content="var _hmt &#x3D; _hmt || [];(function() {  var hm &#x3D; document.createElement(&quot;script&quot;);  hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?c0c97dd3c86f2db4668210a512b92762&quot;;  var s &#x3D; document.getElementsByTagName(&quot;script&quot;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用disk-image-builder（DIB）制作Ironic 裸金属镜像">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/index.html">
 <meta property="og:site_name" content="酷客">
-<meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
+<meta property="og:description" content="var _hmt &#x3D; _hmt || [];(function() {  var hm &#x3D; document.createElement(&quot;script&quot;);  hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?c0c97dd3c86f2db4668210a512b92762&quot;;  var s &#x3D; document.getElementsByTagName(&quot;script&quot;">
 <meta property="og:locale">
+<meta property="article:published_time" content="2020-11-16T09:50:39.000Z">
+<meta property="article:modified_time" content="2020-11-18T14:50:52.066Z">
 <meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="酷客" type="application/atom+xml">
@@ -64,40 +67,73 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" class="archive-article-date">
-  <time datetime="2020-11-14T12:07:25.000Z" itemprop="datePublished">Nov 14</time>
+        <section id="main"><article id="post-使用disk-image-builder（DIB）制作Ironic-裸金属镜像" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" class="article-date">
+  <time datetime="2020-11-16T09:50:39.000Z" itemprop="datePublished">2020-11-16</time>
 </a>
-      
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
+    <h1 class="article-title" itemprop="name">
+      使用disk-image-builder（DIB）制作Ironic 裸金属镜像
     </h1>
   
 
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
 
+<p>Diskimage-builder 是openstack社区用于制作镜像的工具。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install diskimage-builder ironic-python-agent-builder</span><br><span class="line">#yum -y install qemu-img</span><br><span class="line">#yum install -y libguestfs-tools-c  #提供virt-sysprep</span><br><span class="line">#export DIB_DEV_USER_USERNAME&#x3D;devuser   #初始用户名centos</span><br><span class="line">#export DIB_DEV_USER_PASSWORD&#x3D;password   #初始密码password</span><br><span class="line">#export DIB_DEV_USER_PWDLESS_SUDO&#x3D;YES   #允许sudo</span><br><span class="line">#export DIB_CLOUD_INIT_DATASOURCES&#x3D;&quot;ConfigDrive, OpenStack&quot;   #cloud-init 的datasource是ConfigDrive, OpenStack</span><br><span class="line">#export AUTHORIZE_SSH&#x3D;true</span><br><span class="line">构建IPA引导镜像</span><br><span class="line">#ironic-python-agent-builder -o centos-ipa-x86 --release 8 centos -e &quot;devuser dynamic-login dhcp-all-interfaces&quot;</span><br><span class="line">构建裸机镜像</span><br><span class="line">#disk-image-create centos8 centos8 dhcp-all-interfaces grub2 install-static devuser -o CentOS8 cloud-init-datasources</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS8.qcow2</span><br></pre></td></tr></table></figure>
+
+<p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
+<p>引导内核</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos7&#x2F;stein&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" data-id="ckhlp9nve00029416h3st524i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          centos7-rabbitmq 3.8 集群部署
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">记一次kubernetes flannel/coredns pod异常</div>
+    </a>
+  
+</nav>
+
+  
+</article>
 
 </section>
         
