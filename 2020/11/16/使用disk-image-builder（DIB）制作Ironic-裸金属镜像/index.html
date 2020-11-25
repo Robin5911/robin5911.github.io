@@ -15,7 +15,7 @@
 <meta property="og:description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?affcd4898fc23124d935a5a4f09bf4b2&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-11-16T09:50:39.000Z">
-<meta property="article:modified_time" content="2020-11-25T10:13:57.684Z">
+<meta property="article:modified_time" content="2020-11-25T10:19:01.964Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
@@ -106,7 +106,7 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS7.qcow2</span><br></pre></td></tr></table></figure>
 
 <p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br><span class="line">2. Command &quot;python setup.py egg_info&quot; failed with error code 1 in &#x2F;tmp&#x2F;pip-build-rit13y_p&#x2F;iso8601&#x2F;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
       

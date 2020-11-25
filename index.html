@@ -219,7 +219,7 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS7.qcow2</span><br></pre></td></tr></table></figure>
 
 <p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br><span class="line">2. Command &quot;python setup.py egg_info&quot; failed with error code 1 in &#x2F;tmp&#x2F;pip-build-rit13y_p&#x2F;iso8601&#x2F;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
       
@@ -259,7 +259,16 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 
 <p>某一集群，双网卡，突然很多业务POD异常，排查发现DNS无法解析，进而怀疑coredns出现了问题。。。</p>
 <p>查看coredns pod日志<br>1 reflector.go:134] github.com/coredns/coredns/plugin/kubernetes/controller.go:317: Failed to list *v1.Endpoints: Get <a target="_blank" rel="noopener" href="https://172.30.0.1/api/v1/endpoints?limit=500&amp;resourceVersion=0">https://172.30.0.1:443/api/v1/endpoints?limit=500&amp;resourceVersion=0</a>: dial tcp 172.30.0.1:443: connect: no route to host</p>
