@@ -66,6 +66,60 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux-源码安装go" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/11/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" class="article-date">
+  <time datetime="2020-11-11T11:52:18.000Z" itemprop="datePublished">2020-11-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/11/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">linux 源码安装go</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#cd &#x2F;usr&#x2F;local&#x2F;src&#x2F;</span><br><span class="line">#wget https:&#x2F;&#x2F;golang.org&#x2F;dl&#x2F;go1.14.11.linux-amd64.tar.gz</span><br><span class="line">#tar -C &#x2F;usr&#x2F;local -xzvf go1.14.11.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h5 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h5><p>Go二进制版本将安装在<code>/usr/local/go</code>，但是可以将Go工具安装到其他位置。 在这种情况下，您必须将GOROOT环境变量设置为指向安装目录。</p>
+<p>创建GOPATH目录：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;opt&#x2F;go</span><br><span class="line">#vim &#x2F;etc&#x2F;profile</span><br><span class="line">export GOROOT&#x3D;&#x2F;usr&#x2F;local&#x2F;go</span><br><span class="line">export GOPATH&#x3D;&#x2F;opt&#x2F;go</span><br><span class="line">export PATH&#x3D;$GOPATH&#x2F;bin:$GOROOT&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/11/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" data-id="ckhg7z9cc0004do163f571ock" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-pip加速使用国内源" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/" class="article-date">
@@ -250,7 +304,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>gin框架，自定义成功返回，错误返回输出</p>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>gin框架，自定义成功返回，错误返回输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">package response</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type SuccessResponse struct &#123;</span><br><span class="line">	Code int         &#96;json:&quot;code&quot;&#96;</span><br><span class="line">	Msg  string      &#96;json:&quot;msg&quot;&#96;</span><br><span class="line">	Data interface&#123;&#125; &#96;json:&quot;data&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func SuccessRsp(ctx *gin.Context, data interface&#123;&#125;) &#123;</span><br><span class="line">	res :&#x3D; SuccessResponse&#123;</span><br><span class="line">		Code: 0,</span><br><span class="line">		Msg:  &quot;success&quot;,</span><br><span class="line">		Data: data,</span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, res)</span><br><span class="line">&#125;</span><br><span class="line">type Error struct &#123;</span><br><span class="line">	HttpCode int         &#96;json:&quot;-&quot;&#96;</span><br><span class="line">	Code     int         &#96;json:&quot;code&quot;&#96; &#x2F;&#x2F; 这个是业务层的错误号，非Http Status Code</span><br><span class="line">	Msg   interface&#123;&#125; &#96;json:&quot;msg&quot;&#96;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">type Response struct &#123;</span><br><span class="line">	Error    *Error</span><br><span class="line">	Data interface&#123;&#125; &#96;json:&quot;data&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">func ErrorRsp(c *gin.Context, rsp *Response) &#123;</span><br><span class="line">	if rsp.Error!&#x3D;nil &#123;</span><br><span class="line">		c.JSON(rsp.Error.HttpCode, rsp.Error)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	c.JSON(rsp.Error.HttpCode,rsp.Data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if ptype &#x3D;&#x3D; &quot;&quot; &#123;</span><br><span class="line">		response.ErrorRsp(c,&amp;response.Response&#123;Error: &amp;response.Error&#123;HttpCode: 200,Code: 400000,Msg: &quot;参数输入错误!&quot;&#125;,Data: &quot;&quot;&#125;)</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		response.SuccessRsp(c,ptype)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
@@ -516,258 +580,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-linux-IPMITool常用命令" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/14/linux-IPMITool%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time datetime="2020-10-14T10:57:31.000Z" itemprop="datePublished">2020-10-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/14/linux-IPMITool%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">linux IPMITool常用命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>链接<a target="_blank" rel="noopener" href="https://blog.csdn.net/zygblock/article/details/53367664">参考链接</a></p>
-<p>IPMITool和其中常用的命令</p>
-<p>IPMI（Intelligent Platform Management Interface）即智能平台管理接口是使硬件管理具备“智能化”的新一代通用接口标准。用户可以利用 IPMI 监视服务器的物理特征，如温度、电压、电扇工作状态、电源供应以及机箱入侵等。Ipmi 最大的优势在于它是独立于 CPU BIOS 和 OS 的，所以用户无论在开机还是关机的状态下，只要接通电源就可以实现对服务器的监控。Ipmi 是一种规范的标准，其中最重要的物理部件就是BMC(Baseboard Management Controller 如图1)，一种嵌入式管理微控制器，它相当于整个平台管理的“大脑”，通过它 ipmi 可以监控各个传感器的数据并记录各种事件的日志。</p>
-<p>ipmitool 是一种可用在 Linux/Unix 系统下的基于命令行方式的 ipmi 平台管理工具。它支持 ipmi 1.5 和ipmi 2.0 规范（最新的规范为 ipmi 2.0）。利用它可以实现获取传感器的信息、显示系统日志内容、网络远程开关机等功能。其主要功能包括读取和显示传感器数据（SDR），显示System Evernt Log（SEL）的内容，显示打印Field Replaceable Unit（FRU）信息，读取和设置BMC模块的LAN配置，远程控制服务器主机的电源。</p>
-<p>ipmitool支持IPMI-over-LAN和系统Kernel中的设备驱动（openIPMI in Linux, BMC in Solaris, openIPMI in FreeBSD) 接口。即可以本地运行，也可以在远程机器上运行，实现对服务器主机的管理和控制。</p>
-<p>最新版本的ipmitool可以去<a target="_blank" rel="noopener" href="http://ipmitool.sourceforge.net/%E4%B8%8B%E8%BD%BD%E3%80%82%E7%9B%AE%E5%89%8D%E7%9A%84%E6%9C%80%E6%96%B0%E7%89%88%E6%9C%AC%E4%B8%BA1.8.11(2012-04-29)%E3%80%82ipmitool%E7%9A%84man%E6%89%8B%E5%86%8C%E5%8F%AF%E4%BB%A5%E5%8E%BBhttp://ipmitool.sourceforge.net/manpage.html%E8%AE%BF%E9%97%AEweb%E7%89%88%E6%9C%AC%E3%80%82">http://ipmitool.sourceforge.net/下载。目前的最新版本为1.8.11(2012-04-29)。ipmitool的man手册可以去http://ipmitool.sourceforge.net/manpage.html访问web版本。</a></p>
-<p>常用的管理命令包括：</p>
-<p>================</p>
-<p>系统管理命令</p>
-<p>================</p>
-<p>1.</p>
-<p>查看设备信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin chassis status</p>
-<p>\2. 查看用户</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user list</p>
-<p>\3. 增加用户</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user set name 3 test1</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user list</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user set password 3 test1</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user priv 3 20</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user list</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U test1 -P test1 user list</p>
-<p>设置用户权限</p>
-<p>权限范围取值2：user 3：operator 4:administrator,创建用于默认权限是NO ACCSS，无访问权限。如将用户id为3设置为管理员，命令为</p>
-<p>ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user priv3 4 ##### 3为用户号，4为权限值。</p>
-<p>开启用户</p>
-<p>ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user enabled 3</p>
-<p>\4. disable/enable用户</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user disable 3</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U test1 -P test1 user list</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin user enable 3</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U test1 -P test1 user list</p>
-<p>\5. 查看服务器当前开电状态</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power status</p>
-<p>\6. 服务器的开机，关机，reset和power cycle</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power on</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power off</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power cycle</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin power reset</p>
-<p>\7. 查看服务器的80 Port当前状态</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x30 0xB2</p>
-<p>\8. 查看服务器的传感器状态所有传感器状态详细信息：</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sensor</p>
-<p>传感器SDR summary信息：</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr info</p>
-<p>传感器SDR 列表信息：</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr list</p>
-<p>FRU</p>
-<p>传感器SDR 列表信息：</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr list fru</p>
-<p>下载RAW SDR信息到文件：</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sdr dump sdr.raw</p>
-<p>\9. 查看服务器的FRU信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin fru</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin fru print</p>
-<p>================</p>
-<p>BMC</p>
-<p>自身配置命令</p>
-<p>================</p>
-<p>1.</p>
-<p>查看BMC的信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc info</p>
-<p>\2. 查看BMC的LAN信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin lan print 1</p>
-<p>（一般channel 1为LAN）</p>
-<p>\3. 修改BMC的MAC信息（只能在本地以root用户做，因为在此之前没IP）</p>
-<p>enable BMC MAC SET mode:</p>
-<p>/usr/bin/ipmitool raw 0x0c 0x01 0x01 0xc2 0x00</p>
-<p>Write MAC to BMC (BMC MAC=d0:27:88:a4:e4:37):</p>
-<p>/usr/bin/ipmitool raw 0x0c 0x01 0x01 0x05 0xD0 0x27 0x88 0xA4 0xE4 0x37</p>
-<p>\4. 修改BMC的网络为自动从DHCP获得IP地址，而不是静态的（只能在本地以root用户做，因为在此之前没IP）确定channel 1为LAN:</p>
-<p>/usr/bin/ipmitool lan print 1</p>
-<p>设定channel 1从DHCP获得IP:</p>
-<p>/usr/bin/ipmitool lan set 1 ipsrc dhcp</p>
-<p>\5. 重启BMC自己（不是服务器）（小心BMC挂掉hang）</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc reset</p>
-<p>================</p>
-<p>SOL</p>
-<p>和通过IPMItool访问系统终端(Serial-Over-LAN)</p>
-<p>================</p>
-<p>1.</p>
-<p>查看当前的SOL summary信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol info 1</p>
-<p>\2. 修改SOL配置信息查看所有可能的配置</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol set</p>
-<p>修改波特率配置</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol set non-volatile-bit-rate 38.4 1</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol set volatile-bit-rate 38.4 1</p>
-<p>\3. 开启远程终端</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sol activate</p>
-<p>(</p>
-<p>可以使用<del>.退出,</del>?显示帮助信息)</p>
-<p>================</p>
-<p>Watchdog</p>
-<p>配置命令</p>
-<p>================</p>
-<p>1.</p>
-<p>查看当前的watchdog信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
-<p>\2. 设置，开启一个watchdog</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
-<p>设置一个OS WDT的watchdog, 超时时间为60秒（自己看IPMI 2.0手册,351页的27.6 Set Watchdog Timer Command）(60x10=600 = 0x258)</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x06 0x24 0x04 0x01 0x00 0x10 0x58 0x2</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
-<p>开启该watchdog</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog reset</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin mc watchdog get</p>
-<p>禁止该watchdog的动作(Hard reset-&gt; no action)</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.32.228.187 -U sysadmin -P admin raw 0x06 0x24 0x04 0x00 0x00 0x10 0x58 0xFF</p>
-<p>上面的命令把时间改为非常大，提示第1个0x00表示没有动作，0x04表示是SMS/OS的watchdog, 0xFF58是超时的时间，单位为100ms。</p>
-<p>================</p>
-<p>SEL</p>
-<p>命令</p>
-<p>================</p>
-<p>1.</p>
-<p>查看当前的SEL summary信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel info</p>
-<p>\2. 列示所有SEL记录详细信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel list</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel list 10</p>
-<p>\3. 删除指定的SEL记录</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel delete 1</p>
-<p>\4. 清除所有的SEL记录</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel clear</p>
-<p>\5. 获取和修改SEL当前时钟</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel time get</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin sel time set “04/24/2012 18:44:44”</p>
-<p>\6. 以RAW方式查看制定的SEL数据</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0xa 0x43 0 0 111 0 0 0xFF</p>
-<p>0xa 0x43为Get SEL Entry Command； 0 0 保留值，111 0 表示取第112条记录（从0开始），0 为offset，保留；0xFF为读取的字节数，FF表示取整条记录</p>
-<p>================</p>
-<p>PEF</p>
-<p>命令</p>
-<p>================</p>
-<p>1.</p>
-<p>查看BMC当前的PEF 支持信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef info</p>
-<p>\2. 查看BMC当前的PEF 配置表信息（配置表也是可以修改的）</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef list</p>
-<p>\3. 查看BMC当前的PEF 状态信息(BMC处理的最后一条SEL记录)</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef status</p>
-<p>\4. 修改BMC当前的PEF 配置表查看当前的PEF 配置表</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef list</p>
-<p>假定我们要删除下面这条配置项</p>
-<p>1 | active, pre-configured | 0x11 | Voltage | Any | None | OEM | Any | Power-off,OEM-defined</p>
-<p>获取该配置项的配置信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x04 0x13 0x07 0x01 0x00</p>
-<p>11 01 40</p>
-<p>修改该配置项的配置信息</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin raw 0x04 0x12 0x07 0x01 0x40</p>
-<p>检查修改后的PEF配置表</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin pef list</p>
-<p>================</p>
-<p>特殊命令</p>
-<p>================</p>
-<p>1.</p>
-<p>查看ipmi服务器端当前活动的session会话</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin session info active</p>
-<p>\2. 执行一个保存在文件中的所有ipmitool命令</p>
-<p>/usr/bin/ipmitool -I lanplus -H 10.88.1.181 -U sysadmin -P admin exec myipmi.cmd</p>
-<p>=====================================总结======================================================</p>
-<p>#service ipmi start</p>
-<p>#ipmitool -I open shell</p>
-<p>#### 可以直接进入本地BMC shell</p>
-<p>#ipmitool -I lan -H -U shell</p>
-<p>#### 输入password,进入IPMI交互模式,当然这里也可以把shell直接换成bmc命令 , 另外ipmitool支持端口,所以是否可以先做DNAT，然后远程直接管理内网机器.</p>
-<p>#### ipmitool提供的功能要比windows下ipmish提供的功能多得多，用法相对复杂一些</p>
-<p>参考下面转摘的文章来详细了解命令</p>
-<p>引用</p>
-<p>Ipmitool本地监控使用命令：ipmitool –I open command，其中-I open表示使用OpenIPMI接口，command有以下项：</p>
-<p>a) raw：发送一个原始的IPMI请求，并且打印回复信息。</p>
-<p>b) Lan：配置网络（lan）信道(channel)</p>
-<p>c) chassis ：查看底盘的状态和设置电源</p>
-<p>d) event：向BMC发送一个已经定义的事件（event），可用于测试配置的SNMP是否成功</p>
-<p>e) mc： 查看MC（Management Contollor）状态和各种允许的项</p>
-<p>f) sdr：打印传感器仓库中的所有监控项和从传感器读取到的值。</p>
-<p>g) Sensor：打印详细的传感器信息。</p>
-<p>h) Fru：打印内建的Field Replaceable Unit (FRU)信息</p>
-<p>i) Sel： 打印 System Event Log (SEL)</p>
-<p>j) Pef： 设置 Platform Event Filtering (PEF)，事件过滤平台用于在监控系统发现有event时候，用PEF中的策略进行事件过滤，然后看是否需要报警。</p>
-<p>k) Sol/isol：用于配置通过串口的Lan进行监控</p>
-<p>l) User：设置BMC中用户的信息 。</p>
-<p>m) Channel：设置Management Controller信道。</p>
-<p>Ipmitool –I open sensor list命令可以获取传感器中的各种监测值和该值的监测阈值，包括（CPU温度，电压，风扇转速，电源调制模块温度，电源电压等信息）</p>
-<p>Ipmitool –I open sensor get “CPU0Temp”可以获取ID为CPU0Temp监测值，CPU0Temp是sensor的ID，服务器不同，ID表示也不同。</p>
-<p>Ipmitool –I open sensor thresh 设置ID值等于id的监测项的各种限制值。</p>
-<p>Ipmitool –I open chassis status查看底盘状态，其中包括了底盘电源信息，底盘工作状态等</p>
-<p>Ipmitool –I open chassis restart_cause查看上次系统重启的原因</p>
-<p>Ipmitool –I open chassis policy list 查看支持的底盘电源相关策略。</p>
-<p>Ipmitool –I open chassis power on启动底盘，用此命令可以远程开机</p>
-<p>Ipmitool –I open chassis power off关闭底盘，用此命令可以远程开机</p>
-<p>Ipmitool –I open chassis power reset实现硬重启，用此命令可以远程开机</p>
-<p>Ipmi还可以设置系统启动boot的设备，具体见ipmitool帮助文档。</p>
-<p>Ipmitool –I open mc reset 使BMC重新硬启动</p>
-<p>Ipmitool –I open mc info 查看BMC硬件信息</p>
-<p>Ipmitool –I open mc getenables 列出BMC所有允许的选项</p>
-<p>Ipmitool –I open mc setenables =[on|off]，设置bmc相应的允许/禁止选项。</p>
-<p>Ipmitool-I open event 1 发送一个温度过高的消息到System Event Log中，可以发送的Event有：</p>
-<p>1 Temperature: Upper Critical: Going High</p>
-<p>2 Voltage Threshold: Lower Critical: Going Low</p>
-<p>3 Memory: Correctable ECC Error Detected</p>
-<p>Ipmitool-I open event命令可以用测试配置的IPMI中的snmp功能是否成功。</p>
-<p>Ipmitool -I open lan print 1 打印现咱channel 1的信息 。</p>
-<p>Ipmitool -I open lan set 1 ipaddr 10.10.113.95设置channel 1 的地址为10.10.113.95</p>
-<p>Ipmitool -I open lan set 1 snmp public设置channel 1 上snmp的community为public。</p>
-<p>Ipmitool -I open lan set 1 access on设置channel 1允许访问。</p>
-<p>Ipmitool -I open pef info打印Platform Event Filtering （pef）信息</p>
-<p>Ipmitool -I open pef status查看Platform Event Filtering （pef）状态</p>
-<p>Ipmitool -I open pef policy查看Platform Event Filtering （pef）策略设置</p>
-<p>Ipmitool -I open sdr list fru 读取fru信息并显示。</p>
-<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/zyghero/article/details/53432479">BMC之<em>ipmitool</em> <em>命令</em>收集</a></p>
-<p> ipmi的介绍此处省略… ipmi能够不依赖服务器的CPU,内存,存储,电源等独立工作,是一种廉价远程管理方案 以一台未安装OS的DELL PE2950 (ipmi v2.0)为实验机…</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/10/14/linux-IPMITool%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-id="ckgbuomcl00047g165bh13z68" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -818,6 +630,10 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+          </li>
+        
+          <li>
             <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
           </li>
         
@@ -831,10 +647,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/">通过ssh隧道转发本地ssh</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
           </li>
         
       </ul>

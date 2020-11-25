@@ -66,6 +66,56 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-CentOS-8-使用python3作为默认python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" class="article-date">
+  <time datetime="2020-11-25T06:56:20.000Z" itemprop="datePublished">2020-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>CentOS 8 .上没有默认的<code>python</code>命令。要运行python 3，需要使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#dnf install python3</span><br><span class="line">#alternatives --set python &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
+
+<p>PS ：yum 终于不用了，使用dnf 管理</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" data-id="ckhx95mrp0000s816409w45xl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-centos7-rabbitmq-3-8-集群部署" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="article-date">
@@ -92,7 +142,7 @@
 var _hmt = _hmt || [];
 (function() {
   var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
   var s = document.getElementsByTagName("script")[0]; 
   s.parentNode.insertBefore(hm, s);
 })();
@@ -152,16 +202,24 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 
 <p>Diskimage-builder 是openstack社区用于制作镜像的工具。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install diskimage-builder ironic-python-agent-builder</span><br><span class="line">#yum -y install qemu-img</span><br><span class="line">#yum install -y libguestfs-tools-c  #提供virt-sysprep</span><br><span class="line">#export DIB_DEV_USER_USERNAME&#x3D;devuser   #初始用户名centos</span><br><span class="line">#export DIB_DEV_USER_PASSWORD&#x3D;password   #初始密码password</span><br><span class="line">#export DIB_DEV_USER_PWDLESS_SUDO&#x3D;YES   #允许sudo</span><br><span class="line">#export DIB_CLOUD_INIT_DATASOURCES&#x3D;&quot;ConfigDrive, OpenStack&quot;   #cloud-init 的datasource是ConfigDrive, OpenStack</span><br><span class="line">#export AUTHORIZE_SSH&#x3D;true</span><br><span class="line">构建IPA引导镜像</span><br><span class="line">#ironic-python-agent-builder -o centos-ipa-x86 --release 8 centos -e &quot;devuser dynamic-login dhcp-all-interfaces&quot;</span><br><span class="line">构建裸机镜像</span><br><span class="line">#disk-image-create centos8 centos8 dhcp-all-interfaces grub2 install-static devuser -o CentOS8 cloud-init-datasources</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install diskimage-builder ironic-python-agent-builder</span><br><span class="line">#yum -y install qemu-img</span><br><span class="line">#yum install -y libguestfs-tools-c  #提供virt-sysprep</span><br><span class="line">#export DIB_DEV_USER_USERNAME&#x3D;devuser   #初始用户名devuser</span><br><span class="line">#export DIB_DEV_USER_PASSWORD&#x3D;password   #初始密码password</span><br><span class="line">#export DIB_DEV_USER_PWDLESS_SUDO&#x3D;YES   #允许sudo</span><br><span class="line">#export DIB_CLOUD_INIT_DATASOURCES&#x3D;&quot;ConfigDrive, OpenStack&quot;   #cloud-init 的datasource是ConfigDrive, OpenStack</span><br><span class="line">#export AUTHORIZE_SSH&#x3D;true</span><br><span class="line">#export DIB_PYTHON_VERSION&#x3D;3 </span><br><span class="line">#export DIB_PYTHON&#x3D;python3</span><br><span class="line">构建IPA引导镜像</span><br><span class="line">#ironic-python-agent-builder -o centos7-ipa-x86 --release 7 centos -e &quot;devuser dynamic-login dhcp-all-interfaces&quot;</span><br><span class="line">构建裸机镜像</span><br><span class="line">#disk-image-create centos7 centos7 dhcp-all-interfaces grub2 install-static devuser -o CentOS7 cloud-init-datasources</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS8.qcow2</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS7.qcow2</span><br></pre></td></tr></table></figure>
 
 <p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
-<p>引导内核</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos7&#x2F;stein&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar</span><br></pre></td></tr></table></figure>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
       
@@ -259,7 +317,17 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>实际场景，有A服务器，位于某内网环境，没有外网IP，外面无法SSH</p>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>实际场景，有A服务器，位于某内网环境，没有外网IP，外面无法SSH</p>
 <p>但我自己有比如阿里云上的一台服务器B，我想直接SSH A服务器，怎么办？</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">B 服务器IP 101.198.*.*</span><br><span class="line">A 服务器执行</span><br><span class="line">#ssh -R 2201:0.0.0.0:22 -p 22 USERNAME@101.198.*.* -f -N</span><br></pre></td></tr></table></figure>
 
@@ -349,7 +417,16 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
 
 <p>加载模块</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># modprobe macvlan</span><br><span class="line"># lsmod | grep macvlan</span><br><span class="line">  macvlan    19239    0</span><br></pre></td></tr></table></figure>
@@ -441,8 +518,15 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
-
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 <h4 id="宿主机"><a href="#宿主机" class="headerlink" title="宿主机"></a>宿主机</h4><p>开启ipv6</p>
 <h3 id="部署kubernetes"><a href="#部署kubernetes" class="headerlink" title="部署kubernetes"></a>部署kubernetes</h3><p>calico 网络方案</p>
 <p>(步骤略)</p>
@@ -455,7 +539,7 @@ var _hmt = _hmt || [];
 <ol start="3">
 <li>安装baremetal operator</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br><span class="line">#bash tools&#x2F;install_kustomize.sh</span><br><span class="line">#.&#x2F;tools&#x2F;deploy.sh true true false false false</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br><span class="line">#export IRONIC_HOST&#x3D;&quot;localhost&quot;</span><br><span class="line">#export IRONIC_HOST_IP&#x3D;&quot;10.145.69.37&quot;</span><br><span class="line">#bash tools&#x2F;install_kustomize.sh</span><br><span class="line">#.&#x2F;tools&#x2F;deploy.sh true true true false false</span><br></pre></td></tr></table></figure>
 
 <p>惊奇发现，部署好简单？ 啥也不需要配置 ？ 往下走。。。。</p>
 <p><img src="/images/baremetal-operator-deploy.png"></p>
@@ -487,7 +571,7 @@ var _hmt = _hmt || [];
 </ol>
 <p><strong>结合openstack使用场景，以及公司机房网络的实际环境，确定如下</strong></p>
 <p>我在宿主机上起了nginx并导入IPA的引导系统, </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;nginx&#x2F;images -p</span><br><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos8&#x2F;master&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar -O &#x2F;data&#x2F;nginx&#x2F;images&#x2F;ironic-python-agent.tar</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;nginx&#x2F;images -p</span><br><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos8&#x2F;master&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar -O &#x2F;data&#x2F;nginx&#x2F;images&#x2F;ironic-python-agent.tar</span><br><span class="line">(或者自行build ramdisk)</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li><p>K8S上开启nginx</p>
@@ -496,11 +580,24 @@ var _hmt = _hmt || [];
 </li>
 <li><p>K8S上的ironic地址</p>
 </li>
-<li><p>裸机使用 eth5 网卡部署（eth4 为带内管理网, 裸机数据走业务网卡）</p>
-<p>   CACHEURL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images">http://10.145.69.37:9090/images</a></p>
-<p>  DEPLOY_KERNEL_URL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images/ironic-python-agent.kernel">http://10.145.69.37:9090/images/ironic-python-agent.kernel</a><br>  DEPLOY_RAMDISK_URL: <a target="_blank" rel="noopener" href="http://10.145.69.38:9090/images/ironic-python-agent.initramfs">http://10.145.69.38:9090/images/ironic-python-agent.initramfs</a>        DHCP_RANGE: 10.145.69.3，10.145.69.4<br>  HTTP_PORT: “6180”<br>  IRONIC_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:6385/v1/">http://10.145.69.37:6385/v1/</a><br>  IRONIC_FAST_TRACK: “true”<br>  IRONIC_INSPECTOR_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:5050/v1/">http://10.145.69.37:5050/v1/</a><br>  PROVISIONING_INTERFACE: eth4</p>
+<li><p>裸机使用 eth4 网卡部署</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n baremetal-operator-system edit cm baremetal-operator-ironic </span><br><span class="line">     #kubectl -n metal3 edit cm ironic-bmo-configmap-86hh74cbcc </span><br></pre></td></tr></table></figure>
+
+
+
 </li>
 </ol>
+<pre><code>   CACHEURL: http://10.145.69.37:9090/images
+   DEPLOY_KERNEL_URL: http://10.145.69.37:9090/images/ironic-python-agent.kernel
+   DEPLOY_RAMDISK_URL: http://10.145.69.37:9090/images/ironic-python-agent.initramfs        
+   DHCP_RANGE: 10.145.69.3,10.145.69.4
+   HTTP_PORT: &quot;6180&quot;
+   IPA_BASEURI: http://10.145.69.37:9090/images
+   IRONIC_INSECURE: &quot;true&quot;
+   IRONIC_ENDPOINT: https://10.145.69.37:6385/v1/
+   IRONIC_FAST_TRACK: &quot;true&quot;
+   IRONIC_INSPECTOR_ENDPOINT: https://10.145.69.37:5050/v1/
+   PROVISIONING_INTERFACE: eth4</code></pre>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go run cmd&#x2F;make-bm-worker&#x2F;main.go -address 10.142.65.41 -password *****_***stack -user ***** worker-615|kubectl apply -f</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/barehosts-1.png"></p>
@@ -566,60 +663,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-linux-源码安装go" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/11/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" class="article-date">
-  <time datetime="2020-11-11T11:52:18.000Z" itemprop="datePublished">2020-11-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/11/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">linux 源码安装go</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#cd &#x2F;usr&#x2F;local&#x2F;src&#x2F;</span><br><span class="line">#wget https:&#x2F;&#x2F;golang.org&#x2F;dl&#x2F;go1.14.11.linux-amd64.tar.gz</span><br><span class="line">#tar -C &#x2F;usr&#x2F;local -xzvf go1.14.11.linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
-
-<h5 id="添加环境变量"><a href="#添加环境变量" class="headerlink" title="添加环境变量"></a>添加环境变量</h5><p>Go二进制版本将安装在<code>/usr/local/go</code>，但是可以将Go工具安装到其他位置。 在这种情况下，您必须将GOROOT环境变量设置为指向安装目录。</p>
-<p>创建GOPATH目录：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;opt&#x2F;go</span><br><span class="line">#vim &#x2F;etc&#x2F;profile</span><br><span class="line">export GOROOT&#x3D;&#x2F;usr&#x2F;local&#x2F;go</span><br><span class="line">export GOPATH&#x3D;&#x2F;opt&#x2F;go</span><br><span class="line">export PATH&#x3D;$GOPATH&#x2F;bin:$GOROOT&#x2F;bin:$PATH</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/11/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" data-id="ckhg7z9cc0004do163f571ock" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -670,6 +713,10 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+          </li>
+        
+          <li>
             <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
           </li>
         
@@ -683,10 +730,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/">通过ssh隧道转发本地ssh</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
           </li>
         
       </ul>

@@ -7,15 +7,15 @@
   
   <title>gin 自定义成功失败response输出 | 酷客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="gin框架，自定义成功返回，错误返回输出 123456789101112131415161718192021222324252627282930313233343536373839package responseimport (	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;	&quot;net&#x2F;http&quot;)type Success">
+  <meta name="description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?affcd4898fc23124d935a5a4f09bf4b2&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="gin 自定义成功失败response输出">
 <meta property="og:url" content="https://tonyzhang1989.github.io/2020/11/09/gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%88%90%E5%8A%9F%E5%A4%B1%E8%B4%A5response%E8%BE%93%E5%87%BA/index.html">
 <meta property="og:site_name" content="酷客">
-<meta property="og:description" content="gin框架，自定义成功返回，错误返回输出 123456789101112131415161718192021222324252627282930313233343536373839package responseimport (	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;	&quot;net&#x2F;http&quot;)type Success">
+<meta property="og:description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?affcd4898fc23124d935a5a4f09bf4b2&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
 <meta property="og:locale">
 <meta property="article:published_time" content="2020-11-09T01:32:41.000Z">
-<meta property="article:modified_time" content="2020-11-09T01:34:23.253Z">
+<meta property="article:modified_time" content="2020-11-25T10:14:57.945Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary">
@@ -89,7 +89,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>gin框架，自定义成功返回，错误返回输出</p>
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>gin框架，自定义成功返回，错误返回输出</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">package response</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type SuccessResponse struct &#123;</span><br><span class="line">	Code int         &#96;json:&quot;code&quot;&#96;</span><br><span class="line">	Msg  string      &#96;json:&quot;msg&quot;&#96;</span><br><span class="line">	Data interface&#123;&#125; &#96;json:&quot;data&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func SuccessRsp(ctx *gin.Context, data interface&#123;&#125;) &#123;</span><br><span class="line">	res :&#x3D; SuccessResponse&#123;</span><br><span class="line">		Code: 0,</span><br><span class="line">		Msg:  &quot;success&quot;,</span><br><span class="line">		Data: data,</span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, res)</span><br><span class="line">&#125;</span><br><span class="line">type Error struct &#123;</span><br><span class="line">	HttpCode int         &#96;json:&quot;-&quot;&#96;</span><br><span class="line">	Code     int         &#96;json:&quot;code&quot;&#96; &#x2F;&#x2F; 这个是业务层的错误号，非Http Status Code</span><br><span class="line">	Msg   interface&#123;&#125; &#96;json:&quot;msg&quot;&#96;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">type Response struct &#123;</span><br><span class="line">	Error    *Error</span><br><span class="line">	Data interface&#123;&#125; &#96;json:&quot;data&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">func ErrorRsp(c *gin.Context, rsp *Response) &#123;</span><br><span class="line">	if rsp.Error!&#x3D;nil &#123;</span><br><span class="line">		c.JSON(rsp.Error.HttpCode, rsp.Error)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	c.JSON(rsp.Error.HttpCode,rsp.Data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if ptype &#x3D;&#x3D; &quot;&quot; &#123;</span><br><span class="line">		response.ErrorRsp(c,&amp;response.Response&#123;Error: &amp;response.Error&#123;HttpCode: 200,Code: 400000,Msg: &quot;参数输入错误!&quot;&#125;,Data: &quot;&quot;&#125;)</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		response.SuccessRsp(c,ptype)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
@@ -172,6 +182,10 @@
       <ul>
         
           <li>
+            <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+          </li>
+        
+          <li>
             <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
           </li>
         
@@ -185,10 +199,6 @@
         
           <li>
             <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/">通过ssh隧道转发本地ssh</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
           </li>
         
       </ul>

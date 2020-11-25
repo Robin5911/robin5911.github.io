@@ -7,12 +7,12 @@
   
   <title>初试 baremetal-operator 部署裸金属服务器（一） | 酷客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="var _hmt &#x3D; _hmt || [];(function() {  var hm &#x3D; document.createElement(&quot;script&quot;);  hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?c0c97dd3c86f2db4668210a512b92762&quot;;  var s &#x3D; document.getElementsByTagName(&quot;script&quot;">
+  <meta name="description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?affcd4898fc23124d935a5a4f09bf4b2&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
 <meta property="og:type" content="article">
 <meta property="og:title" content="初试 baremetal-operator 部署裸金属服务器（一）">
 <meta property="og:url" content="https://tonyzhang1989.github.io/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/index.html">
 <meta property="og:site_name" content="酷客">
-<meta property="og:description" content="var _hmt &#x3D; _hmt || [];(function() {  var hm &#x3D; document.createElement(&quot;script&quot;);  hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?c0c97dd3c86f2db4668210a512b92762&quot;;  var s &#x3D; document.getElementsByTagName(&quot;script&quot;">
+<meta property="og:description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?affcd4898fc23124d935a5a4f09bf4b2&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
 <meta property="og:locale">
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/baremetal-operator-deploy.png">
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/baremtal-operator-pods.png">
@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/barehosts-1.png">
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/baremtal-run.png">
 <meta property="article:published_time" content="2020-11-12T02:41:58.000Z">
-<meta property="article:modified_time" content="2020-11-19T08:05:21.442Z">
+<meta property="article:modified_time" content="2020-11-25T10:14:46.893Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="kubernetes">
 <meta name="twitter:card" content="summary">
@@ -95,8 +95,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
-
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 <h4 id="宿主机"><a href="#宿主机" class="headerlink" title="宿主机"></a>宿主机</h4><p>开启ipv6</p>
 <h3 id="部署kubernetes"><a href="#部署kubernetes" class="headerlink" title="部署kubernetes"></a>部署kubernetes</h3><p>calico 网络方案</p>
 <p>(步骤略)</p>
@@ -109,7 +116,7 @@
 <ol start="3">
 <li>安装baremetal operator</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br><span class="line">#bash tools&#x2F;install_kustomize.sh</span><br><span class="line">#.&#x2F;tools&#x2F;deploy.sh true true false false false</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br><span class="line">#export IRONIC_HOST&#x3D;&quot;localhost&quot;</span><br><span class="line">#export IRONIC_HOST_IP&#x3D;&quot;10.145.69.37&quot;</span><br><span class="line">#bash tools&#x2F;install_kustomize.sh</span><br><span class="line">#.&#x2F;tools&#x2F;deploy.sh true true true false false</span><br></pre></td></tr></table></figure>
 
 <p>惊奇发现，部署好简单？ 啥也不需要配置 ？ 往下走。。。。</p>
 <p><img src="/images/baremetal-operator-deploy.png"></p>
@@ -141,7 +148,7 @@
 </ol>
 <p><strong>结合openstack使用场景，以及公司机房网络的实际环境，确定如下</strong></p>
 <p>我在宿主机上起了nginx并导入IPA的引导系统, </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;nginx&#x2F;images -p</span><br><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos8&#x2F;master&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar -O &#x2F;data&#x2F;nginx&#x2F;images&#x2F;ironic-python-agent.tar</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;nginx&#x2F;images -p</span><br><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos8&#x2F;master&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar -O &#x2F;data&#x2F;nginx&#x2F;images&#x2F;ironic-python-agent.tar</span><br><span class="line">(或者自行build ramdisk)</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li><p>K8S上开启nginx</p>
@@ -150,11 +157,24 @@
 </li>
 <li><p>K8S上的ironic地址</p>
 </li>
-<li><p>裸机使用 eth5 网卡部署（eth4 为带内管理网, 裸机数据走业务网卡）</p>
-<p>   CACHEURL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images">http://10.145.69.37:9090/images</a></p>
-<p>  DEPLOY_KERNEL_URL: <a target="_blank" rel="noopener" href="http://10.145.69.37:9090/images/ironic-python-agent.kernel">http://10.145.69.37:9090/images/ironic-python-agent.kernel</a><br>  DEPLOY_RAMDISK_URL: <a target="_blank" rel="noopener" href="http://10.145.69.38:9090/images/ironic-python-agent.initramfs">http://10.145.69.38:9090/images/ironic-python-agent.initramfs</a>        DHCP_RANGE: 10.145.69.3，10.145.69.4<br>  HTTP_PORT: “6180”<br>  IRONIC_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:6385/v1/">http://10.145.69.37:6385/v1/</a><br>  IRONIC_FAST_TRACK: “true”<br>  IRONIC_INSPECTOR_ENDPOINT: <a target="_blank" rel="noopener" href="http://10.145.69.37:5050/v1/">http://10.145.69.37:5050/v1/</a><br>  PROVISIONING_INTERFACE: eth4</p>
+<li><p>裸机使用 eth4 网卡部署</p>
+   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n baremetal-operator-system edit cm baremetal-operator-ironic </span><br><span class="line">     #kubectl -n metal3 edit cm ironic-bmo-configmap-86hh74cbcc </span><br></pre></td></tr></table></figure>
+
+
+
 </li>
 </ol>
+<pre><code>   CACHEURL: http://10.145.69.37:9090/images
+   DEPLOY_KERNEL_URL: http://10.145.69.37:9090/images/ironic-python-agent.kernel
+   DEPLOY_RAMDISK_URL: http://10.145.69.37:9090/images/ironic-python-agent.initramfs        
+   DHCP_RANGE: 10.145.69.3,10.145.69.4
+   HTTP_PORT: &quot;6180&quot;
+   IPA_BASEURI: http://10.145.69.37:9090/images
+   IRONIC_INSECURE: &quot;true&quot;
+   IRONIC_ENDPOINT: https://10.145.69.37:6385/v1/
+   IRONIC_FAST_TRACK: &quot;true&quot;
+   IRONIC_INSPECTOR_ENDPOINT: https://10.145.69.37:5050/v1/
+   PROVISIONING_INTERFACE: eth4</code></pre>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go run cmd&#x2F;make-bm-worker&#x2F;main.go -address 10.142.65.41 -password *****_***stack -user ***** worker-615|kubectl apply -f</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/barehosts-1.png"></p>
@@ -243,6 +263,10 @@
       <ul>
         
           <li>
+            <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+          </li>
+        
+          <li>
             <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
           </li>
         
@@ -256,10 +280,6 @@
         
           <li>
             <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/">通过ssh隧道转发本地ssh</a>
-          </li>
-        
-          <li>
-            <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
           </li>
         
       </ul>
