@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/barehosts-1.png">
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/baremtal-run.png">
 <meta property="article:published_time" content="2020-11-12T02:41:58.000Z">
-<meta property="article:modified_time" content="2020-11-25T10:14:46.893Z">
+<meta property="article:modified_time" content="2020-11-26T09:56:03.567Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="kubernetes">
 <meta name="twitter:card" content="summary">
@@ -114,9 +114,9 @@ var _hmt = _hmt || [];
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#curl -LO https:&#x2F;&#x2F;storage.googleapis.com&#x2F;kubernetes-release&#x2F;release&#x2F;v1.19.0&#x2F;bin&#x2F;linux&#x2F;amd64&#x2F;kubectl</span><br><span class="line">#chmod 755 kubectl</span><br><span class="line">#mv kubectl &#x2F;usr&#x2F;bin&#x2F;</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
-<li>安装baremetal operator</li>
+<li>安装baremetal operator (我部署的时候TLS版本老是有问题)</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br><span class="line">#export IRONIC_HOST&#x3D;&quot;localhost&quot;</span><br><span class="line">#export IRONIC_HOST_IP&#x3D;&quot;10.145.69.37&quot;</span><br><span class="line">#bash tools&#x2F;install_kustomize.sh</span><br><span class="line">#.&#x2F;tools&#x2F;deploy.sh true true true false false</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br><span class="line">#export IRONIC_HOST&#x3D;&quot;localhost&quot;</span><br><span class="line">#export IRONIC_HOST_IP&#x3D;&quot;10.145.69.37&quot;</span><br><span class="line">#bash tools&#x2F;install_kustomize.sh</span><br><span class="line">#.&#x2F;tools&#x2F;deploy.sh true true false false false</span><br></pre></td></tr></table></figure>
 
 <p>惊奇发现，部署好简单？ 啥也不需要配置 ？ 往下走。。。。</p>
 <p><img src="/images/baremetal-operator-deploy.png"></p>
@@ -164,21 +164,21 @@ var _hmt = _hmt || [];
 
 </li>
 </ol>
-<pre><code>   CACHEURL: http://10.145.69.37:9090/images
+<pre><code> CACHEURL: http://10.145.69.37:9090/images
    DEPLOY_KERNEL_URL: http://10.145.69.37:9090/images/ironic-python-agent.kernel
-   DEPLOY_RAMDISK_URL: http://10.145.69.37:9090/images/ironic-python-agent.initramfs        
+   DEPLOY_RAMDISK_URL: http://10.145.69.37:9090/images/ironic-python-agent.initramfs
    DHCP_RANGE: 10.145.69.3,10.145.69.4
    HTTP_PORT: &quot;6180&quot;
    IPA_BASEURI: http://10.145.69.37:9090/images
-   IRONIC_INSECURE: &quot;true&quot;
-   IRONIC_ENDPOINT: https://10.145.69.37:6385/v1/
+   IRONIC_ENDPOINT: http://10.145.69.37:6385/v1/
    IRONIC_FAST_TRACK: &quot;true&quot;
-   IRONIC_INSPECTOR_ENDPOINT: https://10.145.69.37:5050/v1/
+   IRONIC_INSECURE: &quot;true&quot;
+   IRONIC_INSPECTOR_ENDPOINT: http://10.145.69.37:5050/v1/
    PROVISIONING_INTERFACE: eth4</code></pre>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go run cmd&#x2F;make-bm-worker&#x2F;main.go -address 10.142.65.41 -password *****_***stack -user ***** worker-615|kubectl apply -f</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/barehosts-1.png"></p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错:"></a>排错:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. ironic-conductor 报错</span><br><span class="line">2020-11-18 08:11:47.742 1 DEBUG ironic.conductor.task_manager [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] Attempting to get shared lock on node 6b808b17-7127-4ec6-8bb9-17b970e075d9 (for heartbeat) __init__ &#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;ironic&#x2F;conductor&#x2F;task_manager.py:222</span><br><span class="line">2020-11-18 08:11:47.756 1 DEBUG ironic.common.json_rpc.server [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] RPC heartbeat returned None _handle_requests &#x2F;usr&#x2F;lib&#x2F;python3.6&#x2F;site-packages&#x2F;ironic&#x2F;common&#x2F;json_rpc&#x2F;server.py:264</span><br><span class="line">2020-11-18 08:11:47.757 1 INFO eventlet.wsgi.server [req-80f357b6-666e-4e73-801d-94629b0899c6 - - - - -] 127.0.0.1 &quot;POST &#x2F; HTTP&#x2F;1.1&quot; status: 200  len: 211 time: 0.0283191</span><br><span class="line">2020-11-18 08:11:47.757 1 ERROR ironic.drivers.modules.agent_base [-] Heartbeat from node 6b808b17-7127-4ec6-8bb9-17b970e075d9 in unsupported provision state clean failed, not taking any action.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错:"></a>排错:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. ipa 报 cryptography 与openssl不兼容</span><br><span class="line">openstack&#x2F;requirements 中 cryptograph 改成2.6.1 版本，社区3.+版本太新了</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
 
@@ -231,7 +231,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neutron/" rel="tag">neutron</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
     </div>
   </div>
 
@@ -241,7 +241,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CentOS/" style="font-size: 15px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 12.5px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 15px;">go</a> <a href="/tags/grpc/" style="font-size: 12.5px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/neutron/" style="font-size: 10px;">neutron</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+      <a href="/tags/CentOS/" style="font-size: 14px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 12px;">go</a> <a href="/tags/grpc/" style="font-size: 12px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/mysql/" style="font-size: 12px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 14px;">虚拟化</a>
     </div>
   </div>
 
@@ -250,7 +250,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li></ul>
     </div>
   </div>
 
@@ -263,23 +263,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/">ovs/ovn 虚拟化学习整理(四)</a>
           </li>
         
           <li>
-            <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
+            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%89/">ovs/ovn 虚拟化学习整理(三)</a>
           </li>
         
           <li>
-            <a href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/">使用disk-image-builder（DIB）制作Ironic 裸金属镜像</a>
+            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/">ovs/ovn 虚拟化学习整理(二)</a>
           </li>
         
           <li>
-            <a href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/">记一次kubernetes flannel/coredns pod异常</a>
+            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/">ovs/ovn 虚拟化学习整理(一)</a>
           </li>
         
           <li>
-            <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/">通过ssh隧道转发本地ssh</a>
+            <a href="/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/">初试kubernetes集群集成Kata</a>
           </li>
         
       </ul>
