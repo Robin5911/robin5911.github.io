@@ -67,6 +67,187 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-TCP-IP-四次挥手简述" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/" class="article-date">
+  <time datetime="2020-12-03T10:15:41.000Z" itemprop="datePublished">2020-12-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 四次挥手简述</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/" data-id="cki8ta3dt00013w162v58352t" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TCP-IP-三次握手简述" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/" class="article-date">
+  <time datetime="2020-12-03T09:24:07.000Z" itemprop="datePublished">2020-12-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 三次握手简述</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>TCP/IP基础，老生常谈的问题了~</p>
+<p>TCP/IP 三次握手<br>    所谓三次握手（Three-Way Handshake）即建立TCP连接，就是指建立一个TCP连接时，需要客户端和服务端总共发送3个包以确认连接的建立。在socket编程中，这一过程由客户端执行connect来触发，整个流程如下图所示：</p>
+<p><img src="http://blog.chinaunix.net/attachment/201304/8/22312037_1365405910EROI.png" alt="img"></p>
+<p>​    （1）第一次握手：Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。<br>​    （2）第二次握手：Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，ack=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。<br>​    （3）第三次握手：Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了。</p>
+<p>​    SYN攻击：<br>​        在三次握手过程中，Server发送SYN-ACK之后，收到Client的ACK之前的TCP连接称为半连接（half-open connect），此时Server处于SYN_RCVD状态，当收到ACK后，Server转入ESTABLISHED状态。SYN攻击就是Client在短时间内伪造大量不存在的IP地址，并向Server不断地发送SYN包，Server回复确认包，并等待Client的确认，由于源地址是不存在的，因此，Server需要不断重发直至超时，这些伪造的SYN包将产时间占用未连接队列，导致正常的SYN请求因为队列满而被丢弃，从而引起网络堵塞甚至系统瘫痪。SYN攻击时一种典型的DDOS攻击，检测SYN攻击的方式非常简单，即当Server上有大量半连接状态且源IP地址是随机的，则可以断定遭到SYN攻击了，使用如下命令可以让之现行：<br>​        #netstat -nap | grep SYN_RECV</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/" data-id="cki8ta3dp00003w16fpkybrtt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-核心组件kubelet-讲解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" class="article-date">
+  <time datetime="2020-12-03T08:10:10.000Z" itemprop="datePublished">2020-12-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/">核心组件kubelet 讲解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-kubelet概述"><a href="#一-kubelet概述" class="headerlink" title="一    kubelet概述"></a>一    kubelet概述</h2><h3 id="1-1-kubelet作用"><a href="#1-1-kubelet作用" class="headerlink" title="1.1    kubelet作用"></a>1.1    kubelet作用</h3><p>在Kubernetes集群中，在每个Node（又称Minion）上都会启动一个kubelet服务进程。该进程用于处理Master下发到本节点的任务，管理Pod及Pod中的容器。每个kubelet进程都会在API Server上注册节点自身的信息，定期向Master汇报节点资源的使用情况，并通过cAdvisor监控容器和节点资源。</p>
+<h2 id="二-节点管理"><a href="#二-节点管理" class="headerlink" title="二    节点管理"></a>二    节点管理</h2><p>节点通过设置kubelet的启动参数“–register-node”，来决定是否向API Server注册自己。如果该参数的值为true，那么kubelet将试着通过API Server注册自己。在自注册时，kubelet启动时还包含下列参数。</p>
+<ul>
+<li>–api-servers：API Server的位置。</li>
+<li>–kubeconfig：kubeconfig文件，用于访问API Server的安全配置文件。</li>
+<li>–cloud-provider：云服务商（IaaS）地址，仅用于公有云环境。</li>
+</ul>
+<p><strong>提示：通常可能每个kubelet都被授予创建和修改任何节点的权限。生产环境中，建议kubelet的权限进行限制，仅允许它修改和创建所在节点的权限。</strong></p>
+<p>如果在集群运行过程中遇到集群资源不足的情况，用户就很容易通过添加机器及运用kubelet的自注册模式来实现扩容。</p>
+<p>在某些情况下，Kubernetes集群中的某些kubelet没有选择自注册模式，用户需要自己去配置Node的资源信息，同时告知Node上Kubelet API Server的位置，需要手动创建和修改节点信息。</p>
+<p>如果需要手动创建节点信息，则通过设置kubelet的启动参数“–registernode=false”即可关闭自注册模式。</p>
+<p>kubelet在启动时通过API Server注册节点信息，并定时向API Server发送节点的新消息，API Server在接收到这些信息后，将这些信息写入etcd。通过kubelet的启动参数“–node-status-update-frequency”设置kubelet每隔多长时间向API Server报告节点状态，默认为10s。</p>
+<h2 id="三-Pod管理"><a href="#三-Pod管理" class="headerlink" title="三    Pod管理"></a>三    Pod管理</h2><p>kubelet通过以下几种方式获取自身Node上要运行的Pod清单。</p>
+<ol>
+<li>文件：kubelet启动参数“–config”指定的配置文件目录下的文件（默认目录为“/etc/kubernetes/manifests/”）。通过–file-checkfrequency设置检查该文件目录的时间间隔，默认为20s。</li>
+<li>HTTP端点（URL）：通过“–manifest-url”参数设置。通过–http-check-frequency设置检查该HTTP端点数据的时间间隔，默认为20s。</li>
+<li>API Server：kubelet通过API Server监听etcd目录，同步Pod列表。</li>
+</ol>
+<p>所有以非API Server方式创建的Pod都叫作Static Pod。kubelet将Static Pod的状态汇报给API Server，API Server为该Static Pod创建一个Mirror Pod和其相匹配。Mirror Pod的状态将真实反映Static Pod的状态。当Static Pod被删除时，与之相对应的Mirror Pod也会被删除。</p>
+<p>对于通过API Server获得Pod清单的方式，kubelet会使用API Server Client的Watch加List的方式监听“/registry/nodes/$”当前节点的名称和“/registry/pods”目录，将获取的信息同步到本地缓存中。</p>
+<p>kubelet监听etcd，所有针对Pod的操作都会被kubelet监听。如果发现有新的绑定到本节点的Pod，则按照Pod清单的要求创建该Pod。如果发现本地的Pod被修改，则kubelet会做出相应的修改，比如在删除Pod中的某个容器时，会通过Docker Client删除该容器。</p>
+<p>如果发现删除本节点的Pod，则删除相应的Pod，并通过Docker Client删除Pod中的容器。</p>
+<p>kubelet读取所监听的信息，如果是创建和修改Pod任务，则做如下处理：</p>
+<ol>
+<li>为该Pod创建一个数据目录。</li>
+<li>从API Server读取该Pod清单。</li>
+<li>为该Pod挂载外部卷（ExternalVolume）。</li>
+<li>下载Pod用到的Secret。</li>
+<li>检查已经运行在节点上的Pod，如果该Pod没有容器或Pause容器（“kubernetes/pause”镜像创建的容器）没有启动，则先停止Pod里所有容器的进程。如果在Pod中有需要删除的容器，则删除这些容器。</li>
+<li>用“kubernetes/pause”镜像为每个Pod都创建一个容器。该Pause容器用于接管Pod中所有其他容器的网络。每创建一个新的Pod，kubelet都会先创建一个Pause容器，然后创建其他容器。“kubernetes/pause”镜像大概有200KB，是个非常小的容器镜像。</li>
+<li>为Pod中的每个容器做如下处理：<ul>
+<li>为容器计算一个Hash值，然后用容器的名称去查询对应Docker容器的Hash值。若查找到容器，且二者的Hash值不同，则停止Docker中容器的进程，并停止与之关联的Pause容器的进程；若二者相同，则不做任何处理。</li>
+<li>如果容器被终止了，且容器没有指定的restartPolicy（重启策略），则不做任何处理。</li>
+<li>调用Docker Client下载容器镜像，调用Docker Client运行容器。</li>
+</ul>
+</li>
+</ol>
+<h2 id="四-容器健康检查"><a href="#四-容器健康检查" class="headerlink" title="四    容器健康检查"></a>四    容器健康检查</h2><h3 id="4-1-健康检查方法"><a href="#4-1-健康检查方法" class="headerlink" title="4.1    健康检查方法"></a>4.1    健康检查方法</h3><p>Pod通过两类探针来检查容器的健康状态,LivenessProbe探针和ReadinessProbe探针。</p>
+<h3 id="4-2-LivenessProbe探针"><a href="#4-2-LivenessProbe探针" class="headerlink" title="4.2    LivenessProbe探针"></a>4.2    LivenessProbe探针</h3><p>LivenessProbe探针，用于判断容器是否健康并反馈给kubelet。如果LivenessProbe探针探测到容器不健康，则kubelet将删除该容器，并根据容器的重启策略做相应的处理。如果一个容器不包含LivenessProbe探针，那么kubelet认为该容器的LivenessProbe探针返回的值永远是Success。</p>
+<p>kubelet定期调用容器中的LivenessProbe探针来诊断容器的健康状况。LivenessProbe包含以下3种实现方式：</p>
+<ol>
+<li>ExecAction：在容器内部执行一个命令，如果该命令的退出状态码为0，则表明容器健康。</li>
+<li>TCPSocketAction：通过容器的IP地址和端口号执行TCP检查，如果端口能被访问，则表明容器健康。</li>
+<li>HTTPGetAction：通过容器的IP地址和端口号及路径调用HTTPGet方法，如果响应的状态码大于等于200且小于等于400，则认为容器状态健康。</li>
+</ol>
+<p>LivenessProbe探针被包含在Pod定义的spec.containers.{某个容器}中。</p>
+<p>示例1：HTTP检查方式</p>
+<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       httpGet:</span><br><span class="line"><span class="number">15</span>         path: /index.html</span><br><span class="line"><span class="number">16</span>         port: <span class="number">8080</span></span><br><span class="line"><span class="number">17</span>         httpHeaders:</span><br><span class="line"><span class="number">18</span>         - name: X-Custom-Header</span><br><span class="line"><span class="number">19</span>           value: Awesome</span><br><span class="line"><span class="number">20</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">21</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">22 #kubelet发送一个HTTP请求到本地主机、端口及指定的路径，来检查容器的健康状态。</span><br></pre></td></tr></table></figure>
+
+<p>示例2：运行一个具体的命令。</p>
+<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       exec:</span><br><span class="line"><span class="number">15</span>         command:</span><br><span class="line"><span class="number">16</span>           - cat</span><br><span class="line"><span class="number">17</span>           - <span class="regexp">/tmp/</span>health</span><br><span class="line"><span class="number">18</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">19</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">20 #kubelet在容器中执行“cat /tmp/health”命令，如果该命令返回的值为0，则表明容器处于健康状态，否则表明容器处于不健康状态。</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-ReadinessProbe探针"><a href="#4-3-ReadinessProbe探针" class="headerlink" title="4.3    ReadinessProbe探针"></a>4.3    ReadinessProbe探针</h3><p>另一类是ReadinessProbe探针，用于判断容器是否启动完成，且准备接收请求。如果ReadinessProbe探针检测到容器启动失败，则Pod的状态将被修改，Endpoint Controller将从Service的Endpoint中删除包含该容器所在Pod的IP地址的Endpoint条目。</p>
+<h2 id="五-cAdvisor资源监控"><a href="#五-cAdvisor资源监控" class="headerlink" title="五    cAdvisor资源监控"></a>五    cAdvisor资源监控</h2><h3 id="5-1-cAdvisor概览"><a href="#5-1-cAdvisor概览" class="headerlink" title="5.1    cAdvisor概览"></a>5.1    cAdvisor概览</h3><p>在Kubernetes集群中，应用程序生命周期内的信息可以在不同的级别上进行监测，如：容器、Pod、Service和整个集群。</p>
+<p>Kubernetes尽可能提供用户详细的各个级别的资源使用信息，从而能深入地了解应用的执行情况，并找到应用中可能的瓶颈。</p>
+<p>cAdvisor是一个开源的分析容器资源使用率和性能特性的代理工具，它是因为容器而产生的，因此也支持Docker容器。在Kubernetes项目中，cAdvisor被集成到Kubernetes代码中，kubelet则通过cAdvisor获取其所在节点及容器的数据</p>
+<h3 id="5-2-cAdvisor原理及作用"><a href="#5-2-cAdvisor原理及作用" class="headerlink" title="5.2    cAdvisor原理及作用"></a>5.2    cAdvisor原理及作用</h3><p>cAdvisor自动查找所有在其所在Node上的容器，自动采集CPU、内存、文件系统和网络使用的统计信息。通常cAdvisor通过它所在Node的4194端口暴露一个简单的UI。</p>
+<p>kubelet作为连接Kubernetes Master和各Node之间的桥梁，管理运行在Node上的Pod和容器。kubelet将每个Pod都转换成它的成员容器，同时从cAdvisor获取单独的容器使用统计信息，然后通过该REST API暴露这些聚合后的Pod资源使用的统计信息。</p>
+<p>cAdvisor只能提供2～3min的监控数据，对性能数据也没有持久化，因此在Kubernetes早期版本中需要依靠Heapster来实现集群范围内全部容器性能指标的采集和查询功能。</p>
+<p>从Kubernetes1.8版本开始，性能指标数据的查询接口升级为标准的Metrics API，后端服务则升级为全新的Metrics Server。因此，cAdvisor在4194端口提供的UI和API服务从Kubernetes1.10版本开始进入弃用流程，并于1.12版本完全关闭。</p>
+<p>若需要重新启用该服务，可手动部署一个DaemonSet在每个Node上启动一个cAdvisor来提供UI和API，参考：<a target="_blank" rel="noopener" href="https://github.com/google/cadvisor%E3%80%82">https://github.com/google/cadvisor。</a></p>
+<p>在新的Kubernetes监控体系中，Metrics Server用于提供CoreMetrics（核心指标），包括Node和Pod的CPU和内存使用数据。其他CustomMetrics（自定义指标）则由第三方组件（如Prometheus）采集和存储。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" data-id="cki8ta3dx00033w16eu5912fy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ovs-ovn-虚拟化学习整理-五" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/" class="article-date">
@@ -99,31 +280,34 @@ var _hmt = _hmt || [];
 })();
 </script>
 
-<h3 id="OVN-L3-出外网-fip方案"><a href="#OVN-L3-出外网-fip方案" class="headerlink" title="OVN-L3 出外网/fip方案"></a>OVN-L3 出外网/fip方案</h3><p>参考网上</p>
+<h3 id="OVN-L3-NAT出外网-fip方案"><a href="#OVN-L3-NAT出外网-fip方案" class="headerlink" title="OVN-L3 NAT出外网/fip方案"></a>OVN-L3 NAT出外网/fip方案</h3><p>参考网上，TOPO是这么个意思~</p>
 <p><img src="/images/ovn/OVN-network-fig-2.png"></p>
-<p>创建逻辑边界路由器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-add router-edge1</span><br></pre></td></tr></table></figure>
+<p>正如上面所看到的，我们添加了以下新组件：</p>
+<ul>
+<li>OVN网关路由器（edge1）</li>
+<li>逻辑交换机（transit），用于连接edge1和tenant1路由器</li>
+<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
+</ul>
+<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层<del>~</del></p>
+<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，当网络节点用吧）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
 
-<p>创建逻辑中转交换机用于连接edge1和tenant1</p>
+<p><img src="/images/ovn/ovn-15.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;test options:classis&#x3D;2e4ad154-ca2d-482f-bf09-5187280f9b6c</span><br></pre></td></tr></table></figure>
+
+<p>创建逻辑中转交换机用于连接edge1和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器， 没准将来这块社区能够优化掉~</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl ls-add switch-transit</span><br></pre></td></tr></table></figure>
 
 <p>联通路由器edge1和逻辑交换机transit上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-edge1 edge1-transit 02:d4:1d:8c:d9:ae 192.168.0.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-edge1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-edge1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-edge1 02:d4:1d:8c:d9:ae</span><br><span class="line">#ovn-nbctl lsp-set-options transit-edge1 router-port&#x3D;edge1-transit</span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-edge1 edge1-transit 02:d4:1d:8c:d7:ae 192.168.0.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-edge1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-edge1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-edge1 02:d4:1d:8c:d7:ae</span><br><span class="line">#ovn-nbctl lsp-set-options transit-edge1 router-port&#x3D;edge1-transit</span><br></pre></td></tr></table></figure>
 
 <p>联通路由器tenant1到逻辑交换机transit上</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-tenant1 tenant1-transit 02:d4:1d:8c:d9:af 192.168.0.2&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-tenant1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-tenant1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-tenant1 02:d4:1d:8c:d9:af</span><br><span class="line">#ovn-nbctl lsp-set-options transit-tenant1 router-port&#x3D;tenant1-transit</span><br></pre></td></tr></table></figure>
 
-<p>联通路由器tenant1到逻辑交换机transit上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
 
 
 <p>添加静态路由</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.250.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-tenant1 &quot;0.0.0.0&#x2F;0&quot; 192.168.0.1</span><br><span class="line">#ovn-nbctl lr-route-list router-edge1</span><br><span class="line">#ovn-nbctl lr-route-list router-tenant1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.250.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.251.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-tenant1 &quot;0.0.0.0&#x2F;0&quot; 192.168.0.1</span><br><span class="line">#ovn-nbctl lr-route-list router-edge1</span><br><span class="line">#ovn-nbctl lr-route-list router-tenant1</span><br></pre></td></tr></table></figure>
 
 <p>测试连通性</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec vm2 ping -c 2 192.168.0.1</span><br></pre></td></tr></table></figure>
@@ -176,7 +360,7 @@ var _hmt = _hmt || [];
 })();
 </script>
 
-<h3 id="OVN-L3-路由网关"><a href="#OVN-L3-路由网关" class="headerlink" title="OVN-L3 路由网关"></a>OVN-L3 路由网关</h3><p>上图吧，打通三层路由</p>
+<h3 id="OVN-L3-VPC网关"><a href="#OVN-L3-VPC网关" class="headerlink" title="OVN-L3 VPC网关"></a>OVN-L3 VPC网关</h3><p>上图吧，打通三层路由</p>
 <p><img src="/images/ovn/ovn-10.png"></p>
 <h4 id="central"><a href="#central" class="headerlink" title="central"></a>central</h4><p>创建租户路由器</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-add router-tenant1</span><br></pre></td></tr></table></figure>
@@ -407,6 +591,13 @@ var _hmt = _hmt || [];
 <li>OVN Host ——所有提供虚拟机或虚拟网络的节点。OVN Host 运行着 “chassis controller” ，它上连OVN南向数据库并作为其记录的物理网络信息授权来源，下接OVS 并成为其openflow 控制器。</li>
 </ul>
 <h3 id="OVN的实现了哪些功能？拥有哪些特性？"><a href="#OVN的实现了哪些功能？拥有哪些特性？" class="headerlink" title="OVN的实现了哪些功能？拥有哪些特性？"></a>OVN的实现了哪些功能？拥有哪些特性？</h3><p>Logical switches：逻辑交换机，用来做二层转发。<br>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。<br>Logical routers：逻辑路由器，分布式的，用来做三层转发。<br>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。<br>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
+<p>OVN网关发布的时候，还存在着某些限制：</p>
+<ul>
+<li><p>网关路由器仅可以经由逻辑交换机连接到其他路由器，而DLR已经可以经由一条链路直连路由器。社区正在进行相关工作来解决掉这个限制。</p>
+</li>
+<li><p>OVN支持多个网关路由器绑定到环境中，这意味着可以逻辑空间执行入站ECMP路由。然而，OVN当前不支持网关路由器之间的出站ECMP。这个特性也同样是OVN未来需要加强的。</p>
+</li>
+</ul>
 <p>基于OVN的neutron网络架构如下</p>
 <p> <img src="https://www.debugger.wiki/sourceimg/190706/cc51795bdcf29c2b9ff4e8e37d0f3826.jpg" alt="技术图片"></p>
 <h2 id="ovs-ovn-学习资料"><a href="#ovs-ovn-学习资料" class="headerlink" title="[ovs ovn 学习资料]"></a>[ovs ovn 学习资料]</h2><p><strong>0、A Primer on OVN</strong></p>
@@ -555,176 +746,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-CentOS-8-使用python3作为默认python" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" class="article-date">
-  <time datetime="2020-11-25T06:56:20.000Z" itemprop="datePublished">2020-11-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>CentOS 8 .上没有默认的<code>python</code>命令。要运行python 3，需要使用命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#dnf install python3</span><br><span class="line">#alternatives --set python &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" data-id="ckhx95mrp0000s816409w45xl" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-centos7-rabbitmq-3-8-集群部署" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="article-date">
-  <time datetime="2020-11-17T01:57:00.000Z" itemprop="datePublished">2020-11-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>基于CentOS 7 x86_64 rabbitmq 3.8</p>
-<h5 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">安装docker-ce环境</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-database </span><br><span class="line">#vim &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts</span><br><span class="line"></span><br><span class="line">10.250.250.120 rabbit1 ostack120</span><br><span class="line">10.250.250.121 rabbit2 ostack121</span><br><span class="line">10.250.250.122 rabbit3 ostack122 </span><br></pre></td></tr></table></figure>
-
-<h4 id="3-安装rabbitmq"><a href="#3-安装rabbitmq" class="headerlink" title="3. 安装rabbitmq"></a>3. 安装rabbitmq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主节点 120 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit1 --name myrabbit1  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br><span class="line">从节点 121 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit2 --name myrabbit2  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-加入集群"><a href="#4-加入集群" class="headerlink" title="4. 加入集群"></a>4. 加入集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it myrabbit2 bash # 进入镜像命令行</span><br><span class="line">#rabbitmqctl stop_app</span><br><span class="line">&#x2F;&#x2F;rabbitmqctl reset</span><br><span class="line">#rabbitmqctl join_cluster rabbit@rabbit1 #rabbit1为主节点的hostname</span><br><span class="line">#rabbitmqctl start_app</span><br><span class="line">#rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-权限初始化"><a href="#5-权限初始化" class="headerlink" title="5. 权限初始化"></a>5. 权限初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">新增账号权限</span><br><span class="line">#rabbitmqctl add_user openstack Openstack</span><br><span class="line">#rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;;</span><br><span class="line">#rabbitmqctl set_policy ha-all &quot;&quot; &#39;&#123;&quot;ha-mode&quot;:&quot;all&quot;, &quot;ha-sync-mode&quot;: &quot;automatic&quot;&#125;&#39;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><p>rabbitmq1 可能会挂掉，可能需要重启 myrabbit1</p>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">启动rabbitmq</span><br><span class="line">rabbitmqctl start_app</span><br><span class="line"></span><br><span class="line">停止rabbitmq</span><br><span class="line">rabbitmqctl stop_app</span><br><span class="line"></span><br><span class="line">rabbitmq 查看所有队列信息</span><br><span class="line">rabbitmqctl list_queues</span><br><span class="line"></span><br><span class="line">还原 rabbitmq 清除所有队列</span><br><span class="line">rabbitmqctl reset</span><br><span class="line"></span><br><span class="line">rabbitmq 查看用户</span><br><span class="line">rabbitmqctl list_users</span><br><span class="line"></span><br><span class="line">rabbitmq添加用户</span><br><span class="line">rabbitmqctl add_user root root</span><br><span class="line"></span><br><span class="line">rabbitmq设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &#x2F; root &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line"></span><br><span class="line">rabbitmq查看集群状态信息</span><br><span class="line">rabbitmqctl cluster_status</span><br><span class="line"></span><br><span class="line">移除某个集群节点：一般情况当节点故障时，在正常的节点中，移除该故障节点</span><br><span class="line">rabbitmqctl  -n rabbit@rabbit1 forget_cluster_node rabbit@rabbit3</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" data-id="ckhlp9nv500009416acw2fdk4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux-源码安装go" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/16/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" class="article-date">
-  <time datetime="2020-11-16T09:50:39.000Z" itemprop="datePublished">2020-11-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/16/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">使用disk-image-builder（DIB）制作Ironic 裸金属镜像</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-
-<p>Diskimage-builder 是openstack社区用于制作镜像的工具。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">基于CentOS 7</span><br><span class="line"></span><br><span class="line">#pip3 install diskimage-builder ironic-python-agent-builder</span><br><span class="line">#yum -y install qemu-img</span><br><span class="line">#yum install -y libguestfs-tools-c  #提供virt-sysprep</span><br><span class="line">#export DIB_DEV_USER_USERNAME&#x3D;devuser   #初始用户名devuser</span><br><span class="line">#export DIB_DEV_USER_PASSWORD&#x3D;password   #初始密码password</span><br><span class="line">#export DIB_DEV_USER_PWDLESS_SUDO&#x3D;YES   #允许sudo</span><br><span class="line">#export DIB_CLOUD_INIT_DATASOURCES&#x3D;&quot;ConfigDrive, OpenStack&quot;   #cloud-init 的datasource是ConfigDrive, OpenStack</span><br><span class="line">#export AUTHORIZE_SSH&#x3D;true</span><br><span class="line">#export DIB_PYTHON_VERSION&#x3D;3 </span><br><span class="line">#export DIB_PYTHON&#x3D;python3</span><br><span class="line">构建IPA引导镜像</span><br><span class="line">#ironic-python-agent-builder -o centos7-ipa-x86 --release 7 centos -e &quot;devuser dynamic-login dhcp-all-interfaces&quot;</span><br><span class="line">构建裸机镜像</span><br><span class="line">#disk-image-create centos7 centos7 dhcp-all-interfaces grub2 install-static devuser -o CentOS7 cloud-init-datasources</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS7.qcow2</span><br></pre></td></tr></table></figure>
-
-<p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br><span class="line">2. setlocale: LC_ALL: cannot change locale (C.UTF-8): No such file or directory Command &quot;python setup.py egg_info&quot; failed with error code 1 in &#x2F;tmp&#x2F;pip-build-rit13y_p&#x2F;iso8601&#x2F;</span><br><span class="line"></span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;install.d&#x2F;ironic-python-agent-ramdisk-source-install&#x2F;60-ironic-python-agent-ramdisk-install  </span><br><span class="line">改成</span><br><span class="line">#export LC_ALL&#x3D;C.UTF-8</span><br><span class="line">export LC_ALL&#x3D;en_US.UTF-8</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/16/linux-%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" data-id="ckhg7z9cc0004do163f571ock" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -753,7 +774,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CentOS/" style="font-size: 14px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 12px;">go</a> <a href="/tags/grpc/" style="font-size: 12px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/mysql/" style="font-size: 12px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a>
+      <a href="/tags/CentOS/" style="font-size: 14px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 12px;">go</a> <a href="/tags/grpc/" style="font-size: 12px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/mysql/" style="font-size: 12px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a>
     </div>
   </div>
 
@@ -775,23 +796,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 四次挥手简述</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 三次握手简述</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/">核心组件kubelet 讲解</a>
+          </li>
+        
+          <li>
             <a href="/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/">ovs/ovn 虚拟化学习整理(五)</a>
           </li>
         
           <li>
             <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/">ovs/ovn 虚拟化学习整理(四)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%89/">ovs/ovn 虚拟化学习整理(三)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/">ovs/ovn 虚拟化学习整理(二)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/">ovs/ovn 虚拟化学习整理(一)</a>
           </li>
         
       </ul>

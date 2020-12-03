@@ -15,8 +15,9 @@
 <meta property="og:description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?affcd4898fc23124d935a5a4f09bf4b2&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
 <meta property="og:locale">
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/ovn/OVN-network-fig-2.png">
+<meta property="og:image" content="https://tonyzhang1989.github.io/images/ovn/ovn-15.png">
 <meta property="article:published_time" content="2020-12-03T03:21:39.000Z">
-<meta property="article:modified_time" content="2020-12-03T04:26:39.605Z">
+<meta property="article:modified_time" content="2020-12-03T10:24:21.041Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="虚拟化">
 <meta name="twitter:card" content="summary">
@@ -102,31 +103,34 @@ var _hmt = _hmt || [];
 })();
 </script>
 
-<h3 id="OVN-L3-出外网-fip方案"><a href="#OVN-L3-出外网-fip方案" class="headerlink" title="OVN-L3 出外网/fip方案"></a>OVN-L3 出外网/fip方案</h3><p>参考网上</p>
+<h3 id="OVN-L3-NAT出外网-fip方案"><a href="#OVN-L3-NAT出外网-fip方案" class="headerlink" title="OVN-L3 NAT出外网/fip方案"></a>OVN-L3 NAT出外网/fip方案</h3><p>参考网上，TOPO是这么个意思~</p>
 <p><img src="/images/ovn/OVN-network-fig-2.png"></p>
-<p>创建逻辑边界路由器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-add router-edge1</span><br></pre></td></tr></table></figure>
+<p>正如上面所看到的，我们添加了以下新组件：</p>
+<ul>
+<li>OVN网关路由器（edge1）</li>
+<li>逻辑交换机（transit），用于连接edge1和tenant1路由器</li>
+<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
+</ul>
+<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层<del>~</del></p>
+<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，当网络节点用吧）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
 
-<p>创建逻辑中转交换机用于连接edge1和tenant1</p>
+<p><img src="/images/ovn/ovn-15.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;test options:classis&#x3D;2e4ad154-ca2d-482f-bf09-5187280f9b6c</span><br></pre></td></tr></table></figure>
+
+<p>创建逻辑中转交换机用于连接edge1和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器， 没准将来这块社区能够优化掉~</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl ls-add switch-transit</span><br></pre></td></tr></table></figure>
 
 <p>联通路由器edge1和逻辑交换机transit上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-edge1 edge1-transit 02:d4:1d:8c:d9:ae 192.168.0.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-edge1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-edge1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-edge1 02:d4:1d:8c:d9:ae</span><br><span class="line">#ovn-nbctl lsp-set-options transit-edge1 router-port&#x3D;edge1-transit</span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-edge1 edge1-transit 02:d4:1d:8c:d7:ae 192.168.0.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-edge1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-edge1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-edge1 02:d4:1d:8c:d7:ae</span><br><span class="line">#ovn-nbctl lsp-set-options transit-edge1 router-port&#x3D;edge1-transit</span><br></pre></td></tr></table></figure>
 
 <p>联通路由器tenant1到逻辑交换机transit上</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-tenant1 tenant1-transit 02:d4:1d:8c:d9:af 192.168.0.2&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-tenant1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-tenant1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-tenant1 02:d4:1d:8c:d9:af</span><br><span class="line">#ovn-nbctl lsp-set-options transit-tenant1 router-port&#x3D;tenant1-transit</span><br></pre></td></tr></table></figure>
 
-<p>联通路由器tenant1到逻辑交换机transit上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
 
 
 <p>添加静态路由</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.250.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-tenant1 &quot;0.0.0.0&#x2F;0&quot; 192.168.0.1</span><br><span class="line">#ovn-nbctl lr-route-list router-edge1</span><br><span class="line">#ovn-nbctl lr-route-list router-tenant1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.250.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.251.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-tenant1 &quot;0.0.0.0&#x2F;0&quot; 192.168.0.1</span><br><span class="line">#ovn-nbctl lr-route-list router-edge1</span><br><span class="line">#ovn-nbctl lr-route-list router-tenant1</span><br></pre></td></tr></table></figure>
 
 <p>测试连通性</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec vm2 ping -c 2 192.168.0.1</span><br></pre></td></tr></table></figure>
@@ -145,6 +149,15 @@ var _hmt = _hmt || [];
   
     
 <nav id="article-nav">
+  
+    <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          核心组件kubelet 讲解
+        
+      </div>
+    </a>
   
   
     <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/" id="article-nav-older" class="article-nav-link-wrap">
@@ -178,7 +191,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CentOS/" style="font-size: 14px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 12px;">go</a> <a href="/tags/grpc/" style="font-size: 12px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/mysql/" style="font-size: 12px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a>
+      <a href="/tags/CentOS/" style="font-size: 14px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 12px;">go</a> <a href="/tags/grpc/" style="font-size: 12px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/mysql/" style="font-size: 12px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a>
     </div>
   </div>
 
@@ -200,23 +213,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 四次挥手简述</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 三次握手简述</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/">核心组件kubelet 讲解</a>
+          </li>
+        
+          <li>
             <a href="/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/">ovs/ovn 虚拟化学习整理(五)</a>
           </li>
         
           <li>
             <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/">ovs/ovn 虚拟化学习整理(四)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%89/">ovs/ovn 虚拟化学习整理(三)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/">ovs/ovn 虚拟化学习整理(二)</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/">ovs/ovn 虚拟化学习整理(一)</a>
           </li>
         
       </ul>
