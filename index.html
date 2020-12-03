@@ -67,85 +67,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-TCP-IP-四次挥手简述" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/" class="article-date">
-  <time datetime="2020-12-03T10:15:41.000Z" itemprop="datePublished">2020-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 四次挥手简述</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/" data-id="cki8ta3dt00013w162v58352t" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-TCP-IP-三次握手简述" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/" class="article-date">
-  <time datetime="2020-12-03T09:24:07.000Z" itemprop="datePublished">2020-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 三次握手简述</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>TCP/IP基础，老生常谈的问题了~</p>
-<p>TCP/IP 三次握手<br>    所谓三次握手（Three-Way Handshake）即建立TCP连接，就是指建立一个TCP连接时，需要客户端和服务端总共发送3个包以确认连接的建立。在socket编程中，这一过程由客户端执行connect来触发，整个流程如下图所示：</p>
-<p><img src="http://blog.chinaunix.net/attachment/201304/8/22312037_1365405910EROI.png" alt="img"></p>
-<p>​    （1）第一次握手：Client将标志位SYN置为1，随机产生一个值seq=J，并将该数据包发送给Server，Client进入SYN_SENT状态，等待Server确认。<br>​    （2）第二次握手：Server收到数据包后由标志位SYN=1知道Client请求建立连接，Server将标志位SYN和ACK都置为1，ack=J+1，随机产生一个值seq=K，并将该数据包发送给Client以确认连接请求，Server进入SYN_RCVD状态。<br>​    （3）第三次握手：Client收到确认后，检查ack是否为J+1，ACK是否为1，如果正确则将标志位ACK置为1，ack=K+1，并将该数据包发送给Server，Server检查ack是否为K+1，ACK是否为1，如果正确则连接建立成功，Client和Server进入ESTABLISHED状态，完成三次握手，随后Client与Server之间可以开始传输数据了。</p>
-<p>​    SYN攻击：<br>​        在三次握手过程中，Server发送SYN-ACK之后，收到Client的ACK之前的TCP连接称为半连接（half-open connect），此时Server处于SYN_RCVD状态，当收到ACK后，Server转入ESTABLISHED状态。SYN攻击就是Client在短时间内伪造大量不存在的IP地址，并向Server不断地发送SYN包，Server回复确认包，并等待Client的确认，由于源地址是不存在的，因此，Server需要不断重发直至超时，这些伪造的SYN包将产时间占用未连接队列，导致正常的SYN请求因为队列满而被丢弃，从而引起网络堵塞甚至系统瘫痪。SYN攻击时一种典型的DDOS攻击，检测SYN攻击的方式非常简单，即当Server上有大量半连接状态且源IP地址是随机的，则可以断定遭到SYN攻击了，使用如下命令可以让之现行：<br>​        #netstat -nap | grep SYN_RECV</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/" data-id="cki8ta3dp00003w16fpkybrtt" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-核心组件kubelet-讲解" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" class="article-date">
@@ -746,6 +667,119 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-CentOS-8-使用python3作为默认python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" class="article-date">
+  <time datetime="2020-11-25T06:56:20.000Z" itemprop="datePublished">2020-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>CentOS 8 .上没有默认的<code>python</code>命令。要运行python 3，需要使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#dnf install python3</span><br><span class="line">#alternatives --set python &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" data-id="ckhx95mrp0000s816409w45xl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-centos7-rabbitmq-3-8-集群部署" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2020-11-17T01:57:00.000Z" itemprop="datePublished">2020-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>基于CentOS 7 x86_64 rabbitmq 3.8</p>
+<h5 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">安装docker-ce环境</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-database </span><br><span class="line">#vim &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts</span><br><span class="line"></span><br><span class="line">10.250.250.120 rabbit1 ostack120</span><br><span class="line">10.250.250.121 rabbit2 ostack121</span><br><span class="line">10.250.250.122 rabbit3 ostack122 </span><br></pre></td></tr></table></figure>
+
+<h4 id="3-安装rabbitmq"><a href="#3-安装rabbitmq" class="headerlink" title="3. 安装rabbitmq"></a>3. 安装rabbitmq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主节点 120 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit1 --name myrabbit1  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br><span class="line">从节点 121 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit2 --name myrabbit2  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-加入集群"><a href="#4-加入集群" class="headerlink" title="4. 加入集群"></a>4. 加入集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it myrabbit2 bash # 进入镜像命令行</span><br><span class="line">#rabbitmqctl stop_app</span><br><span class="line">&#x2F;&#x2F;rabbitmqctl reset</span><br><span class="line">#rabbitmqctl join_cluster rabbit@rabbit1 #rabbit1为主节点的hostname</span><br><span class="line">#rabbitmqctl start_app</span><br><span class="line">#rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-权限初始化"><a href="#5-权限初始化" class="headerlink" title="5. 权限初始化"></a>5. 权限初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">新增账号权限</span><br><span class="line">#rabbitmqctl add_user openstack Openstack</span><br><span class="line">#rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;;</span><br><span class="line">#rabbitmqctl set_policy ha-all &quot;&quot; &#39;&#123;&quot;ha-mode&quot;:&quot;all&quot;, &quot;ha-sync-mode&quot;: &quot;automatic&quot;&#125;&#39;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><p>rabbitmq1 可能会挂掉，可能需要重启 myrabbit1</p>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">启动rabbitmq</span><br><span class="line">rabbitmqctl start_app</span><br><span class="line"></span><br><span class="line">停止rabbitmq</span><br><span class="line">rabbitmqctl stop_app</span><br><span class="line"></span><br><span class="line">rabbitmq 查看所有队列信息</span><br><span class="line">rabbitmqctl list_queues</span><br><span class="line"></span><br><span class="line">还原 rabbitmq 清除所有队列</span><br><span class="line">rabbitmqctl reset</span><br><span class="line"></span><br><span class="line">rabbitmq 查看用户</span><br><span class="line">rabbitmqctl list_users</span><br><span class="line"></span><br><span class="line">rabbitmq添加用户</span><br><span class="line">rabbitmqctl add_user root root</span><br><span class="line"></span><br><span class="line">rabbitmq设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &#x2F; root &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line"></span><br><span class="line">rabbitmq查看集群状态信息</span><br><span class="line">rabbitmqctl cluster_status</span><br><span class="line"></span><br><span class="line">移除某个集群节点：一般情况当节点故障时，在正常的节点中，移除该故障节点</span><br><span class="line">rabbitmqctl  -n rabbit@rabbit1 forget_cluster_node rabbit@rabbit3</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" data-id="ckhlp9nv500009416acw2fdk4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -774,7 +808,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/CentOS/" style="font-size: 14px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 12px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 12px;">go</a> <a href="/tags/grpc/" style="font-size: 12px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18px;">linux</a> <a href="/tags/mysql/" style="font-size: 12px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a>
+      <a href="/tags/CentOS/" style="font-size: 13.33px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 11.67px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 11.67px;">go</a> <a href="/tags/grpc/" style="font-size: 11.67px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/mysql/" style="font-size: 11.67px;">mysql</a> <a href="/tags/openstack/" style="font-size: 16.67px;">openstack</a> <a href="/tags/python/" style="font-size: 10px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a>
     </div>
   </div>
 
@@ -796,14 +830,6 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2020/12/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 四次挥手简述</a>
-          </li>
-        
-          <li>
-            <a href="/2020/12/03/TCP-IP-%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 三次握手简述</a>
-          </li>
-        
-          <li>
             <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/">核心组件kubelet 讲解</a>
           </li>
         
@@ -813,6 +839,14 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/">ovs/ovn 虚拟化学习整理(四)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%89/">ovs/ovn 虚拟化学习整理(三)</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/">ovs/ovn 虚拟化学习整理(二)</a>
           </li>
         
       </ul>
