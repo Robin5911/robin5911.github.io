@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>linux-python生成主机唯一UUID | 酷客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="主机需要有一个唯一的uuid，对于物理机存在主板uuid获取不到的情况，所以根据相关信息，生成一个 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566#!&#x2F;usr&#x2F;bin&#x2F;e">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux-python生成主机唯一UUID">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/index.html">
+<meta property="og:site_name" content="酷客">
+<meta property="og:description" content="主机需要有一个唯一的uuid，对于物理机存在主板uuid获取不到的情况，所以根据相关信息，生成一个 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566#!&#x2F;usr&#x2F;bin&#x2F;e">
+<meta property="og:locale">
+<meta property="article:published_time" content="2020-12-14T04:22:28.000Z">
+<meta property="article:modified_time" content="2020-12-14T04:24:42.889Z">
+<meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="酷客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="https://fonts.lug.ustc.edu.cn/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="google-site-verification" content="XkIGmrbqh5J83cILz5wx9StkgaQzjhGx0UfHTxlma00" />
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">酷客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-linux-python生成主机唯一UUID" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" class="article-date">
+  <time datetime="2020-12-14T04:22:28.000Z" itemprop="datePublished">2020-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      linux-python生成主机唯一UUID
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>主机需要有一个唯一的uuid，对于物理机存在主板uuid获取不到的情况，所以根据相关信息，生成一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python</span><br><span class="line">#coding: utf-8</span><br><span class="line">import re</span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">    兼容python2&#x2F;python3</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">#默认shell执行函数</span><br><span class="line">def shellutil(cmd):</span><br><span class="line">    p &#x3D; subprocess.Popen(cmd,stdin&#x3D;subprocess.PIPE,stdout&#x3D;subprocess.PIPE,stderr&#x3D;subprocess.PIPE,shell&#x3D;True)</span><br><span class="line">    return p.communicate()</span><br><span class="line">#获取厂商信息</span><br><span class="line">def getManufacturer():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep Manufacturer|awk -F&#39;: &#39; &#39;&#123;print $2&#125;&#39;&quot;</span><br><span class="line">    resp&#x3D;shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower().zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;null&quot;</span><br><span class="line">#获取主板sn</span><br><span class="line">def getSN():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep &#39;Serial Number&#39;|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower()[0:4].zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;0000&quot;</span><br><span class="line">#获取设备UUID</span><br><span class="line">def getUUID():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -s system-uuid&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    uuid &#x3D; resp[0].decode(&#39;UTF-8&#39;)</span><br><span class="line">    match &#x3D; re.match(r&#39;(.*?)-(.*?)-(.*?)-(.*?)-(.*?)&#39;, uuid, re.M | re.I)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot; and match:</span><br><span class="line">        return resp[0].strip()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;ERROR&quot;</span><br><span class="line">#获取默认路由网卡mac</span><br><span class="line">def getFirstIpMac():</span><br><span class="line">    resp&#x3D;[]</span><br><span class="line">    eth_cmd&#x3D;&quot;ip route|grep default|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    eth_resp &#x3D; shellutil(eth_cmd)</span><br><span class="line">    if eth_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(0,eth_resp[0].strip().decode(&#39;UTF-8&#39;).lower().zfill(4))</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(0,&quot;lo&quot;.lower().zfill(4))</span><br><span class="line">    mac_cmd&#x3D;&#39;ifconfig eth2|egrep &quot;:[0-9a-z]*:&quot;|awk \&#39;&#123;print $2&#125;\&#39;&#39;</span><br><span class="line">    mac_resp&#x3D;shellutil(mac_cmd)</span><br><span class="line">    if mac_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(1,mac_resp[0].decode(&#39;UTF-8&#39;).replace(&quot;:&quot;,&quot;&quot;)[4:])</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(1,&quot;00000000&quot;)</span><br><span class="line">    return resp</span><br><span class="line">def main():</span><br><span class="line">    uuid_err_pre &#x3D; &quot;00000000&quot;</span><br><span class="line">    uuid&#x3D;getUUID()</span><br><span class="line">    route_eth&#x3D; getFirstIpMac()[0]</span><br><span class="line">    route_eth_mac&#x3D;getFirstIpMac()[1]</span><br><span class="line">    if uuid !&#x3D; &quot;ERROR&quot;:</span><br><span class="line">        print(uuid)</span><br><span class="line">    else:</span><br><span class="line">        fact&#x3D;getManufacturer()[0:4]</span><br><span class="line">        print(&#39;&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;&#39;.format(uuid_err_pre,fact,getSN(),route_eth,route_eth_mac))</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" data-id="ckio8h1ne00006s16e29d7qfd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          openstack-更换mysql地址
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">mariadb-更改用户密码</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/CentOS/" rel="tag">CentOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/CentOS/" style="font-size: 13.33px;">CentOS</a> <a href="/tags/Linux/" style="font-size: 11.67px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 10px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 13.33px;">go</a> <a href="/tags/grpc/" style="font-size: 11.67px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.33px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.33px;">mysql</a> <a href="/tags/openstack/" style="font-size: 16.67px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16.67px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/">mariadb 10.1 yum安装</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/">vim 报错E437</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/">mariadb 常见故障解决</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/">shell-经典常用命令宝典</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">go-Linux源码安装go</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Tonyzhang1989<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
