@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://tonyzhang1989.github.io/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/</loc>
+    <lastmod>2021-01-04</lastmod>
+  </url>
+  <url>
+    <loc>https://tonyzhang1989.github.io/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/</loc>
+    <lastmod>2021-01-04</lastmod>
+  </url>
+  <url>
+    <loc>https://tonyzhang1989.github.io/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/</loc>
+    <lastmod>2021-01-04</lastmod>
+  </url>
+  <url>
+    <loc>https://tonyzhang1989.github.io/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/</loc>
+    <lastmod>2021-01-03</lastmod>
+  </url>
+  <url>
+    <loc>https://tonyzhang1989.github.io/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/</loc>
+    <lastmod>2021-01-03</lastmod>
+  </url>
+  <url>
     <loc>https://tonyzhang1989.github.io/2020/09/29/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</loc>
     <lastmod>2020-12-31</lastmod>
   </url>
@@ -162,10 +182,6 @@
   </url>
   <url>
     <loc>https://tonyzhang1989.github.io/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/</loc>
-    <lastmod>2020-11-25</lastmod>
-  </url>
-  <url>
-    <loc>https://tonyzhang1989.github.io/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/</loc>
     <lastmod>2020-11-25</lastmod>
   </url>
   <url>

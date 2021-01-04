@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>SPF漏掉之DNS记录设置 | 酷客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="漏洞描述SPF 记录是一种域名服务（DNS）记录，用于标识哪些邮件服务器可以代表您的域名发送电子邮件。 SPF 记录的目的是为了防止垃圾邮件发送者在您的域名上，使用伪造的发件人地址发送邮件。 若您未对您的域名添加 SPF 解析记录，则黑客可以仿冒以该域名为后缀的邮箱，来发送垃圾邮件。 修复方案在您的 DNS 服务提供商处，为您的域名添加一条 TXT 记录：  将主机字段（Host）设置为您子域名的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SPF漏掉之DNS记录设置">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/index.html">
+<meta property="og:site_name" content="酷客">
+<meta property="og:description" content="漏洞描述SPF 记录是一种域名服务（DNS）记录，用于标识哪些邮件服务器可以代表您的域名发送电子邮件。 SPF 记录的目的是为了防止垃圾邮件发送者在您的域名上，使用伪造的发件人地址发送邮件。 若您未对您的域名添加 SPF 解析记录，则黑客可以仿冒以该域名为后缀的邮箱，来发送垃圾邮件。 修复方案在您的 DNS 服务提供商处，为您的域名添加一条 TXT 记录：  将主机字段（Host）设置为您子域名的">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-01-04T23:47:16.000Z">
+<meta property="article:modified_time" content="2021-01-04T23:49:05.991Z">
+<meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="漏洞安全">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="酷客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="https://fonts.lug.ustc.edu.cn/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="google-site-verification" content="XkIGmrbqh5J83cILz5wx9StkgaQzjhGx0UfHTxlma00" />
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">酷客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-SPF漏掉之DNS记录设置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" class="article-date">
+  <time datetime="2021-01-04T23:47:16.000Z" itemprop="datePublished">2021-01-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      SPF漏掉之DNS记录设置
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>SPF 记录是一种域名服务（DNS）记录，用于标识哪些邮件服务器可以代表您的域名发送电子邮件。 SPF 记录的目的是为了防止垃圾邮件发送者在您的域名上，使用伪造的发件人地址发送邮件。</p>
+<p>若您未对您的域名添加 SPF 解析记录，则黑客可以仿冒以该域名为后缀的邮箱，来发送垃圾邮件。</p>
+<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><p>在您的 DNS 服务提供商处，为您的域名添加一条 TXT 记录：</p>
+<ul>
+<li><p>将主机字段（Host）设置为您子域名的名称。（例如，如果您的电子邮件地址是<code>contact@mail.example.com</code>，则为 <code>mail</code>。）如果不使用子域名，则将其设为<code>@</code>。</p>
+</li>
+<li><p>用您的 SPF 记录填写 TXT 值字段。例如 <code>v = spf1 a mx include：secureserver.net〜all</code>。</p>
+</li>
+</ul>
+<p>目前已经越来越多的收件人服务器要验证发送者域名的 SPF 设置。也就是发送的 Ip 或服务器必须在 SPF 中有记录才接受邮件。</p>
+<p>首先你必须有自己的真实顶级域名。没有的话是不可能设置SPF 的.<br>SPF 是域名的一条 TXT 解析记录。</p>
+<p><strong>SPF 设置说明：</strong></p>
+<p>\1. 把《速递专家》安装到服务器或VPS上面<br>\2. 域名的解析设置里边添加一条TXT解析</p>
+<p>主机名一般为：@，解析值为：<strong>v=spf1 ip4:你的服务器IP ~all</strong></p>
+<p>例1：假设你的服务器 IP为 123.123.123.123，则 SPF 记录值为</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.123 ~all</li>
+</ol>
+<p>例2：如果有多个IP可以并排书写，例如：</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.123 ip4:123.123.123.124 ~all</li>
+</ol>
+<p>例3：如果有很多连续地址，比如 123.123.123.1 到 123.123.123.255，则可以解析</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.0/24 ~all</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" data-id="ckjj7tvdw0000u816djdfc2ug" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">go-开启go module</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux/" style="font-size: 17.14px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.86px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 15.71px;">go</a> <a href="/tags/grpc/" style="font-size: 11.43px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.86px;">mysql</a> <a href="/tags/openstack/" style="font-size: 15.71px;">openstack</a> <a href="/tags/python/" style="font-size: 14.29px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.71px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">go-gin 常见问题解决</a>
+          </li>
+        
+          <li>
+            <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/">docker-更改默认存储目录 root dir</a>
+          </li>
+        
+          <li>
+            <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Tonyzhang1989<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
