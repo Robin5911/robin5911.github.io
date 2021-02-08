@@ -67,6 +67,319 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-docker-更改默认存储目录-root-dir" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/" class="article-date">
+  <time datetime="2021-01-03T14:30:28.000Z" itemprop="datePublished">2021-01-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/">docker-更改默认存储目录 root dir</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="确保停止docker服务"><a href="#确保停止docker服务" class="headerlink" title="确保停止docker服务"></a>确保停止docker服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemstl stop docker.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、修改-etc-docker-daemon-json文件值，文件不存在需手动创建"><a href="#2、修改-etc-docker-daemon-json文件值，文件不存在需手动创建" class="headerlink" title="2、修改/etc/docker/daemon.json文件值，文件不存在需手动创建"></a>2、修改/etc/docker/daemon.json文件值，文件不存在需手动创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;docker</span><br><span class="line"># vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure>
+
+<p>新增以下信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;data-root&quot;: &quot;&#x2F;data&#x2F;docker&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3、启动docker服务-systemstl-start-docker-service"><a href="#3、启动docker服务-systemstl-start-docker-service" class="headerlink" title="3、启动docker服务# systemstl start docker.service"></a>3、启动docker服务<code># systemstl start docker.service</code></h3><h3 id="4、docker-info-验证Docker-Root-Dir的值-是否已修改为-data-docker"><a href="#4、docker-info-验证Docker-Root-Dir的值-是否已修改为-data-docker" class="headerlink" title="4、docker info 验证Docker Root Dir的值 是否已修改为/data/docker"></a>4、<code>docker info</code> 验证Docker Root Dir的值 是否已修改为<code>/data/docker</code></h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/" data-id="ckjj7tven0003u816dk6kfaap" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker-ce-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2020-12-30T02:15:24.000Z" itemprop="datePublished">2020-12-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>CentosOS 7 安装docker-ce</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># step 1: 安装必要的一些系统工具</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># Step 2: 添加软件源信息</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line"># Step 3: 更新并安装Docker-CE</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"># Step 4: 开启Docker服务</span><br><span class="line">sudo service docker start</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" data-id="ckjatz3nx0003hc1610b80nr4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-influxdb-基本使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2020-12-29T12:23:27.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">influxdb 基本使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>influxdb 基本使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">使用数据库</span><br><span class="line">&gt;show databases;</span><br><span class="line">&gt;use db1;</span><br><span class="line"></span><br><span class="line">查询表</span><br><span class="line">&gt;show measurements;</span><br><span class="line">&gt;select * table1 where endpoint&#x3D;&#39;xxxxxxxxxxxxxxxxxxxxx&#39; LIMIT 10;</span><br><span class="line"></span><br><span class="line">删除表</span><br><span class="line">&gt;drop measurement table1;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="ckjatz3ny0005hc16cfe9cu0w" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-docker-清空container-logs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" class="article-date">
+  <time datetime="2020-12-29T12:18:28.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/">docker-清空container logs</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>docker默认会记录容器从一开始运行到现在为止所有的日志内容，而且目前docker并没有提供日志管理工具对日志内容进行清理。 只能手工进行清理。</p>
+<ol>
+<li><p>找出docker container日志文件所在的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除或者清空日志文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo |sudo tee $(docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" data-id="ckjatz3nw0001hc1615z92kec" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-文学生活" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" class="article-date">
+  <time datetime="2020-12-29T12:07:51.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/">文学生活</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>良言一句暖三冬，恶语伤人六月寒</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" data-id="ckjatz3nz0006hc16acun9ro4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-golang判断当前主机是物理机还是虚拟机" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="article-date">
+  <time datetime="2020-12-29T10:38:04.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/">golang判断当前主机是物理机还是虚拟机</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>windows下命令行获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic path Win32_ComputerSystem get Model</span><br></pre></td></tr></table></figure>
+
+
+
+<p>linux下命令行获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dmidecode | egrep -i &#39;system-product-name|product|domU&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">func isVirtualMachine() (bool, error) &#123;</span><br><span class="line">	model :&#x3D; &quot;&quot;</span><br><span class="line">	var cmd *exec.Cmd</span><br><span class="line"></span><br><span class="line">	if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot; &#123;</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;cmd&quot;, &quot;&#x2F;C&quot;, &quot;wmic path Win32_ComputerSystem get Model&quot;)</span><br><span class="line">	&#125; else &#123; &#x2F;&#x2F; linux</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;&#x2F;bin&#x2F;bash&quot;, &quot;-c&quot;, &quot;dmidecode | egrep -i &#39;system-product-name|product|domU&#39;&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	stdout, err :&#x3D; cmd.Output()</span><br><span class="line"></span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return false, err</span><br><span class="line">	&#125;</span><br><span class="line">	model &#x3D; string(stdout)</span><br><span class="line"></span><br><span class="line">	if strings.Contains(model, &quot;VirtualBox&quot;) || strings.Contains(model, &quot;Virtual Machine&quot;) || strings.Contains(model, &quot;VMware Virtual Platform&quot;) ||</span><br><span class="line">		strings.Contains(model, &quot;KVM&quot;) || strings.Contains(model, &quot;Bochs&quot;) || strings.Contains(model, &quot;HVM domU&quot;) &#123;</span><br><span class="line">		return true, nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return false, nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果使用夜莺n9e需要更改代码</p>
+<p>将 agent.yml中 cate 改为 auto，同时agent/report/report.go 更改如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">func report() error &#123;</span><br><span class="line">	name, err :&#x3D; os.Hostname()</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;cannot get hostname: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fields, err :&#x3D; gatherFields(config.Config.Report.Fields)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;这里考虑区分物理机还是虚拟机, 当类型是auto 时, 判断处理</span><br><span class="line">	var hostCategory string</span><br><span class="line">	if  config.Config.Report.Cate &#x3D;&#x3D; &quot;auto&quot; &#123;</span><br><span class="line">		isVM, _ :&#x3D; utils.IsVirtualMachine()</span><br><span class="line">		if isVM &#123;</span><br><span class="line">			hostCategory &#x3D;&quot;virtual&quot;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			hostCategory &#x3D;&quot;physical&quot;</span><br><span class="line">		&#125;</span><br><span class="line">		logger.Debugf(&quot;ident: %s , category: %s&quot;, ident,hostCategory)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	form :&#x3D; hostRegisterForm&#123;</span><br><span class="line">		SN:      sn,</span><br><span class="line">		IP:      ip,</span><br><span class="line">		Ident:   ident,</span><br><span class="line">		Name:    name,</span><br><span class="line">		Cate:    hostCategory, &#x2F;&#x2F;config.Config.Report.Cate</span><br><span class="line">		UniqKey: config.Config.Report.UniqKey,</span><br><span class="line">		Fields:  fields,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	content :&#x3D; form.SN + form.IP + form.Ident + form.Name + form.Cate + form.UniqKey</span><br><span class="line">	var keys []string</span><br><span class="line">	for key :&#x3D; range fields &#123;</span><br><span class="line">		keys &#x3D; append(keys, key, fields[key])</span><br><span class="line">	&#125;</span><br><span class="line">	sort.Strings(keys)</span><br><span class="line"></span><br><span class="line">	for _, key :&#x3D; range keys &#123;</span><br><span class="line">		content +&#x3D; fields[key]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	form.Digest &#x3D; str.MD5(content)</span><br><span class="line"></span><br><span class="line">	servers :&#x3D; address.GetHTTPAddresses(&quot;ams&quot;)</span><br><span class="line">	for _, i :&#x3D; range rand.Perm(len(servers)) &#123;</span><br><span class="line">		url :&#x3D; fmt.Sprintf(&quot;http:&#x2F;&#x2F;%s&#x2F;v1&#x2F;ams-ce&#x2F;hosts&#x2F;register&quot;, servers[i])</span><br><span class="line"></span><br><span class="line">		logger.Debugf(&quot;report: %+v&quot;, form)</span><br><span class="line"></span><br><span class="line">		var body errRes</span><br><span class="line">		err :&#x3D; httplib.Post(url).JSONBodyQuiet(form).Header(&quot;X-Srv-Token&quot;, config.Config.Report.Token).SetTimeout(time.Second * 5).ToJSON(&amp;body)</span><br><span class="line">		if err !&#x3D; nil &#123;</span><br><span class="line">			js, _ :&#x3D; json.Marshal(form)</span><br><span class="line">			logger.Errorf(&quot;report payload: %s, token: %s&quot;, string(js), config.Config.Report.Token)</span><br><span class="line">			return fmt.Errorf(&quot;curl %s fail: %v&quot;, url, err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		if body.Err !&#x3D; &quot;&quot; &#123;</span><br><span class="line">			return fmt.Errorf(body.Err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		return nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return fmt.Errorf(&quot;all server instance is dead&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" data-id="ckj9wlgd30000b0167l7g2itn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mariadb-10-1-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2020-12-28T02:14:32.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/">mariadb 10.1 yum安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># MariaDB 10.1 CentOS repository list - created 2020-03-09 13:45 UTC</span><br><span class="line"># http:&#x2F;&#x2F;downloads.mariadb.org&#x2F;mariadb&#x2F;repositories&#x2F;</span><br><span class="line">[mariadb]</span><br><span class="line">name &#x3D; MariaDB</span><br><span class="line">baseurl &#x3D; http:&#x2F;&#x2F;yum.mariadb.org&#x2F;10.1&#x2F;centos7-amd64</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;yum.mariadb.org&#x2F;RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<p>After the file is in place, install MariaDB with:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install MariaDB-server MariaDB-client</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" data-id="ckj7xix5t0004u816f8yr9lde" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-vim-报错E437" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" class="article-date">
@@ -200,6 +513,13 @@
 <li><p>清空某目录下所有日志文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#find &#x2F;var&#x2F;log&#x2F;kolla&#x2F; -type f -name &quot;*.log*&quot; -exec cp &#x2F;dev&#x2F;null &#123;&#125; 2&gt;&amp;1 \;  </span><br></pre></td></tr></table></figure>
 
+
+</li>
+</ol>
+<ol start="2">
+<li><p>网卡路由 IP 设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#ip link set eth0 up             # 开启网卡</span><br><span class="line">#ip link set eth0 promisc on      # 开启网卡的混合模式</span><br><span class="line">#ip link set eth0 promisc offi    # 关闭网卡的混个模式</span><br><span class="line">#ip link set eth0 txqueuelen 1200 # 设置网卡队列长度</span><br><span class="line">#ip link set eth0 mtu 1400        # 设置网卡最大传输单元</span><br><span class="line">#ip addr add 192.168.0.1&#x2F;24 dev eth0 # 设置eth0网卡IP地址192.168.0.1</span><br><span class="line">#ip route add 192.168.4.0&#x2F;24  via  192.168.0.254 dev eth0 # 设置192.168.4.0网段的网关为192.168.0.254,数据走eth0接口</span><br></pre></td></tr></table></figure>
+
 </li>
 </ol>
 
@@ -210,368 +530,6 @@
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-Linux源码安装go" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" class="article-date">
-  <time datetime="2020-12-21T01:53:49.000Z" itemprop="datePublished">2020-12-21</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">go-Linux源码安装go</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用go 1.14 版本</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" data-id="ckixwof840000ko160zby3vc2" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubernetes-与kata" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/17/kubernetes-%E4%B8%8Ekata/" class="article-date">
-  <time datetime="2020-12-17T06:51:28.000Z" itemprop="datePublished">2020-12-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/17/kubernetes-%E4%B8%8Ekata/">kubernetes中的kata</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="1-1-OCI-和-CRI-O"><a href="#1-1-OCI-和-CRI-O" class="headerlink" title="1.1 OCI 和 CRI-O"></a>1.1 OCI 和 CRI-O</h2><p>OCI 标准是为了避免容器标准被 Docker 独家挟持而出现的。</p>
-<p>CRI 标准将 Kubelet 与运行时解耦，实现 CRI 标准的容器管理程序都可以用于 Pod 创建。</p>
-<p>CRI-O 插件同时实现了 CRI 和 OCI 标准，可以用于替换 Containerd 直接与 runV 等 OCI runtime 对接。</p>
-<p>如下图：</p>
-<p><a href="/images/kata/cri-oci.jpg"><img src="/images/kata/cri-oci.jpg" alt="img"></a></p>
-<h3 id="1-2-Kata-与-Containerd"><a href="#1-2-Kata-与-Containerd" class="headerlink" title="1.2 Kata 与 Containerd"></a>1.2 Kata 与 Containerd</h3><p>为了兼容 OCI 标准，Docker 将管理运行时的功能从 Docker Daemon 中剥离出来，形成了 Containerd 。在运行容器时，可以不用 Docker 的 runc ，而替换为 kata-runtime 。</p>
-<p><a href=""><img src="/images/kata/runc-kata.jpg" alt="img"></a></p>
-<h3 id="1-3-Kata-与-Kuberntes-的集成"><a href="#1-3-Kata-与-Kuberntes-的集成" class="headerlink" title="1.3 Kata 与 Kuberntes 的集成"></a>1.3 Kata 与 Kuberntes 的集成</h3><p>如下图，Kata 主要替换的是 OCI runtime 层，其他部分与基于 Docker runc 的 Kubernetes 并无差异。同时，基于 kata-runtime 的 Pod 和基于 runc 的 Pod 可以共存于集群之中。</p>
-<p><a href="/images/kata/kata-k8s.jpg"><img src="/images/kata/kata-k8s.jpg" alt="img"></a></p>
-<p>目前的主要问题是，Kata 不支持 host 网络。而 Kubernetes 中，etcd、nodelocaldns、kube-apiserver、kube-scheduler、metrics-server、node-exporter、kube-proxy、calico、kube-controller-manager 等，也就是 Static Pod 和 Daemonset 都会使用 host 网络。所以在安装部署时，依然使用 runc 作为默认的运行时，而将 kata-runtime 作为可选的运行时给特定的负载使用。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/17/kubernetes-%E4%B8%8Ekata/" data-id="ckishnwvi00004s160ehke9zn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-更换mysql地址" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" class="article-date">
-  <time datetime="2020-12-16T04:22:45.000Z" itemprop="datePublished">2020-12-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/">openstack-更换mysql地址</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>因为延时问题，openstack 集群因为需要更换mysql地址，</p>
-<p>原本以为变更完yaml使用 kolla-ansible reconfigure 一下就可以了，但发现仍然有部分连接旧mysql数据库</p>
-<p>排查发现连接的nova_cell0数据库</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#grep mysql -R &#x2F;etc&#x2F;kolla</span><br><span class="line">排查数据库地址都是正确的，为什么仍然有连接旧数据库的地址呢？ 怀疑数据库表数据存在写死的问题~</span><br></pre></td></tr></table></figure>
-
-<p>由于是连接的nova_cell0 ， 想到cell设计为了拆分数据库等，查一下数据库吧？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mysql -h***************</span><br><span class="line">发现nova_api的cell_mappings表中记录的mysql的endpoint，但cell0的仍然是旧的</span><br><span class="line">&gt;update cell_mappings set database_connection&#x3D;&#39;mysql+pymysql:&#x2F;&#x2F;nova:********@10.220.*.*:21200&#x2F;nova_cell0&#39; where id&#x3D;1;</span><br></pre></td></tr></table></figure>
-
-<p>问题解决~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" data-id="ckishnwvo00024s165774eazg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux-python生成主机唯一UUID" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" class="article-date">
-  <time datetime="2020-12-14T04:22:28.000Z" itemprop="datePublished">2020-12-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/">linux-python生成主机唯一UUID</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>主机需要有一个唯一的uuid，对于物理机存在主板uuid获取不到的情况，所以根据相关信息，生成一个</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python</span><br><span class="line">#coding: utf-8</span><br><span class="line">import re</span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">    兼容python2&#x2F;python3</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">#默认shell执行函数</span><br><span class="line">def shellutil(cmd):</span><br><span class="line">    p &#x3D; subprocess.Popen(cmd,stdin&#x3D;subprocess.PIPE,stdout&#x3D;subprocess.PIPE,stderr&#x3D;subprocess.PIPE,shell&#x3D;True)</span><br><span class="line">    return p.communicate()</span><br><span class="line">#获取厂商信息</span><br><span class="line">def getManufacturer():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep Manufacturer|awk -F&#39;: &#39; &#39;&#123;print $2&#125;&#39;&quot;</span><br><span class="line">    resp&#x3D;shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower().zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;null&quot;</span><br><span class="line">#获取主板sn</span><br><span class="line">def getSN():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep &#39;Serial Number&#39;|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower()[0:4].zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;0000&quot;</span><br><span class="line">#获取设备UUID</span><br><span class="line">def getUUID():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -s system-uuid&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    uuid &#x3D; resp[0].decode(&#39;UTF-8&#39;)</span><br><span class="line">    match &#x3D; re.match(r&#39;(.*?)-(.*?)-(.*?)-(.*?)-(.*?)&#39;, uuid, re.M | re.I)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot; and match:</span><br><span class="line">        return resp[0].strip()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;ERROR&quot;</span><br><span class="line">#获取默认路由网卡mac</span><br><span class="line">def getFirstIpMac():</span><br><span class="line">    resp&#x3D;[]</span><br><span class="line">    eth_cmd&#x3D;&quot;ip route|grep default|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    eth_resp &#x3D; shellutil(eth_cmd)</span><br><span class="line">    if eth_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(0,eth_resp[0].strip().decode(&#39;UTF-8&#39;).lower().zfill(4))</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(0,&quot;lo&quot;.lower().zfill(4))</span><br><span class="line">    mac_cmd&#x3D;&#39;ifconfig eth2|egrep &quot;:[0-9a-z]*:&quot;|awk \&#39;&#123;print $2&#125;\&#39;&#39;</span><br><span class="line">    mac_resp&#x3D;shellutil(mac_cmd)</span><br><span class="line">    if mac_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(1,mac_resp[0].decode(&#39;UTF-8&#39;).replace(&quot;:&quot;,&quot;&quot;)[4:])</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(1,&quot;00000000&quot;)</span><br><span class="line">    return resp</span><br><span class="line">def main():</span><br><span class="line">    uuid_err_pre &#x3D; &quot;00000000&quot;</span><br><span class="line">    uuid&#x3D;getUUID()</span><br><span class="line">    route_eth&#x3D; getFirstIpMac()[0]</span><br><span class="line">    route_eth_mac&#x3D;getFirstIpMac()[1]</span><br><span class="line">    if uuid !&#x3D; &quot;ERROR&quot;:</span><br><span class="line">        print(uuid)</span><br><span class="line">    else:</span><br><span class="line">        fact&#x3D;getManufacturer()[0:4]</span><br><span class="line">        print(&#39;&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;&#39;.format(uuid_err_pre,fact,getSN(),route_eth,route_eth_mac))</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" data-id="ckio8h1ne00006s16e29d7qfd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mariadb-更改用户密码" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" class="article-date">
-  <time datetime="2020-12-08T02:32:41.000Z" itemprop="datePublished">2020-12-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/">mariadb-更改用户密码</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通过yum安装的MariaDB直接就能登陆，默认密码为空！需要修改root密码</p>
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> mysql;</span><br><span class="line"><span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">password</span>(<span class="string">&#x27;new password&#x27;</span>) <span class="keyword">where</span> <span class="keyword">user</span> = <span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br><span class="line">exit;1234</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">password</span> <span class="keyword">for</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>=<span class="keyword">password</span>(<span class="string">&#x27;new password&#x27;</span>);</span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" data-id="ckio8h1ng00016s16c2336vnf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-kvm-qemu-kvm以及libvirt之间的关系" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" class="article-date">
-  <time datetime="2020-12-04T04:28:19.000Z" itemprop="datePublished">2020-12-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">openstack, kvm, qemu-kvm以及libvirt之间的关系</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>KVM是最底层的hypervisor，它是用来模拟CPU的运行，它缺少了对network和周边I/O的支持，所以我们是没法直接用它的。</p>
-<p>QEMU-KVM就是一个完整的模拟器，它是构建基于KVM上面的，它提供了完整的网络和I/O支持。</p>
-<p>Openstack不会直接控制qemu-kvm，它会用一个叫libvirt的库去间接控制qemu-kvm。libvirt提供了跨VM平台的功能，它可以控制除了QEMU之外的模拟器，包括vmware, virtualbox， xen等等。</p>
-<p>所以为了openstack的跨VM性，所以openstack只会用libvirt而不直接用qemu-kvm。libvirt还提供了一些高级的功能，例如pool/vol管理。</p>
-<p><img src="/images/openstack_kvm_qemu_libvirt.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" data-id="ckiciu7av0000bg166jy6360f" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-核心组件kubelet-讲解" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" class="article-date">
-  <time datetime="2020-12-03T08:10:10.000Z" itemprop="datePublished">2020-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/">核心组件kubelet 讲解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一-kubelet概述"><a href="#一-kubelet概述" class="headerlink" title="一    kubelet概述"></a>一    kubelet概述</h2><h3 id="1-1-kubelet作用"><a href="#1-1-kubelet作用" class="headerlink" title="1.1    kubelet作用"></a>1.1    kubelet作用</h3><p>在Kubernetes集群中，在每个Node（又称Minion）上都会启动一个kubelet服务进程。该进程用于处理Master下发到本节点的任务，管理Pod及Pod中的容器。每个kubelet进程都会在API Server上注册节点自身的信息，定期向Master汇报节点资源的使用情况，并通过cAdvisor监控容器和节点资源。</p>
-<h2 id="二-节点管理"><a href="#二-节点管理" class="headerlink" title="二    节点管理"></a>二    节点管理</h2><p>节点通过设置kubelet的启动参数“–register-node”，来决定是否向API Server注册自己。如果该参数的值为true，那么kubelet将试着通过API Server注册自己。在自注册时，kubelet启动时还包含下列参数。</p>
-<ul>
-<li>–api-servers：API Server的位置。</li>
-<li>–kubeconfig：kubeconfig文件，用于访问API Server的安全配置文件。</li>
-<li>–cloud-provider：云服务商（IaaS）地址，仅用于公有云环境。</li>
-</ul>
-<p><strong>提示：通常可能每个kubelet都被授予创建和修改任何节点的权限。生产环境中，建议kubelet的权限进行限制，仅允许它修改和创建所在节点的权限。</strong></p>
-<p>如果在集群运行过程中遇到集群资源不足的情况，用户就很容易通过添加机器及运用kubelet的自注册模式来实现扩容。</p>
-<p>在某些情况下，Kubernetes集群中的某些kubelet没有选择自注册模式，用户需要自己去配置Node的资源信息，同时告知Node上Kubelet API Server的位置，需要手动创建和修改节点信息。</p>
-<p>如果需要手动创建节点信息，则通过设置kubelet的启动参数“–registernode=false”即可关闭自注册模式。</p>
-<p>kubelet在启动时通过API Server注册节点信息，并定时向API Server发送节点的新消息，API Server在接收到这些信息后，将这些信息写入etcd。通过kubelet的启动参数“–node-status-update-frequency”设置kubelet每隔多长时间向API Server报告节点状态，默认为10s。</p>
-<h2 id="三-Pod管理"><a href="#三-Pod管理" class="headerlink" title="三    Pod管理"></a>三    Pod管理</h2><p>kubelet通过以下几种方式获取自身Node上要运行的Pod清单。</p>
-<ol>
-<li>文件：kubelet启动参数“–config”指定的配置文件目录下的文件（默认目录为“/etc/kubernetes/manifests/”）。通过–file-checkfrequency设置检查该文件目录的时间间隔，默认为20s。</li>
-<li>HTTP端点（URL）：通过“–manifest-url”参数设置。通过–http-check-frequency设置检查该HTTP端点数据的时间间隔，默认为20s。</li>
-<li>API Server：kubelet通过API Server监听etcd目录，同步Pod列表。</li>
-</ol>
-<p>所有以非API Server方式创建的Pod都叫作Static Pod。kubelet将Static Pod的状态汇报给API Server，API Server为该Static Pod创建一个Mirror Pod和其相匹配。Mirror Pod的状态将真实反映Static Pod的状态。当Static Pod被删除时，与之相对应的Mirror Pod也会被删除。</p>
-<p>对于通过API Server获得Pod清单的方式，kubelet会使用API Server Client的Watch加List的方式监听“/registry/nodes/$”当前节点的名称和“/registry/pods”目录，将获取的信息同步到本地缓存中。</p>
-<p>kubelet监听etcd，所有针对Pod的操作都会被kubelet监听。如果发现有新的绑定到本节点的Pod，则按照Pod清单的要求创建该Pod。如果发现本地的Pod被修改，则kubelet会做出相应的修改，比如在删除Pod中的某个容器时，会通过Docker Client删除该容器。</p>
-<p>如果发现删除本节点的Pod，则删除相应的Pod，并通过Docker Client删除Pod中的容器。</p>
-<p>kubelet读取所监听的信息，如果是创建和修改Pod任务，则做如下处理：</p>
-<ol>
-<li>为该Pod创建一个数据目录。</li>
-<li>从API Server读取该Pod清单。</li>
-<li>为该Pod挂载外部卷（ExternalVolume）。</li>
-<li>下载Pod用到的Secret。</li>
-<li>检查已经运行在节点上的Pod，如果该Pod没有容器或Pause容器（“kubernetes/pause”镜像创建的容器）没有启动，则先停止Pod里所有容器的进程。如果在Pod中有需要删除的容器，则删除这些容器。</li>
-<li>用“kubernetes/pause”镜像为每个Pod都创建一个容器。该Pause容器用于接管Pod中所有其他容器的网络。每创建一个新的Pod，kubelet都会先创建一个Pause容器，然后创建其他容器。“kubernetes/pause”镜像大概有200KB，是个非常小的容器镜像。</li>
-<li>为Pod中的每个容器做如下处理：<ul>
-<li>为容器计算一个Hash值，然后用容器的名称去查询对应Docker容器的Hash值。若查找到容器，且二者的Hash值不同，则停止Docker中容器的进程，并停止与之关联的Pause容器的进程；若二者相同，则不做任何处理。</li>
-<li>如果容器被终止了，且容器没有指定的restartPolicy（重启策略），则不做任何处理。</li>
-<li>调用Docker Client下载容器镜像，调用Docker Client运行容器。</li>
-</ul>
-</li>
-</ol>
-<h2 id="四-容器健康检查"><a href="#四-容器健康检查" class="headerlink" title="四    容器健康检查"></a>四    容器健康检查</h2><h3 id="4-1-健康检查方法"><a href="#4-1-健康检查方法" class="headerlink" title="4.1    健康检查方法"></a>4.1    健康检查方法</h3><p>Pod通过两类探针来检查容器的健康状态,LivenessProbe探针和ReadinessProbe探针。</p>
-<h3 id="4-2-LivenessProbe探针"><a href="#4-2-LivenessProbe探针" class="headerlink" title="4.2    LivenessProbe探针"></a>4.2    LivenessProbe探针</h3><p>LivenessProbe探针，用于判断容器是否健康并反馈给kubelet。如果LivenessProbe探针探测到容器不健康，则kubelet将删除该容器，并根据容器的重启策略做相应的处理。如果一个容器不包含LivenessProbe探针，那么kubelet认为该容器的LivenessProbe探针返回的值永远是Success。</p>
-<p>kubelet定期调用容器中的LivenessProbe探针来诊断容器的健康状况。LivenessProbe包含以下3种实现方式：</p>
-<ol>
-<li>ExecAction：在容器内部执行一个命令，如果该命令的退出状态码为0，则表明容器健康。</li>
-<li>TCPSocketAction：通过容器的IP地址和端口号执行TCP检查，如果端口能被访问，则表明容器健康。</li>
-<li>HTTPGetAction：通过容器的IP地址和端口号及路径调用HTTPGet方法，如果响应的状态码大于等于200且小于等于400，则认为容器状态健康。</li>
-</ol>
-<p>LivenessProbe探针被包含在Pod定义的spec.containers.{某个容器}中。</p>
-<p>示例1：HTTP检查方式</p>
-<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       httpGet:</span><br><span class="line"><span class="number">15</span>         path: /index.html</span><br><span class="line"><span class="number">16</span>         port: <span class="number">8080</span></span><br><span class="line"><span class="number">17</span>         httpHeaders:</span><br><span class="line"><span class="number">18</span>         - name: X-Custom-Header</span><br><span class="line"><span class="number">19</span>           value: Awesome</span><br><span class="line"><span class="number">20</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">21</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">22 #kubelet发送一个HTTP请求到本地主机、端口及指定的路径，来检查容器的健康状态。</span><br></pre></td></tr></table></figure>
-
-<p>示例2：运行一个具体的命令。</p>
-<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       exec:</span><br><span class="line"><span class="number">15</span>         command:</span><br><span class="line"><span class="number">16</span>           - cat</span><br><span class="line"><span class="number">17</span>           - <span class="regexp">/tmp/</span>health</span><br><span class="line"><span class="number">18</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">19</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">20 #kubelet在容器中执行“cat /tmp/health”命令，如果该命令返回的值为0，则表明容器处于健康状态，否则表明容器处于不健康状态。</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-3-ReadinessProbe探针"><a href="#4-3-ReadinessProbe探针" class="headerlink" title="4.3    ReadinessProbe探针"></a>4.3    ReadinessProbe探针</h3><p>另一类是ReadinessProbe探针，用于判断容器是否启动完成，且准备接收请求。如果ReadinessProbe探针检测到容器启动失败，则Pod的状态将被修改，Endpoint Controller将从Service的Endpoint中删除包含该容器所在Pod的IP地址的Endpoint条目。</p>
-<h2 id="五-cAdvisor资源监控"><a href="#五-cAdvisor资源监控" class="headerlink" title="五    cAdvisor资源监控"></a>五    cAdvisor资源监控</h2><h3 id="5-1-cAdvisor概览"><a href="#5-1-cAdvisor概览" class="headerlink" title="5.1    cAdvisor概览"></a>5.1    cAdvisor概览</h3><p>在Kubernetes集群中，应用程序生命周期内的信息可以在不同的级别上进行监测，如：容器、Pod、Service和整个集群。</p>
-<p>Kubernetes尽可能提供用户详细的各个级别的资源使用信息，从而能深入地了解应用的执行情况，并找到应用中可能的瓶颈。</p>
-<p>cAdvisor是一个开源的分析容器资源使用率和性能特性的代理工具，它是因为容器而产生的，因此也支持Docker容器。在Kubernetes项目中，cAdvisor被集成到Kubernetes代码中，kubelet则通过cAdvisor获取其所在节点及容器的数据</p>
-<h3 id="5-2-cAdvisor原理及作用"><a href="#5-2-cAdvisor原理及作用" class="headerlink" title="5.2    cAdvisor原理及作用"></a>5.2    cAdvisor原理及作用</h3><p>cAdvisor自动查找所有在其所在Node上的容器，自动采集CPU、内存、文件系统和网络使用的统计信息。通常cAdvisor通过它所在Node的4194端口暴露一个简单的UI。</p>
-<p>kubelet作为连接Kubernetes Master和各Node之间的桥梁，管理运行在Node上的Pod和容器。kubelet将每个Pod都转换成它的成员容器，同时从cAdvisor获取单独的容器使用统计信息，然后通过该REST API暴露这些聚合后的Pod资源使用的统计信息。</p>
-<p>cAdvisor只能提供2～3min的监控数据，对性能数据也没有持久化，因此在Kubernetes早期版本中需要依靠Heapster来实现集群范围内全部容器性能指标的采集和查询功能。</p>
-<p>从Kubernetes1.8版本开始，性能指标数据的查询接口升级为标准的Metrics API，后端服务则升级为全新的Metrics Server。因此，cAdvisor在4194端口提供的UI和API服务从Kubernetes1.10版本开始进入弃用流程，并于1.12版本完全关闭。</p>
-<p>若需要重新启用该服务，可手动部署一个DaemonSet在每个Node上启动一个cAdvisor来提供UI和API，参考：<a target="_blank" rel="noopener" href="https://github.com/google/cadvisor%E3%80%82">https://github.com/google/cadvisor。</a></p>
-<p>在新的Kubernetes监控体系中，Metrics Server用于提供CoreMetrics（核心指标），包括Node和Pod的CPU和内存使用数据。其他CustomMetrics（自定义指标）则由第三方组件（如Prometheus）采集和存储。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" data-id="cki8ta3dx00033w16eu5912fy" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
 
     </footer>
   </div>
@@ -608,7 +566,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 17.14px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.86px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 15.71px;">go</a> <a href="/tags/grpc/" style="font-size: 11.43px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.86px;">mysql</a> <a href="/tags/openstack/" style="font-size: 15.71px;">openstack</a> <a href="/tags/python/" style="font-size: 14.29px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.71px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -617,7 +575,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -630,23 +588,23 @@
       <ul>
         
           <li>
-            <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
+            <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
           </li>
         
           <li>
-            <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
+            <a href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">go-经典排序算法</a>
           </li>
         
           <li>
-            <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">go-gin 常见问题解决</a>
+            <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
           </li>
         
           <li>
-            <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/">docker-更改默认存储目录 root dir</a>
+            <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
           </li>
         
           <li>
-            <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
+            <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
           </li>
         
       </ul>

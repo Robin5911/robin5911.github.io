@@ -67,6 +67,550 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-ovs-ovn-虚拟化学习整理-二" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/" class="article-date">
+  <time datetime="2020-12-02T04:31:34.000Z" itemprop="datePublished">2020-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/">ovs/ovn 虚拟化学习整理(二)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>基于CentOS 7 x86_64</p>
+<table>
+<thead>
+<tr>
+<th>主机</th>
+<th>角色</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.175.130.248</td>
+<td>Central</td>
+<td>目前仅支持单节点</td>
+</tr>
+<tr>
+<td>10.175.132.47</td>
+<td>Node1</td>
+<td></td>
+</tr>
+<tr>
+<td>10.145.69.40</td>
+<td>Node2</td>
+<td></td>
+</tr>
+</tbody></table>
+<h4 id="一、-系统初始化"><a href="#一、-系统初始化" class="headerlink" title="一、 系统初始化"></a>一、 系统初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">配置repo源</span><br><span class="line">#vim &#x2F;etc&#x2F;yum.repos.d&#x2F;stein.repo</span><br><span class="line">[openstack-stein]</span><br><span class="line">name&#x3D;OpenStack Stein Repository</span><br><span class="line">#baseurl&#x3D;http:&#x2F;&#x2F;mirror.centos.org&#x2F;centos&#x2F;7&#x2F;cloud&#x2F;$basearch&#x2F;openstack-stein&#x2F;</span><br><span class="line">mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;7&amp;arch&#x3D;$basearch&amp;repo&#x3D;cloud-openstack-stein</span><br><span class="line">gpgcheck&#x3D;0</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-CentOS-SIG-Cloud</span><br><span class="line">关闭防火墙&#x2F;selinux</span><br><span class="line">#systemctl stop firewalld</span><br><span class="line">#systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+
+<p>|<br>|<br>|</p>
+<h3 id="二、部署服务"><a href="#二、部署服务" class="headerlink" title="二、部署服务"></a>二、部署服务</h3><h5 id="Central-节点"><a href="#Central-节点" class="headerlink" title="Central 节点"></a>Central 节点</h5><p># yum install -y openvswitch-ovn-central.x86_64 openvswitch-ovn-host.x86_64</p>
+<p># systemctl enable ovn-northd openvswitch ovn-controller</p>
+<p># systemctl start ovn-northd ovn-controller </p>
+<h5 id="Node节点"><a href="#Node节点" class="headerlink" title="Node节点"></a>Node节点</h5><p># yum install -y openvswitch.x86_64 openvswitch-ovn-host.x86_64 </p>
+<p>#systemctl enable openvswitch ovn-controller </p>
+<p>#systemctl start ovn-controller </p>
+<h3 id="三、-配置OVN"><a href="#三、-配置OVN" class="headerlink" title="三、 配置OVN"></a>三、 配置OVN</h3><p>配置ovs与ovn相连接</p>
+<h5 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.130.248</span><br><span class="line">#ovn-nbctl set-connection ptcp:6641:$Centralip</span><br><span class="line">#ovn-sbctl set-connection ptcp:6642:$Centralip</span><br><span class="line">#netstat -ntlp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn-01.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve,vxlan</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$Centralip</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="node-1-2-节点"><a href="#node-1-2-节点" class="headerlink" title="node 1/2 节点"></a>node 1/2 节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.130.248</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve,vxlan</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$MY_IP_ADDRESS</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-2.png"></p>
+<p><img src="/images/ovn/ovn-3.png"></p>
+<p>所有服务器重启一下</p>
+<p>#reboot</p>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">net_mlx5: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">net_mlx5: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx5)</span><br><span class="line">PMD: net_mlx4: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">PMD: net_mlx4: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx4)</span><br><span class="line">解决：#yum install libibverbs -y</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/" data-id="cki7431330003ko162p2jb0hf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-ovs-ovn-虚拟化学习整理-一" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/" class="article-date">
+  <time datetime="2020-12-02T04:30:45.000Z" itemprop="datePublished">2020-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/">ovs/ovn 虚拟化学习整理(一)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>OVN是由开发出OVS的那群出色的程序员们的另一个优秀的作品。这个网络虚拟化项目从2015初宣告启动， 到不久前才发布第一个正式版本OVN 2.6 。在这篇文章中，我会配置一个简单示例：在三个主机之间配置一个layer-2 overlay 网络。<br>首先讲一下OVN工作机制中的2种角色：</p>
+<ul>
+<li>OVN Central ——目前只能有一台主机承担这个角色。该主机将成为和外部资源（比如云管理平台）集成的API中心节点。中心节点运行着OVN 北向数据库和OVN南向数据库。OVN北向数据库，用于描述上层的逻辑网络组件，比如逻辑交换机/逻辑端口。南向数据库，其将北向数据库的逻辑网络数据格式转换为物理网络数据格式并进行存储。</li>
+<li>OVN Host ——所有提供虚拟机或虚拟网络的节点。OVN Host 运行着 “chassis controller” ，它上连OVN南向数据库并作为其记录的物理网络信息授权来源，下接OVS 并成为其openflow 控制器。</li>
+</ul>
+<h3 id="OVN的实现了哪些功能？拥有哪些特性？"><a href="#OVN的实现了哪些功能？拥有哪些特性？" class="headerlink" title="OVN的实现了哪些功能？拥有哪些特性？"></a>OVN的实现了哪些功能？拥有哪些特性？</h3><p>Logical switches：逻辑交换机，用来做二层转发。<br>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。<br>Logical routers：逻辑路由器，分布式的，用来做三层转发。<br>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。<br>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
+<p>OVN网关发布的时候，还存在着某些限制：</p>
+<ul>
+<li><p>网关路由器仅可以经由逻辑交换机连接到其他路由器，而DLR已经可以经由一条链路直连路由器。社区正在进行相关工作来解决掉这个限制。</p>
+</li>
+<li><p>OVN支持多个网关路由器绑定到环境中，这意味着可以逻辑空间执行入站ECMP路由。然而，OVN当前不支持网关路由器之间的出站ECMP。这个特性也同样是OVN未来需要加强的。</p>
+</li>
+</ul>
+<p>基于OVN的neutron网络架构如下</p>
+<p> <img src="https://www.debugger.wiki/sourceimg/190706/cc51795bdcf29c2b9ff4e8e37d0f3826.jpg" alt="技术图片"></p>
+<h2 id="ovs-ovn-学习资料"><a href="#ovs-ovn-学习资料" class="headerlink" title="[ovs ovn 学习资料]"></a>[ovs ovn 学习资料]</h2><p><strong>0、A Primer on OVN</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.spinhirne.com/2016/09/a-primer-on-ovn.html">http://blog.spinhirne.com/2016/09/a-primer-on-ovn.html</a></p>
+<p><strong>1、Open Virtual Networking With Docker</strong></p>
+<p><a target="_blank" rel="noopener" href="http://docs.openvswitch.org/en/latest/howto/docker/">http://docs.openvswitch.org/en/latest/howto/docker/</a></p>
+<p><strong>2、Multi-Host Docker network</strong></p>
+<p><a target="_blank" rel="noopener" href="https://wiredcraft.com/blog/multi-host-docker-network/">https://wiredcraft.com/blog/multi-host-docker-network/</a></p>
+<p><strong>3、ovn-namespace</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shettyg/ovn-namespace">https://github.com/shettyg/ovn-namespace</a></p>
+<p> <strong>4、OVN简介PPT</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/slides/OVN_Barcelona.pdf">http://openvswitch.org/support/slides/OVN_Barcelona.pdf</a></p>
+<p><strong>5、What is Open Virtual Network (OVN)? How It Works （包含了各种关于网络虚拟化的介绍的连接）</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/">https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/</a></p>
+<p><strong>6、Open vSwitch 相关论文</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/papers/">http://openvswitch.org/support/papers/</a></p>
+<p><strong>７、OVN, Bringing Native Virtual Networking to OVS</strong></p>
+<p><a target="_blank" rel="noopener" href="https://networkheresy.com/category/open-vswitch/">https://networkheresy.com/category/open-vswitch/</a></p>
+<p><strong>8、基于Open vSwitch的OpenFlow实践</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.chenshake.com/based-on-openflow-practices-open-vswitch/">http://www.chenshake.com/based-on-openflow-practices-open-vswitch/</a></p>
+<p><strong>9、ovs源码分析</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/column/details/openvswitch.html">http://blog.csdn.net/column/details/openvswitch.html</a></p>
+<p><strong>10、ovs orbit</strong></p>
+<p><a target="_blank" rel="noopener" href="https://ovsorbit.org/">https://ovsorbit.org/</a></p>
+<p><strong>11、introduction to ovn</strong></p>
+<p><a target="_blank" rel="noopener" href="http://galsagie.github.io/2015/04/20/ovn-1/">http://galsagie.github.io/2015/04/20/ovn-1/</a></p>
+<p><strong>12、Russell Bryant的博客</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/category/ovs/">https://blog.russellbryant.net/category/ovs/</a></p>
+<p><strong>13、ovn architecture</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/dist-docs/ovn-architecture.7.html">http://openvswitch.org/support/dist-docs/ovn-architecture.7.html</a></p>
+<p><strong>14、OVN Logical Flows and ovn-trace</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/">https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/</a></p>
+<p><strong>15、Justin Pettit的个人主页（其中包含了ovs, ovn相关的各种论文，博客和视频）</strong> </p>
+<p><a target="_blank" rel="noopener" href="http://yuba.stanford.edu/~jpettit/">http://yuba.stanford.edu/~jpettit/</a></p>
+<p><strong>16、ovs 2.5.0源码分析</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/one_clouder/article/category/6359278/1">http://blog.csdn.net/one_clouder/article/category/6359278/1</a></p>
+<p><strong>17、netwoking-ovn - OpenStack Neutron integration with OVN</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.openstack.org/networking-ovn/latest/">https://docs.openstack.org/networking-ovn/latest/</a></p>
+<p><strong>18、OVN路由功能详解</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html">https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html</a></p>
+<p><strong>19、OVS博客</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/popsuper1982/p/5848879.html">http://www.cnblogs.com/popsuper1982/p/5848879.html</a></p>
+<p><strong>20、OVSDB RFC</strong></p>
+<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc7047/">https://datatracker.ietf.org/doc/rfc7047/</a></p>
+<p><strong>21、openstack底层技术-openflow在ovs中的应用</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/">http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/" data-id="cki7431330002ko16ax9ldlep" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-初试kubernetes集群集成Kata" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" class="article-date">
+  <time datetime="2020-12-02T01:58:24.000Z" itemprop="datePublished">2020-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/">初试kubernetes集群集成Kata</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="一、部署kubernetes"><a href="#一、部署kubernetes" class="headerlink" title="一、部署kubernetes"></a>一、部署kubernetes</h5><p>使用 <a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 部署生产kubernetes集群 , CNI插件使用了kube-ovn</p>
+<p>下载镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">images&#x3D;(</span><br><span class="line">  kube-apiserver:v1.18.10</span><br><span class="line">  kube-controller-manager:v1.18.10</span><br><span class="line">  kube-scheduler:v1.18.10</span><br><span class="line">  kube-proxy:v1.18.10</span><br><span class="line">  pause:3.2</span><br><span class="line">  k8s-dns-node-cache:1.15.13</span><br><span class="line">  cluster-proportional-autoscaler-amd64:1.8.1</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">    docker pull registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">    docker tag registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName k8s.gcr.io&#x2F;$imageName</span><br><span class="line">    docker rmi registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<p>其他步骤略</p>
+<h5 id="二、安装kata"><a href="#二、安装kata" class="headerlink" title="二、安装kata"></a>二、安装kata</h5><h5 id="2-1-安装kata命令行工具"><a href="#2-1-安装kata命令行工具" class="headerlink" title="2.1 安装kata命令行工具"></a>2.1 安装kata命令行工具</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;os-release</span><br><span class="line">yum -y install yum-utils</span><br><span class="line">ARCH&#x3D;$(arch)</span><br><span class="line">BRANCH&#x3D;&quot;$&#123;BRANCH:-master&#125;&quot;</span><br><span class="line">yum-config-manager --add-repo &quot;http:&#x2F;&#x2F;download.opensuse.org&#x2F;repositories&#x2F;home:&#x2F;katacontainers:&#x2F;releases:&#x2F;$&#123;ARCH&#125;:&#x2F;$&#123;BRANCH&#125;&#x2F;CentOS_$&#123;VERSION_ID&#125;&#x2F;home:katacontainers:releases:$&#123;ARCH&#125;:$&#123;BRANCH&#125;.repo&quot;</span><br><span class="line">(没发现上面版本，我使用的http:&#x2F;&#x2F;download.opensuse.org&#x2F;repositories&#x2F;home:&#x2F;katacontainers:&#x2F;releases:&#x2F;x86_64:&#x2F;stable-1.10&#x2F;CentOS_7&#x2F;home:katacontainers:releases:x86_64:stable-1.10.repo)</span><br><span class="line">yum -y install kata-runtime kata-proxy kata-shim</span><br></pre></td></tr></table></figure>
+
+<h5 id="2-2-检测硬件是否支持-Kata"><a href="#2-2-检测硬件是否支持-Kata" class="headerlink" title="2.2 检测硬件是否支持 Kata"></a>2.2 检测硬件是否支持 Kata</h5><p>Kata 对硬件的要求需要满足以下任意条件：</p>
+<ul>
+<li>Intel VT-x technology.</li>
+<li>ARM Hyp mode (virtualization extension).</li>
+<li>IBM Power Systems.</li>
+<li>IBM Z mainframes.</li>
+</ul>
+<p>安装完 <code>kata-runtime</code> 之后，执行检测命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#kata-runtime kata-check</span><br><span class="line"></span><br><span class="line">System is capable of running Kata Containers</span><br><span class="line">System can currently create Kata Containers</span><br></pre></td></tr></table></figure>
+
+<p>这里的输出表示，运行环境支持 Kata Containers 。</p>
+<h5 id="2-3-配置并测试docker"><a href="#2-3-配置并测试docker" class="headerlink" title="2.3 配置并测试docker"></a>2.3 配置并测试docker</h5><ul>
+<li>配置 kata-runtime 参数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure>
+
+<p>新增如下内容，默认依然使用 runc，但是通过指定 runtime 参数可以使用 Kata 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;runtimes&quot;: &#123;</span><br><span class="line">    &quot;kata-runtime&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启 Docker 服务</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>测试 Kata 是否安装成功</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run --runtime&#x3D;kata-runtime  busybox uname -a</span><br><span class="line"></span><br><span class="line">Linux 249a23f53475 5.4.60-65.1.container #1 SMP Thu Jan 1 00:00:00 UTC 1970 x86_64 GNU&#x2F;Linux</span><br><span class="line">docker run busybox uname -a</span><br><span class="line"></span><br><span class="line">Linux b4812ed8990c 3.10.0-1127.el7.x86_64 #1 SMP Tue Mar 31 23:36:51 UTC 2020 x86_64 GNU&#x2F;Linux</span><br></pre></td></tr></table></figure>
+
+<p>kata-runtime 容器使用的内核版本与宿主机不同，这就说明 kata-runtime 配置成功了。</p>
+<p>![/images/kata/image-20201217151727250.png)</p>
+<h5 id="2-4-配置kubelet"><a href="#2-4-配置kubelet" class="headerlink" title="2.4 配置kubelet"></a>2.4 配置kubelet</h5><ul>
+<li>新增配置文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;</span><br><span class="line">cat &lt;&lt; EOF | sudo tee  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;0-containerd.conf</span><br><span class="line">[Service]                                                 </span><br><span class="line">Environment&#x3D;&quot;KUBELET_EXTRA_ARGS&#x3D;--container-runtime&#x3D;remote --runtime-request-timeout&#x3D;15m --container-runtime-endpoint&#x3D;unix:&#x2F;&#x2F;&#x2F;run&#x2F;containerd&#x2F;containerd.sock&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启生效</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
+
+<p>这里使用的是 containerd 。如果使用 CRI-O ，配置会不一样。</p>
+<h5 id="2-5-给-Kubernetes-提供-kata-runtime"><a href="#2-5-给-Kubernetes-提供-kata-runtime" class="headerlink" title="2.5 给 Kubernetes 提供 kata-runtime"></a>2.5 给 Kubernetes 提供 kata-runtime</h5><p>通过直接创建 Container 可以使用 kata-runtime 。但在集群中，我们该如何告诉 Kubernetes 哪些负载需要使用 kata-runtime 呢？根据不同的版本，Kata 提供了不同的方式。</p>
+<p>首先都需要生成 containerd 配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">containerd config default &gt; &#x2F;etc&#x2F;containerd&#x2F;config.toml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>RuntimeClass 的方式</li>
+</ul>
+<p>这种方式对相关组件版本有要求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Kata Containers v1.5.0 or above (including 1.5.0-rc)</span><br><span class="line">Containerd v1.2.0 or above</span><br><span class="line">Kubernetes v1.12.0 or above</span><br></pre></td></tr></table></figure>
+
+<p>我所使用的是</p>
+<p>kubernetes: 1.18.10</p>
+<p>containerd: 1.2.13</p>
+<p>kata : 1.10</p>
+<p>在 config.toml 配置文件中，“no_pivot = false”下增加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.runtimes]</span><br><span class="line">  [plugins.cri.containerd.runtimes.runc]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.runc.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;runc&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br><span class="line">  [plugins.cri.containerd.runtimes.kata]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.kata.v2&quot;</span><br><span class="line">  [plugins.cri.containerd.runtimes.katacli]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.katacli.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>[plugins.cri.containerd.runtimes.kata]</code> 中的 kata 将被作为 RuntimeClass handler 关键字。</p>
+<ul>
+<li>使用 <code>untrusted_workload_runtime</code> 的方式</li>
+</ul>
+<p>对于不符合上述版本要求的环境，可以使用之前的方式。</p>
+<p>在配置文件中新增如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.untrusted_workload_runtime]</span><br><span class="line">  runtime_type &#x3D; &quot;io.containerd.runtime.v1.linux&quot;</span><br><span class="line">  runtime_engine &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br></pre></td></tr></table></figure>
+
+<p>最后，都需要重启 containerd。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart containerd</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/kata/2020-12-17_18h31_55.png"></p>
+<h4 id="三、使用kata-runtime"><a href="#三、使用kata-runtime" class="headerlink" title="三、使用kata-runtime"></a>三、使用kata-runtime</h4><h5 id="3-1-RuntimeClass-方式"><a href="#3-1-RuntimeClass-方式" class="headerlink" title="3.1 RuntimeClass 方式"></a>3.1 RuntimeClass 方式</h5><ul>
+<li>创建 RuntimeClass</li>
+</ul>
+<p>kata-runtime.yaml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kind: RuntimeClass</span><br><span class="line">apiVersion: node.k8s.io&#x2F;v1beta1</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-containers</span><br><span class="line">handler: kata</span><br></pre></td></tr></table></figure>
+
+<p>#kubectl create -f kata-runtime.yaml</p>
+<p>也可以为 runc 创建 RuntimeClass</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl get runtimeclass</span><br><span class="line"></span><br><span class="line">NAME              CREATED AT</span><br><span class="line">kata-containers   2020-08-30</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建负载 kata-pod.yaml</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-nginx</span><br><span class="line">spec:</span><br><span class="line">  runtimeClassName: kata-containers</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>#kubectl apply -f kata-pod.yaml</p>
+<ul>
+<li>查看负载</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kata-runtime list</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" data-id="cki74313b0005ko1627ve1cy7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-证书过期之kubeadm重新生成s证书" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" class="article-date">
+  <time datetime="2020-11-30T11:44:28.000Z" itemprop="datePublished">2020-11-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/">证书过期之kubeadm重新生成s证书</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="k8s证书过期之kubeadm重新生成证书"><a href="#k8s证书过期之kubeadm重新生成证书" class="headerlink" title="k8s证书过期之kubeadm重新生成证书"></a>k8s证书过期之kubeadm重新生成证书</h5><p>重新生成证书<br>检查过期<br>新版本(1.15+)：kubeadm alpha certs check-expiration<br>或<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>证书备份<br>cp -rp /etc/kubernetes /etc/kubernetes.bak<br>移除过期证书<br>rm -f /etc/kubernetes/pki/apiserver*<br>rm -f /etc/kubernetes/pki/front-proxy-client.*<br>rm -rf /etc/kubernetes/pki/etcd/healthcheck-client.*<br>rm -rf /etc/kubernetes/pki/etcd/server.*<br>rm -rf /etc/kubernetes/pki/etcd/peer.*<br>备注：可以使用命令openssl x509 -in [证书全路径] -noout -text查看证书详情。</p>
+<p>重新生成证书<br>老版本：kubeadm alpha phase certs all<br>或<br>新版本(1.15+)：kubeadm alpha certs renew all 使用该命令不用提前删除过期证书<br>重新生成配置文件</p>
+<h4 id="重新生成配置"><a href="#重新生成配置" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>mv /etc/kubernetes/*.conf /tmp/<br>老版本：kubeadm alpha phase kubeconfig all<br>或<br>新版本(1.15+)：kubeadm init phase kubeconfig all</p>
+<h4 id="重新生成配置-1"><a href="#重新生成配置-1" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>cp /etc/kubernetes/admin.conf ~/.kube/config<br>重启kubelet<br>systemctl restart kubelet<br>证书过期时间确认<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>集群确认<br>kubectl get nodes</p>
+<h4 id="如果发现集群，能读不能写，则请重启一下组件："><a href="#如果发现集群，能读不能写，则请重启一下组件：" class="headerlink" title="如果发现集群，能读不能写，则请重启一下组件："></a>如果发现集群，能读不能写，则请重启一下组件：</h4><p>docker ps | grep apiserver<br>docker ps  | grep scheduler<br>docker ps  | grep controller-manager</p>
+<p>docker restart 容器标识<br>做一个有底蕴的软件工作者</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" data-id="cki74313h000bko168wysbr1g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CentOS-8-使用python3作为默认python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" class="article-date">
+  <time datetime="2020-11-25T06:56:20.000Z" itemprop="datePublished">2020-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>CentOS 8 .上没有默认的<code>python</code>命令。要运行python 3，需要使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#dnf install python3</span><br><span class="line">#alternatives --set python &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" data-id="ckhx95mrp0000s816409w45xl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-centos7-rabbitmq-3-8-集群部署" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2020-11-17T01:57:00.000Z" itemprop="datePublished">2020-11-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>基于CentOS 7 x86_64 rabbitmq 3.8</p>
+<h5 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">安装docker-ce环境</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-database </span><br><span class="line">#vim &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts</span><br><span class="line"></span><br><span class="line">10.250.250.120 rabbit1 ostack120</span><br><span class="line">10.250.250.121 rabbit2 ostack121</span><br><span class="line">10.250.250.122 rabbit3 ostack122 </span><br></pre></td></tr></table></figure>
+
+<h4 id="3-安装rabbitmq"><a href="#3-安装rabbitmq" class="headerlink" title="3. 安装rabbitmq"></a>3. 安装rabbitmq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主节点 120 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit1 --name myrabbit1  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br><span class="line">从节点 121 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit2 --name myrabbit2  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-加入集群"><a href="#4-加入集群" class="headerlink" title="4. 加入集群"></a>4. 加入集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it myrabbit2 bash # 进入镜像命令行</span><br><span class="line">#rabbitmqctl stop_app</span><br><span class="line">&#x2F;&#x2F;rabbitmqctl reset</span><br><span class="line">#rabbitmqctl join_cluster rabbit@rabbit1 #rabbit1为主节点的hostname</span><br><span class="line">#rabbitmqctl start_app</span><br><span class="line">#rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-权限初始化"><a href="#5-权限初始化" class="headerlink" title="5. 权限初始化"></a>5. 权限初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">新增账号权限</span><br><span class="line">#rabbitmqctl add_user openstack Openstack</span><br><span class="line">#rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;;</span><br><span class="line">#rabbitmqctl set_policy ha-all &quot;&quot; &#39;&#123;&quot;ha-mode&quot;:&quot;all&quot;, &quot;ha-sync-mode&quot;: &quot;automatic&quot;&#125;&#39;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><p>rabbitmq1 可能会挂掉，可能需要重启 myrabbit1</p>
+<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">启动rabbitmq</span><br><span class="line">rabbitmqctl start_app</span><br><span class="line"></span><br><span class="line">停止rabbitmq</span><br><span class="line">rabbitmqctl stop_app</span><br><span class="line"></span><br><span class="line">rabbitmq 查看所有队列信息</span><br><span class="line">rabbitmqctl list_queues</span><br><span class="line"></span><br><span class="line">还原 rabbitmq 清除所有队列</span><br><span class="line">rabbitmqctl reset</span><br><span class="line"></span><br><span class="line">rabbitmq 查看用户</span><br><span class="line">rabbitmqctl list_users</span><br><span class="line"></span><br><span class="line">rabbitmq添加用户</span><br><span class="line">rabbitmqctl add_user root root</span><br><span class="line"></span><br><span class="line">rabbitmq设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &#x2F; root &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line"></span><br><span class="line">rabbitmq查看集群状态信息</span><br><span class="line">rabbitmqctl cluster_status</span><br><span class="line"></span><br><span class="line">移除某个集群节点：一般情况当节点故障时，在正常的节点中，移除该故障节点</span><br><span class="line">rabbitmqctl  -n rabbit@rabbit1 forget_cluster_node rabbit@rabbit3</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" data-id="ckhlp9nv500009416acw2fdk4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-使用disk-image-builder（DIB）制作Ironic-裸金属镜像" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" class="article-date">
+  <time datetime="2020-11-16T09:50:39.000Z" itemprop="datePublished">2020-11-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/">使用disk-image-builder（DIB）制作Ironic 裸金属镜像</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+<p>Diskimage-builder 是openstack社区用于制作镜像的工具。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">基于CentOS 7</span><br><span class="line"></span><br><span class="line">#pip3 install diskimage-builder ironic-python-agent-builder</span><br><span class="line">#yum -y install qemu-img</span><br><span class="line">#yum install -y libguestfs-tools-c  #提供virt-sysprep</span><br><span class="line">#export DIB_DEV_USER_USERNAME&#x3D;devuser   #初始用户名devuser</span><br><span class="line">#export DIB_DEV_USER_PASSWORD&#x3D;password   #初始密码password</span><br><span class="line">#export DIB_DEV_USER_PWDLESS_SUDO&#x3D;YES   #允许sudo</span><br><span class="line">#export DIB_CLOUD_INIT_DATASOURCES&#x3D;&quot;ConfigDrive, OpenStack&quot;   #cloud-init 的datasource是ConfigDrive, OpenStack</span><br><span class="line">#export AUTHORIZE_SSH&#x3D;true</span><br><span class="line">#export DIB_PYTHON_VERSION&#x3D;3 </span><br><span class="line">#export DIB_PYTHON&#x3D;python3</span><br><span class="line">构建IPA引导镜像</span><br><span class="line">#ironic-python-agent-builder -o centos7-ipa-x86 --release 7 centos -e &quot;devuser dynamic-login dhcp-all-interfaces&quot;</span><br><span class="line">构建裸机镜像</span><br><span class="line">#disk-image-create centos7 centos7 dhcp-all-interfaces grub2 install-static devuser -o CentOS7 cloud-init-datasources</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS7.qcow2</span><br></pre></td></tr></table></figure>
+
+<p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br><span class="line">2. setlocale: LC_ALL: cannot change locale (C.UTF-8): No such file or directory Command &quot;python setup.py egg_info&quot; failed with error code 1 in &#x2F;tmp&#x2F;pip-build-rit13y_p&#x2F;iso8601&#x2F;</span><br><span class="line">#yum -y install langpacks-zh_CN.noarch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" data-id="ckhlp9nve00029416h3st524i" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-记一次kubernetes-flannel-coredns-pod异常" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/" class="article-date">
@@ -244,436 +788,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-网络虚拟化-通过macvlan-虚拟出新网卡" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/" class="article-date">
-  <time datetime="2020-11-13T09:59:05.000Z" itemprop="datePublished">2020-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/">网络虚拟化-通过macvlan 虚拟出新网卡</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-
-<p>加载模块</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># modprobe macvlan</span><br><span class="line"># lsmod | grep macvlan</span><br><span class="line">  macvlan    19239    0</span><br></pre></td></tr></table></figure>
-
-<p>配置网卡</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">通过macvlan 虚拟出网卡 mac_eth4_1 , 通过eth4 出去</span><br><span class="line">#ip link add link eth4 mac_eth4_1 type macvlan</span><br><span class="line">#ip addr add 192.168.100.111&#x2F;24 dev mac_eth4_1</span><br></pre></td></tr></table></figure>
-
-<p>多台主机互通测试</p>
-<p><img src="/images/macvlan-1.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/" data-id="ckhg7z9cp000gdo16b38k8gp6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kolla-ansible-build-openstack-arm镜像" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/13/kolla-ansible-build-openstack-arm%E9%95%9C%E5%83%8F/" class="article-date">
-  <time datetime="2020-11-13T07:01:47.000Z" itemprop="datePublished">2020-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/13/kolla-ansible-build-openstack-arm%E9%95%9C%E5%83%8F/">kolla-ansible build openstack arm镜像</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="创建私有仓库"><a href="#创建私有仓库" class="headerlink" title="创建私有仓库"></a>创建私有仓库</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">服务器 10.16.57.168</span><br><span class="line">#mkdir &#x2F;data&#x2F;registry -p</span><br><span class="line">#docker run -d -p 4000:5000 -v &#x2F;data&#x2F;registry:&#x2F;var&#x2F;lib&#x2F;registry --restart&#x3D;always --name registry registry</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#git clone https:&#x2F;&#x2F;github.com&#x2F;openstack&#x2F;kolla -b stable&#x2F;stein</span><br><span class="line">#cd kolla</span><br><span class="line">#pip2 install jinja2</span><br><span class="line">#pip2 install docker</span><br><span class="line">#pip2 install gitpython  </span><br><span class="line">#tools&#x2F;build.py --base centos --base-arch aarch64 --tag stein --type source --registry 10.16.57.168:4000 --push</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/13/kolla-ansible-build-openstack-arm%E9%95%9C%E5%83%8F/" data-id="ckhg7z9cj0006do161bq15ej5" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-初试-baremetal-operator-部署裸金属服务器" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/" class="article-date">
-  <time datetime="2020-11-12T02:41:58.000Z" itemprop="datePublished">2020-11-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/">初试 baremetal-operator 部署裸金属服务器（一）</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XBYBL322DY"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-XBYBL322DY');
-</script>
-
-<h4 id="宿主机"><a href="#宿主机" class="headerlink" title="宿主机"></a>宿主机</h4><p>开启ipv6</p>
-<h3 id="部署kubernetes"><a href="#部署kubernetes" class="headerlink" title="部署kubernetes"></a>部署kubernetes</h3><p>calico 网络方案</p>
-<p>(步骤略)</p>
-<h3 id="部署-baremetal-operator-master"><a href="#部署-baremetal-operator-master" class="headerlink" title="部署 baremetal-operator-master"></a>部署 baremetal-operator-master</h3><ol>
-<li>源码安装 go14环境<br>(略)</li>
-<li>安装新版kubectl (新版本已经默认集成)</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#curl -LO https:&#x2F;&#x2F;storage.googleapis.com&#x2F;kubernetes-release&#x2F;release&#x2F;v1.19.0&#x2F;bin&#x2F;linux&#x2F;amd64&#x2F;kubectl</span><br><span class="line">#chmod 755 kubectl</span><br><span class="line">#mv kubectl &#x2F;usr&#x2F;bin&#x2F;</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>安装baremetal operator (我部署的时候TLS版本老是有问题)</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br><span class="line">#export IRONIC_HOST&#x3D;&quot;localhost&quot;</span><br><span class="line">#export IRONIC_HOST_IP&#x3D;&quot;10.145.69.37&quot;</span><br><span class="line">#bash tools&#x2F;install_kustomize.sh</span><br><span class="line">#.&#x2F;tools&#x2F;deploy.sh true true false false false</span><br></pre></td></tr></table></figure>
-
-<p>惊奇发现，部署好简单？ 啥也不需要配置 ？ 往下走。。。。</p>
-<p><img src="/images/baremetal-operator-deploy.png"></p>
-<p><img src="/images/baremtal-operator-pods.png"></p>
-<h3 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h3><p>由上图我们能够发现metal3 下面的pod卡在了init状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n metal3 get pods metal3-ironic-64fd7499cc-nwwhb  --template &#39;&#123;&#123;.status.initContainerStatuses&#125;&#125;&#39;</span><br><span class="line">[map[containerID:docker:&#x2F;&#x2F;4fe7c1aeeb1f07c9e2c4b3209687d858e7572376104cdb6ab70b545e33601d16 image:quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader:latest imageID:docker-pullable:&#x2F;&#x2F;quay.io&#x2F;metal3-io&#x2F;ironic-ipa-downloader@sha256:7429ffaa87de653bcae90fc857a02d160276fd828ace2cc49ea0b5ba70de44bb lastState:map[] name:ironic-ipa-downloader ready:false restartCount:0 state:map[running:map[startedAt:2020-11-12T03:32:41Z]]]]</span><br><span class="line"></span><br><span class="line">判断 卡在了 ironic-ipa-downloader的容器上，查看日志及进入容器 定位，日志一直输出curl下载进度</span><br><span class="line">#kubectl -n metal3 logs metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">日志输出好多 nocontent</span><br><span class="line"></span><br><span class="line">     45  497M   45  228M    0     0  11768      0 12:19:07  5:38:44  6:40:23 16797* TLSv1.3 (IN), TLS app data, [no content] (0):</span><br><span class="line"> </span><br><span class="line">#kubectl -n metal3 exec -it metal3-ironic-64fd7499cc-nwwhb -c ironic-ipa-downloader</span><br><span class="line">#ps -ef -c  </span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/metal3-pods-status.png"></p>
-<p>手动执行启动脚本，发现卡在了  curl -g –verbose –fail -O <a target="_blank" rel="noopener" href="http://172.22.0.1/images/ironic-python-agent.tar.headers">http://172.22.0.1/images/ironic-python-agent.tar.headers</a></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#x2F;bin&#x2F;bash -xe &#x2F;usr&#x2F;local&#x2F;bin&#x2F;get-resource.sh</span><br></pre></td></tr></table></figure>
-
-
-
-<p>定位到了问题，原因是configmap ironic-bmo-configmap-86hh74cbcc  中的 ironic agent cache url 没有配置,  ironic 需要从 cache_url 将镜像下载下来，同时默认 ironic-ipa-downloader 会从国外下载ipa，450多M，很慢, 等等就好了</p>
-<h3 id="解决调试"><a href="#解决调试" class="headerlink" title="解决调试"></a>解决调试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n metal3 get cm ironic-bmo-configmap-86hh74cbcc -o yaml</span><br><span class="line">因为我了解openstack 的ironic，所以看了cm 就觉得需要修改部分配置</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><strong>思考：</strong></p>
-<ol>
-<li><p>裸机下载引导内核的地址是多少？</p>
-</li>
-<li><p>裸机该如何分配IP地址 ？</p>
-</li>
-<li><p>IRONIC 的endpoint 地址多少？</p>
-</li>
-<li><p>裸机上有多个网卡该从哪个网卡启动？</p>
-<p>  CACHEURL: <a target="_blank" rel="noopener" href="http://172.22.0.1/images">http://172.22.0.1/images</a></p>
-<p>  DEPLOY_KERNEL_URL: <a target="_blank" rel="noopener" href="http://172.22.0.2:6180/images/ironic-python-agent.kernel">http://172.22.0.2:6180/images/ironic-python-agent.kernel</a><br>  DEPLOY_RAMDISK_URL: <a target="_blank" rel="noopener" href="http://172.22.0.2:6180/images/ironic-python-agent.initramfs">http://172.22.0.2:6180/images/ironic-python-agent.initramfs</a><br>  DHCP_RANGE: 172.22.0.10,172.22.0.100<br>  HTTP_PORT: “6180”<br>  IRONIC_ENDPOINT: <a target="_blank" rel="noopener" href="http://172.22.0.2:6385/v1/">http://172.22.0.2:6385/v1/</a><br>  IRONIC_FAST_TRACK: “true”<br>  IRONIC_INSPECTOR_ENDPOINT: <a target="_blank" rel="noopener" href="http://172.22.0.2:5050/v1/">http://172.22.0.2:5050/v1/</a><br>  PROVISIONING_INTERFACE: eth2 </p>
-</li>
-</ol>
-<p><strong>结合openstack使用场景，以及公司机房网络的实际环境，确定如下</strong></p>
-<p>我在宿主机上起了nginx并导入IPA的引导系统, </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;nginx&#x2F;images -p</span><br><span class="line">#wget https:&#x2F;&#x2F;images.rdoproject.org&#x2F;centos8&#x2F;master&#x2F;rdo_trunk&#x2F;current-tripleo&#x2F;ironic-python-agent.tar -O &#x2F;data&#x2F;nginx&#x2F;images&#x2F;ironic-python-agent.tar</span><br><span class="line">(或者自行build ramdisk)</span><br></pre></td></tr></table></figure>
-
-<ol>
-<li><p>K8S上开启nginx</p>
-</li>
-<li><p>DNSMASQ分配</p>
-</li>
-<li><p>K8S上的ironic地址</p>
-</li>
-<li><p>裸机使用 eth4 网卡部署</p>
-   <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n baremetal-operator-system edit cm baremetal-operator-ironic </span><br><span class="line">     #kubectl -n metal3 edit cm ironic-bmo-configmap-86hh74cbcc </span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<pre><code> CACHEURL: http://10.145.69.37:9090/images
-   DEPLOY_KERNEL_URL: http://10.145.69.37:9090/images/ironic-python-agent.kernel
-   DEPLOY_RAMDISK_URL: http://10.145.69.37:9090/images/ironic-python-agent.initramfs
-   DHCP_RANGE: 10.145.69.3,10.145.69.4
-   HTTP_PORT: &quot;6180&quot;
-   IPA_BASEURI: http://10.145.69.37:9090/images
-   IRONIC_ENDPOINT: http://10.145.69.37:6385/v1/
-   IRONIC_FAST_TRACK: &quot;true&quot;
-   IRONIC_INSECURE: &quot;true&quot;
-   IRONIC_INSPECTOR_ENDPOINT: http://10.145.69.37:5050/v1/
-   PROVISIONING_INTERFACE: eth4</code></pre>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go run cmd&#x2F;make-bm-worker&#x2F;main.go -address 10.142.65.41 -password *****_***stack -user ***** worker-615|kubectl apply -f</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/barehosts-1.png"></p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错:"></a>排错:</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. ipa 报 cryptography 与openssl不兼容</span><br><span class="line">openstack&#x2F;requirements 中 cryptograph 改成2.6.1 版本，社区3.+版本太新了</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/baremtal-run.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#baremetal --os-endpoint http:&#x2F;&#x2F;10.145.69.37:6385&#x2F;v1&#x2F; node list</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/12/%E5%88%9D%E8%AF%95-baremetal-operator-%E9%83%A8%E7%BD%B2%E8%A3%B8%E9%87%91%E5%B1%9E%E6%9C%8D%E5%8A%A1%E5%99%A8/" data-id="ckhg7z9co000fdo16dyg7ghqp" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-使用-Kustomize-配置-Kubernetes-应用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/12/%E4%BD%BF%E7%94%A8-Kustomize-%E9%85%8D%E7%BD%AE-Kubernetes-%E5%BA%94%E7%94%A8/" class="article-date">
-  <time datetime="2020-11-12T01:49:37.000Z" itemprop="datePublished">2020-11-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/12/%E4%BD%BF%E7%94%A8-Kustomize-%E9%85%8D%E7%BD%AE-Kubernetes-%E5%BA%94%E7%94%A8/">使用 Kustomize 配置 Kubernetes 应用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>​       kustomize是sig-cli的一个子项目，它的设计目的是为kubernetes提供一种可以重复使用配置的声明式应用管理，从而在配置工作中用户只需要管理和维护kubernetes的原生API对象，不需要使用复杂的模版，对 K8s 应用定义为由 Yaml 表示的资源描述，对 K8s 应用的变更可以映射到对 Yaml 的变更上。而这些变更操作可以利用 git 等版本控制程序来管理，因此用户得以使用 git 风格的流程对 K8s 应用进行管理。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/12/%E4%BD%BF%E7%94%A8-Kustomize-%E9%85%8D%E7%BD%AE-Kubernetes-%E5%BA%94%E7%94%A8/" data-id="ckhg7z9cn000ddo16admka50l" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-pip加速使用国内源" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/" class="article-date">
-  <time datetime="2020-11-11T01:51:01.000Z" itemprop="datePublished">2020-11-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/">pip加速使用国内源</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="pip国内的一些镜像"><a href="#pip国内的一些镜像" class="headerlink" title="pip国内的一些镜像"></a>pip国内的一些镜像</h3><ul>
-<li>阿里云 <a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/pypi/simple/">http://mirrors.aliyun.com/pypi/simple/</a></li>
-<li>中国科技大学 <a target="_blank" rel="noopener" href="https://pypi.mirrors.ustc.edu.cn/simple/">https://pypi.mirrors.ustc.edu.cn/simple/</a></li>
-<li>豆瓣(douban) <a target="_blank" rel="noopener" href="http://pypi.douban.com/simple/">http://pypi.douban.com/simple/</a></li>
-<li>清华大学 <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple/">https://pypi.tuna.tsinghua.edu.cn/simple/</a></li>
-<li>中国科学技术大学 <a target="_blank" rel="noopener" href="http://pypi.mirrors.ustc.edu.cn/simple/">http://pypi.mirrors.ustc.edu.cn/simple/</a></li>
-</ul>
-<p><strong>提示：若担心安全问题请使用HTTPS加密源</strong></p>
-<h3 id="修改源方法："><a href="#修改源方法：" class="headerlink" title="修改源方法："></a>修改源方法：</h3><h4 id="临时使用："><a href="#临时使用：" class="headerlink" title="临时使用："></a>临时使用：</h4><p><strong>Linux Mac Windows 通用命令</strong></p>
-<p>可以在使用pip的时候在后面加上-i参数，指定pip源</p>
-<p>#pip install scrapy -i <a target="_blank" rel="noopener" href="https://pypi.tuna.tsinghua.edu.cn/simple">https://pypi.tuna.tsinghua.edu.cn/simple</a></p>
-<h4 id="永久修改："><a href="#永久修改：" class="headerlink" title="永久修改："></a>永久修改：</h4><p><strong>Linux:</strong></p>
-<p>修改 pip.conf 文件 (没有就创建一个)</p>
-<p>$HOME/.config/pip/pip.conf</p>
-<p>修改内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line"></span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple12</span><br></pre></td></tr></table></figure>
-
-<p><strong>Mac:</strong></p>
-<p>修改 pip.conf 文件</p>
-<p>$HOME/Library/Application Support/pip/pip.conf</p>
-<p>如果没有上面的目录,在如下目录创建 pip.conf</p>
-<p>$HOME/.config/pip/pip.conf</p>
-<p>修改内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line"></span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple12</span><br></pre></td></tr></table></figure>
-
-<p><strong>Windows:</strong></p>
-<p>修改 pip.conf 文件 (没有就创建一个)</p>
-<p>%APPDATA%\pip\pip.ini</p>
-<p>修改内容如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line"></span><br><span class="line">index-url &#x3D; https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br></pre></td></tr></table></figure>
-
-<h3 id="修改文件后，执行命令发生错误"><a href="#修改文件后，执行命令发生错误" class="headerlink" title="修改文件后，执行命令发生错误"></a>修改文件后，执行命令发生错误</h3><p>使用非HTTPS加密源（如豆瓣源），在执行命令发生错误，在命令最后加上<code>--trusted-host pypi.douban.com</code></p>
-<p>pip install django -i <a target="_blank" rel="noopener" href="http://pypi.douban.com/simple">http://pypi.douban.com/simple</a> –trusted-host <a target="_blank" rel="noopener" href="http://pypi.douban.com/">pypi.douban.com</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/11/pip%E5%8A%A0%E9%80%9F%E4%BD%BF%E7%94%A8%E5%9B%BD%E5%86%85%E6%BA%90/" data-id="ckhg7z9cm000cdo161iang6it" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql8-0-新增用户授权" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/" class="article-date">
-  <time datetime="2020-11-10T04:15:07.000Z" itemprop="datePublished">2020-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/">mysql8.0 新增用户授权</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MySQL 8.0 的用户授权语句和之前版本有所区别, mysql 8.0 新增用户并授权访问</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;CREATE USER &#39;lining&#39;@&#39;%&#39; IDENTIFIED BY &#39;123456&#39;; </span><br><span class="line">&gt;GRANT ALL ON kubestack.* TO &#39;lining&#39;@&#39;%&#39; WITH GRANT OPTION;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/10/mysql8-0-%E6%96%B0%E5%A2%9E%E7%94%A8%E6%88%B7%E6%8E%88%E6%9D%83/" data-id="ckhg7z9ck0008do16hc8w7tj6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubernetes-体验CNI插件之kube-ovn" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/10/kubernetes-%E4%BD%93%E9%AA%8CCNI%E6%8F%92%E4%BB%B6%E4%B9%8Bkube-ovn/" class="article-date">
-  <time datetime="2020-11-10T02:12:38.000Z" itemprop="datePublished">2020-11-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/10/kubernetes-%E4%BD%93%E9%AA%8CCNI%E6%8F%92%E4%BB%B6%E4%B9%8Bkube-ovn/">kubernetes-体验CNI插件之kube-ovn</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="特性介绍"><a href="#特性介绍" class="headerlink" title="特性介绍"></a>特性介绍</h4><p>kube-ovn 提供了针对企业应用场景下容器网络实用功能，并为实现更高级的网络管理控制提供了可能性；现有主要功能:</p>
-<ul>
-<li>1.Namespace 和子网的绑定，以及子网间的访问控制;</li>
-<li>2.静态IP分配;</li>
-<li>3.动态QoS;</li>
-<li>4.分布式和集中式网关;</li>
-<li>5.内嵌 LoadBalancer;</li>
-<li>6.Pod IP对外直接暴露</li>
-<li>7.流量镜像</li>
-<li>8.IPv6</li>
-</ul>
-<p>默认kubespray 部署kubernetes支持kube-ovn</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/10/kubernetes-%E4%BD%93%E9%AA%8CCNI%E6%8F%92%E4%BB%B6%E4%B9%8Bkube-ovn/" data-id="ckhg7z9cb0003do163rhvcx67" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -702,7 +816,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 17.14px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.86px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 15.71px;">go</a> <a href="/tags/grpc/" style="font-size: 11.43px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.86px;">mysql</a> <a href="/tags/openstack/" style="font-size: 15.71px;">openstack</a> <a href="/tags/python/" style="font-size: 14.29px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.71px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -711,7 +825,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -724,23 +838,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
+            <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
           </li>
         
           <li>
-            <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
+            <a href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">go-经典排序算法</a>
           </li>
         
           <li>
-            <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">go-gin 常见问题解决</a>
+            <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
           </li>
         
           <li>
-            <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/">docker-更改默认存储目录 root dir</a>
+            <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
           </li>
         
           <li>
-            <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
+            <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
           </li>
         
       </ul>

@@ -67,6 +67,411 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-grpc-python-安装grpc" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" class="article-date">
+  <time datetime="2020-10-09T03:12:21.000Z" itemprop="datePublished">2020-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/">grpc python 安装grpc</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>基于CentOS 7 , Python 3.6 安装grpc模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">#pip3 install grpcio</span><br><span class="line">#pip3 install grpcio --ignore-installed</span><br><span class="line"></span><br><span class="line">#pip3 install grpcio-tools</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" data-id="ckg1ynecf0001v8167jbnf0md" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-grpc-grpc简介" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/" class="article-date">
+  <time datetime="2020-10-09T03:02:20.000Z" itemprop="datePublished">2020-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/">grpc简介</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="一、GRPC-是什么？"><a href="#一、GRPC-是什么？" class="headerlink" title="一、GRPC 是什么？"></a>一、GRPC 是什么？</h1><p>gRPC，其实就是RPC框架的一种，前面带了一个g，代表是RPC中的大哥，龙头老大的意思，另外g也有global的意思，意思是全球化比较fashion，是一个高性能、开源和通用的 RPC 框架，面向服务端和移动端，基于 HTTP/2 设计, gRPC 支持 C++ Java Python Go Ruby C# Node.js PHP Dart 等语言。</p>
+<h2 id="RPC框架是什么？"><a href="#RPC框架是什么？" class="headerlink" title="RPC框架是什么？"></a>RPC框架是什么？</h2><p>RPC 框架说白了就是让你可以像调用本地方法一样调用远程服务提供的方法，而不需要关心底层的通信细节。简单地说就让远程服务调用更加简单、透明。<br>RPC包含了客户端（Client）和服务端（Server）</p>
+<p>常见的RPC框架有</p>
+<ol>
+<li>gRPC。谷歌出品</li>
+<li>Thrift。Apache出品</li>
+<li>Dubbo。阿里出品，也是一个微服务框架</li>
+</ol>
+<h2 id="gRPC的特性"><a href="#gRPC的特性" class="headerlink" title="gRPC的特性"></a>gRPC的特性</h2><p>看<a target="_blank" rel="noopener" href="https://grpc.io/">官方文档</a>的介绍，有以下4点特性：</p>
+<ol>
+<li>使用Protocal Buffers这个强大的结构数据序列化工具</li>
+<li>grpc可以跨语言使用</li>
+<li>安装简单，扩展方便（用该框架每秒可达到百万个RPC）</li>
+<li>基于HTTP2协议</li>
+</ol>
+<h2 id="gRPC使用流程"><a href="#gRPC使用流程" class="headerlink" title="gRPC使用流程"></a>gRPC使用流程</h2><p>gprc的使用流程一般是这样的：</p>
+<ol>
+<li>定义标准的proto文件</li>
+<li>生成标准代码</li>
+<li>服务端使用生成的代码提供服务</li>
+<li>客户端使用生成的代码调用服务</li>
+</ol>
+<h1 id="二、Protocol-Buffers是什么？"><a href="#二、Protocol-Buffers是什么？" class="headerlink" title="二、Protocol Buffers是什么？"></a>二、Protocol Buffers是什么？</h1><p>谷歌开源的一种结构数据序列化的工具，比方说JSON、XML也是结构数据序列化的工具，不同的是，</p>
+<ol>
+<li>Protocol Buffers序列化后的数据是不可读的，因为是二进制流</li>
+<li>使用Protocol Buffer需要事先定义数据的格式(.proto 协议文件)，还原一个序列化之后的数据需要使用到这个数据格式</li>
+<li>Protocol Buffer 比 XML、JSON快很多，因为是基于二进制流，比字符串更省带宽，传输速度快<br>Protocol Buffer语法：查看<a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers/docs/proto3">官方文档</a></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/" data-id="ckg1ynec90000v816dmrk73rj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux-定位流量过高进程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
+  <time datetime="2020-10-09T02:05:32.000Z" itemprop="datePublished">2020-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位流量过高进程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>服务器流量过高，需要定位具体哪个进程/服务将流量跑高</p>
+<p>定位工具：iftop/nethogs/iptraf</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#iftop -P -i eth2 -N</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" data-id="ckg1ynecq0006v8168pnkbicj" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux-定位IO过高进程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
+  <time datetime="2020-10-09T01:54:02.000Z" itemprop="datePublished">2020-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位IO过高进程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+
+<p>操作系统IO过高，可以通过基础工具 top/iostat 查看</p>
+<ol>
+<li><p>通过 top 的 %cpu 的wa（wait）指标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#top</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>iostat 的%util 指标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#iostat -dx 1</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>如何定位具体哪个进程/服务造成io过高呢？</p>
+<ol>
+<li><p>最简单的可以通过 iotop 定位， 通过IO百分比定位进程</p>
+</li>
+<li><p>通过判断进程是 D状态 定位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for x in &#96;seq 1 1 10&#96;; do ps -eo state,pid,cmd | grep &quot;^D&quot;; echo &quot;----&quot;; sleep 5; done</span><br></pre></td></tr></table></figure>
+
+<p>ps 进程状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PROCESS STATE CODES </span><br><span class="line">    D uninterruptible sleep (usually IO) </span><br><span class="line">    R running or runnable (on run queue) </span><br><span class="line">    S interruptible sleep (waiting for an event to complete) </span><br><span class="line">    T stopped, either by a job control signal or because it is being traced. </span><br><span class="line">    W paging (not valid since the 2.6.xx kernel) </span><br><span class="line">    X dead (should never be seen) </span><br><span class="line">    Z defunct (&quot;zombie&quot;) process, terminated but not reaped by its parent.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>定位哪个文件造成IO过高，可以通过 lsof 或者 pt-ioprofile 跟踪进程pid来继续定位</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" data-id="ckg1lssot0000hc1600955y6u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-容器-linux-namespace及网络" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" class="article-date">
+  <time datetime="2020-09-30T09:23:26.000Z" itemprop="datePublished">2020-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/">容器虚拟化 linux namespace及虚拟网卡/路由网络</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网络命名空间<br>在 Linux 中，网络名字空间可以被认为是隔离的拥有单独网络栈（网卡、路由转发表、iptables）的环境。网络名字空间经常用来隔离网络设备和服务，只有拥有同样网络名字空间的设备，才能看到彼此。</p>
+<p>从逻辑上说，网络命名空间是网络栈的副本，有自己的网络设备、路由选择表、邻接表、Netfilter表、网络套接字、网络procfs条目、网络sysfs条目和其他网络资源。</p>
+<p>从系统的角度来看，当通过clone()系统调用创建新进程时，传递标志CLONE_NEWNET将在新进程中创建一个全新的网络命名空间。</p>
+<p>从用户的角度来看，我们只需使用工具ip（package is iproute2）来创建一个新的持久网络命名空间。</p>
+<p>创建netns<br>查看是否存在命名空间：ip netns list</p>
+<p>若报错，需要更新系统内核，以及 ip 工具程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">列出网卡</span><br><span class="line">#ip netns list</span><br><span class="line">添加命名空间</span><br><span class="line">#ip netns add ns1</span><br></pre></td></tr></table></figure>
+
+<p>创建新的虚拟网卡：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link add veth0 type veth peer name veth1</span><br></pre></td></tr></table></figure>
+
+<p>同时创建veth0和veth1两个虚拟网卡<br>这个时候这两个网卡还都属于“default”或“global”命名空间，和物理网卡一样。<br>把其中一个网卡转移到命名空间ns1中：ip link set veth1 netns ns1</p>
+<p>验证：ip netns exec ns1 ip link list<br>删除：ip netns exec ns1 ip link del veth1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link set veth1 netns ns1</span><br></pre></td></tr></table></figure>
+
+<p>配置命名空间中的端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip addr add 10.1.1.100&#x2F;24 dev veth1</span><br><span class="line">#ip netns exec ns1 ip link set veth1 up</span><br><span class="line">#ip netns exec ns1 ip link set lo up</span><br></pre></td></tr></table></figure>
+
+<p>配置宿主机上网卡ip：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ip addr add 10.1.1.101&#x2F;24 dev veth0</span><br><span class="line">#ip link set veth0 up</span><br></pre></td></tr></table></figure>
+<p>此时在ns1中ping自己10.1.1.100能通： (掩码都是24,网络在一个二层内)<br>ip netns exec ns1 ping 10.1.1.100<br>PING 10.1.1.100 (10.1.1.100) 56(84) bytes of data.<br>64 bytes from 10.1.1.100: icmp_seq=1 ttl=64 time=0.058 ms</p>
+<p>但还不能ping通10.1.1.101，因为ns1中未设置路由。<br><img src="../images/2020-09-30_17h44_36.png"><br>设置命名空间路由<br>设置默认路由</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip route add default via 10.1.1.100</span><br><span class="line">#ip netns exec ns1 ip route show</span><br><span class="line">default via 10.1.1.100 dev veth1</span><br></pre></td></tr></table></figure>
+<p>此时能够ping通主机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping 10.1.1.101</span><br><span class="line">PING 10.1.1.2 (10.1.1.101) 56(84) bytes of data.</span><br><span class="line">64 bytes from 10.1.1.101: icmp_seq&#x3D;1 ttl&#x3D;64 time&#x3D;0.086 ms</span><br></pre></td></tr></table></figure>
+
+<p>使能IP转发<br>但是到了这里依旧还不够，ns1命名空间中已经可以联通主机上的网络，但是依旧连不同主机以外的外部网络。这个时候必须在host主机上启动转发，并且在iptables中设置伪装。</p>
+<p>Linux系统的IP转发的意思是，当Linux主机存在多个网卡的时候，允许一个网卡的数据包转发到另外一张网卡；在linux系统中默认禁止IP转发功能，可以打开如下文件查看，如果值为0说明禁止进行IP转发：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward：</span><br><span class="line"></span><br><span class="line">#使能ip转发</span><br><span class="line"></span><br><span class="line">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward</span><br></pre></td></tr></table></figure>
+<p>#刷新forward规则<br>iptables -F FORWARD<br>iptables -t nat -F</p>
+<p>#刷新nat规则<br>iptables -t nat -L -n</p>
+<p>#使能IP伪装<br>iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -o ens32 -j MASQUERADE # ens32连接外网<br><img src="../images/2020-09-30_17h55_58.png"><br>#允许veth0和ens32之间的转发<br>iptables -A FORWARD -i ens32 -o veth0 -j ACCEPT<br>iptables -A FORWARD -o ens32 -i veth0 -j ACCEPT</p>
+<p>使能IP伪装这条语句，添加了一条规则到NAT表的POSTROUTING链中，对于源IP地址为10.1.1.0网段的数据包，用ens32网口的IP地址替换并发送。<br>iptables -A FORWARD这两条语句使能物理网口ens32和veth0之间的数据转发<br>总结<br>Linux网络命名空间提供了强大的虚拟化功能，使用得当能够达到事半功倍的效果。</p>
+<p>本文简要介绍了Linux提供的6种命名空间，对命名空间的作用和使用场景作了详细的介绍。</p>
+<p>着重对Linux网络命名空间进行了讲解，包括命名空间的创建、使用，与主机通信以及与外部网络的连接等。</p>
+<p>对于一般的应用而言，掌握网络命名空间的创建、使用、ip命令等就能顺当使用命名空间了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" data-id="ckfp8dl5e000jpg16b1q5glwf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-django-3-0-启用swagger" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" class="article-date">
+  <time datetime="2020-09-30T08:34:36.000Z" itemprop="datePublished">2020-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/">django 3.0 使用swagger</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>以前我们熟知的swaggger已经不再支持 django 3.0，可以使用 drf_yasg<br>支持如下：</p>
+<p>Django Rest Framework: 3.8, 3.9, 3.10, 3.11<br>Django: 1.11, 2.2, 3.0<br>Python: 2.7, 3.6, 3.7, 3.8</p>
+<p>安装drf_yasg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -U drf-yasg</span><br></pre></td></tr></table></figure>
+<p>settings.py 开启app</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS &#x3D; [</span><br><span class="line">   ...</span><br><span class="line">   &#39;drf_yasg&#39;,</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>根 url.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework import permissions</span><br><span class="line">from drf_yasg.views import get_schema_view</span><br><span class="line">from drf_yasg import openapi</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">schema_view &#x3D; get_schema_view(</span><br><span class="line">   openapi.Info(</span><br><span class="line">      title&#x3D;&quot;Snippets API&quot;,</span><br><span class="line">      default_version&#x3D;&#39;v1&#39;,</span><br><span class="line">      description&#x3D;&quot;Test description&quot;,</span><br><span class="line">      terms_of_service&#x3D;&quot;https:&#x2F;&#x2F;www.google.com&#x2F;policies&#x2F;terms&#x2F;&quot;,</span><br><span class="line">      contact&#x3D;openapi.Contact(email&#x3D;&quot;contact@snippets.local&quot;),</span><br><span class="line">      license&#x3D;openapi.License(name&#x3D;&quot;BSD License&quot;),</span><br><span class="line">   ),</span><br><span class="line">   public&#x3D;True,</span><br><span class="line">   permission_classes&#x3D;(permissions.AllowAny,),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">   url(r&#39;^swagger(?P&lt;format&gt;\.json|\.yaml)$&#39;, schema_view.without_ui(cache_timeout&#x3D;0), name&#x3D;&#39;schema-json&#39;),</span><br><span class="line">   url(r&#39;^swagger&#x2F;$&#39;, schema_view.with_ui(&#39;swagger&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-swagger-ui&#39;),</span><br><span class="line">   url(r&#39;^redoc&#x2F;$&#39;, schema_view.with_ui(&#39;redoc&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-redoc&#39;),</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>访问/swagger 看一下吧 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" data-id="ckfp8dl580009pg169tgxf6dl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-glance-镜像导入" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" class="article-date">
+  <time datetime="2020-09-29T14:26:42.000Z" itemprop="datePublished">2020-09-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/">glance 镜像导入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>基于rbd存储, 上传glance镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">openstack image create &quot;CentOS 7.6 64bit&quot; \</span><br><span class="line"> --disk-format raw --container-format bare \</span><br><span class="line"> --public --min-disk 50 \</span><br><span class="line"> --property hw_disk_bus&#x3D;scsi --property hw_scsi_model&#x3D;virtio-scsi \</span><br><span class="line"> --property hw_video_model&#x3D;qxl --property vm_mode&#x3D;hvm \</span><br><span class="line"> --property os_distro&#x3D;centos \</span><br><span class="line"> --property os_type&#x3D;linux \</span><br><span class="line"> --property hw_qemu_guest_agent&#x3D;yes</span><br></pre></td></tr></table></figure>
+
+<p>#rbd -p sata_pool1 import –image-format 2 CentOS76.raw</p>
+<p>#rbd -p sata_pool1 snap create –image  CentOS76.raw –snap snap  </p>
+<p>#rbd -p sata_pool1 snap protect –image  CentOS76.raw –snap snap</p>
+<p>#glance location-add –url rbd://$ceph_fsid/sata_pool1/CentOS76.raw/snap $image_uuid</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" data-id="ckfp8dl540005pg16enu18g1f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-go-goproxy代理" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" class="article-date">
@@ -205,399 +610,6 @@
 
 
   
-    <article id="post-Linux-更改CentOS-7-网卡名称" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" class="article-date">
-  <time datetime="2020-09-29T14:18:26.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/">Linux 更改CentOS 7 网卡名称</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h6 id="centos-7-默认网卡为-ensXX-考虑更改为-ethXX"><a href="#centos-7-默认网卡为-ensXX-考虑更改为-ethXX" class="headerlink" title="centos 7 默认网卡为 ensXX, 考虑更改为 ethXX"></a>centos 7 默认网卡为 ensXX, 考虑更改为 ethXX</h6><p>#vim /etc/default/grub</p>
-<p>GRUB_CMDLINE_LINUX </p>
-<p>新增 net.ifnames=0 biosdevname=0</p>
-<p>#grub2-mkconfig -o /boot/grub2/grub.cfg</p>
-<p>#reboot</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" data-id="ckfp8dl4v0003pg16f1l66ax3" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-安装MySQL-8-0" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/" class="article-date">
-  <time datetime="2020-09-29T09:13:41.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/">docker 安装MySQL 8.0</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>使用docker安装MySQL 8.0</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line">#yum -y install docker-ce</span><br><span class="line">#systemctl restart docker</span><br><span class="line">#docker pull mysql:8.0</span><br><span class="line">#mkdir &#x2F;data&#x2F;mysql&#x2F;&#123;conf,data&#125;</span><br><span class="line">#docker run -p 3306:3306 --name mysql8 -e MYSQL_ROOT_PASSWORD&#x3D;123456  -d mysql:8.0</span><br><span class="line">#docker cp mysql8:&#x2F;etc&#x2F;mysql &#x2F;data&#x2F;mysql&#x2F;conf</span><br><span class="line">#docker rm -f mysql8</span><br><span class="line">#docker run \</span><br><span class="line">-p 13306:3306 \</span><br><span class="line">--name mysql8 \</span><br><span class="line">--privileged&#x3D;true \</span><br><span class="line">--restart unless-stopped \</span><br><span class="line">-v &#x2F;data&#x2F;mysql&#x2F;log:&#x2F;var&#x2F;log&#x2F;mysql \</span><br><span class="line">-v &#x2F;data&#x2F;mysql&#x2F;conf&#x2F;my.cnf:&#x2F;etc&#x2F;mysql&#x2F;my.cnf \</span><br><span class="line">-v &#x2F;data&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql \</span><br><span class="line">-v &#x2F;etc&#x2F;localtime:&#x2F;etc&#x2F;localtime \</span><br><span class="line">-e MYSQL_ROOT_PASSWORD&#x3D;123456 \</span><br><span class="line">-d mysql:8.0</span><br><span class="line">#docker restart mysql8</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it mysql8 bash</span><br><span class="line">#mysql -uroot -p</span><br><span class="line"></span><br><span class="line">&gt;CREATE USER &#39;stack&#39;@&#39;%&#39; identified by &#39;123456&#39;;</span><br><span class="line">&gt;grant all on *.* to&#39;stack&#39;@&#39;%&#39;;</span><br><span class="line"></span><br><span class="line">更改root密码</span><br><span class="line">&gt;alter user &#39;root&#39;@&#39;localhost&#39; identified by &#39;123456&#39;;</span><br><span class="line">&gt;flush privileges;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/docker-%E5%AE%89%E8%A3%85MySQL-8-0/" data-id="ckfp8dl4y0004pg1691b0facx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-git-常用命令" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time datetime="2020-09-29T03:55:17.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">git 常用命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>代码回退</strong></p>
-<p>默认参数 -soft,所有commit的修改都会退回到git缓冲区</p>
-<p>参数–hard，所有commit的修改直接丢弃</p>
-<p>$ git reset –hard HEAD^        回退到上个版本 $ git reset –hard commit_id    退到/进到 指定commit_id</p>
-<p>推送到远程</p>
-<p>$ git push origin HEAD –force</p>
-<p><strong>新增tag</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$git tag -a v1.0.0 -m &quot;stable version 1.0.0&quot;</span><br><span class="line">$git push origin v1.0.0</span><br><span class="line">(推送所有)</span><br><span class="line">$git push origin --tags</span><br></pre></td></tr></table></figure>
-
-<p>push代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">强制push</span><br><span class="line">$git push origin master -f</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/git-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-id="ckjcruwda0000c4165txzai0k" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/" rel="tag">git</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubernetes-calico-网络分析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-09-29T03:52:57.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">kubernetes calico 网络分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Calico架构"><a href="#Calico架构" class="headerlink" title="Calico架构"></a>Calico架构</h2><p><img src="/images/calico.png"></p>
-<p>Calico主要由Felix、etcd、BGP client、BGP Route Reflector组成。</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">Etcd</a>：负责存储网络信息</li>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">BGP client</a>：负责将Felix配置的路由信息分发到其他节点</li>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">Felix</a>：Calico Agent，每个节点都需要运行，主要负责配置路由、配置ACLs、报告状态</li>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">BGP Route Reflector</a>：大规模部署时需要用到，作为BGP client的中心连接点，可以避免每个节点互联</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" data-id="ckfp8dl5a000cpg1688cbd32s" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-neutron-网络分析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/openstack-neutron-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-09-29T03:23:05.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/openstack-neutron-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">openstack neutron 网络分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/openstack-neutron-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" data-id="ckfp8dl5d000hpg1654z4dlss" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubernetes-flannel-网络分析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-09-29T02:58:45.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">kubernetes flannel 网络分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>Flannel是kubernetes的CNI网络插件之一，实质上是一种主机 overlay网络 。flannel支持多种网络转发模式，常用的是vxlan、hostgw等，我们这里以常用的 VXLAN协议讲解。</p>
-<p>**Flannel 特点 : **</p>
-<ol>
-<li><p>使集群中的不同Node主机创建的Docker容器都具有全集群唯一的虚拟IP地址。</p>
-</li>
-<li><p>建立一个覆盖网络（overlay network），通过这个覆盖网络，将数据包原封不动的传递到目标容器。覆盖网络是建立在另一个网络之上并由其基础设施支持的虚拟网络。覆盖网络通过将一个分组封装在另一个分组内来将网络服务与底层基础设施分离。在将封装的数据包转发到端点后，将其解封装。</p>
-</li>
-<li><p>创建一个新的虚拟网卡flannel0接收docker网桥的数据，通过维护路由表，对接收到的数据进行封包和转发（vxlan）。</p>
-</li>
-<li><p>etcd保证了所有node上flanned所看到的配置是一致的。同时每个node上的flanned监听etcd上的数据变化，实时感知集群中node的变化。</p>
-</li>
-</ol>
-<p><strong>各个组件的解释：</strong></p>
-<p><code>Cni0 </code> :网桥设备，每创建一个pod都会创建一对 veth pair。其中一端是pod中的eth0，另一端是Cni0网桥中的端口（网卡）。Pod中从网卡eth0发出的流量都会发送到Cni0网桥设备的端口（网卡）上。</p>
-<p>Cni0 设备获得的ip地址是该节点分配到的网段的第一个地址。</p>
-<p><code>Flannel.1 </code>: overlay网络的设备，用来进行 vxlan 报文的处理（封包和解包）。不同node之间的pod数据流量都从overlay设备以隧道的形式发送到对端。</p>
-<p><code>Flanneld </code>：flannel在每个主机中运行flanneld作为agent，它会为所在主机从集群的网络地址空间中，获取一个小的网段subnet，本主机内所有容器的IP地址都将从中分配。同时Flanneld监听K8s集群数据库，为flannel.1设备提供封装数据时必要的mac，ip等网络数据信息。</p>
-<p><strong>不同node上的pod的通信流程：</strong></p>
-<ol>
-<li><p>pod中产生数据，根据pod的路由信息，将数据发送到Cni0</p>
-</li>
-<li><p>Cni0 根据节点的路由表，将数据发送到隧道设备flannel.1</p>
-</li>
-<li><p>Flannel.1查看数据包的目的ip，从flanneld获得对端隧道设备的必要信息，封装数据包。</p>
-</li>
-<li><p>Flannel.1将数据包发送到对端设备。对端节点的网卡接收到数据包，发现数据包为overlay数据包，解开外层封装，并发送内层封装到flannel.1设备。</p>
-</li>
-<li><p>Flannel.1设备查看数据包，根据路由表匹配，将数据发送给Cni0设备。</p>
-</li>
-<li><p>Cni0匹配路由表，发送数据给网桥上对应的端口。</p>
-</li>
-</ol>
-<p>测试集群 k8s定义的flannel网络(POD CIDR) 为172.20.0.0/16。</p>
-<p>下面用用案例解释网络内不同POD间通信的一个网络实现吧</p>
-<p><img src="/images/flannel-net2.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.100 - pod1 路由</span><br><span class="line">#kubectl -n stack exec -it api-0 -- bash</span><br><span class="line">#ip route show</span><br><span class="line"></span><br><span class="line">default via 172.20.0.1 dev eth0 </span><br><span class="line">172.20.0.0&#x2F;24 dev eth0 proto kernel scope link src 172.20.0.73</span><br><span class="line">172.20.0.0&#x2F;16 via 172.20.0.1 dev eth0</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/image-20201016183244304.png" alt="image-20201016183244304"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.101 - pod2 路由</span><br><span class="line">#kubectl -n stack exec -it redis-64c6c549ff-5plcq -- bash</span><br><span class="line">#ip route show</span><br><span class="line"></span><br><span class="line">default via 172.20.1.1 dev eth0 </span><br><span class="line">172.20.0.0&#x2F;16 via 172.20.1.1 dev eth0 </span><br><span class="line">172.20.1.0&#x2F;24 dev eth0 proto kernel scope link src 172.20.1.11 </span><br></pre></td></tr></table></figure>
-
-
-<p><img src="/images/image-20201016183228551.png" alt="image-20201016183228551"></p>
-<p>由此可看出，默认POD 网卡网关走 .1 网关，而网关即为cni0 的IP，下一步分析流量到了宿主机之后的走向~~</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.100 宿主机路由</span><br><span class="line">#ip route -n</span><br><span class="line">default via 10.19.114.1 dev eth0 </span><br><span class="line">10.19.114.0&#x2F;24 dev eth0 proto kernel scope link src 10.19.114.100 </span><br><span class="line">10.250.250.0&#x2F;24 dev eth1 proto kernel scope link src 10.250.250.100 </span><br><span class="line">172.17.0.0&#x2F;16 dev docker0 proto kernel scope link src 172.17.0.1 </span><br><span class="line">172.20.0.0&#x2F;24 dev cni0 proto kernel scope link src 172.20.0.1 </span><br><span class="line">172.20.1.0&#x2F;24 via 172.20.1.0 dev flannel.1 onlink </span><br><span class="line">172.20.2.0&#x2F;24 via 172.20.2.0 dev flannel.1 onlink</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.101 宿主机路由</span><br><span class="line">#ip route -n</span><br><span class="line">default via 10.19.114.1 dev eth0 </span><br><span class="line">10.19.114.0&#x2F;24 dev eth0 proto kernel scope link src 10.19.114.101 </span><br><span class="line">10.250.250.0&#x2F;24 dev eth1 proto kernel scope link src 10.250.250.101 </span><br><span class="line">172.17.0.0&#x2F;16 dev docker0 proto kernel scope link src 172.17.0.1 </span><br><span class="line">172.20.0.0&#x2F;24 via 172.20.0.0 dev flannel.1 onlink </span><br><span class="line">172.20.1.0&#x2F;24 dev cni0 proto kernel scope link src 172.20.1.1 </span><br><span class="line">172.20.2.0&#x2F;24 via 172.20.2.0 dev flannel.1 onlink </span><br></pre></td></tr></table></figure>
-
-<p>由如上路由可知，据最小匹配原则，匹配到上面的一条路由表项。从10.19.114.100 上去往172.20.1.0/24 网段的包，发送172.20.1.0 网关，网关设备是flannel.1</p>
-<p>flannel.1为vxlan设备，当数据包来到flannel.1时，需要将数据包封装起来。此时的dst ip 为172.20.1.11，src ip为172.20.0.73。数据包继续封装需要知道172.20.1.11  ip地址对应的mac地址。此时，flannel.1不会发送arp请求去获得172.20.1.11 的mac地址，而是由Linux kernel将一个“L3 Miss”事件请求发送的用户空间的flanned程序。Flanned程序收到内核的请求事件之后，从etcd查找能够匹配该地址的子网的flannel.1设备的mac地址，即发往的pod所在host中flannel.1设备的mac地址。Flannel在为Node节点分配ip网段时记录了所有的网段和mac等信息，所以能够知道。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip neigh |grep 172</span><br><span class="line">172.20.2.0 dev flannel.1 lladdr 82:c4:0e:f2:00:6f PERMANENT</span><br><span class="line">172.20.1.0 dev flannel.1 lladdr 42:6e:8b:9b:e2:73 PERMANENT</span><br></pre></td></tr></table></figure>
-
-<p>到这里，vxlan的内层数据包就完成了封装。格式是这样的：</p>
-<p><img src="/images/2020-10-19-201025.png"></p>
-<p>VXLAN的转发过程主要依赖于FDB(Forwarding Database)实现, VXLAN设备根据MAC地址来查找相应的VTEP IP地址，继而将二层数据帧封装发送至相应VTEP。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#&#x2F;sbin&#x2F;bridge fdb show dev flannel.1</span><br><span class="line">42:6e:8b:9b:e2:73 dst 10.19.114.101 self permanent</span><br><span class="line">ba:8b:ce:f3:b8:51 dst 10.19.114.101 self permanent</span><br><span class="line">42:6f:c7:06:3e:a0 dst 10.19.114.102 self permanent</span><br><span class="line">82:c4:0e:f2:00:6f dst 10.19.114.102 self permanent</span><br></pre></td></tr></table></figure>
-
-
-
-<p>kernel需要查看node上的fdb(forwarding database)以获得内层封包中目的vtep设备所在的node地址。因为已经从arp table中查到目的设备mac地址为42:6e:8b:9b:e2:73，同时在fdb中存在该mac地址对应的node节点的IP地址。如果fdb中没有这个信息，那么kernel会向用户空间的flanned程序发起”L2 MISS”事件。flanneld收到该事件后，会查询etcd，获取该vtep设备对应的node的”Public IP“，并将信息注册到fdb中。</p>
-<p>当内核查看fdb获得了发往机器的ip地址后，arp得到mac地址，之后就能完成vxlan的外层封装。</p>
-<p><img src="/images/vxlan-flannel-2.png"></p>
-<p>具体可以通过wireshark抓包分析</p>
-<p><img src="/images/wire2020-10-19-205700.png"></p>
-<p>10.19.114.101节点的eth0网卡接收到vxlan设备包，kernal将识别出这是一个vxlan包，将包拆开之后转给节点上的flannel.1设备。这样数据包就从发送节点到达目的节点，flannel.1设备将接收到一个如下的数据包</p>
-<p><img src="/images/2020-10-19-201025.png"></p>
-<p>目的地址为172.20.1.11，到达10.19.114.101 flannel.1后查找自己的路由表，根据路由表完成转发，由下图可知，flannel.1将去往172.20.1.0/24的流量转发到cni0上去。。</p>
-<p><img src="/images/image-20201020121043455.png" alt="image-20201020121011465"></p>
-<p>查看cni0网桥信息, cni0 网络通过绑定pod 的网卡和宿主机网卡，通过veth实现通信</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#brctl show</span><br><span class="line">bridge name     bridge id               STP enabled     interfaces</span><br><span class="line">cni0            8000.a656432b14cf       no              veth1f7db117</span><br><span class="line">                                                        veth3ee31d24</span><br><span class="line">                                                        veth521bc030</span><br><span class="line">                                                        veth5a59ced4</span><br><span class="line">                                                        veth649412bd</span><br><span class="line">                                                        veth65bbf59f</span><br><span class="line">                                                        veth6ed62916</span><br><span class="line">                                                        veth7e8e7733</span><br><span class="line">                                                        veth9787b6ba</span><br><span class="line">                                                        veth98c762b8</span><br><span class="line">                                                        vethaf05d94b</span><br><span class="line">                                                        vethc07c69cd</span><br><span class="line">                                                        vethdf62bded</span><br><span class="line">                                                        vethe2cf7392</span><br><span class="line">                                                        vethf4995a29</span><br><span class="line">docker0         8000.024216a031b6       no</span><br></pre></td></tr></table></figure>
-
-
-
-<p>由下图可知 172.20.1.11 的POD 网卡 对应 link-netnsid 0</p>
-<p><img src="/images/image-20201020121943429.png" alt="image-20201020121943429"></p>
-<p>由下图可知 172.20.1.11 的POD 网卡 在宿主机上的veth 为 vethf4995a29</p>
-<p><img src="/images/image-20201020121907024.png" alt="image-20201020121907024"></p>
-<p>所以在cni0网桥上挂载的pod的veth pair为vethf4995a29 ， eth0@if21和vethf4995a29@if3组成的一对veth，pair。从而将流量注入到pod的eth0网卡上</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" data-id="ckfp8dl5a000dpg1685z56jvn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-python-用普通函数-迭代器-生成器生成斐波那契数列" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/01/04/python-%E7%94%A8%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0-%E8%BF%AD%E4%BB%A3%E5%99%A8-%E7%94%9F%E6%88%90%E5%99%A8%E7%94%9F%E6%88%90%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/" class="article-date">
-  <time datetime="2020-01-04T04:40:16.000Z" itemprop="datePublished">2020-01-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/01/04/python-%E7%94%A8%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0-%E8%BF%AD%E4%BB%A3%E5%99%A8-%E7%94%9F%E6%88%90%E5%99%A8%E7%94%9F%E6%88%90%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/">python-用普通函数,迭代器,生成器生成斐波那契数列</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/01/04/python-%E7%94%A8%E6%99%AE%E9%80%9A%E5%87%BD%E6%95%B0-%E8%BF%AD%E4%BB%A3%E5%99%A8-%E7%94%9F%E6%88%90%E5%99%A8%E7%94%9F%E6%88%90%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97/" data-id="ckiciu7az0001bg1673aygl9z" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -626,7 +638,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 17.14px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.86px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 15.71px;">go</a> <a href="/tags/grpc/" style="font-size: 11.43px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.57px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.86px;">mysql</a> <a href="/tags/openstack/" style="font-size: 15.71px;">openstack</a> <a href="/tags/python/" style="font-size: 14.29px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.71px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -635,7 +647,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -648,23 +660,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
+            <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
           </li>
         
           <li>
-            <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
+            <a href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">go-经典排序算法</a>
           </li>
         
           <li>
-            <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">go-gin 常见问题解决</a>
+            <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
           </li>
         
           <li>
-            <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/">docker-更改默认存储目录 root dir</a>
+            <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
           </li>
         
           <li>
-            <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
+            <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
           </li>
         
       </ul>
