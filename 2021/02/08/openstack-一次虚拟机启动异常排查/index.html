@@ -16,7 +16,7 @@
 <meta property="og:locale">
 <meta property="og:image" content="https://tonyzhang1989.github.io/images/openstack/fc4ccb936322f084084628c7bc65b909.png">
 <meta property="article:published_time" content="2021-02-08T06:33:16.000Z">
-<meta property="article:modified_time" content="2021-02-08T07:23:13.268Z">
+<meta property="article:modified_time" content="2021-02-08T08:46:15.441Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
@@ -112,13 +112,13 @@
 
 <p><img src="/images/openstack/fc4ccb936322f084084628c7bc65b909.png"></p>
 <p>如上图，发现，确实qemu convert 转换失败了，转完依旧是qcow2 ， 这什么鬼？</p>
-<p>定位相关同事，他的操作步骤</p>
+<p>定位相关同事，他的操作记录</p>
 <ol>
-<li>glance download 镜像 kali-self-2021.01.19.raw  （镜像是qcow2，保存成了*.raw)</li>
+<li>glance download 镜像 kali-self-2021.01.19.raw  （原始glance镜像是qcow2，他却保存成了*.raw)</li>
 <li>qemu-img convert -p -f raw -O qcow2 kali-self-2021.01.19.raw kali-self-2021.01.19.qcow2</li>
 <li>glance image-create 上传</li>
 </ol>
-<p>定位到是 qemu convert 转错了，把 qcow2 文件当成raw convert ，所以导致这个故障，Done~</p>
+<p>定位到是他 qemu convert 转错了，多转了一遍，把 qcow2 文件当成raw convert to qcow2 了，所以导致这个故障，Done~</p>
 
       
     </div>
