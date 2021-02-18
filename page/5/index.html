@@ -5,19 +5,19 @@
   
 
   
-  <title>酷客</title>
+  <title>老Zhang博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:type" content="website">
-<meta property="og:title" content="酷客">
+<meta property="og:title" content="老Zhang博客">
 <meta property="og:url" content="https://tonyzhang1989.github.io/page/5/index.html">
-<meta property="og:site_name" content="酷客">
+<meta property="og:site_name" content="老Zhang博客">
 <meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:locale">
 <meta property="article:author" content="Tonyzhang1989">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="酷客" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="老Zhang博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -39,7 +39,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">酷客</a>
+        <a href="/" id="logo">老Zhang博客</a>
       </h1>
       
     </div>
@@ -66,6 +66,183 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-记一次kubernetes-flannel-coredns-pod异常" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/" class="article-date">
+  <time datetime="2020-11-14T12:36:24.000Z" itemprop="datePublished">2020-11-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/">记一次kubernetes flannel/coredns pod异常</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+<p>某一集群，双网卡，突然很多业务POD异常，排查发现DNS无法解析，进而怀疑coredns出现了问题。。。</p>
+<p>查看coredns pod日志<br>1 reflector.go:134] github.com/coredns/coredns/plugin/kubernetes/controller.go:317: Failed to list *v1.Endpoints: Get <a target="_blank" rel="noopener" href="https://172.30.0.1/api/v1/endpoints?limit=500&amp;resourceVersion=0">https://172.30.0.1:443/api/v1/endpoints?limit=500&amp;resourceVersion=0</a>: dial tcp 172.30.0.1:443: connect: no route to host</p>
+<p>问题来了，172.30.0.1 是谁 ？</p>
+<p>想起 Kuberntes svc的cidr是 172.30.0.0/16， pod的cidr是 172.20.0.0/16</p>
+<p>由刚才那个url，判断该url为Kubeapi 的地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kubectl get svc </span><br><span class="line">kubernetes   ClusterIP   172.30.0.1     &lt;none&gt;        443&#x2F;TCP   32d</span><br></pre></td></tr></table></figure>
+
+<p>发现172.30.0.1 是kubernetes svc的地址</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#kubectl describe svc kubernetes </span><br><span class="line">发现该svc指向了三个endpoint</span><br><span class="line">10.19.114.110:6443,10.19.114.111:6443,10.19.114.112:6443</span><br></pre></td></tr></table></figure>
+
+<p>才发现这三个endpoint不对, （服务器IP已经改为 192.168.**了。。。。）</p>
+<p>原因是 什么呢？</p>
+<p>想起 eth0 换IP地址了，所以肯定和换IP地址有关。</p>
+<p>解决办法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#systemctl restart kube-controller-manager.service </span><br><span class="line">#systemctl restart kube-scheduler.service </span><br><span class="line">#systemctl restart kube-apiserver.service</span><br></pre></td></tr></table></figure>
+
+<p>改进方法：</p>
+<p>内群内部通信走 eth0网卡，不再改变eth0的IP，如需改变IP，只改eth1不改eth0</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/14/%E8%AE%B0%E4%B8%80%E6%AC%A1kubernetes-flannel-coredns-pod%E5%BC%82%E5%B8%B8/" data-id="ckhhotkf10004lk165pkccmjh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-通过ssh隧道转发本地ssh" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/" class="article-date">
+  <time datetime="2020-11-14T12:18:41.000Z" itemprop="datePublished">2020-11-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/">通过ssh隧道转发本地ssh</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>实际场景，有A服务器，位于某内网环境，没有外网IP，外面无法SSH</p>
+<p>但我自己有比如阿里云上的一台服务器B，我想直接SSH A服务器，怎么办？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">B 服务器IP 101.198.*.*</span><br><span class="line">A 服务器执行</span><br><span class="line">#ssh -R 2201:0.0.0.0:22 -p 22 USERNAME@101.198.*.* -f -N</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/" data-id="ckhhotkf20005lk162nga79ti" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-etcd-查询数据" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" class="article-date">
+  <time datetime="2020-11-14T12:07:25.000Z" itemprop="datePublished">2020-11-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>etcd2和etcd3是不兼容的，两者的api参数也不一样，详细请查看 etcdctl -h</p>
+<p>api2 使用方法<br> ETCDCTL_API=2 etcdctl ls /</p>
+<p>api3 使用方法<br> 从kubernetes 1.6开始，etcd集群使用version 3, 现在生产很多集群都是1.18的了。。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#export ETCDCTL_API&#x3D;3</span><br><span class="line">#export ETCD_ENDPOINTS&#x3D;https:&#x2F;&#x2F;192.168.132.2:2379、</span><br><span class="line">#export ETCDCTL_CACERT&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;ca.pem</span><br><span class="line">#export ETCDCTL_CERT&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;etcd.pem</span><br><span class="line">#export ETCDCTL_KEY&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;etcd-key.pem</span><br><span class="line">#etcdctl --endpoints&#x3D;$&#123;ETCD_ENDPOINTS&#125; --cacert&#x3D;$&#123;ETCDCTL_CACERT&#125; --cert&#x3D;$&#123;ETCDCTL_CERT&#125; --key&#x3D;$&#123;ETCDCTL_KEY&#125; get &#x2F; --prefix --keys-only&#x3D;true</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查看某个具体的key的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#etcdctl --endpoints&#x3D;$&#123;ETCD_ENDPOINTS&#125; --cacert&#x3D;$&#123;ETCDCTL_CACERT&#125; --cert&#x3D;$&#123;ETCDCTL_CERT&#125; --key&#x3D;$&#123;ETCDCTL_KEY&#125; get &#x2F;registry&#x2F;services&#x2F;endpoints&#x2F;default&#x2F;kubernetes --keys-only&#x3D;false</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" data-id="ckhhotkek0000lk16h5ouaoiq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-网络虚拟化-通过macvlan-虚拟出新网卡" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -497,177 +674,11 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-gin-自定义成功失败response输出" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/09/gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%88%90%E5%8A%9F%E5%A4%B1%E8%B4%A5response%E8%BE%93%E5%87%BA/" class="article-date">
-  <time datetime="2020-11-09T01:32:41.000Z" itemprop="datePublished">2020-11-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/09/gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%88%90%E5%8A%9F%E5%A4%B1%E8%B4%A5response%E8%BE%93%E5%87%BA/">gin 自定义成功失败response输出</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>gin框架，自定义成功返回，错误返回输出</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">package response</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;github.com&#x2F;gin-gonic&#x2F;gin&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">type SuccessResponse struct &#123;</span><br><span class="line">	Code int         &#96;json:&quot;code&quot;&#96;</span><br><span class="line">	Msg  string      &#96;json:&quot;msg&quot;&#96;</span><br><span class="line">	Data interface&#123;&#125; &#96;json:&quot;data&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">func SuccessRsp(ctx *gin.Context, data interface&#123;&#125;) &#123;</span><br><span class="line">	res :&#x3D; SuccessResponse&#123;</span><br><span class="line">		Code: 0,</span><br><span class="line">		Msg:  &quot;success&quot;,</span><br><span class="line">		Data: data,</span><br><span class="line">	&#125;</span><br><span class="line">	ctx.JSON(http.StatusOK, res)</span><br><span class="line">&#125;</span><br><span class="line">type Error struct &#123;</span><br><span class="line">	HttpCode int         &#96;json:&quot;-&quot;&#96;</span><br><span class="line">	Code     int         &#96;json:&quot;code&quot;&#96; &#x2F;&#x2F; 这个是业务层的错误号，非Http Status Code</span><br><span class="line">	Msg   interface&#123;&#125; &#96;json:&quot;msg&quot;&#96;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">type Response struct &#123;</span><br><span class="line">	Error    *Error</span><br><span class="line">	Data interface&#123;&#125; &#96;json:&quot;data&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">func ErrorRsp(c *gin.Context, rsp *Response) &#123;</span><br><span class="line">	if rsp.Error!&#x3D;nil &#123;</span><br><span class="line">		c.JSON(rsp.Error.HttpCode, rsp.Error)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	c.JSON(rsp.Error.HttpCode,rsp.Data)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if ptype &#x3D;&#x3D; &quot;&quot; &#123;</span><br><span class="line">		response.ErrorRsp(c,&amp;response.Response&#123;Error: &amp;response.Error&#123;HttpCode: 200,Code: 400000,Msg: &quot;参数输入错误!&quot;&#125;,Data: &quot;&quot;&#125;)</span><br><span class="line">	&#125;else&#123;</span><br><span class="line">		response.SuccessRsp(c,ptype)</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/09/gin-%E8%87%AA%E5%AE%9A%E4%B9%89%E6%88%90%E5%8A%9F%E5%A4%B1%E8%B4%A5response%E8%BE%93%E5%87%BA/" data-id="ckhg7z9c60000do16h7ly2w0y" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubeproy-iptables转发规则" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/06/kubeproy-iptables%E8%BD%AC%E5%8F%91%E8%A7%84%E5%88%99/" class="article-date">
-  <time datetime="2020-11-06T04:47:33.000Z" itemprop="datePublished">2020-11-06</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/06/kubeproy-iptables%E8%BD%AC%E5%8F%91%E8%A7%84%E5%88%99/">kubeproy-iptables转发规则</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Global site tag (gtag.js) - Google Analytics --&gt;</span><br><span class="line">&lt;script async src&#x3D;&quot;https:&#x2F;&#x2F;www.googletagmanager.com&#x2F;gtag&#x2F;js?id&#x3D;G-XBYBL322DY&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  window.dataLayer &#x3D; window.dataLayer || [];</span><br><span class="line">  function gtag()&#123;dataLayer.push(arguments);&#125;</span><br><span class="line">  gtag(&#39;js&#39;, new Date());</span><br><span class="line"></span><br><span class="line">  gtag(&#39;config&#39;, &#39;G-XBYBL322DY&#39;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="kubernetes的Kube-proxy的iptables转发规则"><a href="#kubernetes的Kube-proxy的iptables转发规则" class="headerlink" title="kubernetes的Kube-proxy的iptables转发规则"></a>kubernetes的Kube-proxy的iptables转发规则</h4><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>kube-proxy 实际上并不起一个 proxy 的作用，而是 watch 变更并更新 iptables，也就是说，client 的请求直接通过 iptables 路由。</p>
-<p>如果kube-proxy通过iptables 转发。会修改filter和nat表</p>
-<h3 id="filter表"><a href="#filter表" class="headerlink" title="filter表"></a>filter表</h3><p>filter表通过OUTPUT链规定所有的出报文都要经过KUBE-SERVICES，如果一个Service没有对应的endpoint，则拒绝将报文发出。<br><img src="https://img-blog.csdnimg.cn/20190601230814876.png" alt="在这里插入图片描述"><br>例如,创建一个service,下图的frontend,没有对应的endPoint<br><img src="https://img-blog.csdnimg.cn/20190601231058692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p>查看filter:<code>iptables -L -n -t filter</code><br><img src="https://img-blog.csdnimg.cn/20190601231151650.png" alt="在这里插入图片描述"><br>filter表中会将访问172.18.13.31的请求拒绝。</p>
-<h3 id="nat表"><a href="#nat表" class="headerlink" title="nat表"></a>nat表</h3><p>nat表中设置的规则比较多，查看nat表命令:<code>iptables -L -n -t nat</code></p>
-<p>1、在PREROUTING阶段，将所有报文转发到KUBE-SERVICES</p>
-<p>2、在OUTPUT阶段，将所有报文转发到KUBE-SERVICES</p>
-<p>3、在POSTROUTING阶段，将所有报文转发到KUBE-POSTROUTING</p>
-<p>nat表中主要增加了如下几个链-规则</p>
-<h5 id="1）KUBE-SERVICES"><a href="#1）KUBE-SERVICES" class="headerlink" title="1）KUBE-SERVICES"></a>1）KUBE-SERVICES</h5><p><img src="https://img-blog.csdnimg.cn/20190601231234121.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>每个Service的每个服务端口都会在Chain KUBE-SERVICES中有一条对应的规则，发送到clusterIP的报文，将会转发到对应的Service的规则链，没有命中ClusterIP的，转发到KUBE-NODEPORTS。</p>
-<p>只有发送到被kubernetes占用的端口的报文才会进入KUBE-MARK-MASQ打上标记，并转发到对应的服务规则链。例如第一条划线的KUBE-MARK-MASQ这里分配给SERVICE的端口是3306，该端口的包由kuberentes管理.</p>
-<h5 id="2）KUBE-SVC-YG65S75AKNCDZRSF-2-references"><a href="#2）KUBE-SVC-YG65S75AKNCDZRSF-2-references" class="headerlink" title="2）KUBE-SVC-YG65S75AKNCDZRSF (2 references)"></a>2）KUBE-SVC-YG65S75AKNCDZRSF (2 references)</h5><p><img src="https://img-blog.csdnimg.cn/20190601231314375.png" alt="在这里插入图片描述"><br>而每一个SERVICE，又将报文提交到了各自的KUBE-SEP-XXX。</p>
-<h5 id="3）KUBE-SEP-VFIT54JSXZ4WRSH5-1-references"><a href="#3）KUBE-SEP-VFIT54JSXZ4WRSH5-1-references" class="headerlink" title="3）KUBE-SEP-VFIT54JSXZ4WRSH5 (1 references)"></a>3）KUBE-SEP-VFIT54JSXZ4WRSH5 (1 references)<img src="https://img-blog.csdnimg.cn/20190601232926250.png" alt="在这里插入图片描述"></h5><p>最后在KUBE-SEP-XX中完整了最终的DNAT，将目的地址转换成了POD的IP和端口。<br>这里的KUBE-MARK-MASQ为报文打上了标记，表示这个报文是由kubernetes管理的，Kuberntes将会对它进行NAT转换。</p>
-<h5 id="4）KUBE-NODEPORTS-1-references"><a href="#4）KUBE-NODEPORTS-1-references" class="headerlink" title="4）KUBE-NODEPORTS (1 references)"></a>4）KUBE-NODEPORTS (1 references)</h5><p><img src="https://img-blog.csdnimg.cn/20190601231409974.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>KUBE-NODEPORT中，根据目的端口，将报文转发到对应的Service的规则链，然后就如同在“Chain KUBE-SERVICES”中的过程，将报文转发到了对应的POD。</p>
-<h5 id="5）KUBE-POSTROUTING-1-references"><a href="#5）KUBE-POSTROUTING-1-references" class="headerlink" title="5）KUBE-POSTROUTING (1 references)"></a>5）KUBE-POSTROUTING (1 references)</h5><p><img src="https://img-blog.csdnimg.cn/20190601231436843.png" alt="在这里插入图片描述"><br>这里表示k8s管理的报文(也就是被标记了0x4000的报文)，在离开Node（物理机）的时候需要进行SNAT转换。</p>
-<p>也就是POD发出的报文。</p>
-<h3 id="报文处理流程图"><a href="#报文处理流程图" class="headerlink" title="报文处理流程图"></a>报文处理流程图</h3><h4 id="集群内部通过clusterIP访问到pod的流程"><a href="#集群内部通过clusterIP访问到pod的流程" class="headerlink" title="集群内部通过clusterIP访问到pod的流程"></a>集群内部通过clusterIP访问到pod的流程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">                                      (KUBE-SVC@nat)              </span><br><span class="line">               (KUBE-SERVICES         +-&gt;SVC1</span><br><span class="line">  OUTPUT        @filter,nat)           |             (KUBE-SEP@nat)</span><br><span class="line">   PKT  -----&gt;命中ClusterIP ----------+-&gt;SVC2 --&gt;SEP1,Mark0x0400,DNAT</span><br><span class="line">          |                           |                 |</span><br><span class="line">          |                           +-&gt;SVC3           |</span><br><span class="line">          |                                             |</span><br><span class="line">          |                                             |</span><br><span class="line">          |              +-----------------+            | </span><br><span class="line">          +------------&gt; |   POSTROUTING   | &lt;----------+</span><br><span class="line">                         +--------+--------+</span><br><span class="line">                                  |         </span><br><span class="line">                                  |         </span><br><span class="line">                          match 0x0400，SNAT@nat                 </span><br><span class="line">                                  |</span><br><span class="line">                                  |</span><br><span class="line">                                 网卡 </span><br><span class="line">1234567891011121314151617</span><br></pre></td></tr></table></figure>
-
-<p>也可以理解为从Node发出的报文的处理过程。因为这个数据包是通过本地协议发出的，然后需要更改NAT表，那么k8s就在OUTPUT这个链上来动手。</p>
-<h5 id="例1：在集群内部通过ClusterIP-pod端口访问相应的pod"><a href="#例1：在集群内部通过ClusterIP-pod端口访问相应的pod" class="headerlink" title="例1：在集群内部通过ClusterIP:pod端口访问相应的pod"></a>例1：在集群内部通过ClusterIP:pod端口访问相应的pod</h5><p>本例子中ClusterIP为172.18.13.113，对应的pod容器的端口为8080，对应两个pod。</p>
-<p>访问命令为curl 172.18.13.113:8082<br><img src="https://img-blog.csdnimg.cn/201906012315485.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>1、经过OUTPUT链时指出报文要经过KUBE-SERVICES<br><img src="https://img-blog.csdnimg.cn/20190601231611283.png" alt="在这里插入图片描述"><br>2、在KUBE-SERVICES链查找到ClusterIP-172.18.13.113，于是转发到链KUBE-SVC-YG65S75AKNCDZRSF<br><img src="https://img-blog.csdnimg.cn/20190601231627799.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>3、在KUBE-SVC-YG65S75AKNCDZRSF链中，因为该clusterIP对应两个pod,所有该链下有两条规则，同时实现第一条规则的概率为0.5。<br><img src="https://img-blog.csdnimg.cn/20190601231655262.png" alt="在这里插入图片描述"><br>4、假设我们转到了链KUBE-SEP-3BN22EQZG75AYFUY，在该链中对这个包进行了一次DNAT转换,转到172.17.9.2中，即pod的ip地址。<br><img src="https://img-blog.csdnimg.cn/20190601231720591.png" alt="在这里插入图片描述"></p>
-<h4 id="通过外部nodeport访问后端pod的流程"><a href="#通过外部nodeport访问后端pod的流程" class="headerlink" title="通过外部nodeport访问后端pod的流程"></a>通过外部nodeport访问后端pod的流程</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">                                                   (KUBE-SVC@nat)              </span><br><span class="line">                                                     +-&gt;SVC1</span><br><span class="line">                (KUBE-SERVICES@nat)                  |           (KUBE-SEP@nat)</span><br><span class="line">            +---&gt;命中ClusterIP   --------------------+-&gt;SVC2 --&gt;SEP1,Mark0x0400,DNAT</span><br><span class="line">PREROUTING  |                              ^         |                 |</span><br><span class="line">    PKT  --&gt;|                              |         +-&gt;SVC3           |</span><br><span class="line">            |                              |                           |</span><br><span class="line">            +---&gt;未命中ClusterIP ---&gt;命中服务端口                         |       </span><br><span class="line">                                  |                                    |       </span><br><span class="line">                                  +-&gt;未命中服务端口                      |       </span><br><span class="line">                                           |                           |       </span><br><span class="line">                                           |                           |</span><br><span class="line">                                         +-----------------------------+</span><br><span class="line">                                         |         INPUT               |--&gt; END</span><br><span class="line">                                         +-----------------------------+</span><br><span class="line">123456789101112131415</span><br></pre></td></tr></table></figure>
-
-<p>也可以理解为发送到Node的报文的处理过程</p>
-<h5 id="例2：我们在集群外的机器通过pod暴露的端口30002访问相应的pod"><a href="#例2：我们在集群外的机器通过pod暴露的端口30002访问相应的pod" class="headerlink" title="例2：我们在集群外的机器通过pod暴露的端口30002访问相应的pod."></a>例2：我们在集群外的机器通过pod暴露的端口30002访问相应的pod.</h5><p>其中集群外机器IP为172.18.52.170，pod所在机器为192.168.204.144，暴露在该机器的端口为30002。</p>
-<p>访问命令为curl 192.168.204.144:30002<br><img src="https://img-blog.csdnimg.cn/20190601231740952.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>1、集群外机器172.18.52.170根据路由规则将数据包发送到pod所在机器192.168.204.144。</p>
-<p>2、数据包进入了pod所在的机器，所以k8s对该机器nat表的PREROUTING链做规则。链时指出报文要经过KUBE-SERVICES。<br><img src="https://img-blog.csdnimg.cn/20190601231804742.png" alt="在这里插入图片描述"><br>3、把数据包转到KUBE-SERVICES这个链之后，因为我们是通过nodeport访问的，所有没有匹配到clusterIP，转到KUBE-NODEPORTS链上。<br><img src="https://img-blog.csdnimg.cn/20190601231824625.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>4、KUBE-NODEPORTS还是将数据包转到KUBE-SVC-VZEERQ5BHBSZ5PRL上，打上标签。再转到KUBE-SVC-YG65S75AKNCDZRSF链中，DNAT转换。<br><img src="https://img-blog.csdnimg.cn/20190601231844260.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2MTgzOTM1,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/06/kubeproy-iptables%E8%BD%AC%E5%8F%91%E8%A7%84%E5%88%99/" data-id="ckicwspgx0000hk162lf9eilm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-neutron-qos-限速虚拟机" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/04/neutron-qos-%E9%99%90%E9%80%9F%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="article-date">
-  <time datetime="2020-11-04T10:15:25.000Z" itemprop="datePublished">2020-11-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/04/neutron-qos-%E9%99%90%E9%80%9F%E8%99%9A%E6%8B%9F%E6%9C%BA/">neutron qos 限速虚拟机</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通过neutron qos限制虚机上下行带宽</p>
-<ol>
-<li>首先neutron相关配置中启用qos扩展</li>
-<li>配置规则</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#source admin-openrc.sh</span><br><span class="line">查询虚机的port</span><br><span class="line">#neutron port-list --device_id ddab3bd7-adb6-4907-85ff-17c4ceb4c0e6   </span><br><span class="line">创建qos 策略</span><br><span class="line">#neutron qos-policy-create demo-bw-limiter</span><br><span class="line">创建策略规则，限制上下行带宽</span><br><span class="line">#openstack network qos rule create --type bandwidth-limit --max-kbps 10000 --max-burst-kbits 10000 --ingress demo-bw-limiter</span><br><span class="line">#openstack network qos rule create --type bandwidth-limit --max-kbps 10000 --max-burst-kbits 10000 --egress demo-bw-limiter</span><br><span class="line"></span><br><span class="line">更新端口指定qos为 demo-bw-limiter</span><br><span class="line">#neutron port-update 769a9e59-e721-4ea8-807b-985d38d6447e  --qos-policy demo-bw-limiter</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>更多请了解 <code>linux tc</code> </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/04/neutron-qos-%E9%99%90%E9%80%9F%E8%99%9A%E6%8B%9F%E6%9C%BA/" data-id="ckh48kl2100011w16d9by3qur" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/4/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/6/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -691,7 +702,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 15.56px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.89px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.78px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.22px;">mysql</a> <a href="/tags/openstack/" style="font-size: 16.67px;">openstack</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 14.44px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -713,23 +724,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/">go-字符串转成byte数组，会发生内存拷贝吗？</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/">go-简单聊聊内存逃逸</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
           </li>
         
           <li>
             <a href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">go-经典排序算法</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
           </li>
         
       </ul>

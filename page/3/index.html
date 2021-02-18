@@ -5,19 +5,19 @@
   
 
   
-  <title>酷客</title>
+  <title>老Zhang博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:type" content="website">
-<meta property="og:title" content="酷客">
+<meta property="og:title" content="老Zhang博客">
 <meta property="og:url" content="https://tonyzhang1989.github.io/page/3/index.html">
-<meta property="og:site_name" content="酷客">
+<meta property="og:site_name" content="老Zhang博客">
 <meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:locale">
 <meta property="article:author" content="Tonyzhang1989">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="酷客" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="老Zhang博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -39,7 +39,7 @@
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">酷客</a>
+        <a href="/" id="logo">老Zhang博客</a>
       </h1>
       
     </div>
@@ -66,6 +66,164 @@
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-vim-报错E437" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" class="article-date">
+  <time datetime="2020-12-28T02:13:11.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/">vim 报错E437</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>E437: terminal capability “cm” required</p>
+<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
+<p>解决办法：</p>
+<p>执行export TERM=xterm;</p>
+<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
+<p>或者</p>
+<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
+<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" data-id="ckj7xix5v0007u816ftf2ccvc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mariadb-常见故障解决" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" class="article-date">
+  <time datetime="2020-12-23T08:46:42.000Z" itemprop="datePublished">2020-12-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/">mariadb 常见故障解决</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="常见mariadb-故障解决"><a href="#常见mariadb-故障解决" class="headerlink" title="常见mariadb 故障解决"></a>常见mariadb 故障解决</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 启动异常</span><br><span class="line">sed -i &#39;s#safe_to_bootstrap: 0#safe_to_bootstrap: 1#&#39; &#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;mariadb&#x2F;_data&#x2F;grastate.dat</span><br><span class="line"></span><br><span class="line">2. galera cluster 启动一个节点时出现this member has applied more events than the primary component.Data loss is possible. Aborting.</span><br><span class="line">解决：</span><br><span class="line"></span><br><span class="line">cd &#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line"></span><br><span class="line">rm grastate.dat ib_log* -f</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用kolla安装的openstack-mariadb为集群所有节点无法启动"><a href="#使用kolla安装的openstack-mariadb为集群所有节点无法启动" class="headerlink" title="使用kolla安装的openstack mariadb为集群所有节点无法启动"></a>使用kolla安装的openstack mariadb为集群所有节点无法启动</h1><p>转载<a target="_blank" rel="noopener" href="https://me.csdn.net/weixin_30301449">R芮R</a> 最后发布于2018-08-20 22:31:00 阅读数 228 收藏</p>
+<p>展开</p>
+<p>当在做测试时，把所有的openstack节点都关机，再开启做测试时，发现mariadb galera集群启不来，相当于所有的mariadb集群都停止了（跟所有节点断电情况相似），这时候怎么办呢，重新建立galera集群</p>
+<p>方法1：、如果集群中的机器全部重启，如机房断电，第一台启动的服务器必须以空地址启动</p>
+<p>编辑第一个控制节点的 cat /etc/kolla/mariadb/config.json</p>
+<p>…</p>
+<p>“command”: “/usr/bin/mysqld_safe –wsrep_cluster_address=gcomm://“,</p>
+<p>…</p>
+<p>方法2：</p>
+<p>选择节点一个mariadb节点，修改安全启动状态。</p>
+<p>sed -i ‘s/safe_to_bootstrap: 0/safe_to_bootstrap: 1/g’  /var/lib/docker/volumes/mariadb/_data/grastate.dat</p>
+<p>grep “New cluster view” /var/lib/docker/volumes/kolla_logs/_data/mariadb/mariadb.log |awk  -F: ‘END { print $1”:”$2”:”$3 $6”:”$7}’   # 显示如下，显示序列号</p>
+<p>180822 21:45:32 [Note] WSREP 05d50ff4-a17b-11e8-8cfc-02fd70253581:140645, view# -1</p>
+<p>修改seqno:-1</p>
+<p>重启这个mariadb容器</p>
+<p>docker restart mariadb</p>
+<p>接着接入这个容器</p>
+<p>docker exec -it mariadb /bin/bash</p>
+<p>执行mysqld_safe –wsrep-new-cluster</p>
+<p>然后再重启其他的docker节点</p>
+<p>为能正常启动 galera集群，最好正常关闭mariadb docker，命令docker stop mariadb</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" data-id="ckj7xix5i0000u816520b36li" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-shell-经典常用命令宝典" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/" class="article-date">
+  <time datetime="2020-12-23T02:04:19.000Z" itemprop="datePublished">2020-12-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/">shell-经典常用命令宝典</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>清空某目录下所有日志文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#find &#x2F;var&#x2F;log&#x2F;kolla&#x2F; -type f -name &quot;*.log*&quot; -exec cp &#x2F;dev&#x2F;null &#123;&#125; 2&gt;&amp;1 \;  </span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>网卡路由 IP 设置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#ip link set eth0 up             # 开启网卡</span><br><span class="line">#ip link set eth0 promisc on      # 开启网卡的混合模式</span><br><span class="line">#ip link set eth0 promisc offi    # 关闭网卡的混个模式</span><br><span class="line">#ip link set eth0 txqueuelen 1200 # 设置网卡队列长度</span><br><span class="line">#ip link set eth0 mtu 1400        # 设置网卡最大传输单元</span><br><span class="line">#ip addr add 192.168.0.1&#x2F;24 dev eth0 # 设置eth0网卡IP地址192.168.0.1</span><br><span class="line">#ip route add 192.168.4.0&#x2F;24  via  192.168.0.254 dev eth0 # 设置192.168.4.0网段的网关为192.168.0.254,数据走eth0接口</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/" data-id="ckj7xix5u0005u816dlaefi1r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-go-Linux源码安装go" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -429,222 +587,11 @@
 
 
   
-    <article id="post-ovs-ovn-虚拟化学习整理-五" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/" class="article-date">
-  <time datetime="2020-12-03T03:21:39.000Z" itemprop="datePublished">2020-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/">ovs/ovn 虚拟化学习整理(五)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="OVN-L3-NAT出外网-fip方案"><a href="#OVN-L3-NAT出外网-fip方案" class="headerlink" title="OVN-L3 NAT出外网/fip方案"></a>OVN-L3 NAT出外网/fip方案</h3><p>参考网上，TOPO是这么个意思~</p>
-<p><img src="/images/ovn/OVN-network-fig-2.png"></p>
-<p>正如上面所看到的，我们添加了以下新组件：</p>
-<ul>
-<li>OVN网关路由器（edge1）</li>
-<li>逻辑交换机（transit），用于连接edge1和tenant1路由器</li>
-<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
-</ul>
-<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层<del>~</del></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">    physical network</span><br><span class="line">         |</span><br><span class="line">      outside(sw)</span><br><span class="line">         |          &lt;10.127.0.129&#x2F;25&gt;</span><br><span class="line">       edge1(gr)    &lt;172.16.255.1&#x2F;30&gt;                     physical network</span><br><span class="line">         |                                                    &#x2F;</span><br><span class="line">     transit(join sw)                                        out(sw)</span><br><span class="line">         |          &lt;172.16.255.2&#x2F;30&gt;                        &#x2F;   &lt;10.127.1.2&#x2F;24&gt;       </span><br><span class="line">      tenant1(dr)   &lt;172.16.255.129&#x2F;26，172.16.255.193&#x2F;26&gt;</span><br><span class="line">     &#x2F;        \</span><br><span class="line">  dmz(sw)    inside(sw)</span><br><span class="line">  &#x2F;  |  \       &#x2F;  \</span><br><span class="line">vm1 vm2 vm5   vm3 vm</span><br></pre></td></tr></table></figure>
-
-
-
-<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，当网络节点用吧）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn/ovn-15.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;test options:classis&#x3D;2e4ad154-ca2d-482f-bf09-5187280f9b6c</span><br></pre></td></tr></table></figure>
-
-<p>创建逻辑中转交换机用于连接edge1和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器， 没准将来这块社区能够优化掉~</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl ls-add switch-transit</span><br></pre></td></tr></table></figure>
-
-<p>联通路由器edge1和逻辑交换机transit上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-edge1 edge1-transit 02:d4:1d:8c:d7:ae 192.168.0.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-edge1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-edge1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-edge1 02:d4:1d:8c:d7:ae</span><br><span class="line">#ovn-nbctl lsp-set-options transit-edge1 router-port&#x3D;edge1-transit</span><br></pre></td></tr></table></figure>
-
-<p>联通路由器tenant1到逻辑交换机transit上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-tenant1 tenant1-transit 02:d4:1d:8c:d9:af 192.168.0.2&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add switch-transit transit-tenant1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-tenant1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-tenant1 02:d4:1d:8c:d9:af</span><br><span class="line">#ovn-nbctl lsp-set-options transit-tenant1 router-port&#x3D;tenant1-transit</span><br></pre></td></tr></table></figure>
-
-
-
-<p>添加静态路由</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.250.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-edge1 &quot;172.16.251.0&#x2F;24&quot; 192.168.0.2</span><br><span class="line">#ovn-nbctl lr-route-add router-tenant1 &quot;0.0.0.0&#x2F;0&quot; 192.168.0.1</span><br><span class="line">#ovn-nbctl lr-route-list router-edge1</span><br><span class="line">#ovn-nbctl lr-route-list router-tenant1</span><br></pre></td></tr></table></figure>
-
-<p>测试连通性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns2 ping -c 2 192.168.0.1</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/" data-id="cki8ehl7w0000d4169ynghj7g" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ovs-ovn-虚拟化学习整理-四" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/" class="article-date">
-  <time datetime="2020-12-02T08:07:57.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/">ovs/ovn 虚拟化学习整理(四)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<h3 id="OVN-L3-VPC网关"><a href="#OVN-L3-VPC网关" class="headerlink" title="OVN-L3 VPC网关"></a>OVN-L3 VPC网关</h3><p>上图吧，打通三层路由</p>
-<p><img src="/images/ovn/ovn-10.png"></p>
-<h4 id="central"><a href="#central" class="headerlink" title="central"></a>central</h4><p>创建租户路由器</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-add router-tenant1</span><br></pre></td></tr></table></figure>
-
-<p>联通路由器tenant1到logicswitch_01</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-tenant1 tenant1-logicswitch_01 02:d4:1d:8c:d9:8a 172.16.250.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 logicswitch_01-tenant1</span><br><span class="line">#ovn-nbctl lsp-set-type logicswitch_01-tenant1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses logicswitch_01-tenant1 02:d4:1d:8c:d9:8a</span><br><span class="line">#ovn-nbctl lsp-set-options logicswitch_01-tenant1 router-port&#x3D;tenant1-logicswitch_01</span><br></pre></td></tr></table></figure>
-
-<p>联通路由器tenant1到logicswitch_02</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-tenant1 tenant1-logicswitch_02 02:d4:1d:8c:d9:8b 172.16.251.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 logicswitch_02-tenant1</span><br><span class="line">#ovn-nbctl lsp-set-type logicswitch_02-tenant1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses logicswitch_02-tenant1 02:d4:1d:8c:d9:8b</span><br><span class="line">#ovn-nbctl lsp-set-options logicswitch_02-tenant1 router-port&#x3D;tenant1-logicswitch_02</span><br></pre></td></tr></table></figure>
-
-<p>VPC 到网关已打通<del>~</del></p>
-<p><img src="/images/ovn/ovn-11.png"></p>
-<p><img src="/images/ovn/ovn-12.png"></p>
-<p>接下来完全打通172.16.250.0/24 和 172.16.251.0/24</p>
-<h4 id="node"><a href="#node" class="headerlink" title="node"></a>node</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns2 route add default gw 172.16.250.1</span><br><span class="line">#ip netns exec ns11 route add default gw 172.16.251.1</span><br><span class="line"></span><br><span class="line">#ip netns exec ns3 route add default gw 172.16.250.1</span><br><span class="line">#ip netns exec ns22 route add default gw 172.16.251.1</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/ovn/ovn-13.png"></p>
-<p>至此，已通过逻辑路由器，打通两个逻辑交换机下的两个VPC网络~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E5%9B%9B/" data-id="cki76um6800020k1656x8be8y" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ovs-ovn-虚拟化学习整理-三" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%89/" class="article-date">
-  <time datetime="2020-12-02T07:04:02.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%89/">ovs/ovn 虚拟化学习整理(三)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<h4 id="OVN-L2-网络"><a href="#OVN-L2-网络" class="headerlink" title="OVN-L2 网络"></a>OVN-L2 网络</h4><p>定义逻辑网络:创建一个逻辑交换机，然后添加两个交换机端口，并为端口设置物理地址，测试二层联通性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#export vm1_mac&#x3D;02:d4:1d:8c:d9:8f</span><br><span class="line">#export vm2_mac&#x3D;02:d4:1d:8c:d9:8e</span><br><span class="line">#export vm3_mac&#x3D;02:d4:1d:8c:d9:8d</span><br><span class="line">#export vm1_ip&#x3D;172.16.250.11</span><br><span class="line">#export vm2_ip&#x3D;172.16.250.22</span><br><span class="line">#export vm3_ip&#x3D;172.16.250.33</span><br><span class="line">#export vm11_mac&#x3D;02:d4:1d:8c:d8:8f</span><br><span class="line">#export vm22_mac&#x3D;02:d4:1d:8c:d8:8e</span><br><span class="line">#export vm11_ip&#x3D;172.16.251.11</span><br><span class="line">#export vm22_ip&#x3D;172.16.251.22</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl ls-add logicswitch_01</span><br><span class="line">#ovn-nbctl ls-add logicswitch_02</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 ls1-vm1</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls1-vm1 $vm1_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls1-vm1 $vm1_mac</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 ls1-vm2</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls1-vm2 $vm2_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls1-vm2 $vm2_mac</span><br><span class="line">---------------------------------------------------------------------------------------</span><br><span class="line">#ovn-nbctl ls-add logicswitch_02</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 ls2-vm11</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls2-vm11 $vm11_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls2-vm11 $vm11_mac</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 ls2-vm22</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls2-vm22 $vm22_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls2-vm22 $vm22_mac</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn/ovn-4.png"></p>
-<p>伪造虚拟机:创建网络命名空间，并在br-int上添加端口，然后将端口添加到命名空间，最后通过设置端口的MAC地址和网卡名完成和交换机端口的映射</p>
-<h5 id="central节点-1"><a href="#central节点-1" class="headerlink" title="central节点"></a>central节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#ip netns add ns1</span><br><span class="line">#ovs-vsctl add-port br-int qvo-vm1 -- set interface qvo-vm1 type&#x3D;internal</span><br><span class="line">#ip link set qvo-vm1 netns ns1</span><br><span class="line">#ip netns exec ns1 ip link set qvo-vm1 address $vm1_mac</span><br><span class="line">#ip netns exec ns1 ip addr add $vm1_ip&#x2F;24 dev qvo-vm1</span><br><span class="line">#ip netns exec ns1 ip link set qvo-vm1 up</span><br><span class="line">#ovs-vsctl set Interface qvo-vm1 external_ids:iface-id&#x3D;ls1-vm1</span><br><span class="line">#ip netns exec ns1 ip addr show</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="node1节点"><a href="#node1节点" class="headerlink" title="node1节点"></a>node1节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#ip netns add ns2</span><br><span class="line">#ovs-vsctl add-port br-int qvo-vm2 -- set interface qvo-vm2 type&#x3D;internal</span><br><span class="line">#ip link set qvo-vm2 netns ns2</span><br><span class="line">#ip netns exec ns2 ip link set qvo-vm2 address $vm2_mac</span><br><span class="line">#ip netns exec ns2 ip addr add $vm2_ip&#x2F;24 dev qvo-vm2</span><br><span class="line">#ip netns exec ns2 ip link set qvo-vm2 up</span><br><span class="line">#ovs-vsctl set Interface qvo-vm2 external_ids:iface-id&#x3D;ls1-vm2</span><br><span class="line">#ip netns exec ns2 ip addr show</span><br><span class="line"></span><br><span class="line">#ip netns exec ns2 ping 172.16.250.11</span><br><span class="line"></span><br><span class="line">--------------------------------------------------------------------------</span><br><span class="line">#ip netns add ns11</span><br><span class="line">#ovs-vsctl add-port br-int qvo-vm11 -- set interface qvo-vm11 type&#x3D;internal</span><br><span class="line">#ip link set qvo-vm11 netns ns11</span><br><span class="line">#ip netns exec ns11 ip link set qvo-vm11 address $vm11_mac</span><br><span class="line">#ip netns exec ns11 ip addr add $vm11_ip&#x2F;24 dev qvo-vm11</span><br><span class="line">#ip netns exec ns11 ip link set qvo-vm11 up</span><br><span class="line">#ovs-vsctl set Interface qvo-vm11 external_ids:iface-id&#x3D;ls1-vm11</span><br><span class="line">#ip netns exec ns11 ip addr show</span><br><span class="line">#ip netns exec ns11 ifup lo</span><br><span class="line">#ip netns exec ns11 ping 172.16.251.11  #如果lo没启动，ping自己不通</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/ovn/ovn-6.png"></p>
-<h5 id="node2节点"><a href="#node2节点" class="headerlink" title="node2节点"></a>node2节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#ip netns add ns3</span><br><span class="line">#ovs-vsctl add-port br-int qvo-vm3 -- set interface qvo-vm3 type&#x3D;internal</span><br><span class="line">#ip link set qvo-vm3 netns ns3</span><br><span class="line">#ip netns exec ns3 ip link set qvo-vm3 address $vm3_mac</span><br><span class="line">#ip netns exec ns3 ip addr add $vm3_ip&#x2F;24 dev qvo-vm3</span><br><span class="line">#ip netns exec ns3 ip link set qvo-vm3 up</span><br><span class="line">#ovs-vsctl set Interface qvo-vm3 external_ids:iface-id&#x3D;ls1-vm3</span><br><span class="line">#ip netns exec ns3 ip addr show</span><br><span class="line"></span><br><span class="line">#ip netns exec ns3 ping 172.16.250.22</span><br><span class="line">#ip netns exec ns3 ping 172.16.250.11</span><br><span class="line">--------------------------------------------------------------------------------</span><br><span class="line">#ip netns add ns22</span><br><span class="line">#ovs-vsctl add-port br-int qvo-vm22 -- set interface qvo-vm22 type&#x3D;internal</span><br><span class="line">#ip link set qvo-vm22 netns ns22</span><br><span class="line">#ip netns exec ns22 ip link set qvo-vm22 address $vm22_mac</span><br><span class="line">#ip netns exec ns22 ip addr add $vm22_ip&#x2F;24 dev qvo-vm22</span><br><span class="line">#ip netns exec ns22 ip link set qvo-vm22 up</span><br><span class="line">#ovs-vsctl set Interface qvo-vm22 external_ids:iface-id&#x3D;ls2-vm22</span><br><span class="line">#ip netns exec ns22 ip addr show</span><br><span class="line">#ip netns exec ns22 ifup lo</span><br><span class="line"></span><br><span class="line">#ip netns exec ns22 ping 172.16.251.22</span><br><span class="line">#ip netns exec ns22 ping 172.16.251.11</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn/ovn-7.png"></p>
-<p>二层能通 <del>~</del></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%89/" data-id="cki7431310001ko16c3ibg5z1" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -668,7 +615,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 20px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 18.75px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 15.56px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.89px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.78px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.22px;">mysql</a> <a href="/tags/openstack/" style="font-size: 16.67px;">openstack</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 14.44px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -690,23 +637,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/">go-字符串转成byte数组，会发生内存拷贝吗？</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/">go-简单聊聊内存逃逸</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
           </li>
         
           <li>
             <a href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">go-经典排序算法</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
-          </li>
-        
-          <li>
-            <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
           </li>
         
       </ul>
