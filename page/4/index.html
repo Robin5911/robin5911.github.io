@@ -67,6 +67,151 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-kvm-qemu-kvm以及libvirt之间的关系" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" class="article-date">
+  <time datetime="2020-12-04T04:28:19.000Z" itemprop="datePublished">2020-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">openstack, kvm, qemu-kvm以及libvirt之间的关系</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>KVM是最底层的hypervisor，它是用来模拟CPU的运行，它缺少了对network和周边I/O的支持，所以我们是没法直接用它的。</p>
+<p>QEMU-KVM就是一个完整的模拟器，它是构建基于KVM上面的，它提供了完整的网络和I/O支持。</p>
+<p>Openstack不会直接控制qemu-kvm，它会用一个叫libvirt的库去间接控制qemu-kvm。libvirt提供了跨VM平台的功能，它可以控制除了QEMU之外的模拟器，包括vmware, virtualbox， xen等等。</p>
+<p>所以为了openstack的跨VM性，所以openstack只会用libvirt而不直接用qemu-kvm。libvirt还提供了一些高级的功能，例如pool/vol管理。</p>
+<p><img src="/images/openstack_kvm_qemu_libvirt.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" data-id="ckiciu7av0000bg166jy6360f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-核心组件kubelet-讲解" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" class="article-date">
+  <time datetime="2020-12-03T08:10:10.000Z" itemprop="datePublished">2020-12-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/">核心组件kubelet 讲解</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="一-kubelet概述"><a href="#一-kubelet概述" class="headerlink" title="一    kubelet概述"></a>一    kubelet概述</h2><h3 id="1-1-kubelet作用"><a href="#1-1-kubelet作用" class="headerlink" title="1.1    kubelet作用"></a>1.1    kubelet作用</h3><p>在Kubernetes集群中，在每个Node（又称Minion）上都会启动一个kubelet服务进程。该进程用于处理Master下发到本节点的任务，管理Pod及Pod中的容器。每个kubelet进程都会在API Server上注册节点自身的信息，定期向Master汇报节点资源的使用情况，并通过cAdvisor监控容器和节点资源。</p>
+<h2 id="二-节点管理"><a href="#二-节点管理" class="headerlink" title="二    节点管理"></a>二    节点管理</h2><p>节点通过设置kubelet的启动参数“–register-node”，来决定是否向API Server注册自己。如果该参数的值为true，那么kubelet将试着通过API Server注册自己。在自注册时，kubelet启动时还包含下列参数。</p>
+<ul>
+<li>–api-servers：API Server的位置。</li>
+<li>–kubeconfig：kubeconfig文件，用于访问API Server的安全配置文件。</li>
+<li>–cloud-provider：云服务商（IaaS）地址，仅用于公有云环境。</li>
+</ul>
+<p><strong>提示：通常可能每个kubelet都被授予创建和修改任何节点的权限。生产环境中，建议kubelet的权限进行限制，仅允许它修改和创建所在节点的权限。</strong></p>
+<p>如果在集群运行过程中遇到集群资源不足的情况，用户就很容易通过添加机器及运用kubelet的自注册模式来实现扩容。</p>
+<p>在某些情况下，Kubernetes集群中的某些kubelet没有选择自注册模式，用户需要自己去配置Node的资源信息，同时告知Node上Kubelet API Server的位置，需要手动创建和修改节点信息。</p>
+<p>如果需要手动创建节点信息，则通过设置kubelet的启动参数“–registernode=false”即可关闭自注册模式。</p>
+<p>kubelet在启动时通过API Server注册节点信息，并定时向API Server发送节点的新消息，API Server在接收到这些信息后，将这些信息写入etcd。通过kubelet的启动参数“–node-status-update-frequency”设置kubelet每隔多长时间向API Server报告节点状态，默认为10s。</p>
+<h2 id="三-Pod管理"><a href="#三-Pod管理" class="headerlink" title="三    Pod管理"></a>三    Pod管理</h2><p>kubelet通过以下几种方式获取自身Node上要运行的Pod清单。</p>
+<ol>
+<li>文件：kubelet启动参数“–config”指定的配置文件目录下的文件（默认目录为“/etc/kubernetes/manifests/”）。通过–file-checkfrequency设置检查该文件目录的时间间隔，默认为20s。</li>
+<li>HTTP端点（URL）：通过“–manifest-url”参数设置。通过–http-check-frequency设置检查该HTTP端点数据的时间间隔，默认为20s。</li>
+<li>API Server：kubelet通过API Server监听etcd目录，同步Pod列表。</li>
+</ol>
+<p>所有以非API Server方式创建的Pod都叫作Static Pod。kubelet将Static Pod的状态汇报给API Server，API Server为该Static Pod创建一个Mirror Pod和其相匹配。Mirror Pod的状态将真实反映Static Pod的状态。当Static Pod被删除时，与之相对应的Mirror Pod也会被删除。</p>
+<p>对于通过API Server获得Pod清单的方式，kubelet会使用API Server Client的Watch加List的方式监听“/registry/nodes/$”当前节点的名称和“/registry/pods”目录，将获取的信息同步到本地缓存中。</p>
+<p>kubelet监听etcd，所有针对Pod的操作都会被kubelet监听。如果发现有新的绑定到本节点的Pod，则按照Pod清单的要求创建该Pod。如果发现本地的Pod被修改，则kubelet会做出相应的修改，比如在删除Pod中的某个容器时，会通过Docker Client删除该容器。</p>
+<p>如果发现删除本节点的Pod，则删除相应的Pod，并通过Docker Client删除Pod中的容器。</p>
+<p>kubelet读取所监听的信息，如果是创建和修改Pod任务，则做如下处理：</p>
+<ol>
+<li>为该Pod创建一个数据目录。</li>
+<li>从API Server读取该Pod清单。</li>
+<li>为该Pod挂载外部卷（ExternalVolume）。</li>
+<li>下载Pod用到的Secret。</li>
+<li>检查已经运行在节点上的Pod，如果该Pod没有容器或Pause容器（“kubernetes/pause”镜像创建的容器）没有启动，则先停止Pod里所有容器的进程。如果在Pod中有需要删除的容器，则删除这些容器。</li>
+<li>用“kubernetes/pause”镜像为每个Pod都创建一个容器。该Pause容器用于接管Pod中所有其他容器的网络。每创建一个新的Pod，kubelet都会先创建一个Pause容器，然后创建其他容器。“kubernetes/pause”镜像大概有200KB，是个非常小的容器镜像。</li>
+<li>为Pod中的每个容器做如下处理：<ul>
+<li>为容器计算一个Hash值，然后用容器的名称去查询对应Docker容器的Hash值。若查找到容器，且二者的Hash值不同，则停止Docker中容器的进程，并停止与之关联的Pause容器的进程；若二者相同，则不做任何处理。</li>
+<li>如果容器被终止了，且容器没有指定的restartPolicy（重启策略），则不做任何处理。</li>
+<li>调用Docker Client下载容器镜像，调用Docker Client运行容器。</li>
+</ul>
+</li>
+</ol>
+<h2 id="四-容器健康检查"><a href="#四-容器健康检查" class="headerlink" title="四    容器健康检查"></a>四    容器健康检查</h2><h3 id="4-1-健康检查方法"><a href="#4-1-健康检查方法" class="headerlink" title="4.1    健康检查方法"></a>4.1    健康检查方法</h3><p>Pod通过两类探针来检查容器的健康状态,LivenessProbe探针和ReadinessProbe探针。</p>
+<h3 id="4-2-LivenessProbe探针"><a href="#4-2-LivenessProbe探针" class="headerlink" title="4.2    LivenessProbe探针"></a>4.2    LivenessProbe探针</h3><p>LivenessProbe探针，用于判断容器是否健康并反馈给kubelet。如果LivenessProbe探针探测到容器不健康，则kubelet将删除该容器，并根据容器的重启策略做相应的处理。如果一个容器不包含LivenessProbe探针，那么kubelet认为该容器的LivenessProbe探针返回的值永远是Success。</p>
+<p>kubelet定期调用容器中的LivenessProbe探针来诊断容器的健康状况。LivenessProbe包含以下3种实现方式：</p>
+<ol>
+<li>ExecAction：在容器内部执行一个命令，如果该命令的退出状态码为0，则表明容器健康。</li>
+<li>TCPSocketAction：通过容器的IP地址和端口号执行TCP检查，如果端口能被访问，则表明容器健康。</li>
+<li>HTTPGetAction：通过容器的IP地址和端口号及路径调用HTTPGet方法，如果响应的状态码大于等于200且小于等于400，则认为容器状态健康。</li>
+</ol>
+<p>LivenessProbe探针被包含在Pod定义的spec.containers.{某个容器}中。</p>
+<p>示例1：HTTP检查方式</p>
+<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       httpGet:</span><br><span class="line"><span class="number">15</span>         path: /index.html</span><br><span class="line"><span class="number">16</span>         port: <span class="number">8080</span></span><br><span class="line"><span class="number">17</span>         httpHeaders:</span><br><span class="line"><span class="number">18</span>         - name: X-Custom-Header</span><br><span class="line"><span class="number">19</span>           value: Awesome</span><br><span class="line"><span class="number">20</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">21</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">22 #kubelet发送一个HTTP请求到本地主机、端口及指定的路径，来检查容器的健康状态。</span><br></pre></td></tr></table></figure>
+
+<p>示例2：运行一个具体的命令。</p>
+<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       exec:</span><br><span class="line"><span class="number">15</span>         command:</span><br><span class="line"><span class="number">16</span>           - cat</span><br><span class="line"><span class="number">17</span>           - <span class="regexp">/tmp/</span>health</span><br><span class="line"><span class="number">18</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">19</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">20 #kubelet在容器中执行“cat /tmp/health”命令，如果该命令返回的值为0，则表明容器处于健康状态，否则表明容器处于不健康状态。</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-ReadinessProbe探针"><a href="#4-3-ReadinessProbe探针" class="headerlink" title="4.3    ReadinessProbe探针"></a>4.3    ReadinessProbe探针</h3><p>另一类是ReadinessProbe探针，用于判断容器是否启动完成，且准备接收请求。如果ReadinessProbe探针检测到容器启动失败，则Pod的状态将被修改，Endpoint Controller将从Service的Endpoint中删除包含该容器所在Pod的IP地址的Endpoint条目。</p>
+<h2 id="五-cAdvisor资源监控"><a href="#五-cAdvisor资源监控" class="headerlink" title="五    cAdvisor资源监控"></a>五    cAdvisor资源监控</h2><h3 id="5-1-cAdvisor概览"><a href="#5-1-cAdvisor概览" class="headerlink" title="5.1    cAdvisor概览"></a>5.1    cAdvisor概览</h3><p>在Kubernetes集群中，应用程序生命周期内的信息可以在不同的级别上进行监测，如：容器、Pod、Service和整个集群。</p>
+<p>Kubernetes尽可能提供用户详细的各个级别的资源使用信息，从而能深入地了解应用的执行情况，并找到应用中可能的瓶颈。</p>
+<p>cAdvisor是一个开源的分析容器资源使用率和性能特性的代理工具，它是因为容器而产生的，因此也支持Docker容器。在Kubernetes项目中，cAdvisor被集成到Kubernetes代码中，kubelet则通过cAdvisor获取其所在节点及容器的数据</p>
+<h3 id="5-2-cAdvisor原理及作用"><a href="#5-2-cAdvisor原理及作用" class="headerlink" title="5.2    cAdvisor原理及作用"></a>5.2    cAdvisor原理及作用</h3><p>cAdvisor自动查找所有在其所在Node上的容器，自动采集CPU、内存、文件系统和网络使用的统计信息。通常cAdvisor通过它所在Node的4194端口暴露一个简单的UI。</p>
+<p>kubelet作为连接Kubernetes Master和各Node之间的桥梁，管理运行在Node上的Pod和容器。kubelet将每个Pod都转换成它的成员容器，同时从cAdvisor获取单独的容器使用统计信息，然后通过该REST API暴露这些聚合后的Pod资源使用的统计信息。</p>
+<p>cAdvisor只能提供2～3min的监控数据，对性能数据也没有持久化，因此在Kubernetes早期版本中需要依靠Heapster来实现集群范围内全部容器性能指标的采集和查询功能。</p>
+<p>从Kubernetes1.8版本开始，性能指标数据的查询接口升级为标准的Metrics API，后端服务则升级为全新的Metrics Server。因此，cAdvisor在4194端口提供的UI和API服务从Kubernetes1.10版本开始进入弃用流程，并于1.12版本完全关闭。</p>
+<p>若需要重新启用该服务，可手动部署一个DaemonSet在每个Node上启动一个cAdvisor来提供UI和API，参考：<a target="_blank" rel="noopener" href="https://github.com/google/cadvisor%E3%80%82">https://github.com/google/cadvisor。</a></p>
+<p>在新的Kubernetes监控体系中，Metrics Server用于提供CoreMetrics（核心指标），包括Node和Pod的CPU和内存使用数据。其他CustomMetrics（自定义指标）则由第三方组件（如Prometheus）采集和存储。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" data-id="cki8ta3dx00033w16eu5912fy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-ovs-ovn-虚拟化学习整理-五" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/" class="article-date">
@@ -701,127 +846,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-centos7-rabbitmq-3-8-集群部署" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" class="article-date">
-  <time datetime="2020-11-17T01:57:00.000Z" itemprop="datePublished">2020-11-17</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/">centos7-rabbitmq 3.8 集群部署</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>基于CentOS 7 x86_64 rabbitmq 3.8</p>
-<h5 id="1-安装依赖"><a href="#1-安装依赖" class="headerlink" title="1. 安装依赖"></a>1. 安装依赖</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">安装docker-ce环境</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-database </span><br><span class="line">#vim &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts</span><br><span class="line"></span><br><span class="line">10.250.250.120 rabbit1 ostack120</span><br><span class="line">10.250.250.121 rabbit2 ostack121</span><br><span class="line">10.250.250.122 rabbit3 ostack122 </span><br></pre></td></tr></table></figure>
-
-<h4 id="3-安装rabbitmq"><a href="#3-安装rabbitmq" class="headerlink" title="3. 安装rabbitmq"></a>3. 安装rabbitmq</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">主节点 120 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit1 --name myrabbit1  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br><span class="line">从节点 121 执行</span><br><span class="line">#docker run -d --restart&#x3D;always --net host --hostname rabbit2 --name myrabbit2  -v &#x2F;data&#x2F;rabbitmq&#x2F;rabbit-docker-hosts:&#x2F;etc&#x2F;hosts -v &#x2F;data&#x2F;rabbit&#x2F;rabbit-docker-database:&#x2F;var&#x2F;lib&#x2F;rabbitmq&#x2F;mnesia -e RABBITMQ_ERLANG_COOKIE&#x3D;&#39;rabbitcookie&#39;  rabbitmq:3.8.5-management</span><br></pre></td></tr></table></figure>
-
-<h4 id="4-加入集群"><a href="#4-加入集群" class="headerlink" title="4. 加入集群"></a>4. 加入集群</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#docker exec -it myrabbit2 bash # 进入镜像命令行</span><br><span class="line">#rabbitmqctl stop_app</span><br><span class="line">&#x2F;&#x2F;rabbitmqctl reset</span><br><span class="line">#rabbitmqctl join_cluster rabbit@rabbit1 #rabbit1为主节点的hostname</span><br><span class="line">#rabbitmqctl start_app</span><br><span class="line">#rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-权限初始化"><a href="#5-权限初始化" class="headerlink" title="5. 权限初始化"></a>5. 权限初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">新增账号权限</span><br><span class="line">#rabbitmqctl add_user openstack Openstack</span><br><span class="line">#rabbitmqctl set_permissions openstack &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;;</span><br><span class="line">#rabbitmqctl set_policy ha-all &quot;&quot; &#39;&#123;&quot;ha-mode&quot;:&quot;all&quot;, &quot;ha-sync-mode&quot;: &quot;automatic&quot;&#125;&#39;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><p>rabbitmq1 可能会挂掉，可能需要重启 myrabbit1</p>
-<h4 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">启动rabbitmq</span><br><span class="line">rabbitmqctl start_app</span><br><span class="line"></span><br><span class="line">停止rabbitmq</span><br><span class="line">rabbitmqctl stop_app</span><br><span class="line"></span><br><span class="line">rabbitmq 查看所有队列信息</span><br><span class="line">rabbitmqctl list_queues</span><br><span class="line"></span><br><span class="line">还原 rabbitmq 清除所有队列</span><br><span class="line">rabbitmqctl reset</span><br><span class="line"></span><br><span class="line">rabbitmq 查看用户</span><br><span class="line">rabbitmqctl list_users</span><br><span class="line"></span><br><span class="line">rabbitmq添加用户</span><br><span class="line">rabbitmqctl add_user root root</span><br><span class="line"></span><br><span class="line">rabbitmq设置权限</span><br><span class="line">rabbitmqctl set_permissions -p &#x2F; root &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br><span class="line"></span><br><span class="line">rabbitmq查看集群状态信息</span><br><span class="line">rabbitmqctl cluster_status</span><br><span class="line"></span><br><span class="line">移除某个集群节点：一般情况当节点故障时，在正常的节点中，移除该故障节点</span><br><span class="line">rabbitmqctl  -n rabbit@rabbit1 forget_cluster_node rabbit@rabbit3</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/" data-id="ckhlp9nv500009416acw2fdk4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-使用disk-image-builder（DIB）制作Ironic-裸金属镜像" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" class="article-date">
-  <time datetime="2020-11-16T09:50:39.000Z" itemprop="datePublished">2020-11-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/">使用disk-image-builder（DIB）制作Ironic 裸金属镜像</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-
-<p>Diskimage-builder 是openstack社区用于制作镜像的工具。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">基于CentOS 7</span><br><span class="line"></span><br><span class="line">#pip3 install diskimage-builder ironic-python-agent-builder</span><br><span class="line">#yum -y install qemu-img</span><br><span class="line">#yum install -y libguestfs-tools-c  #提供virt-sysprep</span><br><span class="line">#export DIB_DEV_USER_USERNAME&#x3D;devuser   #初始用户名devuser</span><br><span class="line">#export DIB_DEV_USER_PASSWORD&#x3D;password   #初始密码password</span><br><span class="line">#export DIB_DEV_USER_PWDLESS_SUDO&#x3D;YES   #允许sudo</span><br><span class="line">#export DIB_CLOUD_INIT_DATASOURCES&#x3D;&quot;ConfigDrive, OpenStack&quot;   #cloud-init 的datasource是ConfigDrive, OpenStack</span><br><span class="line">#export AUTHORIZE_SSH&#x3D;true</span><br><span class="line">#export DIB_PYTHON_VERSION&#x3D;3 </span><br><span class="line">#export DIB_PYTHON&#x3D;python3</span><br><span class="line">构建IPA引导镜像</span><br><span class="line">#ironic-python-agent-builder -o centos7-ipa-x86 --release 7 centos -e &quot;devuser dynamic-login dhcp-all-interfaces&quot;</span><br><span class="line">构建裸机镜像</span><br><span class="line">#disk-image-create centos7 centos7 dhcp-all-interfaces grub2 install-static devuser -o CentOS7 cloud-init-datasources</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export LIBGUESTFS_BACKEND&#x3D;direct </span><br><span class="line">#virt-sysprep --root-password password:password -a CentOS7.qcow2</span><br></pre></td></tr></table></figure>
-
-<p>若 virt-sysprep 报错，请 yum update 再重启物理机</p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. git 连接openstack&#x2F;requirements 失败，更改为自己的源</span><br><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;share&#x2F;ironic-python-agent-builder&#x2F;dib&#x2F;ironic-python-agent-ramdisk&#x2F;source-repository-requirements</span><br><span class="line"></span><br><span class="line">2. setlocale: LC_ALL: cannot change locale (C.UTF-8): No such file or directory Command &quot;python setup.py egg_info&quot; failed with error code 1 in &#x2F;tmp&#x2F;pip-build-rit13y_p&#x2F;iso8601&#x2F;</span><br><span class="line">#yum -y install langpacks-zh_CN.noarch</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/16/%E4%BD%BF%E7%94%A8disk-image-builder%EF%BC%88DIB%EF%BC%89%E5%88%B6%E4%BD%9CIronic-%E8%A3%B8%E9%87%91%E5%B1%9E%E9%95%9C%E5%83%8F/" data-id="ckhlp9nve00029416h3st524i" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -840,7 +864,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
     </div>
   </div>
 
@@ -850,7 +874,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 15.56px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.89px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.78px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.22px;">mysql</a> <a href="/tags/openstack/" style="font-size: 16.67px;">openstack</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 14.44px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.75px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -872,6 +896,14 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/02/20/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/">关于作者</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">openstack-记一次虚机代理网关网络不通问题排查</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
           </li>
         
@@ -881,14 +913,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/">go-简单聊聊内存逃逸</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">go-经典排序算法</a>
           </li>
         
       </ul>
