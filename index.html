@@ -108,6 +108,34 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#snap install kata-containers --classic</span><br><span class="line">遇到报错：error: too early for operation, device not yet seeded or device model not acknowledged</span><br><span class="line">再执行一次 #yum -y install snapd 就可以了</span><br><span class="line">#snap install kata-containers --classic</span><br></pre></td></tr></table></figure>
 
 <p><img src="/images/kata/2021-02-22_11h08_20.png"></p>
+<h2 id="配置Kata-Container"><a href="#配置Kata-Container" class="headerlink" title="配置Kata Container"></a>配置Kata Container</h2><p>默认情况下Kata container以只读文件系统形式挂载在<code>/snap/kata-containers</code>路径下，因此默认配置文件不能修改，但是<code>kata-runtime</code>支持从指定路径加载配置文件而不是从默认路径，使用以下命令修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;kata-containers</span><br><span class="line">#cp &#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;share&#x2F;defaults&#x2F;kata-containers&#x2F;configuration.toml &#x2F;etc&#x2F;kata-containers&#x2F;</span><br><span class="line">#cat &#x2F;etc&#x2F;kata-containers&#x2F;configuration.toml</span><br></pre></td></tr></table></figure>
+
+<p>可以通过修改<code>/etc/kata-containers/configuration.toml</code>文件来更改kata container的配置，暂时我们不修改</p>
+<h2 id="更改Docker运行时"><a href="#更改Docker运行时" class="headerlink" title="更改Docker运行时"></a>更改Docker运行时</h2><p>在更改Docker运行时前，检查一下Docker默认的运行时，运行命令<code>docker info | grep -i runtime</code>，结果如下所示，现有可供选择的运行时仅有<code>runc</code>，默认的运行时也为<code>runc</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: runc</span><br><span class="line"> Default Runtime: runc</span><br></pre></td></tr></table></figure>
+
+<p>要将<code>runc</code>更换为kata container提供的<code>kata-runtime</code>，使用以下两种方法<strong>之一</strong>进行替换：</p>
+<p><strong>注意官方文档上给出的文件路径为<code>/usr/bin/kata-runtime</code>，这是通过<code>kata-manager</code>安装kata container时的路径，通过snap安装的kata container，路径应为<code>/snap/kata-containers/current/usr/bin/kata-runtime</code></strong></p>
+<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png" alt=":one:"> 通过<code>systemd</code>文件夹，具体命令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;</span><br><span class="line">#cat &lt;&lt;EOF | sudo tee &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;kata-containers.conf</span><br><span class="line">[Service]</span><br><span class="line">ExecStart&#x3D;</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;dockerd -D --add-runtime kata-runtime&#x3D;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime --default-runtime&#x3D;kata-runtime</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0032-20e3.png" alt=":two:"> 通过docker <code>daemon.json</code>文件，在<code>/etc/docker/daemon.json</code>文件中添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;default-runtime&quot;: &quot;kata-runtime&quot;,</span><br><span class="line">  &quot;runtimes&quot;: &#123;</span><br><span class="line">    &quot;kata-runtime&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里选择看起来更简单些的方式2，我是使用的第一种，都可以，配置好后还需要<strong>重启Docker服务</strong>使之生效，运行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<p>此时再次查看docker运行时配置，发现可供的选择多了一个<code>kata-runtime</code>，并且默认为<code>kata-runtime</code>，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: kata-runtime runc</span><br><span class="line"> Default Runtime: kata-runtime</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/kata/2021-02-22_14h01_54.png"></p>
+<h2 id="运行kata-runtime-docker"><a href="#运行kata-runtime-docker" class="headerlink" title="运行kata-runtime docker"></a>运行kata-runtime docker</h2><p>拉取测试镜像busybox：<code>docker pull busybox 运行测试：</code>docker run busybox uname -a<code> 默认的运行时已经改为为</code>kata-runtime<code>，如果想要使用之前的</code>runc<code>，可以通过参数</code>–runtime=runc<code>来指定： </code>docker run –runtime=runc busybox uname -a`</p>
+<p><img src="/images/kata/2021-02-22_14h18_27.png"></p>
+<h2 id="卸载Kata-Container"><a href="#卸载Kata-Container" class="headerlink" title="卸载Kata Container"></a>卸载Kata Container</h2><p>运行命令：</p>
+<p>#snap remove kata-containers<br>删除相关的配置文件：</p>
+<p>#rm -r /etc/kata-containers</p>
+<p>#rm /etc/docker/daemon.json`</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://snapcraft.io/install/kata-containers/centos">https://snapcraft.io/install/kata-containers/centos</a></p>
 
       
@@ -241,8 +269,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>一名菜鸟攻城狮，</p>
-<p>QQ 1841356639 </p>
-<p>wx 小新大表哥</p>
+<p>QQ: 1841356639 </p>
+<p>网名 小新大表哥</p>
 
       
     </div>
