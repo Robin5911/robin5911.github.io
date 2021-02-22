@@ -67,6 +67,136 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-更换mysql地址" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" class="article-date">
+  <time datetime="2020-12-16T04:22:45.000Z" itemprop="datePublished">2020-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/">openstack-更换mysql地址</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为延时问题，openstack 集群因为需要更换mysql地址，</p>
+<p>原本以为变更完yaml使用 kolla-ansible reconfigure 一下就可以了，但发现仍然有部分连接旧mysql数据库</p>
+<p>排查发现连接的nova_cell0数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#grep mysql -R &#x2F;etc&#x2F;kolla</span><br><span class="line">排查数据库地址都是正确的，为什么仍然有连接旧数据库的地址呢？ 怀疑数据库表数据存在写死的问题~</span><br></pre></td></tr></table></figure>
+
+<p>由于是连接的nova_cell0 ， 想到cell设计为了拆分数据库等，查一下数据库吧？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mysql -h***************</span><br><span class="line">发现nova_api的cell_mappings表中记录的mysql的endpoint，但cell0的仍然是旧的</span><br><span class="line">&gt;update cell_mappings set database_connection&#x3D;&#39;mysql+pymysql:&#x2F;&#x2F;nova:********@10.220.*.*:21200&#x2F;nova_cell0&#39; where id&#x3D;1;</span><br></pre></td></tr></table></figure>
+
+<p>问题解决~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" data-id="ckishnwvo00024s165774eazg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux-python生成主机唯一UUID" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" class="article-date">
+  <time datetime="2020-12-14T04:22:28.000Z" itemprop="datePublished">2020-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/">linux-python生成主机唯一UUID</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>主机需要有一个唯一的uuid，对于物理机存在主板uuid获取不到的情况，所以根据相关信息，生成一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python</span><br><span class="line">#coding: utf-8</span><br><span class="line">import re</span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">    兼容python2&#x2F;python3</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">#默认shell执行函数</span><br><span class="line">def shellutil(cmd):</span><br><span class="line">    p &#x3D; subprocess.Popen(cmd,stdin&#x3D;subprocess.PIPE,stdout&#x3D;subprocess.PIPE,stderr&#x3D;subprocess.PIPE,shell&#x3D;True)</span><br><span class="line">    return p.communicate()</span><br><span class="line">#获取厂商信息</span><br><span class="line">def getManufacturer():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep Manufacturer|awk -F&#39;: &#39; &#39;&#123;print $2&#125;&#39;&quot;</span><br><span class="line">    resp&#x3D;shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower().zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;null&quot;</span><br><span class="line">#获取主板sn</span><br><span class="line">def getSN():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep &#39;Serial Number&#39;|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower()[0:4].zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;0000&quot;</span><br><span class="line">#获取设备UUID</span><br><span class="line">def getUUID():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -s system-uuid&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    uuid &#x3D; resp[0].decode(&#39;UTF-8&#39;)</span><br><span class="line">    match &#x3D; re.match(r&#39;(.*?)-(.*?)-(.*?)-(.*?)-(.*?)&#39;, uuid, re.M | re.I)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot; and match:</span><br><span class="line">        return resp[0].strip()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;ERROR&quot;</span><br><span class="line">#获取默认路由网卡mac</span><br><span class="line">def getFirstIpMac():</span><br><span class="line">    resp&#x3D;[]</span><br><span class="line">    eth_cmd&#x3D;&quot;ip route|grep default|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    eth_resp &#x3D; shellutil(eth_cmd)</span><br><span class="line">    if eth_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(0,eth_resp[0].strip().decode(&#39;UTF-8&#39;).lower().zfill(4))</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(0,&quot;lo&quot;.lower().zfill(4))</span><br><span class="line">    mac_cmd&#x3D;&#39;ifconfig eth2|egrep &quot;:[0-9a-z]*:&quot;|awk \&#39;&#123;print $2&#125;\&#39;&#39;</span><br><span class="line">    mac_resp&#x3D;shellutil(mac_cmd)</span><br><span class="line">    if mac_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(1,mac_resp[0].decode(&#39;UTF-8&#39;).replace(&quot;:&quot;,&quot;&quot;)[4:])</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(1,&quot;00000000&quot;)</span><br><span class="line">    return resp</span><br><span class="line">def main():</span><br><span class="line">    uuid_err_pre &#x3D; &quot;00000000&quot;</span><br><span class="line">    uuid&#x3D;getUUID()</span><br><span class="line">    route_eth&#x3D; getFirstIpMac()[0]</span><br><span class="line">    route_eth_mac&#x3D;getFirstIpMac()[1]</span><br><span class="line">    if uuid !&#x3D; &quot;ERROR&quot;:</span><br><span class="line">        print(uuid)</span><br><span class="line">    else:</span><br><span class="line">        fact&#x3D;getManufacturer()[0:4]</span><br><span class="line">        print(&#39;&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;&#39;.format(uuid_err_pre,fact,getSN(),route_eth,route_eth_mac))</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" data-id="ckio8h1ne00006s16e29d7qfd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mariadb-更改用户密码" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" class="article-date">
+  <time datetime="2020-12-08T02:32:41.000Z" itemprop="datePublished">2020-12-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/">mariadb-更改用户密码</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>通过yum安装的MariaDB直接就能登陆，默认密码为空！需要修改root密码</p>
+<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> mysql;</span><br><span class="line"><span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">password</span>(<span class="string">&#x27;new password&#x27;</span>) <span class="keyword">where</span> <span class="keyword">user</span> = <span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br><span class="line">exit;1234</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">password</span> <span class="keyword">for</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>=<span class="keyword">password</span>(<span class="string">&#x27;new password&#x27;</span>);</span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" data-id="ckio8h1ng00016s16c2336vnf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-openstack-kvm-qemu-kvm以及libvirt之间的关系" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" class="article-date">
@@ -618,234 +748,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-初试kubernetes集群集成Kata" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" class="article-date">
-  <time datetime="2020-12-02T01:58:24.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/">初试kubernetes集群集成Kata</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="一、部署kubernetes"><a href="#一、部署kubernetes" class="headerlink" title="一、部署kubernetes"></a>一、部署kubernetes</h5><p>使用 <a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 部署生产kubernetes集群 , CNI插件使用了kube-ovn</p>
-<p>下载镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">images&#x3D;(</span><br><span class="line">  kube-apiserver:v1.18.10</span><br><span class="line">  kube-controller-manager:v1.18.10</span><br><span class="line">  kube-scheduler:v1.18.10</span><br><span class="line">  kube-proxy:v1.18.10</span><br><span class="line">  pause:3.2</span><br><span class="line">  k8s-dns-node-cache:1.15.13</span><br><span class="line">  cluster-proportional-autoscaler-amd64:1.8.1</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">    docker pull registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">    docker tag registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName k8s.gcr.io&#x2F;$imageName</span><br><span class="line">    docker rmi registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-<p>其他步骤略</p>
-<h5 id="二、安装kata"><a href="#二、安装kata" class="headerlink" title="二、安装kata"></a>二、安装kata</h5><h5 id="2-1-安装kata命令行工具"><a href="#2-1-安装kata命令行工具" class="headerlink" title="2.1 安装kata命令行工具"></a>2.1 安装kata命令行工具</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;os-release</span><br><span class="line">yum -y install yum-utils</span><br><span class="line">ARCH&#x3D;$(arch)</span><br><span class="line">BRANCH&#x3D;&quot;$&#123;BRANCH:-master&#125;&quot;</span><br><span class="line">yum-config-manager --add-repo &quot;http:&#x2F;&#x2F;download.opensuse.org&#x2F;repositories&#x2F;home:&#x2F;katacontainers:&#x2F;releases:&#x2F;$&#123;ARCH&#125;:&#x2F;$&#123;BRANCH&#125;&#x2F;CentOS_$&#123;VERSION_ID&#125;&#x2F;home:katacontainers:releases:$&#123;ARCH&#125;:$&#123;BRANCH&#125;.repo&quot;</span><br><span class="line">(没发现上面版本，我使用的http:&#x2F;&#x2F;download.opensuse.org&#x2F;repositories&#x2F;home:&#x2F;katacontainers:&#x2F;releases:&#x2F;x86_64:&#x2F;stable-1.10&#x2F;CentOS_7&#x2F;home:katacontainers:releases:x86_64:stable-1.10.repo)</span><br><span class="line">yum -y install kata-runtime kata-proxy kata-shim</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-2-检测硬件是否支持-Kata"><a href="#2-2-检测硬件是否支持-Kata" class="headerlink" title="2.2 检测硬件是否支持 Kata"></a>2.2 检测硬件是否支持 Kata</h5><p>Kata 对硬件的要求需要满足以下任意条件：</p>
-<ul>
-<li>Intel VT-x technology.</li>
-<li>ARM Hyp mode (virtualization extension).</li>
-<li>IBM Power Systems.</li>
-<li>IBM Z mainframes.</li>
-</ul>
-<p>安装完 <code>kata-runtime</code> 之后，执行检测命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#kata-runtime kata-check</span><br><span class="line"></span><br><span class="line">System is capable of running Kata Containers</span><br><span class="line">System can currently create Kata Containers</span><br></pre></td></tr></table></figure>
-
-<p>这里的输出表示，运行环境支持 Kata Containers 。</p>
-<h5 id="2-3-配置并测试docker"><a href="#2-3-配置并测试docker" class="headerlink" title="2.3 配置并测试docker"></a>2.3 配置并测试docker</h5><ul>
-<li>配置 kata-runtime 参数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure>
-
-<p>新增如下内容，默认依然使用 runc，但是通过指定 runtime 参数可以使用 Kata 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;runtimes&quot;: &#123;</span><br><span class="line">    &quot;kata-runtime&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>重启 Docker 服务</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>测试 Kata 是否安装成功</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run --runtime&#x3D;kata-runtime  busybox uname -a</span><br><span class="line"></span><br><span class="line">Linux 249a23f53475 5.4.60-65.1.container #1 SMP Thu Jan 1 00:00:00 UTC 1970 x86_64 GNU&#x2F;Linux</span><br><span class="line">docker run busybox uname -a</span><br><span class="line"></span><br><span class="line">Linux b4812ed8990c 3.10.0-1127.el7.x86_64 #1 SMP Tue Mar 31 23:36:51 UTC 2020 x86_64 GNU&#x2F;Linux</span><br></pre></td></tr></table></figure>
-
-<p>kata-runtime 容器使用的内核版本与宿主机不同，这就说明 kata-runtime 配置成功了。</p>
-<p>![/images/kata/image-20201217151727250.png)</p>
-<h5 id="2-4-配置kubelet"><a href="#2-4-配置kubelet" class="headerlink" title="2.4 配置kubelet"></a>2.4 配置kubelet</h5><ul>
-<li>新增配置文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;</span><br><span class="line">cat &lt;&lt; EOF | sudo tee  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;0-containerd.conf</span><br><span class="line">[Service]                                                 </span><br><span class="line">Environment&#x3D;&quot;KUBELET_EXTRA_ARGS&#x3D;--container-runtime&#x3D;remote --runtime-request-timeout&#x3D;15m --container-runtime-endpoint&#x3D;unix:&#x2F;&#x2F;&#x2F;run&#x2F;containerd&#x2F;containerd.sock&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>重启生效</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
-
-<p>这里使用的是 containerd 。如果使用 CRI-O ，配置会不一样。</p>
-<h5 id="2-5-给-Kubernetes-提供-kata-runtime"><a href="#2-5-给-Kubernetes-提供-kata-runtime" class="headerlink" title="2.5 给 Kubernetes 提供 kata-runtime"></a>2.5 给 Kubernetes 提供 kata-runtime</h5><p>通过直接创建 Container 可以使用 kata-runtime 。但在集群中，我们该如何告诉 Kubernetes 哪些负载需要使用 kata-runtime 呢？根据不同的版本，Kata 提供了不同的方式。</p>
-<p>首先都需要生成 containerd 配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">containerd config default &gt; &#x2F;etc&#x2F;containerd&#x2F;config.toml</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>RuntimeClass 的方式</li>
-</ul>
-<p>这种方式对相关组件版本有要求：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Kata Containers v1.5.0 or above (including 1.5.0-rc)</span><br><span class="line">Containerd v1.2.0 or above</span><br><span class="line">Kubernetes v1.12.0 or above</span><br></pre></td></tr></table></figure>
-
-<p>我所使用的是</p>
-<p>kubernetes: 1.18.10</p>
-<p>containerd: 1.2.13</p>
-<p>kata : 1.10</p>
-<p>在 config.toml 配置文件中，“no_pivot = false”下增加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.runtimes]</span><br><span class="line">  [plugins.cri.containerd.runtimes.runc]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.runc.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;runc&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br><span class="line">  [plugins.cri.containerd.runtimes.kata]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.kata.v2&quot;</span><br><span class="line">  [plugins.cri.containerd.runtimes.katacli]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.katacli.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br></pre></td></tr></table></figure>
-
-<p>这里 <code>[plugins.cri.containerd.runtimes.kata]</code> 中的 kata 将被作为 RuntimeClass handler 关键字。</p>
-<ul>
-<li>使用 <code>untrusted_workload_runtime</code> 的方式</li>
-</ul>
-<p>对于不符合上述版本要求的环境，可以使用之前的方式。</p>
-<p>在配置文件中新增如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.untrusted_workload_runtime]</span><br><span class="line">  runtime_type &#x3D; &quot;io.containerd.runtime.v1.linux&quot;</span><br><span class="line">  runtime_engine &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br></pre></td></tr></table></figure>
-
-<p>最后，都需要重启 containerd。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart containerd</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/kata/2020-12-17_18h31_55.png"></p>
-<h4 id="三、使用kata-runtime"><a href="#三、使用kata-runtime" class="headerlink" title="三、使用kata-runtime"></a>三、使用kata-runtime</h4><h5 id="3-1-RuntimeClass-方式"><a href="#3-1-RuntimeClass-方式" class="headerlink" title="3.1 RuntimeClass 方式"></a>3.1 RuntimeClass 方式</h5><ul>
-<li>创建 RuntimeClass</li>
-</ul>
-<p>kata-runtime.yaml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kind: RuntimeClass</span><br><span class="line">apiVersion: node.k8s.io&#x2F;v1beta1</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-containers</span><br><span class="line">handler: kata</span><br></pre></td></tr></table></figure>
-
-<p>#kubectl create -f kata-runtime.yaml</p>
-<p>也可以为 runc 创建 RuntimeClass</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl get runtimeclass</span><br><span class="line"></span><br><span class="line">NAME              CREATED AT</span><br><span class="line">kata-containers   2020-08-30</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建负载 kata-pod.yaml</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-nginx</span><br><span class="line">spec:</span><br><span class="line">  runtimeClassName: kata-containers</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>#kubectl apply -f kata-pod.yaml</p>
-<ul>
-<li>查看负载</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kata-runtime list</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" data-id="cki74313b0005ko1627ve1cy7" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-证书过期之kubeadm重新生成s证书" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" class="article-date">
-  <time datetime="2020-11-30T11:44:28.000Z" itemprop="datePublished">2020-11-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/">证书过期之kubeadm重新生成s证书</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="k8s证书过期之kubeadm重新生成证书"><a href="#k8s证书过期之kubeadm重新生成证书" class="headerlink" title="k8s证书过期之kubeadm重新生成证书"></a>k8s证书过期之kubeadm重新生成证书</h5><p>重新生成证书<br>检查过期<br>新版本(1.15+)：kubeadm alpha certs check-expiration<br>或<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>证书备份<br>cp -rp /etc/kubernetes /etc/kubernetes.bak<br>移除过期证书<br>rm -f /etc/kubernetes/pki/apiserver*<br>rm -f /etc/kubernetes/pki/front-proxy-client.*<br>rm -rf /etc/kubernetes/pki/etcd/healthcheck-client.*<br>rm -rf /etc/kubernetes/pki/etcd/server.*<br>rm -rf /etc/kubernetes/pki/etcd/peer.*<br>备注：可以使用命令openssl x509 -in [证书全路径] -noout -text查看证书详情。</p>
-<p>重新生成证书<br>老版本：kubeadm alpha phase certs all<br>或<br>新版本(1.15+)：kubeadm alpha certs renew all 使用该命令不用提前删除过期证书<br>重新生成配置文件</p>
-<h4 id="重新生成配置"><a href="#重新生成配置" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>mv /etc/kubernetes/*.conf /tmp/<br>老版本：kubeadm alpha phase kubeconfig all<br>或<br>新版本(1.15+)：kubeadm init phase kubeconfig all</p>
-<h4 id="重新生成配置-1"><a href="#重新生成配置-1" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>cp /etc/kubernetes/admin.conf ~/.kube/config<br>重启kubelet<br>systemctl restart kubelet<br>证书过期时间确认<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>集群确认<br>kubectl get nodes</p>
-<h4 id="如果发现集群，能读不能写，则请重启一下组件："><a href="#如果发现集群，能读不能写，则请重启一下组件：" class="headerlink" title="如果发现集群，能读不能写，则请重启一下组件："></a>如果发现集群，能读不能写，则请重启一下组件：</h4><p>docker ps | grep apiserver<br>docker ps  | grep scheduler<br>docker ps  | grep controller-manager</p>
-<p>docker restart 容器标识<br>做一个有底蕴的软件工作者</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" data-id="cki74313h000bko168wysbr1g" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CentOS-8-使用python3作为默认python" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" class="article-date">
-  <time datetime="2020-11-25T06:56:20.000Z" itemprop="datePublished">2020-11-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>CentOS 8 .上没有默认的<code>python</code>命令。要运行python 3，需要使用命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#dnf install python3</span><br><span class="line">#alternatives --set python &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" data-id="ckhx95mrp0000s816409w45xl" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -874,7 +776,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.75px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.75px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -896,23 +798,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/">kata-与原生docker集成使用</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/">kata-极速部署kata container</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/">go-gorm使用json字段</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/20/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/">关于作者</a>
           </li>
         
           <li>
             <a href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">openstack-记一次虚机代理网关网络不通问题排查</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/">go-字符串转成byte数组，会发生内存拷贝吗？</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/">go-简单聊聊内存逃逸</a>
           </li>
         
       </ul>

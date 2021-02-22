@@ -67,6 +67,157 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-kata-与原生docker集成使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2021-02-22T02:21:04.000Z" itemprop="datePublished">2021-02-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/">kata-与原生docker集成使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用kata container 与docker集成</p>
+<p><strong>⒈KataContainers？</strong></p>
+<p>　　Kata Containers是新的虚拟机实现，可以实现和现在容器生态无缝连接，与时下最流行的容器编排工具k8s完美结合，提供容器的快速启动，和虚拟机的安全隔离，与Docker技术相比，容器之间不共用内核，使得隔离性更好。</p>
+<p>　　Kata Containers 项目的主要目标是将虚拟化的安全隔离优势和容器的快速启动特点结合起来。</p>
+<p><strong>⒉即生Docker，何来Kata Containers？</strong><br>　　Linux 容器轻巧，快速且易于集成到许多不同的应用程序工作流程中。但是，在运行容器时存在一些潜在的安全问题，特别是在单个操作系统中的多租户容器：最终，容器共享一个内核、 I / O 的一条路径、网络和内存等。</p>
+<p>　　使用Docker轻量级的容器时，最大的问题就是会碰到安全性的问题，其中几个不同的容器可以互相的进行攻击，如果把这个内核给攻掉了，其他所有容器都会崩溃。如果使用KVM等虚拟化技术，会完美解决安全性的问题，但是会影响速度。</p>
+<p>　　Kata旨在通过虚拟机管理程序来缓解这种安全问题——创建一个外观和感觉像容器的虚拟机。<br>　　Kata Containers项目通过整合Intel Clear Containers和Hyper runV技术，能够支持不同平台的硬件，并且兼容Open Container Initiative(OCI)和Kubernetes container runtime interface(CRI)接口规范。Kata Containers项目现在由OpenStack基金会管理，代码托管在Github(<a target="_blank" rel="noopener" href="https://github.com/kata-containers)%E4%B8%8A%E3%80%82">https://github.com/kata-containers)上。</a></p>
+<p><strong>⒊使用Kata Containers替换Docker？</strong></p>
+<p>　　从docker架构上看，kata-container和原来的runc是平级的。大家知道docker只是管理容器生命周期的框架，真正启动容器最早用的是LXC，然后是runc，现在也可以换成kata了。所以说kata-container可以当做docker的一个插件，启动kata-container可以通过docker命令。Kata最大的亮点是解决了传统容器共享内核的安全和隔离问题，办法是让每个容器运行在一个轻量级的虚拟机中，使用单独的内核。 </p>
+<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152257944-1238620662.jpg" alt="img"></p>
+<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152447829-1224252548.jpg" alt="img"></p>
+<p><strong>⒋现在开始？</strong></p>
+<p>　　⒈安装Kata Containers容器包（以Centos 7 x86_64为例） </p>
+<p>这里使用snap部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#yum install epel-release</span><br><span class="line">#yum install snapd</span><br><span class="line">#systemctl enable --now snapd.socket</span><br><span class="line">#ln -s &#x2F;var&#x2F;lib&#x2F;snapd&#x2F;snap &#x2F;snap</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#snap install kata-containers --classic</span><br><span class="line">遇到报错：error: too early for operation, device not yet seeded or device model not acknowledged</span><br><span class="line">再执行一次 #yum -y install snapd 就可以了</span><br><span class="line">#snap install kata-containers --classic</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/kata/2021-02-22_11h08_20.png"></p>
+<p>参考：<a target="_blank" rel="noopener" href="https://snapcraft.io/install/kata-containers/centos">https://snapcraft.io/install/kata-containers/centos</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" data-id="cklg08r9n00033c164tcnhmb9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kata-极速部署kata-container" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/" class="article-date">
+  <time datetime="2021-02-20T10:39:43.000Z" itemprop="datePublished">2021-02-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/">kata-极速部署kata container</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>快速部署kata container</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-rbac.yaml</span><br><span class="line">$ kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-deploy.yaml</span><br></pre></td></tr></table></figure>
+
+
+
+<p>清理kata</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl delete -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-deploy.yaml</span><br><span class="line">$ kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-cleanup.yaml</span><br><span class="line"></span><br><span class="line">$ kubectl delete -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-cleanup.yaml</span><br><span class="line">$ kubectl delete -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-rbac.yaml</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/" data-id="cklg08r9n00023c16h5i37h5a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-gorm使用json字段" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/" class="article-date">
+  <time datetime="2021-02-20T10:08:26.000Z" itemprop="datePublished">2021-02-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/">go-gorm使用json字段</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><code>MySQL</code>到现如今已经是原生支持<code>Json</code>类型（5.7.8版本之后），毕竟JSON存储一直都是NoSql玩的溜，触不及防，MySQL里头也能支持了，且能对JSON数据进行相对的操作。</p>
+<p>NoSql中，对JSON数据天生友好，都算是不固定（弱结构）的数据存储。而MySQL中，字段都是先天所定（强结构），后续更改会相对别扭一些（相对于NoSql型数据库）。</p>
+<p>Go语言中，我们一般使用Gorm和原生SQL对数据库进行操作，虽然中大型项目中，大多前辈以及一些DBA都会推荐使用原生SQL，这样的好处是防止中间层出现<code>意外</code>的错误，以及排查问题方便性。特别的，如果遇到性能问题，使用<code>orm</code>会造成排查问题的一些复杂性。</p>
+<p>当然，我要是为了开发的便利和速度，一般都会选择<code>Gorm</code>。</p>
+<p>由于Gorm原生并不支持JSON数据结构，需要添加一些方法才能正常操作JSON字段。</p>
+<h2 id="JSON字段的支持"><a href="#JSON字段的支持" class="headerlink" title="JSON字段的支持"></a>JSON字段的支持</h2><p>在<code>Gorm</code>需要加入两个函数：<code>Value</code>、<code>Scan</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">type Demo struct &#123;</span><br><span class="line">  id string </span><br><span class="line">  obj  DemoObj  &#96;sql:&quot;TYPE:json&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct DemoObj struct &#123;</span><br><span class="line">   c1 string</span><br><span class="line">   c2 int</span><br><span class="line">   c3 bool</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c DemoObj) Value() (driver.Value, error) &#123;</span><br><span class="line">  b, err :&#x3D; json.Marshal(c)</span><br><span class="line">  return string(b), err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c *DemoObj) Scan(input interface&#123;&#125;) error &#123;</span><br><span class="line">  return json.Unmarshal(input.([]byte), c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>以下是对数组的支持。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;****************使gorm支持[]string结构*******************&#x2F;</span><br><span class="line">type Strings []string</span><br><span class="line"></span><br><span class="line">func (c Strings) Value() (driver.Value, error) &#123;</span><br><span class="line">	b, err :&#x3D; json.Marshal(c)</span><br><span class="line">	return string(b), err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c *Strings) Scan(input interface&#123;&#125;) error &#123;</span><br><span class="line">	return json.Unmarshal(input.([]byte), c)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;****************使gorm支持[]string结构*******************&#x2F;</span><br><span class="line"></span><br><span class="line">&#x2F;****************使gorm支持[]int64结构*******************&#x2F;</span><br><span class="line">type Int64s []int64</span><br><span class="line"></span><br><span class="line">func (c Int64s) Value() (driver.Value, error) &#123;</span><br><span class="line">	b, err :&#x3D; json.Marshal(c)</span><br><span class="line">	return string(b), err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c *Int64s) Scan(input interface&#123;&#125;) error &#123;</span><br><span class="line">	return json.Unmarshal(input.([]byte), c)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;****************使gorm支持[]int64结构*******************&#x2F;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/" data-id="cklg08r9h00003c164ngq6me3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-关于作者" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/02/20/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" class="article-date">
@@ -89,7 +240,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>一名菜鸟攻城狮，QQ 1841356639</p>
+        <p>一名菜鸟攻城狮，</p>
+<p>QQ 1841356639 </p>
+<p>wx 小新大表哥</p>
 
       
     </div>
@@ -430,148 +583,6 @@
 
 
   
-    <article id="post-go-练习题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" class="article-date">
-  <time datetime="2021-01-26T08:45:06.000Z" itemprop="datePublished">2021-01-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol start="2">
-<li><p>交替打印数字和字母</p>
-<p>使用两个 <code>goroutine</code> 交替打印序列，一个 <code>goroutine</code> 打印数字， 另外一个 <code>goroutine</code> 打印字母， 最终效果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12AB34CD56EF78GH910IJ1112KL1314MN1516OP1718QR1920ST2122UV2324WX2526YZ2728</span><br></pre></td></tr></table></figure>
-
-<p>思路：</p>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<ol start="3">
-<li><p>判断字符串中字符是否全都不同</p>
-<p>请实现一个算法，确定一个字符串的所有字符【是否全都不同】。这里我们要求【不允许使用额外的存储结构】。 给定一个string，请返回一个bool值,true代表所有字符全都不同，false代表存在相同的字符。 保证字符串中的字符为【ASCII字符】。字符串的长度小于等于【3000】。</p>
-<p>思路:</p>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" data-id="ckkw911ed0003s816a4or61h4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-判断字符串是否包含在数组中" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" class="article-date">
-  <time datetime="2021-01-26T08:21:45.000Z" itemprop="datePublished">2021-01-26</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>判断数组中是否包含某字符串</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func IsContain(items []string, item string) bool &#123;</span><br><span class="line">	for _, eachItem :&#x3D; range items &#123;</span><br><span class="line">		if eachItem &#x3D;&#x3D; item &#123;</span><br><span class="line">			return true</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if IsContain(fip.Tags,&quot;router_forward&quot;)&#123;</span><br><span class="line">			portForwardFips +&#x3D; 1</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" data-id="ckkw911ea0001s8165hx6hswf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-meter配置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" class="article-date">
-  <time datetime="2021-01-07T02:56:35.000Z" itemprop="datePublished">2021-01-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>d</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" data-id="ckkw911en0009s816bnyffspk" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -600,7 +611,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 10px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.75px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.75px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17.5px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 17.5px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -622,23 +633,23 @@
       <ul>
         
           <li>
+            <a href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/">kata-与原生docker集成使用</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/">kata-极速部署kata container</a>
+          </li>
+        
+          <li>
+            <a href="/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/">go-gorm使用json字段</a>
+          </li>
+        
+          <li>
             <a href="/2021/02/20/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/">关于作者</a>
           </li>
         
           <li>
             <a href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">openstack-记一次虚机代理网关网络不通问题排查</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/">go-字符串转成byte数组，会发生内存拷贝吗？</a>
-          </li>
-        
-          <li>
-            <a href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/">go-简单聊聊内存逃逸</a>
           </li>
         
       </ul>
