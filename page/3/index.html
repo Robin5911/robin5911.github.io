@@ -67,6 +67,293 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-meter配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2021-01-07T02:56:35.000Z" itemprop="datePublished">2021-01-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>d</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" data-id="ckkw911en0009s816bnyffspk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-gnocchi-metric报错" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/" class="article-date">
+  <time datetime="2021-01-06T12:35:26.000Z" itemprop="datePublished">2021-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/">openstack-gnocchi metricd报错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is the error message in /var/lib/docker/volumes/kolla_logs/_data/gnocchi/gnocchi-metricd.log:</p>
+<p>2018-07-05 08:12:36,365 [9755] ERROR cotyledon.<em>utils: Unhandled exception<br>Traceback (most recent call last):<br> File “/usr/lib/python2.7/site-packages/cotyledon/<em>utils.py”, line 84, in exit_on_exception<br>  yield<br> File “/usr/lib/python2.7/site-packages/cotyledon/<em>service.py”, line 139, in _run<br>  self.run()<br> File “/usr/lib/python2.7/site-packages/gnocchi/cli/metricd.py”, line 76, in run<br>  self._configure()<br> File “/usr/lib/python2.7/site-packages/tenacity/__init</em></em>.py”, line 214, in wrapped_f<br>  return self.call(f, *args, **kw)<br> File “/usr/lib/python2.7/site-packages/tenacity/__init_</em>.py”, line 295, in call<br>  start_time=start_time)<br> File “/usr/lib/python2.7/site-packages/tenacity/<strong>init</strong>.py”, line 252, in iter<br>  return fut.result()<br> File “/usr/lib/python2.7/site-packages/concurrent/futures/<em>base.py”, line 422, in result<br>  return self.__get_result()<br> File “/usr/lib/python2.7/site-packages/tenacity/__init_</em>.py”, line 298, in call<br>  result = fn(*args, **kwargs)<br> File “/usr/lib/python2.7/site-packages/gnocchi/cli/metricd.py”, line 161, in <em>configure<br>  six.moves.range(self.incoming.NUM_SACKS))<br> File “/usr/lib/python2.7/site-packages/gnocchi/incoming/__init_</em>.py”, line 53, in NUM_SACKS<br>  raise SackDetectionError(e)<br>SackDetectionError: [Errno 2] No such file or directory: ‘/var/lib/gnocchi/tmp/gnocchi-config’</p>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#gnocchi-upgrade</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/" data-id="ckkw911ej0007s8169ofs02bd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-常用格式转换方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/" class="article-date">
+  <time datetime="2021-01-05T11:51:39.000Z" itemprop="datePublished">2021-01-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/">go-常用格式转换方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. bytes转字符串</span><br><span class="line">	str:&#x3D;string(bytes_data)</span><br><span class="line">2. </span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/" data-id="ckkw911e50000s816flly9acp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SPF漏掉之DNS记录设置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" class="article-date">
+  <time datetime="2021-01-04T23:47:16.000Z" itemprop="datePublished">2021-01-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>SPF 记录是一种域名服务（DNS）记录，用于标识哪些邮件服务器可以代表您的域名发送电子邮件。 SPF 记录的目的是为了防止垃圾邮件发送者在您的域名上，使用伪造的发件人地址发送邮件。</p>
+<p>若您未对您的域名添加 SPF 解析记录，则黑客可以仿冒以该域名为后缀的邮箱，来发送垃圾邮件。</p>
+<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><p>在您的 DNS 服务提供商处，为您的域名添加一条 TXT 记录：</p>
+<ul>
+<li><p>将主机字段（Host）设置为您子域名的名称。（例如，如果您的电子邮件地址是<code>contact@mail.example.com</code>，则为 <code>mail</code>。）如果不使用子域名，则将其设为<code>@</code>。</p>
+</li>
+<li><p>用您的 SPF 记录填写 TXT 值字段。例如 <code>v = spf1 a mx include：secureserver.net〜all</code>。</p>
+</li>
+</ul>
+<p>目前已经越来越多的收件人服务器要验证发送者域名的 SPF 设置。也就是发送的 Ip 或服务器必须在 SPF 中有记录才接受邮件。</p>
+<p>首先你必须有自己的真实顶级域名。没有的话是不可能设置SPF 的.<br>SPF 是域名的一条 TXT 解析记录。</p>
+<p><strong>SPF 设置说明：</strong></p>
+<p>\1. 把《速递专家》安装到服务器或VPS上面<br>\2. 域名的解析设置里边添加一条TXT解析</p>
+<p>主机名一般为：@，解析值为：<strong>v=spf1 ip4:你的服务器IP ~all</strong></p>
+<p>例1：假设你的服务器 IP为 123.123.123.123，则 SPF 记录值为</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.123 ~all</li>
+</ol>
+<p>例2：如果有多个IP可以并排书写，例如：</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.123 ip4:123.123.123.124 ~all</li>
+</ol>
+<p>例3：如果有很多连续地址，比如 123.123.123.1 到 123.123.123.255，则可以解析</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.0/24 ~all</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" data-id="ckjj7tvdw0000u816djdfc2ug" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-开启go-module" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" class="article-date">
+  <time datetime="2021-01-04T06:30:16.000Z" itemprop="datePublished">2021-01-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ go mod init</span><br><span class="line">go: modules disabled inside GOPATH&#x2F;src by GO111MODULE&#x3D;auto; see &#39;go help modules&#39;</span><br></pre></td></tr></table></figure>
+
+<p>开启go module：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set GO111MODULE&#x3D;on    &#x2F;&#x2F;windows</span><br><span class="line">export GO111MODULE&#x3D;on &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令开启go module是临时开启</p>
+<p>永久开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置powershell</span><br><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;  &#x2F;&#x2F;windows</span><br><span class="line">#echo &#39;export GO111MODULE&#x3D;on&#39; &gt;&gt; &#x2F;etc&#x2F;profile &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" data-id="ckjj7tvep0006u816ei7d5698" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-gin-常见问题解决" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
+  <time datetime="2021-01-04T02:19:49.000Z" itemprop="datePublished">2021-01-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">go-gin 常见问题解决</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="安装过程中遇到的问题"><a href="#安装过程中遇到的问题" class="headerlink" title="安装过程中遇到的问题"></a>安装过程中遇到的问题</h4><ul>
+<li><p>cannot find package “github.com/go-playground/validator/v10”</p>
+<p>发现github上确实没有该代码</p>
+<ul>
+<li>解决方法：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># cd $GOPATH</span><br><span class="line"># go get &quot;gopkg.in&#x2F;go-playground&#x2F;validator.v10&quot;</span><br><span class="line"># cp -rf $GOPATH&#x2F;src&#x2F;gopkg.in&#x2F;go-playground&#x2F;validator.v10&#x2F;*   $GOPATH&#x2F;src&#x2F;vendor&#x2F;github.com&#x2F;go-playground&#x2F;validator&#x2F;v10&#x2F;</span><br><span class="line"># govendor add +external</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>cannot find package “golang.org/x/sys/unix”</p>
+<ul>
+<li>解决方法：</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p $GOPATH&#x2F;src&#x2F;golang.org&#x2F;x</span><br><span class="line"># cd $GOPATH&#x2F;src&#x2F;golang.org&#x2F;x</span><br><span class="line"># git clone https:&#x2F;&#x2F;github.com&#x2F;golang&#x2F;sys.git</span><br><span class="line"># govendor add +external</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" data-id="ckjj7tveo0004u8161ieygad6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-docker-更改默认存储目录-root-dir" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/" class="article-date">
@@ -240,309 +527,11 @@
 
 
   
-    <article id="post-文学生活" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" class="article-date">
-  <time datetime="2020-12-29T12:07:51.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/">文学生活</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li>良言一句暖三冬，恶语伤人六月寒</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" data-id="ckjatz3nz0006hc16acun9ro4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-golang判断当前主机是物理机还是虚拟机" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="article-date">
-  <time datetime="2020-12-29T10:38:04.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/">golang判断当前主机是物理机还是虚拟机</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>windows下命令行获取：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic path Win32_ComputerSystem get Model</span><br></pre></td></tr></table></figure>
-
-
-
-<p>linux下命令行获取：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dmidecode | egrep -i &#39;system-product-name|product|domU&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">func isVirtualMachine() (bool, error) &#123;</span><br><span class="line">	model :&#x3D; &quot;&quot;</span><br><span class="line">	var cmd *exec.Cmd</span><br><span class="line"></span><br><span class="line">	if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot; &#123;</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;cmd&quot;, &quot;&#x2F;C&quot;, &quot;wmic path Win32_ComputerSystem get Model&quot;)</span><br><span class="line">	&#125; else &#123; &#x2F;&#x2F; linux</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;&#x2F;bin&#x2F;bash&quot;, &quot;-c&quot;, &quot;dmidecode | egrep -i &#39;system-product-name|product|domU&#39;&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	stdout, err :&#x3D; cmd.Output()</span><br><span class="line"></span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return false, err</span><br><span class="line">	&#125;</span><br><span class="line">	model &#x3D; string(stdout)</span><br><span class="line"></span><br><span class="line">	if strings.Contains(model, &quot;VirtualBox&quot;) || strings.Contains(model, &quot;Virtual Machine&quot;) || strings.Contains(model, &quot;VMware Virtual Platform&quot;) ||</span><br><span class="line">		strings.Contains(model, &quot;KVM&quot;) || strings.Contains(model, &quot;Bochs&quot;) || strings.Contains(model, &quot;HVM domU&quot;) &#123;</span><br><span class="line">		return true, nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return false, nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果使用夜莺n9e需要更改代码</p>
-<p>将 agent.yml中 cate 改为 auto，同时agent/report/report.go 更改如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">func report() error &#123;</span><br><span class="line">	name, err :&#x3D; os.Hostname()</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;cannot get hostname: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fields, err :&#x3D; gatherFields(config.Config.Report.Fields)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;这里考虑区分物理机还是虚拟机, 当类型是auto 时, 判断处理</span><br><span class="line">	var hostCategory string</span><br><span class="line">	if  config.Config.Report.Cate &#x3D;&#x3D; &quot;auto&quot; &#123;</span><br><span class="line">		isVM, _ :&#x3D; utils.IsVirtualMachine()</span><br><span class="line">		if isVM &#123;</span><br><span class="line">			hostCategory &#x3D;&quot;virtual&quot;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			hostCategory &#x3D;&quot;physical&quot;</span><br><span class="line">		&#125;</span><br><span class="line">		logger.Debugf(&quot;ident: %s , category: %s&quot;, ident,hostCategory)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	form :&#x3D; hostRegisterForm&#123;</span><br><span class="line">		SN:      sn,</span><br><span class="line">		IP:      ip,</span><br><span class="line">		Ident:   ident,</span><br><span class="line">		Name:    name,</span><br><span class="line">		Cate:    hostCategory, &#x2F;&#x2F;config.Config.Report.Cate</span><br><span class="line">		UniqKey: config.Config.Report.UniqKey,</span><br><span class="line">		Fields:  fields,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	content :&#x3D; form.SN + form.IP + form.Ident + form.Name + form.Cate + form.UniqKey</span><br><span class="line">	var keys []string</span><br><span class="line">	for key :&#x3D; range fields &#123;</span><br><span class="line">		keys &#x3D; append(keys, key, fields[key])</span><br><span class="line">	&#125;</span><br><span class="line">	sort.Strings(keys)</span><br><span class="line"></span><br><span class="line">	for _, key :&#x3D; range keys &#123;</span><br><span class="line">		content +&#x3D; fields[key]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	form.Digest &#x3D; str.MD5(content)</span><br><span class="line"></span><br><span class="line">	servers :&#x3D; address.GetHTTPAddresses(&quot;ams&quot;)</span><br><span class="line">	for _, i :&#x3D; range rand.Perm(len(servers)) &#123;</span><br><span class="line">		url :&#x3D; fmt.Sprintf(&quot;http:&#x2F;&#x2F;%s&#x2F;v1&#x2F;ams-ce&#x2F;hosts&#x2F;register&quot;, servers[i])</span><br><span class="line"></span><br><span class="line">		logger.Debugf(&quot;report: %+v&quot;, form)</span><br><span class="line"></span><br><span class="line">		var body errRes</span><br><span class="line">		err :&#x3D; httplib.Post(url).JSONBodyQuiet(form).Header(&quot;X-Srv-Token&quot;, config.Config.Report.Token).SetTimeout(time.Second * 5).ToJSON(&amp;body)</span><br><span class="line">		if err !&#x3D; nil &#123;</span><br><span class="line">			js, _ :&#x3D; json.Marshal(form)</span><br><span class="line">			logger.Errorf(&quot;report payload: %s, token: %s&quot;, string(js), config.Config.Report.Token)</span><br><span class="line">			return fmt.Errorf(&quot;curl %s fail: %v&quot;, url, err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		if body.Err !&#x3D; &quot;&quot; &#123;</span><br><span class="line">			return fmt.Errorf(body.Err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		return nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return fmt.Errorf(&quot;all server instance is dead&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" data-id="ckj9wlgd30000b0167l7g2itn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mariadb-10-1-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2020-12-28T02:14:32.000Z" itemprop="datePublished">2020-12-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/">mariadb 10.1 yum安装</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># MariaDB 10.1 CentOS repository list - created 2020-03-09 13:45 UTC</span><br><span class="line"># http:&#x2F;&#x2F;downloads.mariadb.org&#x2F;mariadb&#x2F;repositories&#x2F;</span><br><span class="line">[mariadb]</span><br><span class="line">name &#x3D; MariaDB</span><br><span class="line">baseurl &#x3D; http:&#x2F;&#x2F;yum.mariadb.org&#x2F;10.1&#x2F;centos7-amd64</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;yum.mariadb.org&#x2F;RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck&#x3D;1</span><br></pre></td></tr></table></figure>
-
-<p>After the file is in place, install MariaDB with:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install MariaDB-server MariaDB-client</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" data-id="ckj7xix5t0004u816f8yr9lde" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-vim-报错E437" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" class="article-date">
-  <time datetime="2020-12-28T02:13:11.000Z" itemprop="datePublished">2020-12-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/">vim 报错E437</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>E437: terminal capability “cm” required</p>
-<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
-<p>解决办法：</p>
-<p>执行export TERM=xterm;</p>
-<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
-<p>或者</p>
-<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
-<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" data-id="ckj7xix5v0007u816ftf2ccvc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mariadb-常见故障解决" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" class="article-date">
-  <time datetime="2020-12-23T08:46:42.000Z" itemprop="datePublished">2020-12-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/">mariadb 常见故障解决</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="常见mariadb-故障解决"><a href="#常见mariadb-故障解决" class="headerlink" title="常见mariadb 故障解决"></a>常见mariadb 故障解决</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 启动异常</span><br><span class="line">sed -i &#39;s#safe_to_bootstrap: 0#safe_to_bootstrap: 1#&#39; &#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;mariadb&#x2F;_data&#x2F;grastate.dat</span><br><span class="line"></span><br><span class="line">2. galera cluster 启动一个节点时出现this member has applied more events than the primary component.Data loss is possible. Aborting.</span><br><span class="line">解决：</span><br><span class="line"></span><br><span class="line">cd &#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line"></span><br><span class="line">rm grastate.dat ib_log* -f</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-<h1 id="使用kolla安装的openstack-mariadb为集群所有节点无法启动"><a href="#使用kolla安装的openstack-mariadb为集群所有节点无法启动" class="headerlink" title="使用kolla安装的openstack mariadb为集群所有节点无法启动"></a>使用kolla安装的openstack mariadb为集群所有节点无法启动</h1><p>转载<a target="_blank" rel="noopener" href="https://me.csdn.net/weixin_30301449">R芮R</a> 最后发布于2018-08-20 22:31:00 阅读数 228 收藏</p>
-<p>展开</p>
-<p>当在做测试时，把所有的openstack节点都关机，再开启做测试时，发现mariadb galera集群启不来，相当于所有的mariadb集群都停止了（跟所有节点断电情况相似），这时候怎么办呢，重新建立galera集群</p>
-<p>方法1：、如果集群中的机器全部重启，如机房断电，第一台启动的服务器必须以空地址启动</p>
-<p>编辑第一个控制节点的 cat /etc/kolla/mariadb/config.json</p>
-<p>…</p>
-<p>“command”: “/usr/bin/mysqld_safe –wsrep_cluster_address=gcomm://“,</p>
-<p>…</p>
-<p>方法2：</p>
-<p>选择节点一个mariadb节点，修改安全启动状态。</p>
-<p>sed -i ‘s/safe_to_bootstrap: 0/safe_to_bootstrap: 1/g’  /var/lib/docker/volumes/mariadb/_data/grastate.dat</p>
-<p>grep “New cluster view” /var/lib/docker/volumes/kolla_logs/_data/mariadb/mariadb.log |awk  -F: ‘END { print $1”:”$2”:”$3 $6”:”$7}’   # 显示如下，显示序列号</p>
-<p>180822 21:45:32 [Note] WSREP 05d50ff4-a17b-11e8-8cfc-02fd70253581:140645, view# -1</p>
-<p>修改seqno:-1</p>
-<p>重启这个mariadb容器</p>
-<p>docker restart mariadb</p>
-<p>接着接入这个容器</p>
-<p>docker exec -it mariadb /bin/bash</p>
-<p>执行mysqld_safe –wsrep-new-cluster</p>
-<p>然后再重启其他的docker节点</p>
-<p>为能正常启动 galera集群，最好正常关闭mariadb docker，命令docker stop mariadb</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" data-id="ckj7xix5i0000u816520b36li" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-shell-经典常用命令宝典" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/" class="article-date">
-  <time datetime="2020-12-23T02:04:19.000Z" itemprop="datePublished">2020-12-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/">shell-经典常用命令宝典</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p>清空某目录下所有日志文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#find &#x2F;var&#x2F;log&#x2F;kolla&#x2F; -type f -name &quot;*.log*&quot; -exec cp &#x2F;dev&#x2F;null &#123;&#125; 2&gt;&amp;1 \;  </span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ol>
-<ol start="2">
-<li><p>网卡路由 IP 设置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#ip link set eth0 up             # 开启网卡</span><br><span class="line">#ip link set eth0 promisc on      # 开启网卡的混合模式</span><br><span class="line">#ip link set eth0 promisc offi    # 关闭网卡的混个模式</span><br><span class="line">#ip link set eth0 txqueuelen 1200 # 设置网卡队列长度</span><br><span class="line">#ip link set eth0 mtu 1400        # 设置网卡最大传输单元</span><br><span class="line">#ip addr add 192.168.0.1&#x2F;24 dev eth0 # 设置eth0网卡IP地址192.168.0.1</span><br><span class="line">#ip route add 192.168.4.0&#x2F;24  via  192.168.0.254 dev eth0 # 设置192.168.4.0网段的网关为192.168.0.254,数据走eth0接口</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/" data-id="ckj7xix5u0005u816dlaefi1r" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -575,7 +564,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -588,23 +577,23 @@
       <ul>
         
           <li>
-            <a href="/2021/02/25/heat-%E4%BD%BF%E7%94%A8go%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99heat%E5%A4%9A%E4%B8%BB%E6%9C%BA%E7%BC%96%E6%8E%92demo/">heat-使用go语言编写heat多主机编排demo</a>
+            <a href="/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/">openstack-neutron创建keepalived vip</a>
           </li>
         
           <li>
-            <a href="/2021/02/24/openstack-heat%E7%BC%96%E6%8E%92%E6%A8%A1%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%B5%8B%E8%AF%95/">openstack-heat编排模板使用测试</a>
+            <a href="/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/">openstack-虚机创建失败排查</a>
           </li>
         
           <li>
-            <a href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/">kata-与原生docker集成使用</a>
+            <a href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/">linux-golang打开markdown失败</a>
           </li>
         
           <li>
-            <a href="/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/">kata-极速部署kata container</a>
+            <a href="/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">go-gorm使用子查询查询数据</a>
           </li>
         
           <li>
-            <a href="/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/">go-gorm使用json字段</a>
+            <a href="/2021/03/05/go-go-mod-init-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8A%A5%E9%94%99/">go-go mod init 初始化报错</a>
           </li>
         
       </ul>
