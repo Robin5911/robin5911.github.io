@@ -67,6 +67,46 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-gitlab-gitlab-runner-ci-docker-报错" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/" class="article-date">
+  <time datetime="2021-03-24T07:10:27.000Z" itemprop="datePublished">2021-03-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/">gitlab-gitlab runner ci docker 报错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用gitlab runner做ci，但当docker build时报错  Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock </p>
+<p>解决：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#usermod -aG docker gitlab-runner</span><br><span class="line">#service docker restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/" data-id="ckmq12ntp00006c165ghc5tee" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-docker-安装docker-ce" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/" class="article-date">
@@ -90,7 +130,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>安装stable docker-ce的repo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#cd &#x2F;etc&#x2F;yum.repos.d&#x2F;</span><br><span class="line">#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
 
 <p>#yum -y install docker-ce</p>
 
@@ -544,95 +584,6 @@
 
 
   
-    <article id="post-kata-与原生docker集成使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time datetime="2021-02-22T02:21:04.000Z" itemprop="datePublished">2021-02-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/">kata-与原生docker集成使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用kata container 与docker集成</p>
-<p><strong>⒈KataContainers？</strong></p>
-<p>　　Kata Containers是新的虚拟机实现，可以实现和现在容器生态无缝连接，与时下最流行的容器编排工具k8s完美结合，提供容器的快速启动，和虚拟机的安全隔离，与Docker技术相比，容器之间不共用内核，使得隔离性更好。</p>
-<p>　　Kata Containers 项目的主要目标是将虚拟化的安全隔离优势和容器的快速启动特点结合起来。</p>
-<p><strong>⒉即生Docker，何来Kata Containers？</strong><br>　　Linux 容器轻巧，快速且易于集成到许多不同的应用程序工作流程中。但是，在运行容器时存在一些潜在的安全问题，特别是在单个操作系统中的多租户容器：最终，容器共享一个内核、 I / O 的一条路径、网络和内存等。</p>
-<p>　　使用Docker轻量级的容器时，最大的问题就是会碰到安全性的问题，其中几个不同的容器可以互相的进行攻击，如果把这个内核给攻掉了，其他所有容器都会崩溃。如果使用KVM等虚拟化技术，会完美解决安全性的问题，但是会影响速度。</p>
-<p>　　Kata旨在通过虚拟机管理程序来缓解这种安全问题——创建一个外观和感觉像容器的虚拟机。<br>　　Kata Containers项目通过整合Intel Clear Containers和Hyper runV技术，能够支持不同平台的硬件，并且兼容Open Container Initiative(OCI)和Kubernetes container runtime interface(CRI)接口规范。Kata Containers项目现在由OpenStack基金会管理，代码托管在Github(<a target="_blank" rel="noopener" href="https://github.com/kata-containers)%E4%B8%8A%E3%80%82">https://github.com/kata-containers)上。</a></p>
-<p><strong>⒊使用Kata Containers替换Docker？</strong></p>
-<p>　　从docker架构上看，kata-container和原来的runc是平级的。大家知道docker只是管理容器生命周期的框架，真正启动容器最早用的是LXC，然后是runc，现在也可以换成kata了。所以说kata-container可以当做docker的一个插件，启动kata-container可以通过docker命令。Kata最大的亮点是解决了传统容器共享内核的安全和隔离问题，办法是让每个容器运行在一个轻量级的虚拟机中，使用单独的内核。 </p>
-<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152257944-1238620662.jpg" alt="img"></p>
-<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152447829-1224252548.jpg" alt="img"></p>
-<p><strong>⒋现在开始？</strong></p>
-<p>　　⒈安装Kata Containers容器包（以Centos 7 x86_64为例） </p>
-<p>这里使用snap部署</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#yum install epel-release</span><br><span class="line">#yum install snapd</span><br><span class="line">#systemctl enable --now snapd.socket</span><br><span class="line">#ln -s &#x2F;var&#x2F;lib&#x2F;snapd&#x2F;snap &#x2F;snap</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#snap install kata-containers --classic</span><br><span class="line">遇到报错：error: too early for operation, device not yet seeded or device model not acknowledged</span><br><span class="line">再执行一次 #yum -y install snapd 就可以了</span><br><span class="line">#snap install kata-containers --classic</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/kata/2021-02-22_11h08_20.png"></p>
-<h2 id="配置Kata-Container"><a href="#配置Kata-Container" class="headerlink" title="配置Kata Container"></a>配置Kata Container</h2><p>默认情况下Kata container以只读文件系统形式挂载在<code>/snap/kata-containers</code>路径下，因此默认配置文件不能修改，但是<code>kata-runtime</code>支持从指定路径加载配置文件而不是从默认路径，使用以下命令修改：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;kata-containers</span><br><span class="line">#cp &#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;share&#x2F;defaults&#x2F;kata-containers&#x2F;configuration.toml &#x2F;etc&#x2F;kata-containers&#x2F;</span><br><span class="line">#cat &#x2F;etc&#x2F;kata-containers&#x2F;configuration.toml</span><br></pre></td></tr></table></figure>
-
-<p>可以通过修改<code>/etc/kata-containers/configuration.toml</code>文件来更改kata container的配置，暂时我们不修改</p>
-<h2 id="更改Docker运行时"><a href="#更改Docker运行时" class="headerlink" title="更改Docker运行时"></a>更改Docker运行时</h2><p>在更改Docker运行时前，检查一下Docker默认的运行时，运行命令<code>docker info | grep -i runtime</code>，结果如下所示，现有可供选择的运行时仅有<code>runc</code>，默认的运行时也为<code>runc</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: runc</span><br><span class="line"> Default Runtime: runc</span><br></pre></td></tr></table></figure>
-
-<p>要将<code>runc</code>更换为kata container提供的<code>kata-runtime</code>，使用以下两种方法<strong>之一</strong>进行替换：</p>
-<p><strong>注意官方文档上给出的文件路径为<code>/usr/bin/kata-runtime</code>，这是通过<code>kata-manager</code>安装kata container时的路径，通过snap安装的kata container，路径应为<code>/snap/kata-containers/current/usr/bin/kata-runtime</code></strong></p>
-<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png" alt=":one:"> 通过<code>systemd</code>文件夹，具体命令为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;</span><br><span class="line">#cat &lt;&lt;EOF | sudo tee &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;kata-containers.conf</span><br><span class="line">[Service]</span><br><span class="line">ExecStart&#x3D;</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;dockerd -D --add-runtime kata-runtime&#x3D;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime --default-runtime&#x3D;kata-runtime</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0032-20e3.png" alt=":two:"> 通过docker <code>daemon.json</code>文件，在<code>/etc/docker/daemon.json</code>文件中添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;default-runtime&quot;: &quot;kata-runtime&quot;,</span><br><span class="line">  &quot;runtimes&quot;: &#123;</span><br><span class="line">    &quot;kata-runtime&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里选择看起来更简单些的方式2，我是使用的第一种，都可以，配置好后还需要<strong>重启Docker服务</strong>使之生效，运行如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-<p>此时再次查看docker运行时配置，发现可供的选择多了一个<code>kata-runtime</code>，并且默认为<code>kata-runtime</code>，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: kata-runtime runc</span><br><span class="line"> Default Runtime: kata-runtime</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/kata/2021-02-22_14h01_54.png"></p>
-<h2 id="运行kata-runtime-docker"><a href="#运行kata-runtime-docker" class="headerlink" title="运行kata-runtime docker"></a>运行kata-runtime docker</h2><p>拉取测试镜像busybox：<code>docker pull busybox 运行测试：</code></p>
-<p>#docker run busybox uname -a</p>
-<p><code>默认的运行时已经改为为</code>kata-runtime<code>，如果想要使用之前的</code>runc<code>，可以通过参数</code>–runtime=runc`来指定：</p>
-<p>#docker run –runtime=runc busybox uname -a`</p>
-<p><img src="/images/kata/2021-02-22_14h18_27.png"></p>
-<h2 id="卸载Kata-Container"><a href="#卸载Kata-Container" class="headerlink" title="卸载Kata Container"></a>卸载Kata Container</h2><p>运行命令：</p>
-<p>#snap remove kata-containers<br>删除相关的配置文件：</p>
-<p>#rm -r /etc/kata-containers</p>
-<p>#rm /etc/docker/daemon.json`</p>
-<p>参考：<a target="_blank" rel="noopener" href="https://snapcraft.io/install/kata-containers/centos">https://snapcraft.io/install/kata-containers/centos</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" data-id="cklg08r9n00033c164tcnhmb9" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -661,7 +612,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 15.56px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.22px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.22px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18.89px;">openstack</a> <a href="/tags/python/" style="font-size: 13.33px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 14.44px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18.75px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -683,6 +634,10 @@
       <ul>
         
           <li>
+            <a href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/">gitlab-gitlab runner ci docker 报错</a>
+          </li>
+        
+          <li>
             <a href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/">docker-安装docker-ce</a>
           </li>
         
@@ -696,10 +651,6 @@
         
           <li>
             <a href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/">linux-golang打开markdown失败</a>
-          </li>
-        
-          <li>
-            <a href="/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">go-gorm使用子查询查询数据</a>
           </li>
         
       </ul>
