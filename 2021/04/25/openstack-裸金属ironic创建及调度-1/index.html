@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>openstack-裸金属ironic创建及调度-1 | 老Zhang博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="注册裸机节点1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556#openstack baremetal node create --driver ipmi --name BM01+------------------------+-------">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openstack-裸金属ironic创建及调度-1">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/index.html">
+<meta property="og:site_name" content="老Zhang博客">
+<meta property="og:description" content="注册裸机节点1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556#openstack baremetal node create --driver ipmi --name BM01+------------------------+-------">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-04-25T06:25:29.000Z">
+<meta property="article:modified_time" content="2021-04-25T11:22:21.598Z">
+<meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="openstack">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="老Zhang博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="https://fonts.lug.ustc.edu.cn/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="google-site-verification" content="XkIGmrbqh5J83cILz5wx9StkgaQzjhGx0UfHTxlma00" />
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">老Zhang博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-openstack-裸金属ironic创建及调度-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/" class="article-date">
+  <time datetime="2021-04-25T06:25:29.000Z" itemprop="datePublished">2021-04-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      openstack-裸金属ironic创建及调度-1
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="注册裸机节点"><a href="#注册裸机节点" class="headerlink" title="注册裸机节点"></a>注册裸机节点</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">#openstack baremetal node create --driver ipmi --name BM01</span><br><span class="line">+------------------------+--------------------------------------+</span><br><span class="line">| Field                  | Value                                |</span><br><span class="line">+------------------------+--------------------------------------+</span><br><span class="line">| allocation_uuid        | None                                 |</span><br><span class="line">| automated_clean        | None                                 |</span><br><span class="line">| bios_interface         | no-bios                              |</span><br><span class="line">| boot_interface         | pxe                                  |</span><br><span class="line">| chassis_uuid           | None                                 |</span><br><span class="line">| clean_step             | &#123;&#125;                                   |</span><br><span class="line">| conductor              | openstack07.control    |</span><br><span class="line">| conductor_group        |                                      |</span><br><span class="line">| console_enabled        | False                                |</span><br><span class="line">| console_interface      | ipmitool-socat                       |</span><br><span class="line">| created_at             | 2021-04-25T06:27:44+00:00            |</span><br><span class="line">| deploy_interface       | iscsi                                |</span><br><span class="line">| deploy_step            | &#123;&#125;                                   |</span><br><span class="line">| description            | None                                 |</span><br><span class="line">| driver                 | ipmi                                 |</span><br><span class="line">| driver_info            | &#123;&#125;                                   |</span><br><span class="line">| driver_internal_info   | &#123;&#125;                                   |</span><br><span class="line">| extra                  | &#123;&#125;                                   |</span><br><span class="line">| fault                  | None                                 |</span><br><span class="line">| inspect_interface      | no-inspect                           |</span><br><span class="line">| inspection_finished_at | None                                 |</span><br><span class="line">| inspection_started_at  | None                                 |</span><br><span class="line">| instance_info          | &#123;&#125;                                   |</span><br><span class="line">| instance_uuid          | None                                 |</span><br><span class="line">| last_error             | None                                 |</span><br><span class="line">| maintenance            | False                                |</span><br><span class="line">| maintenance_reason     | None                                 |</span><br><span class="line">| management_interface   | ipmitool                             |</span><br><span class="line">| name                   | BM01                                 |</span><br><span class="line">| network_interface      | neutron                              |</span><br><span class="line">| owner                  | None                                 |</span><br><span class="line">| power_interface        | ipmitool                             |</span><br><span class="line">| power_state            | None                                 |</span><br><span class="line">| properties             | &#123;&#125;                                   |</span><br><span class="line">| protected              | False                                |</span><br><span class="line">| protected_reason       | None                                 |</span><br><span class="line">| provision_state        | enroll                               |</span><br><span class="line">| provision_updated_at   | None                                 |</span><br><span class="line">| raid_config            | &#123;&#125;                                   |</span><br><span class="line">| raid_interface         | no-raid                              |</span><br><span class="line">| rescue_interface       | no-rescue                            |</span><br><span class="line">| reservation            | None                                 |</span><br><span class="line">| resource_class         | None                                 |</span><br><span class="line">| storage_interface      | noop                                 |</span><br><span class="line">| target_power_state     | None                                 |</span><br><span class="line">| target_provision_state | None                                 |</span><br><span class="line">| target_raid_config     | &#123;&#125;                                   |</span><br><span class="line">| traits                 | []                                   |</span><br><span class="line">| updated_at             | None                                 |</span><br><span class="line">| uuid                   | 5e10c067-c0c6-48be-ac6e-749a70045b97 |</span><br><span class="line">| vendor_interface       | ipmitool                             |</span><br><span class="line">+------------------------+--------------------------------------+</span><br></pre></td></tr></table></figure>
+
+
+
+<p>当前许多 ironic node info 都是 None，需要后续继续更新。</p>
+<ul>
+<li><strong>设置部署接口类型，现在可支持 iSCSI、Direct、Ansible 等类型，每种类型都有不同的行为模型，可根据实际情况选择，这里我们选择direct 、不使用（占用 Provisioning Network 的带宽）的 iSCS 类型</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal  node set 5e10c067-c0c6-48be-ac6e-749a70045b97 \</span><br><span class="line">    --deploy-interface direct </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>设置 driver_info，这里即 IPMI info，主要是提供 IPMI 的登录账户信息</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal node set 5e10c067-c0c6-48be-ac6e-749a70045b97 \</span><br><span class="line">    --driver-info ipmi_username&#x3D;admin \</span><br><span class="line">    --driver-info ipmi_password&#x3D;admin \</span><br><span class="line">    --driver-info ipmi_address&#x3D;172.18.22.106 \</span><br><span class="line">    --driver-info ipmi_port&#x3D;623</span><br></pre></td></tr></table></figure>
+
+<p><strong>NOTE</strong>：<a target="_blank" rel="noopener" href="https://docs.openstack.org/ironic/rocky/admin/drivers/ipmitool.html">IPMI Driver 官方文档</a></p>
+<ul>
+<li><strong>设置 Deploy Images，通过 RAMDisk 的方式启动</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">openstack image list</span><br><span class="line"></span><br><span class="line">openstack baremetal node set 5e10c067-c0c6-48be-ac6e-749a70045b97 \</span><br><span class="line">    --driver-info deploy_kernel&#x3D;07852c3c-f4b4-43ab-b6b3-aeafe12c07d4 \</span><br><span class="line">    --driver-info deploy_ramdisk&#x3D;e3429cf3-8fed-4ff8-afb0-50056aacc8f0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>设置 Provisioning/Cleaning Network</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">neutron net-create ironic_deploy --shared  --provider:network_type flat --provider:physical_network physnet1</span><br><span class="line"></span><br><span class="line">neutron subnet-create --name flat-subnet --gateway 192.168.99.1 --dns-nameserver 8.8.8.8  --allocation-pool start&#x3D;192.168.99.120,end&#x3D;192.168.99.250  ironic_deploy 192.168.99.0&#x2F;24</span><br><span class="line"></span><br><span class="line">openstack baremetal node set 5e10c067-c0c6-48be-ac6e-749a70045b97 \</span><br><span class="line">    --driver-info cleaning_network&#x3D;7fa970fd-60c7-4f7e-83a2-cd611470dfc6 \</span><br><span class="line">    --driver-info provisioning_network&#x3D;7fa970fd-60c7-4f7e-83a2-cd611470dfc6</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>设置 ironic node 的 PXE 网卡 MAC 地址，在 Provisioning Network 中通过这个 MAC 地址来为其分配 IP 地址</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal port create 78:ac:44:04:f1:a9 --node 5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>NOTE</strong>：部署裸金属实例成功之后 PXE 网卡的 MAC 地址会被绑定到对应的 Tenant Network Port。</p>
+<ul>
+<li><strong>为 ironic node 设置 Placement 筛选候选人的 Resource Class 类型，nova-compute for Ironic 会自动为其创建 Placement Resource Provider</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">$ openstack baremetal node set 5e10c067-c0c6-48be-ac6e-749a70045b97 --resource-class BAREMETAL</span><br><span class="line"></span><br><span class="line">$ openstack resource provider list</span><br><span class="line">+--------------------------------------+--------------------------------------+------------+--------------------------------------+----------------------+</span><br><span class="line">| uuid                                 | name                                 | generation | root_provider_uuid                   | parent_provider_uuid |</span><br><span class="line">+--------------------------------------+--------------------------------------+------------+--------------------------------------+----------------------+</span><br><span class="line">| f00d6063-1253-4103-8f4d-899ea700936f | openstack08.control    |          5 | f00d6063-1253-4103-8f4d-899ea700936f | None                 |</span><br><span class="line">| 0cbb35fe-44b7-4fe7-a93f-41ffacaf6a0a | openstack07.control    |          5 | 0cbb35fe-44b7-4fe7-a93f-41ffacaf6a0a | None                 |</span><br><span class="line">| 9ee63716-854f-4554-8211-9de6516e3aa3 | 9ee63716-854f-4554-8211-9de6516e3aa3 |          3 | 9ee63716-854f-4554-8211-9de6516e3aa3 | None                 |</span><br><span class="line">| 4a22be4a-fd35-43d8-842e-6ac7db30bd4e | 4a22be4a-fd35-43d8-842e-6ac7db30bd4e |          0 | 4a22be4a-fd35-43d8-842e-6ac7db30bd4e | None                 |</span><br><span class="line">+--------------------------------------+--------------------------------------+------------+--------------------------------------+----------------------+</span><br><span class="line"></span><br><span class="line">$ openstack resource provider inventory list 5e10c067-c0c6-48be-ac6e-749a70045b97  </span><br><span class="line">+------------------+------------------+----------+----------+----------+-----------+-------+</span><br><span class="line">| resource_class   | allocation_ratio | min_unit | max_unit | reserved | step_size | total |</span><br><span class="line">+------------------+------------------+----------+----------+----------+-----------+-------+</span><br><span class="line">| CUSTOM_BAREMETAL |              1.0 |        1 |        1 |        1 |         1 |     1 |</span><br><span class="line">+------------------+------------------+----------+----------+----------+-----------+-------+</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>为 ironic node 设置 Placement 筛选候选人的 Resource Traits 标签</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">openstack baremetal node add trait 5e10c067-c0c6-48be-ac6e-749a70045b97 \</span><br><span class="line">   HW_CPU_X86_VMX</span><br><span class="line"></span><br><span class="line">[root@controller ~]# openstack resource provider trait list e322f49a-ad50-468d-a031-29bde068c290</span><br><span class="line">+----------------+</span><br><span class="line">| name           |</span><br><span class="line">+----------------+</span><br><span class="line">| HW_CPU_X86_VMX |</span><br><span class="line">| CUSTOM_TRAIT1  |</span><br><span class="line">+----------------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>NOTE</strong>：这个操作需要较高的 Placement API 版本 &lt;= 1.17</p>
+<ul>
+<li><strong>设置 ironic node 的基础资源信息，作为 Placement 筛选候选人的参数因子</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal node set 5e10c067-c0c6-48be-ac6e-749a70045b97 \</span><br><span class="line">--property cpus&#x3D;40 \</span><br><span class="line">--property memory_mb&#x3D;262144 \</span><br><span class="line">--property local_gb&#x3D;600 </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>如果裸机服务器设定的是 UEFI，那么需要设置 ironic node 的 boot mode</strong>。(传统bios请忽略！！！)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal node set 5e10c067-c0c6-48be-ac6e-749a70045b97 --property capabilities&#x3D;&#39;boot_mode:uefi&#39;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>验证上述录入的 ironic node infos 是否合规</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ openstack baremetal node validate e322f49a-ad50-468d-a031-29bde068c290</span><br><span class="line">+------------+--------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| Interface  | Result | Reason                                                                                                                                                                                                                                                                    |</span><br><span class="line">+------------+--------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| bios       | False  | Driver ipmi does not support bios (disabled or not implemented).                                                                                                                                                                                                          |</span><br><span class="line">| boot       | False  | Cannot validate image information for node e322f49a-ad50-468d-a031-29bde068c290 because one or more parameters are missing from its instance_info and insufficent information is present to boot from a remote volume. Missing are: [&#39;ramdisk&#39;, &#39;kernel&#39;, &#39;image_source&#39;] |</span><br><span class="line">| console    | False  | Missing &#39;ipmi_terminal_port&#39; parameter in node&#39;s driver_info.                                                                                                                                                                                                             |</span><br><span class="line">| deploy     | False  | Cannot validate image information for node e322f49a-ad50-468d-a031-29bde068c290 because one or more parameters are missing from its instance_info and insufficent information is present to boot from a remote volume. Missing are: [&#39;ramdisk&#39;, &#39;kernel&#39;, &#39;image_source&#39;] |</span><br><span class="line">| inspect    | True   |                                                                                                                                                                                                                                                                           |</span><br><span class="line">| management | True   |                                                                                                                                                                                                                                                                           |</span><br><span class="line">| network    | True   |                                                                                                                                                                                                                                                                           |</span><br><span class="line">| power      | True   |                                                                                                                                                                                                                                                                           |</span><br><span class="line">| raid       | True   |                                                                                                                                                                                                                                                                           |</span><br><span class="line">| rescue     | False  | Driver ipmi does not support rescue (disabled or not implemented).                                                                                                                                                                                                        |</span><br><span class="line">| storage    | True   |                                                                                                                                                                                                                                                                           |</span><br><span class="line">+------------+--------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p><strong>NOTE</strong>：这里出现了 4 个 False，但没有致命影响，其中 bios、console 是因为我们没有提供相应的驱动，属于可选项。而 boot、deploy 在 Nova Driver for Ironic 的环境中是无法通过验证的。</p>
+<ul>
+<li><strong>验证 ironic node 是否能够被纳管</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># To move a node from enroll to manageable provision state</span><br><span class="line">$ openstack baremetal node manage 5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">$ openstack baremetal node show 5e10c067-c0c6-48be-ac6e-749a70045b97 | grep provision_state</span><br><span class="line">| provision_state        | manageable  </span><br><span class="line">                                                                                                                                                                                                                                                                                                                                                        </span><br><span class="line"># To move a node from manageable to available provision state</span><br><span class="line">$ openstack baremetal node provide 5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">$ [root@controller ~]# openstack baremetal node show 5e10c067-c0c6-48be-ac6e-749a70045b97 | grep provision_state</span><br><span class="line">| provision_state        | available</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>查看当前的 ironic node 状态</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">[root@controller ~]# openstack baremetal node show 5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">+------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| Field                  | Value                                                                                                                                                                                                                                                                                                                                                    |</span><br><span class="line">+------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| allocation_uuid        | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| automated_clean        | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| bios_interface         | no-bios                                                                                                                                                                                                                                                                                                                                                  |</span><br><span class="line">| boot_interface         | pxe                                                                                                                                                                                                                                                                                                                                                      |</span><br><span class="line">| chassis_uuid           | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| clean_step             | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| conductor              | openstack08.control                                                                                                                                                                                                                                                                                                                        |</span><br><span class="line">| conductor_group        |                                                                                                                                                                                                                                                                                                                                                          |</span><br><span class="line">| console_enabled        | False                                                                                                                                                                                                                                                                                                                                                    |</span><br><span class="line">| console_interface      | ipmitool-socat                                                                                                                                                                                                                                                                                                                                           |</span><br><span class="line">| created_at             | 2021-04-25T10:13:09+00:00                                                                                                                                                                                                                                                                                                                                |</span><br><span class="line">| deploy_interface       | direct                                                                                                                                                                                                                                                                                                                                                   |</span><br><span class="line">| deploy_step            | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| description            | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| driver                 | ipmi                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| driver_info            | &#123;&#39;ipmi_port&#39;: 623, &#39;ipmi_username&#39;: &#39;admin&#39;, &#39;deploy_kernel&#39;: &#39;07852c3c-f4b4-43ab-b6b3-aeafe12c07d4&#39;, &#39;ipmi_address&#39;: &#39;172.18.22.106&#39;, &#39;deploy_ramdisk&#39;: &#39;e3429cf3-8fed-4ff8-afb0-50056aacc8f0&#39;, &#39;ipmi_password&#39;: &#39;******&#39;, &#39;provisioning_network&#39;: &#39;7fa970fd-60c7-4f7e-83a2-cd611470dfc6&#39;, &#39;cleaning_network&#39;: &#39;7fa970fd-60c7-4f7e-83a2-cd611470dfc6&#39;&#125; |</span><br><span class="line">| driver_internal_info   | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| extra                  | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| fault                  | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| inspect_interface      | no-inspect                                                                                                                                                                                                                                                                                                                                               |</span><br><span class="line">| inspection_finished_at | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| inspection_started_at  | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| instance_info          | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| instance_uuid          | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| last_error             | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| maintenance            | False                                                                                                                                                                                                                                                                                                                                                    |</span><br><span class="line">| maintenance_reason     | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| management_interface   | ipmitool                                                                                                                                                                                                                                                                                                                                                 |</span><br><span class="line">| name                   | BM01                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| network_interface      | neutron                                                                                                                                                                                                                                                                                                                                                  |</span><br><span class="line">| owner                  | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| power_interface        | ipmitool                                                                                                                                                                                                                                                                                                                                                 |</span><br><span class="line">| power_state            | power on                                                                                                                                                                                                                                                                                                                                                 |</span><br><span class="line">| properties             | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| protected              | False                                                                                                                                                                                                                                                                                                                                                    |</span><br><span class="line">| protected_reason       | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| provision_state        | available                                                                                                                                                                                                                                                                                                                                                |</span><br><span class="line">| provision_updated_at   | 2021-04-25T10:30:35+00:00                                                                                                                                                                                                                                                                                                                                |</span><br><span class="line">| raid_config            | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| raid_interface         | no-raid                                                                                                                                                                                                                                                                                                                                                  |</span><br><span class="line">| rescue_interface       | no-rescue                                                                                                                                                                                                                                                                                                                                                |</span><br><span class="line">| reservation            | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| resource_class         | BAREMETAL                                                                                                                                                                                                                                                                                                                                                |</span><br><span class="line">| storage_interface      | noop                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| target_power_state     | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| target_provision_state | None                                                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| target_raid_config     | &#123;&#125;                                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| traits                 | [&#39;HW_CPU_X86_VMX&#39;]                                                                                                                                                                                                                                                                                                                                       |</span><br><span class="line">| updated_at             | 2021-04-25T10:30:35+00:00                                                                                                                                                                                                                                                                                                                                |</span><br><span class="line">| uuid                   | 5e10c067-c0c6-48be-ac6e-749a70045b97                                                                                                                                                                                                                                                                                                                     |</span><br><span class="line">| vendor_interface       | ipmitool                                                                                                                                                                                                                                                                                                                                                 |</span><br><span class="line">+------------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">[root@17471e0f8de8 sh1]# </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>验证，自动添加了 Ironic Neutron Agent</strong>。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@baremetal ~]# openstack network agent list</span><br><span class="line">2ecbcf17-b11b-4e6a-87b5-349dde0fcee3 | Baremetal Node | 5e10c067-c0c6-48be-ac6e-749a70045b97 | None              | :-)   | UP    | ironic-neutron-agent </span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考：<a target="_blank" rel="noopener" href="https://docs.openstack.org/ironic/stein/admin/boot-from-volume.html#storage-interface">https://docs.openstack.org/ironic/stein/admin/boot-from-volume.html#storage-interface</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/" data-id="ckssanb4v000xto163vnogqup" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          openstack-裸金属ironic创建及调度-2
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-8/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">openstack-裸金属ironic整理-8</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/">openstack-裸金属ironic创建及调度-3</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/">openstack-裸金属ironic创建及调度-2</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/">openstack-裸金属ironic创建及调度-1</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Tonyzhang1989<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

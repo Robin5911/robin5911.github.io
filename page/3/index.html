@@ -67,10 +67,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-go-练习题" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-docker-安装docker-ce" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" class="article-date">
-  <time datetime="2021-01-26T08:45:06.000Z" itemprop="datePublished">2021-01-26</time>
+    <a href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/" class="article-date">
+  <time datetime="2021-03-24T06:22:01.000Z" itemprop="datePublished">2021-03-24</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
+      <a class="article-title" href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/">docker-安装docker-ce</a>
     </h1>
   
 
@@ -89,25 +89,312 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol start="2">
-<li><p>交替打印数字和字母</p>
-<p>使用两个 <code>goroutine</code> 交替打印序列，一个 <code>goroutine</code> 打印数字， 另外一个 <code>goroutine</code> 打印字母， 最终效果如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12AB34CD56EF78GH910IJ1112KL1314MN1516OP1718QR1920ST2122UV2324WX2526YZ2728</span><br></pre></td></tr></table></figure>
+        <p>安装stable docker-ce的repo</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#cd &#x2F;etc&#x2F;yum.repos.d&#x2F;</span><br><span class="line">#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
 
+<p>#yum -y install docker-ce</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/" data-id="ckmn280lc0000tg161yiuhtth" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-neutron创建keepalived-vip" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/" class="article-date">
+  <time datetime="2021-03-19T06:15:44.000Z" itemprop="datePublished">2021-03-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/">openstack-neutron创建keepalived vip</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>用户需要使用keepalived， 需要申请一个vip</p>
+<p>rs: 10.20.32.22,12,23</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#neutron port-create --fixed-ip ip_address&#x3D;10.20.32.100 fed51c88-367b-4613-b366-a701317eed61</span><br><span class="line"></span><br><span class="line">#neutron port-list|egrep &#39;20.12|20.22|20.23&#39;</span><br><span class="line">#neutron port-update PORT_ID1 --allowed_address_pairs list&#x3D;true type&#x3D;dict ip_address&#x3D;10.20.32.100</span><br><span class="line">#neutron port-update PORT_ID2 --allowed_address_pairs list&#x3D;true type&#x3D;dict ip_address&#x3D;10.20.32.100</span><br><span class="line">#neutron port-update PORT_ID3 --allowed_address_pairs list&#x3D;true type&#x3D;dict ip_address&#x3D;10.20.32.100</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/" data-id="ckmh4kdsr0008z4167awk8luu" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-虚机创建失败排查" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/" class="article-date">
+  <time datetime="2021-03-15T23:48:37.000Z" itemprop="datePublished">2021-03-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/">openstack-虚机创建失败排查</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>openstack虚机创建失败，排查原因</p>
+<p>现象：</p>
+<p>​    “message”: “No valid host was found. There are not enough hosts available.”, “code”: 500</p>
 <p>思路：</p>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
+<ol>
+<li>查看nova-compute</li>
+<li>查看scheduler 和 placement 的日志</li>
+<li></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#nova-manage cell_v2 discover_hosts --verbose</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/" data-id="ckmh4kdss0009z41618cb6wiy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux-golang打开markdown失败" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/" class="article-date">
+  <time datetime="2021-03-15T08:29:37.000Z" itemprop="datePublished">2021-03-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/">linux-golang打开markdown失败</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在centos 7 上开发，golang无法打开markdown文件，报错 </p>
+<pre><code>JCEF browser component failed to start
+            Missing native libraries:     libXss.so.1</code></pre>
+<p>使用yum查找谁提供的包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#yum whatprovides libXss</span><br><span class="line">#yum install libXScrnSaver</span><br></pre></td></tr></table></figure>
+
+<p>nice, markdown 可以打开了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/" data-id="ckmh4kdso0005z416eee41ezv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-gorm使用子查询查询数据" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" class="article-date">
+  <time datetime="2021-03-11T06:43:50.000Z" itemprop="datePublished">2021-03-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">go-gorm使用子查询查询数据</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>gorm 使用子查询查询数据</p>
+<p>我想实现如下SQL的查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;SELECT id,hostname FROM &#96;physical_nodes&#96;  WHERE &#96;physical_nodes&#96;.&#96;deleted_at&#96; IS NULL AND ((model &#x3D; &#39;&#39; and id not in ((SELECT hid FROM &#96;hardware_infos&#96;  WHERE (cpu_core &#x3D; &#39;&#39; or mem_size &#x3D; &#39;&#39; or </span><br><span class="line">disk &#x3D; &#39;&#39;))))) ;</span><br></pre></td></tr></table></figure>
+
+<p>通过gorm 实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ds :&#x3D; db.GetDB()</span><br><span class="line">var pns []model.PhysicalNode</span><br><span class="line">&#x2F;&#x2F;查询没有model而且hardware info cpu ram disk 为null的</span><br><span class="line">sql :&#x3D; fmt.Sprintf(&quot;model &#x3D; &#39;&#39; and id not in (?)&quot;)</span><br><span class="line">subSql :&#x3D; fmt.Sprintf(&quot;cpu_core &#x3D; &#39;&#39; or mem_size &#x3D; &#39;&#39; or disk &#x3D; &#39;&#39;&quot;)</span><br><span class="line">subQuery :&#x3D; ds.Select(&quot;hid&quot;).Table(&quot;hardware_infos&quot;).Where(subSql).SubQuery()</span><br><span class="line"></span><br><span class="line">err :&#x3D; ds.Select(&quot;id,hostname&quot;).Where(sql,subQuery).Find(&amp;pns).Error</span><br><span class="line">if err !&#x3D; nil &#123;</span><br><span class="line">	logger.Error(&quot;db query error : &quot;,err)</span><br><span class="line">	return nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" data-id="ckmh4kdsm0001z416fmj59kti" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-go-mod-init-初始化报错" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/05/go-go-mod-init-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8A%A5%E9%94%99/" class="article-date">
+  <time datetime="2021-03-05T09:12:58.000Z" itemprop="datePublished">2021-03-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/05/go-go-mod-init-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8A%A5%E9%94%99/">go-go mod init 初始化报错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>新建golang项目，go mod init 报错</p>
+<p>go: cannot determine module path for source directory /home/xxx/go/src/baremachine-api (outside GOPATH, module path must be specified)</p>
+<p>解决方案：<br>这是因为go mod init 初始化项目时，需要定义一个 module ，我们打开一个 go.mod 文件，就会发现第一行就有</p>
+<p>module ProjectName</p>
+<p>因此，在执行 go mod init 时需要定义 module，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go mod init ProjectName</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/05/go-go-mod-init-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%8A%A5%E9%94%99/" data-id="ckmh4kdsl0000z41657xk3hu2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-安装ceph-redis-memcache-mysql等常用模块" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/02/go-%E5%AE%89%E8%A3%85ceph-redis-memcache-mysql%E7%AD%89%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97/" class="article-date">
+  <time datetime="2021-03-02T02:53:57.000Z" itemprop="datePublished">2021-03-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/02/go-%E5%AE%89%E8%A3%85ceph-redis-memcache-mysql%E7%AD%89%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97/">go-安装ceph/redis/memcache/mysql等常用模块</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>基于centos 7 x86_64 ，go14 , 安装go-ceph/mysql/redis/memcached等模块</p>
+<ol>
+<li><p>安装go-ceph</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#vim &#x2F;etc&#x2F;yum.repo.d&#x2F;ceph.repo</span><br><span class="line">[ceph]</span><br><span class="line">name&#x3D;Ceph noarch packages</span><br><span class="line">baseurl&#x3D;http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ceph&#x2F;rpm-luminous&#x2F;el7&#x2F;x86_64&#x2F;</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgcheck&#x3D;1</span><br><span class="line">type&#x3D;rpm-md</span><br><span class="line">gpgkey&#x3D;http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ceph&#x2F;keys&#x2F;release.asc</span><br><span class="line">[ceph-deploy]</span><br><span class="line">name&#x3D;Ceph noarch packages</span><br><span class="line">baseurl&#x3D;http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ceph&#x2F;rpm-luminous&#x2F;el7&#x2F;noarch&#x2F;</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgcheck&#x3D;1</span><br><span class="line">type&#x3D;rpm-md</span><br><span class="line">gpgkey&#x3D;http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;ceph&#x2F;keys&#x2F;release.asc</span><br><span class="line"></span><br><span class="line">#yum -y install libcephfs-devel librbd-devel librados-devel</span><br><span class="line">#go get github.com&#x2F;ceph&#x2F;go-ceph</span><br><span class="line">#go get github.com&#x2F;ceph&#x2F;go-ceph&#x2F;rados</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装redis</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go get github.com&#x2F;gomodule&#x2F;redigo&#x2F;redis</span><br></pre></td></tr></table></figure>
 
 
 
 </li>
 </ol>
 <ol start="3">
-<li><p>判断字符串中字符是否全都不同</p>
-<p>请实现一个算法，确定一个字符串的所有字符【是否全都不同】。这里我们要求【不允许使用额外的存储结构】。 给定一个string，请返回一个bool值,true代表所有字符全都不同，false代表存在相同的字符。 保证字符串中的字符为【ASCII字符】。字符串的长度小于等于【3000】。</p>
-<p>思路:</p>
-<p>代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
+<li><p>安装mysql orm</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go get github.com&#x2F;jinzhu&#x2F;gorm</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="4">
+<li><p>安装memcached</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go get github.com&#x2F;bradfitz&#x2F;gomemcache&#x2F;memcache</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="5">
+<li><p>安装openstack sdk gophercloud</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#go get github.com&#x2F;gophercloud&#x2F;gophercloud</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安装 配置解析模块 viper </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#export GO111MODULE&#x3D;on</span><br><span class="line">#go get &quot;github.com&#x2F;spf13&#x2F;viper&quot;</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
@@ -115,7 +402,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" data-id="ckkw911ed0003s816a4or61h4" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/03/02/go-%E5%AE%89%E8%A3%85ceph-redis-memcache-mysql%E7%AD%89%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97/" data-id="ckmh4kdsn0003z416huzne738" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
@@ -127,10 +414,10 @@
 
 
   
-    <article id="post-go-判断字符串是否包含在数组中" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-heat-使用go语言编写heat多主机编排demo" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" class="article-date">
-  <time datetime="2021-01-26T08:21:45.000Z" itemprop="datePublished">2021-01-26</time>
+    <a href="/2021/02/25/heat-%E4%BD%BF%E7%94%A8go%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99heat%E5%A4%9A%E4%B8%BB%E6%9C%BA%E7%BC%96%E6%8E%92demo/" class="article-date">
+  <time datetime="2021-02-25T09:53:00.000Z" itemprop="datePublished">2021-02-25</time>
 </a>
     
   </div>
@@ -141,7 +428,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
+      <a class="article-title" href="/2021/02/25/heat-%E4%BD%BF%E7%94%A8go%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99heat%E5%A4%9A%E4%B8%BB%E6%9C%BA%E7%BC%96%E6%8E%92demo/">heat-使用go语言编写heat多主机编排demo</a>
     </h1>
   
 
@@ -149,55 +436,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>判断数组中是否包含某字符串</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func IsContain(items []string, item string) bool &#123;</span><br><span class="line">	for _, eachItem :&#x3D; range items &#123;</span><br><span class="line">		if eachItem &#x3D;&#x3D; item &#123;</span><br><span class="line">			return true</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if IsContain(fip.Tags,&quot;router_forward&quot;)&#123;</span><br><span class="line">			portForwardFips +&#x3D; 1</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+        <p>需要使用heat测试一下编排，使用go语言测试一下创建stack, </p>
+<p>基于openstack stein</p>
+<p>目的：传入虚机名称，安全组，网络，套餐创建出两台虚机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;bytes&quot;</span><br><span class="line">	&quot;encoding&#x2F;json&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;io&#x2F;ioutil&quot;</span><br><span class="line">	&quot;net&#x2F;http&quot;</span><br><span class="line">	&quot;time&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">var (</span><br><span class="line">	&#x2F;&#x2F;全局默认参数</span><br><span class="line">	VolumeType &#x3D; &quot;sata&quot;</span><br><span class="line">	AvailableZone &#x3D; &quot;nova&quot;</span><br><span class="line">	TemplateVersion &#x3D; &quot;2018-08-31&quot;</span><br><span class="line">)</span><br><span class="line">type PostBody struct &#123;</span><br><span class="line">	Files interface&#123;&#125; &#96;json:&quot;files&quot;&#96;</span><br><span class="line">	DisableRollback bool &#96;json:&quot;disable_rollback&quot;&#96;</span><br><span class="line">	Parameters interface&#123;&#125; &#96;json:&quot;parameters&quot;&#96;</span><br><span class="line">	StackName string &#96;json:&quot;stack_name&quot;&#96;</span><br><span class="line">	Template Template &#96;json:&quot;template&quot;&#96;</span><br><span class="line">	Environment interface&#123;&#125; &#96;json:&quot;environment&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type Template struct &#123;</span><br><span class="line">	HeatTemplateVersion string &#96;json:&quot;heat_template_version&quot;&#96;</span><br><span class="line">	Description string &#96;json:&quot;description&quot;&#96;</span><br><span class="line">	Parameters interface&#123;&#125; &#96;json:&quot;parameters&quot;&#96;</span><br><span class="line">	Resources interface&#123;&#125; &#96;json:&quot;resources&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type VmBody struct &#123;</span><br><span class="line">	Name string &#96;json:&quot;name&quot;&#96;</span><br><span class="line">	ImageId string &#96;json:&quot;image_id&quot;&#96;</span><br><span class="line">	NetworkId string &#96;json:&quot;network_id&quot;&#96;</span><br><span class="line">	Flavor string &#96;json:&quot;flavor&quot;&#96;</span><br><span class="line">	DiskSize string &#96;json:&quot;disk_size&quot;&#96;</span><br><span class="line">	SecurityGroupId string &#96;json:&quot;security_group_id&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;Resource相关</span><br><span class="line">type ResourceServer struct &#123;</span><br><span class="line">	Type string &#96;json:&quot;type&quot;&#96;</span><br><span class="line">	Properties ServerProperty &#96;json:&quot;properties&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type ServerProperty struct &#123;</span><br><span class="line">	Name string &#96;json:&quot;name&quot;&#96;</span><br><span class="line">	Image string &#96;json:&quot;image&quot;&#96;</span><br><span class="line">	Flavor string &#96;json:&quot;flavor&quot;&#96;</span><br><span class="line">	Networks []ServerNetworkProperty &#96;json:&quot;networks&quot;&#96;</span><br><span class="line">	SecurityGroups []string &#96;json:&quot;security_groups&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type ServerNetworkProperty struct &#123;</span><br><span class="line">	Network string &#96;json:&quot;network&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type ResourceVolume struct &#123;</span><br><span class="line">	Type string &#96;json:&quot;type&quot;&#96;</span><br><span class="line">	Properties VolumeProperty &#96;json:&quot;properties&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type VolumeProperty struct &#123;</span><br><span class="line">	Size string &#96;json:&quot;size&quot;&#96;</span><br><span class="line">	VolumeType string &#96;json:&quot;volume_type&quot;&#96;</span><br><span class="line">	AvailabilityZone string &#96;json:&quot;availability_zone&quot;&#96;</span><br><span class="line">	Description string &#96;json:&quot;description&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type ResourceVolumeAttach struct &#123;</span><br><span class="line">	Type string &#96;json:&quot;type&quot;&#96;</span><br><span class="line">	Properties VolumeAttachProperties &#96;json:&quot;properties&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type VolumeAttachProperties struct &#123;</span><br><span class="line">	VolumeId PropertyInfo &#96;json:&quot;volume_id&quot;&#96;</span><br><span class="line">	InstanceUuid PropertyInfo &#96;json:&quot;instance_uuid&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">type PropertyInfo struct&#123;</span><br><span class="line">	GetResource string &#96;json:&quot;get_resource&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line">func CreateStack(stackName string,)&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;测试 heat 创建</span><br><span class="line">func main() &#123;</span><br><span class="line">	&#x2F;&#x2F;前端传来 [&#123;&quot;name&quot;:&quot;server1&quot;,&quot;flavor&quot;:&quot;ecs.small&quot;,&quot;image_id&quot;:&quot;xxxxxxx&quot;,&quot;network_id&quot;:&quot;xxxxx&quot;&#125;,</span><br><span class="line">	&#x2F;&#x2F;&#123;&quot;name&quot;:&quot;server2&quot;,&quot;flavor&quot;:&quot;ecs.large&quot;,&quot;image_id&quot;:&quot;xxxx&quot;,&quot;network_id&quot;:&quot;xxxxx&quot;&#125;]</span><br><span class="line"></span><br><span class="line">	var ServerList []VmBody</span><br><span class="line">	ServerList &#x3D; append(ServerList, VmBody&#123;</span><br><span class="line">		Name:      &quot;server1&quot;,</span><br><span class="line">		Flavor:  &quot;ecs.small&quot;,</span><br><span class="line">		ImageId:   &quot;67e7da07-e9d6-4f24-840e-205259d27913&quot;,</span><br><span class="line">		NetworkId: &quot;6582c415-3578-4dd4-ac45-8920a4194462&quot;,</span><br><span class="line">		DiskSize:  &quot;50&quot;,</span><br><span class="line">		SecurityGroupId: &quot;c7ff8d7e-de91-41cc-90e6-76d8d51d2688&quot;,</span><br><span class="line"></span><br><span class="line">	&#125;)</span><br><span class="line">	ServerList &#x3D; append(ServerList, VmBody&#123;</span><br><span class="line">		Name:      &quot;server2&quot;,</span><br><span class="line">		Flavor:  &quot;ecs.large&quot;,</span><br><span class="line">		ImageId:   &quot;84ae6cba-7e00-4f6c-907f-3e6832e6d825&quot;,</span><br><span class="line">		NetworkId: &quot;6582c415-3578-4dd4-ac45-8920a4194462&quot;,</span><br><span class="line">		DiskSize:  &quot;100&quot;,</span><br><span class="line">		SecurityGroupId: &quot;c7ff8d7e-de91-41cc-90e6-76d8d51d2688&quot;,</span><br><span class="line">	&#125;)</span><br><span class="line">	stackName :&#x3D; &quot;zetao-test2&quot;</span><br><span class="line">	regionName :&#x3D; &quot;RegionOne&quot;</span><br><span class="line">	&#x2F;&#x2F;这里是以cinder云盘为例，本地盘请不要传入volume相关即可~</span><br><span class="line">	var resourcesServerMap map[string]interface&#123;&#125;</span><br><span class="line">	var heatTemplate Template</span><br><span class="line">	var postBody PostBody</span><br><span class="line">	resourcesServerMap &#x3D; make(map[string]interface&#123;&#125;)</span><br><span class="line"></span><br><span class="line">	for _, s :&#x3D; range ServerList &#123;</span><br><span class="line">		var serverNetworks []ServerNetworkProperty</span><br><span class="line">		var tmpServerNetwork ServerNetworkProperty</span><br><span class="line">		var securityGroups []string</span><br><span class="line">		tmpServerNetwork&#x3D;ServerNetworkProperty&#123;</span><br><span class="line">			Network: s.NetworkId,</span><br><span class="line">		&#125;</span><br><span class="line">		serverNetworks&#x3D;append(serverNetworks,tmpServerNetwork)</span><br><span class="line">		securityGroups&#x3D;append(securityGroups,s.SecurityGroupId)</span><br><span class="line">		resourcesServerMap[s.Name] &#x3D; ResourceServer&#123;</span><br><span class="line">			Type: &quot;OS::Nova::Server&quot;,</span><br><span class="line">			Properties: ServerProperty&#123;</span><br><span class="line">				Name:     s.Name,</span><br><span class="line">				Flavor:   s.Flavor,</span><br><span class="line">				Image:    s.ImageId,</span><br><span class="line">				Networks: serverNetworks,</span><br><span class="line">				SecurityGroups: securityGroups,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		serverVolumeName :&#x3D; fmt.Sprintf(&quot;%sVolume&quot;, s.Name)</span><br><span class="line">		resourcesServerMap[serverVolumeName] &#x3D; ResourceVolume&#123;</span><br><span class="line">			Type: &quot;OS::Cinder::Volume&quot;,</span><br><span class="line">			Properties: VolumeProperty&#123;</span><br><span class="line">				Size:             s.DiskSize,</span><br><span class="line">				VolumeType:       VolumeType,</span><br><span class="line">				AvailabilityZone: AvailableZone,</span><br><span class="line">				Description:      serverVolumeName,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">		serverVolumeAttachName :&#x3D; fmt.Sprintf(&quot;%sVolume_attachment&quot;, s.Name)</span><br><span class="line">		&#x2F;&#x2F;主机volume attach info</span><br><span class="line">		resourcesServerMap[serverVolumeAttachName] &#x3D; ResourceVolumeAttach&#123;</span><br><span class="line">			Type: &quot;OS::Cinder::VolumeAttachment&quot;,</span><br><span class="line">			Properties: VolumeAttachProperties&#123;</span><br><span class="line">				VolumeId: PropertyInfo&#123;</span><br><span class="line">					GetResource: serverVolumeName,</span><br><span class="line">				&#125;,</span><br><span class="line">				InstanceUuid: PropertyInfo&#123;</span><br><span class="line">					GetResource: s.Name,</span><br><span class="line">				&#125;,</span><br><span class="line">			&#125;,</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	heatTemplate &#x3D; Template&#123;</span><br><span class="line">		HeatTemplateVersion: TemplateVersion,</span><br><span class="line">		Description: &quot;Heat Template&quot;,</span><br><span class="line">		Parameters: struct &#123;</span><br><span class="line">		&#125;&#123;&#125;,</span><br><span class="line">		Resources: resourcesServerMap,</span><br><span class="line">	&#125;</span><br><span class="line">	postBody &#x3D; PostBody&#123;</span><br><span class="line">		Files: struct &#123;</span><br><span class="line"></span><br><span class="line">		&#125;&#123;&#125;,</span><br><span class="line">		DisableRollback: true,</span><br><span class="line">		Parameters: struct &#123;</span><br><span class="line"></span><br><span class="line">		&#125;&#123;&#125;,</span><br><span class="line">		StackName: stackName,</span><br><span class="line">		Template: heatTemplate,</span><br><span class="line">		Environment: struct &#123;</span><br><span class="line">		&#125;&#123;&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	b, _ :&#x3D; json.Marshal(postBody)</span><br><span class="line">	fmt.Println(string(b))</span><br><span class="line">	&#x2F;&#x2F;发起post请求</span><br><span class="line">	OpenstackToken :&#x3D; &quot;gAAAAABgN1v2CCL09LAS3aokDkccXuLAn4RZx60z-vLdzDkXyw5oX6HKsXmoKWBaKOY27RcRr4SG1igRC68nHJWtwfGUbs4kMH2ultNCxAKgQz3KZEIXJ6L2gc832L0g_ngyzm93bovWwl8iMqWV7oZzBtGqsB8nIhVvSZqq2M6BzfWBc1cV980&quot;</span><br><span class="line">	postUrl :&#x3D; &quot;http:&#x2F;&#x2F;10.19.114.193:8004&#x2F;v1&#x2F;319bb16c497f422591f0688b2aec3f76&#x2F;stacks&quot;</span><br><span class="line">	req, err :&#x3D; http.NewRequest(&quot;POST&quot;,postUrl, bytes.NewBuffer(b))</span><br><span class="line">	&#x2F;&#x2F;req.Header.Set(&quot;User-Agent&quot;,&quot;python-heatclient&quot;)</span><br><span class="line">	req.Header.Set(&quot;Accept&quot;,&quot;application&#x2F;json&quot;)</span><br><span class="line">	req.Header.Set(&quot;Content-Type&quot;,&quot;application&#x2F;json&quot;)</span><br><span class="line">	req.Header.Set(&quot;X-Auth-Token&quot;,OpenstackToken)</span><br><span class="line">	req.Header.Set(&quot;X-Region-Name&quot;,regionName)</span><br><span class="line"></span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		fmt.Println(err)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	&#x2F;&#x2F; Set client timeout</span><br><span class="line">	client :&#x3D; &amp;http.Client&#123;Timeout: time.Second * time.Duration(5)&#125;</span><br><span class="line">	&#x2F;&#x2F; Send request</span><br><span class="line">	resp, err :&#x3D; client.Do(req)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		fmt.Println(&quot;Error reading response.&quot;, err)</span><br><span class="line">		return</span><br><span class="line">	&#125;</span><br><span class="line">	defer resp.Body.Close()</span><br><span class="line">	body, _ :&#x3D; ioutil.ReadAll(resp.Body)</span><br><span class="line">	&#x2F;&#x2F;对body序列化</span><br><span class="line">	fmt.Println(string(body))</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" data-id="ckkw911ea0001s8165hx6hswf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-meter配置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" class="article-date">
-  <time datetime="2021-01-07T02:56:35.000Z" itemprop="datePublished">2021-01-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>d</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" data-id="ckkw911en0009s816bnyffspk" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/02/25/heat-%E4%BD%BF%E7%94%A8go%E8%AF%AD%E8%A8%80%E7%BC%96%E5%86%99heat%E5%A4%9A%E4%B8%BB%E6%9C%BA%E7%BC%96%E6%8E%92demo/" data-id="cklkoylpu0000o0168xkzelkd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
@@ -209,10 +457,10 @@
 
 
   
-    <article id="post-openstack-gnocchi-metric报错" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-heat编排模板使用测试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/" class="article-date">
-  <time datetime="2021-01-06T12:35:26.000Z" itemprop="datePublished">2021-01-06</time>
+    <a href="/2021/02/24/openstack-heat%E7%BC%96%E6%8E%92%E6%A8%A1%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time datetime="2021-02-24T06:14:50.000Z" itemprop="datePublished">2021-02-24</time>
 </a>
     
   </div>
@@ -223,7 +471,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/">openstack-gnocchi metricd报错</a>
+      <a class="article-title" href="/2021/02/24/openstack-heat%E7%BC%96%E6%8E%92%E6%A8%A1%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%B5%8B%E8%AF%95/">openstack-heat编排模板使用测试</a>
     </h1>
   
 
@@ -231,16 +479,60 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>This is the error message in /var/lib/docker/volumes/kolla_logs/_data/gnocchi/gnocchi-metricd.log:</p>
-<p>2018-07-05 08:12:36,365 [9755] ERROR cotyledon.<em>utils: Unhandled exception<br>Traceback (most recent call last):<br> File “/usr/lib/python2.7/site-packages/cotyledon/<em>utils.py”, line 84, in exit_on_exception<br>  yield<br> File “/usr/lib/python2.7/site-packages/cotyledon/<em>service.py”, line 139, in _run<br>  self.run()<br> File “/usr/lib/python2.7/site-packages/gnocchi/cli/metricd.py”, line 76, in run<br>  self._configure()<br> File “/usr/lib/python2.7/site-packages/tenacity/__init</em></em>.py”, line 214, in wrapped_f<br>  return self.call(f, *args, **kw)<br> File “/usr/lib/python2.7/site-packages/tenacity/__init_</em>.py”, line 295, in call<br>  start_time=start_time)<br> File “/usr/lib/python2.7/site-packages/tenacity/<strong>init</strong>.py”, line 252, in iter<br>  return fut.result()<br> File “/usr/lib/python2.7/site-packages/concurrent/futures/<em>base.py”, line 422, in result<br>  return self.__get_result()<br> File “/usr/lib/python2.7/site-packages/tenacity/__init_</em>.py”, line 298, in call<br>  result = fn(*args, **kwargs)<br> File “/usr/lib/python2.7/site-packages/gnocchi/cli/metricd.py”, line 161, in <em>configure<br>  six.moves.range(self.incoming.NUM_SACKS))<br> File “/usr/lib/python2.7/site-packages/gnocchi/incoming/__init_</em>.py”, line 53, in NUM_SACKS<br>  raise SackDetectionError(e)<br>SackDetectionError: [Errno 2] No such file or directory: ‘/var/lib/gnocchi/tmp/gnocchi-config’</p>
-<p>解决方法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#gnocchi-upgrade</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <p>基于 openstack stein版本heat，测试编排，测试通过</p>
+<h4 id="Heat-编排"><a href="#Heat-编排" class="headerlink" title="Heat 编排"></a>Heat 编排</h4><p>Heat 目前支持两种格式的模板，一种是基于 JSON 格式的 CFN 模板；另外一种是基于 YAML 格式的 HOT 模板。CFN 模板主要是为了保持对 AWS 的兼容性。HOT 模板是 Heat 自有的，资源类型更加丰富，更能体现出 Heat 特点的模板。</p>
+<p>一个典型的 HOT 模板由下列元素构成：</p>
+<ul>
+<li>模板版本：必填字段，指定所对应的模板版本，Heat 会根据版本进行检验。</li>
+<li>参数列表：选填，指输入参数列表。</li>
+<li>资源列表：必填，指生成的 Stack 所包含的各种资源。可以定义资源间的依赖关系，比如说生成 Port，然后再用 port 来生成 VM。</li>
+<li>输出列表：选填，指生成的 Stack 暴露出来的信息，可以用来给用户使用，也可以用来作为输入提供给其它的 Stack。</li>
+</ul>
+<h5 id="需求1-云盘单台编排"><a href="#需求1-云盘单台编排" class="headerlink" title="需求1 - 云盘单台编排"></a>需求1 - 云盘单台编排</h5><p>1.创建一个虚拟机，要求虚拟机自定义镜像、flavor、network、可用域和安全组；<br> 2.创建一个数据卷，要求数据卷自定义存储类型、可用域和块容量；<br> 3.将数据卷挂载给虚拟机；<br> 4.要求所有资源通过参数传入；<br> 5.要求返回属性包含虚拟机uuid、ip地址和vnc地址；</p>
+<p>这个需求很简单，我们只需要查下Heat支持的模板类型，很快就可以找到只需要三个类型就可以满足需求</p>
+<ul>
+<li>type: OS::Nova::Server</li>
+<li>type: OS::Cinder::Volume</li>
+<li>type: OS::Cinder::Volume</li>
+</ul>
+<p>模板如下：</p>
+<h5 id="CREATE-VM-VOLUME-AND-ATTATCH-yaml"><a href="#CREATE-VM-VOLUME-AND-ATTATCH-yaml" class="headerlink" title="CREATE_VM_VOLUME_AND_ATTATCH.yaml"></a>CREATE_VM_VOLUME_AND_ATTATCH.yaml</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line">heat_template_version: 2013-05-23</span><br><span class="line"></span><br><span class="line">description:  Template for Create VM</span><br><span class="line"></span><br><span class="line">parameters:</span><br><span class="line">  image_id:</span><br><span class="line">    type: string</span><br><span class="line">    description:  Image ID or image name to use for the server</span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: glance.image</span><br><span class="line"> </span><br><span class="line">  secgroup_id:</span><br><span class="line">    type: string</span><br><span class="line">    description : Id of the security groupe</span><br><span class="line"></span><br><span class="line">  network_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: network id</span><br><span class="line"> </span><br><span class="line">  flavor_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: Flavor for the server to be created </span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: nova.flavor</span><br><span class="line">   </span><br><span class="line">  server_az:</span><br><span class="line">    type: string</span><br><span class="line">    description: Availablity zone of the VM</span><br><span class="line">    default: nova</span><br><span class="line"></span><br><span class="line">  volume_size:</span><br><span class="line">    type: number</span><br><span class="line">    description: Size of volume to attach to VM</span><br><span class="line">    default: 1</span><br><span class="line">    constraints:</span><br><span class="line">      - range: &#123; min: 1, max: 200 &#125;</span><br><span class="line"> </span><br><span class="line">  volume_type:</span><br><span class="line">    type: string</span><br><span class="line">    description: If specified, the type of volume to use, mapping to a specific backend.</span><br><span class="line">    default: sata</span><br><span class="line">  volume_az:</span><br><span class="line">    type: string</span><br><span class="line">    default: nova</span><br><span class="line">  server_name:</span><br><span class="line">    type: string</span><br><span class="line">    description: VM Name</span><br><span class="line">    default: heat-stack-default</span><br><span class="line"></span><br><span class="line">resources:</span><br><span class="line">  server:</span><br><span class="line">    type: OS::Nova::Server</span><br><span class="line">    properties:</span><br><span class="line">      name: &#123; get_param: server_name &#125;</span><br><span class="line">      availability_zone: &#123; get_param: server_az &#125;</span><br><span class="line">      image: &#123; get_param: image_id &#125;</span><br><span class="line">      flavor: &#123; get_param: flavor_id &#125;</span><br><span class="line">      networks: </span><br><span class="line">      - network: &#123; get_param: network_id &#125;</span><br><span class="line">      security_groups: </span><br><span class="line">      - &#123; get_param: secgroup_id &#125;</span><br><span class="line"></span><br><span class="line">  volume:</span><br><span class="line">    type: OS::Cinder::Volume</span><br><span class="line">    properties:</span><br><span class="line">      size: &#123; get_param: volume_size &#125;</span><br><span class="line">      volume_type: &#123; get_param: volume_type &#125;</span><br><span class="line">      availability_zone: &#123; get_param: volume_az &#125;</span><br><span class="line">      description: Volume for stack</span><br><span class="line"></span><br><span class="line">  volume_attachment:</span><br><span class="line">    type: OS::Cinder::VolumeAttachment</span><br><span class="line">    properties:</span><br><span class="line">      volume_id: &#123; get_resource: volume &#125;</span><br><span class="line">      instance_uuid: &#123; get_resource: server &#125;</span><br><span class="line">  </span><br><span class="line">outputs:</span><br><span class="line">  server_id:</span><br><span class="line">    value: &#123; get_resource: server &#125;</span><br><span class="line">  server_ip:</span><br><span class="line">    description: Network IP address of server</span><br><span class="line">    value: &#123; get_attr: [ server, first_address ] &#125;</span><br><span class="line">  novnc_console_url:</span><br><span class="line">    value: &#123; get_attr: [server, console_urls, novnc] &#125;</span><br><span class="line">    description: novnc console URLs for the server</span><br></pre></td></tr></table></figure>
 
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#openstack stack create -t CREATE_VM_VOLUME_AND_ATTACH.yaml \</span><br><span class="line">--parameter volume_type&#x3D;sata \</span><br><span class="line">--parameter volume_az&#x3D;nova \</span><br><span class="line">--parameter volume_size&#x3D;50 \</span><br><span class="line">--parameter image_id&#x3D;eef3ab2f-3c8f-4530-8806-15aa7603ba2f  \</span><br><span class="line">--parameter secgroup_id&#x3D;de99ad74-aa45-44fc-bee3-0f29c7005abb  \</span><br><span class="line">--parameter network_id&#x3D;92ef8068-46ba-4db7-b5d0-dcef1089efb2 \</span><br><span class="line">--parameter flavor_id&#x3D;ecs.small \</span><br><span class="line">--parameter server_az&#x3D;nova \</span><br><span class="line">--parameter server_name&#x3D;t-server-demo \</span><br><span class="line">heat-test  </span><br></pre></td></tr></table></figure>
+
+<h5 id="需求2-云盘多台编排"><a href="#需求2-云盘多台编排" class="headerlink" title="需求2 - 云盘多台编排"></a>需求2 - 云盘多台编排</h5><p>1.在需求1的基础上添加批量创建资源，要求自定义数量<br> 2.要求引入需求1的模板<br> 3.要求返回一个批次stack里面的虚拟机uuid、虚拟机ip和vnc请求地址</p>
+<p>这里我们需要学习一个新的资源类型<code>OS::Heat::ResourceGroup</code>,从名称就能够大概猜到该资源的作用：资源组，组内可以包括一个或多个相同的嵌套资源。</p>
+<h5 id="Multi-Num-VM-VOLUME-ATTACHE-yaml"><a href="#Multi-Num-VM-VOLUME-ATTACHE-yaml" class="headerlink" title="Multi_Num_VM_VOLUME_ATTACHE.yaml"></a>Multi_Num_VM_VOLUME_ATTACHE.yaml</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">heat_template_version: 2013-05-23</span><br><span class="line"></span><br><span class="line">description:  Template for Create VM Volume,the Volume will be auto Attached by heat.</span><br><span class="line"></span><br><span class="line">parameters:</span><br><span class="line">  </span><br><span class="line">  num_resources:</span><br><span class="line">    type: number</span><br><span class="line">    description: Numbers of Resrouce </span><br><span class="line">    default: 1</span><br><span class="line">    constraints:</span><br><span class="line">      - range: &#123; min: 1, max: 10 &#125;</span><br><span class="line"></span><br><span class="line">  image_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: ID of the image to use for the instance to be created.</span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: glance.image</span><br><span class="line"></span><br><span class="line">  secgroup_id:</span><br><span class="line">    type: string</span><br><span class="line">    description : Id of the security groupe</span><br><span class="line"></span><br><span class="line">  network_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: network id</span><br><span class="line"></span><br><span class="line">  flavor_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: Flavor for the server to be created</span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: nova.flavor</span><br><span class="line"></span><br><span class="line">  server_az:</span><br><span class="line">    type: string</span><br><span class="line">    description: Availablity Zone of the VM</span><br><span class="line">    default: nova</span><br><span class="line"></span><br><span class="line">  volume_size:</span><br><span class="line">    type: number</span><br><span class="line">    description: Size of volume to attach to VM</span><br><span class="line">    default: 1</span><br><span class="line">    constraints:</span><br><span class="line">      - range: &#123; min: 1, max: 200 &#125;</span><br><span class="line"></span><br><span class="line">  volume_type:</span><br><span class="line">    type: string</span><br><span class="line">    description: If specified, the type of volume to use, mapping to a specific backend.</span><br><span class="line"></span><br><span class="line">  volume_az:</span><br><span class="line">    type: string</span><br><span class="line">    description: Availability Zone of the Volumes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">resources:</span><br><span class="line">  resgroup:  </span><br><span class="line">    type: OS::Heat::ResourceGroup  </span><br><span class="line">    properties:  </span><br><span class="line">      count: &#123; get_param: num_resources &#125;</span><br><span class="line">      resource_def:</span><br><span class="line">        type: CREATE_VM_VOLUME_AND_ATTACH.yaml   #在这里引入了需求1的模板</span><br><span class="line">        properties:</span><br><span class="line">          server_name: heat-vm-%index%</span><br><span class="line">          image_id: &#123; get_param: image_id &#125;</span><br><span class="line">          secgroup_id: &#123; get_param: secgroup_id &#125;</span><br><span class="line">          network_id: &#123; get_param: network_id &#125;</span><br><span class="line">          flavor_id: &#123; get_param: flavor_id &#125;</span><br><span class="line">          server_az: &#123; get_param: server_az &#125;</span><br><span class="line">          volume_size: &#123; get_param: volume_size &#125;</span><br><span class="line">          volume_type: &#123; get_param: volume_type &#125;</span><br><span class="line">          volume_az: &#123; get_param: volume_az &#125;</span><br><span class="line"> </span><br><span class="line">outputs:  </span><br><span class="line">  myrefs:  </span><br><span class="line">    value: &#123;get_attr: [resgroup, refs]&#125;  </span><br><span class="line">  server_ids:</span><br><span class="line">    value: &#123;get_attr: [resgroup, server_id]&#125;</span><br><span class="line">  server_ips:</span><br><span class="line">    value: &#123;get_attr: [resgroup, server_ip]&#125;</span><br><span class="line">  server_novnc_urls:</span><br><span class="line">    value: &#123;get_attr: [resgroup, novnc_console_url]&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#openstack stack create -t Multi_Num_VM_VOLUME_ATTACH.yaml \</span><br><span class="line">--parameter volume_type&#x3D;sata \</span><br><span class="line">--parameter volume_az&#x3D;nova \</span><br><span class="line">--parameter volume_size&#x3D;50 \</span><br><span class="line">--parameter image_id&#x3D;eef3ab2f-3c8f-4530-8806-15aa7603ba2f  \</span><br><span class="line">--parameter secgroup_id&#x3D;de99ad74-aa45-44fc-bee3-0f29c7005abb  \</span><br><span class="line">--parameter network_id&#x3D;92ef8068-46ba-4db7-b5d0-dcef1089efb2 \</span><br><span class="line">--parameter flavor_id&#x3D;ecs.small \</span><br><span class="line">--parameter server_az&#x3D;nova \</span><br><span class="line">--parameter num_resources&#x3D;3 \</span><br><span class="line">heat-test2</span><br></pre></td></tr></table></figure>
+
+<h4 id="需求3-本地盘单台编排"><a href="#需求3-本地盘单台编排" class="headerlink" title="需求3 - 本地盘单台编排"></a>需求3 - 本地盘单台编排</h4><h5 id="CREATE-VM-LOCAL-STORAGE-yaml"><a href="#CREATE-VM-LOCAL-STORAGE-yaml" class="headerlink" title="CREATE_VM_LOCAL_STORAGE.yaml"></a>CREATE_VM_LOCAL_STORAGE.yaml</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line">heat_template_version: 2013-05-23</span><br><span class="line"></span><br><span class="line">description:  Template for Create VM</span><br><span class="line"></span><br><span class="line">parameters:</span><br><span class="line">  image_id:</span><br><span class="line">    type: string</span><br><span class="line">    description:  Image ID or image name to use for the server</span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: glance.image</span><br><span class="line"> </span><br><span class="line">  secgroup_id:</span><br><span class="line">    type: string</span><br><span class="line">    description : Id of the security groupe</span><br><span class="line"></span><br><span class="line">  network_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: network id</span><br><span class="line"> </span><br><span class="line">  flavor_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: Flavor for the server to be created </span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: nova.flavor</span><br><span class="line">   </span><br><span class="line">  server_az:</span><br><span class="line">    type: string</span><br><span class="line">    description: Availablity zone of the VM</span><br><span class="line">    default: nova</span><br><span class="line">  server_name:</span><br><span class="line">    type: string</span><br><span class="line">    description: VM Name</span><br><span class="line">    default: heat-stack-default</span><br><span class="line">resources:</span><br><span class="line">  server:</span><br><span class="line">    type: OS::Nova::Server</span><br><span class="line">    properties:</span><br><span class="line">      availability_zone: &#123; get_param: server_az &#125;</span><br><span class="line">      image: &#123; get_param: image_id &#125;</span><br><span class="line">      flavor: &#123; get_param: flavor_id &#125;</span><br><span class="line">      networks: </span><br><span class="line">      - network: &#123; get_param: network_id &#125;</span><br><span class="line">      security_groups: </span><br><span class="line">      - &#123; get_param: secgroup_id &#125;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line">outputs:</span><br><span class="line">  server_id:</span><br><span class="line">    value: &#123; get_resource: server &#125;</span><br><span class="line">  server_ip:</span><br><span class="line">    description: Network IP address of server</span><br><span class="line">    value: &#123; get_attr: [ server, first_address ] &#125;</span><br><span class="line">  novnc_console_url:</span><br><span class="line">    value: &#123; get_attr: [server, console_urls, novnc] &#125;</span><br><span class="line">    description: novnc console URLs for the server</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#openstack stack create -t CREATE_VM_LOCAL_STORAGE.yaml \</span><br><span class="line">--parameter image_id&#x3D;eef3ab2f-3c8f-4530-8806-15aa7603ba2f  \</span><br><span class="line">--parameter secgroup_id&#x3D;de99ad74-aa45-44fc-bee3-0f29c7005abb  \</span><br><span class="line">--parameter network_id&#x3D;92ef8068-46ba-4db7-b5d0-dcef1089efb2 \</span><br><span class="line">--parameter flavor_id&#x3D;ecs.small_L \</span><br><span class="line">--parameter server_az&#x3D;nova \</span><br><span class="line">--parameter server_name&#x3D;t-server-demo-local \</span><br><span class="line">heat-local-test</span><br></pre></td></tr></table></figure>
+
+<h4 id="需求4-本地盘多台编排"><a href="#需求4-本地盘多台编排" class="headerlink" title="需求4 - 本地盘多台编排"></a>需求4 - 本地盘多台编排</h4><h5 id="Multi-Num-VM-LOCAL-STORAG-yaml"><a href="#Multi-Num-VM-LOCAL-STORAG-yaml" class="headerlink" title="Multi_Num_VM_LOCAL_STORAG.yaml"></a>Multi_Num_VM_LOCAL_STORAG.yaml</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">heat_template_version: 2013-05-23</span><br><span class="line"></span><br><span class="line">description:  Template for Create VM Volume,the Volume will be auto Attached by heat.</span><br><span class="line"></span><br><span class="line">parameters:</span><br><span class="line">  </span><br><span class="line">  num_resources:</span><br><span class="line">    type: number</span><br><span class="line">    description: Numbers of Resrouce </span><br><span class="line">    default: 1</span><br><span class="line">    constraints:</span><br><span class="line">      - range: &#123; min: 1, max: 10 &#125;</span><br><span class="line"></span><br><span class="line">  image_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: ID of the image to use for the instance to be created.</span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: glance.image</span><br><span class="line"></span><br><span class="line">  secgroup_id:</span><br><span class="line">    type: string</span><br><span class="line">    description : Id of the security groupe</span><br><span class="line"></span><br><span class="line">  network_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: network id</span><br><span class="line"></span><br><span class="line">  flavor_id:</span><br><span class="line">    type: string</span><br><span class="line">    description: Flavor for the server to be created</span><br><span class="line">    constraints:</span><br><span class="line">      - custom_constraint: nova.flavor</span><br><span class="line"></span><br><span class="line">  server_az:</span><br><span class="line">    type: string</span><br><span class="line">    description: Availablity Zone of the VM</span><br><span class="line">    default: nova</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">resources:</span><br><span class="line">  resgroup:  </span><br><span class="line">    type: OS::Heat::ResourceGroup  </span><br><span class="line">    properties:  </span><br><span class="line">      count: &#123; get_param: num_resources &#125;</span><br><span class="line">      resource_def:</span><br><span class="line">        type: CREATE_VM_LOCAL_STORAGE.yaml   #在这里引入了需求1的模板</span><br><span class="line">        properties:</span><br><span class="line">          server_name: heat-vm-local-%index%</span><br><span class="line">          image_id: &#123; get_param: image_id &#125;</span><br><span class="line">          secgroup_id: &#123; get_param: secgroup_id &#125;</span><br><span class="line">          network_id: &#123; get_param: network_id &#125;</span><br><span class="line">          flavor_id: &#123; get_param: flavor_id &#125;</span><br><span class="line">          server_az: &#123; get_param: server_az &#125;</span><br><span class="line"> </span><br><span class="line">outputs:  </span><br><span class="line">  myrefs:  </span><br><span class="line">    value: &#123;get_attr: [resgroup, refs]&#125;  </span><br><span class="line">  server_ids:</span><br><span class="line">    value: &#123;get_attr: [resgroup, server_id]&#125;</span><br><span class="line">  server_ips:</span><br><span class="line">    value: &#123;get_attr: [resgroup, server_ip]&#125;</span><br><span class="line">  server_novnc_urls:</span><br><span class="line">    value: &#123;get_attr: [resgroup, novnc_console_url]&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#openstack stack create -t Multi_Num_VM_LOCAL_STORAG.yaml  \</span><br><span class="line">--parameter image_id&#x3D;eef3ab2f-3c8f-4530-8806-15aa7603ba2f  \</span><br><span class="line">--parameter secgroup_id&#x3D;de99ad74-aa45-44fc-bee3-0f29c7005abb  \</span><br><span class="line">--parameter network_id&#x3D;92ef8068-46ba-4db7-b5d0-dcef1089efb2 \</span><br><span class="line">--parameter flavor_id&#x3D;ecs.small_L \</span><br><span class="line">--parameter server_az&#x3D;nova \</span><br><span class="line">--parameter num_resources&#x3D;3 \</span><br><span class="line">heat-local-test2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><span class="line">JSON post</span><br><span class="line">&#123;</span><br><span class="line">	&quot;stack_name&quot;: &quot;heat-local-test2&quot;,</span><br><span class="line">	&quot;disable_rollback&quot;: true,</span><br><span class="line">	&quot;parameters&quot;: &#123;</span><br><span class="line">		&quot;image_id&quot;: &quot;eef3ab2f-3c8f-4530-8806-15aa7603ba2f&quot;,</span><br><span class="line">		&quot;secgroup_id&quot;: &quot;de99ad74-aa45-44fc-bee3-0f29c7005abb&quot;,</span><br><span class="line">		&quot;network_id&quot;: &quot;92ef8068-46ba-4db7-b5d0-dcef1089efb2&quot;,</span><br><span class="line">		&quot;flavor_id&quot;: &quot;ecs.small_L&quot;,</span><br><span class="line">		&quot;server_az&quot;: &quot;nova&quot;,</span><br><span class="line">		&quot;num_resources&quot;: &quot;3&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;template&quot;: &#123;</span><br><span class="line">		&quot;heat_template_version&quot;: &quot;2013-05-23&quot;,</span><br><span class="line">		&quot;description&quot;: &quot;Template for Create VM Volume,the Volume will be auto Attached by heat.&quot;,</span><br><span class="line">		&quot;parameters&quot;: &#123;</span><br><span class="line">			&quot;num_resources&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;number&quot;,</span><br><span class="line">				&quot;description&quot;: &quot;Numbers of Resrouce&quot;,</span><br><span class="line">				&quot;default&quot;: 1,</span><br><span class="line">				&quot;constraints&quot;: [&#123;</span><br><span class="line">					&quot;range&quot;: &#123;</span><br><span class="line">						&quot;min&quot;: 1,</span><br><span class="line">						&quot;max&quot;: 10</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;]</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;image_id&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;string&quot;,</span><br><span class="line">				&quot;description&quot;: &quot;ID of the image to use for the instance to be created.&quot;,</span><br><span class="line">				&quot;constraints&quot;: [&#123;</span><br><span class="line">					&quot;custom_constraint&quot;: &quot;glance.image&quot;</span><br><span class="line">				&#125;]</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;secgroup_id&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;string&quot;,</span><br><span class="line">				&quot;description&quot;: &quot;Id of the security groupe&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;network_id&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;string&quot;,</span><br><span class="line">				&quot;description&quot;: &quot;network id&quot;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;flavor_id&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;string&quot;,</span><br><span class="line">				&quot;description&quot;: &quot;Flavor for the server to be created&quot;,</span><br><span class="line">				&quot;constraints&quot;: [&#123;</span><br><span class="line">					&quot;custom_constraint&quot;: &quot;nova.flavor&quot;</span><br><span class="line">				&#125;]</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;server_az&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;string&quot;,</span><br><span class="line">				&quot;description&quot;: &quot;Availablity Zone of the VM&quot;,</span><br><span class="line">				&quot;default&quot;: &quot;nova&quot;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;resources&quot;: &#123;</span><br><span class="line">			&quot;resgroup&quot;: &#123;</span><br><span class="line">				&quot;type&quot;: &quot;OS::Heat::ResourceGroup&quot;,</span><br><span class="line">				&quot;properties&quot;: &#123;</span><br><span class="line">					&quot;count&quot;: &#123;</span><br><span class="line">						&quot;get_param&quot;: &quot;num_resources&quot;</span><br><span class="line">					&#125;,</span><br><span class="line">					&quot;resource_def&quot;: &#123;</span><br><span class="line">						&quot;type&quot;: &quot;file:&#x2F;&#x2F;&#x2F;opt&#x2F;kolla-ansible-deploy&#x2F;openstack&#x2F;qcloud&#x2F;dev&#x2F;bjyt_region_1&#x2F;CREATE_VM_LOCAL_STORAGE.yaml&quot;,</span><br><span class="line">						&quot;properties&quot;: &#123;</span><br><span class="line">							&quot;image_id&quot;: &#123;</span><br><span class="line">								&quot;get_param&quot;: &quot;image_id&quot;</span><br><span class="line">							&#125;,</span><br><span class="line">							&quot;secgroup_id&quot;: &#123;</span><br><span class="line">								&quot;get_param&quot;: &quot;secgroup_id&quot;</span><br><span class="line">							&#125;,</span><br><span class="line">							&quot;network_id&quot;: &#123;</span><br><span class="line">								&quot;get_param&quot;: &quot;network_id&quot;</span><br><span class="line">							&#125;,</span><br><span class="line">							&quot;flavor_id&quot;: &#123;</span><br><span class="line">								&quot;get_param&quot;: &quot;flavor_id&quot;</span><br><span class="line">							&#125;,</span><br><span class="line">							&quot;server_az&quot;: &#123;</span><br><span class="line">								&quot;get_param&quot;: &quot;server_az&quot;</span><br><span class="line">							&#125;</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">		&quot;outputs&quot;: &#123;</span><br><span class="line">			&quot;myrefs&quot;: &#123;</span><br><span class="line">				&quot;value&quot;: &#123;</span><br><span class="line">					&quot;get_attr&quot;: [&quot;resgroup&quot;, &quot;refs&quot;]</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;server_ids&quot;: &#123;</span><br><span class="line">				&quot;value&quot;: &#123;</span><br><span class="line">					&quot;get_attr&quot;: [&quot;resgroup&quot;, &quot;server_id&quot;]</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;server_ips&quot;: &#123;</span><br><span class="line">				&quot;value&quot;: &#123;</span><br><span class="line">					&quot;get_attr&quot;: [&quot;resgroup&quot;, &quot;server_ip&quot;]</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;,</span><br><span class="line">			&quot;server_novnc_urls&quot;: &#123;</span><br><span class="line">				&quot;value&quot;: &#123;</span><br><span class="line">					&quot;get_attr&quot;: [&quot;resgroup&quot;, &quot;novnc_console_url&quot;]</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;files&quot;: &#123;</span><br><span class="line">		&quot;file:&#x2F;&#x2F;&#x2F;opt&#x2F;kolla-ansible-deploy&#x2F;openstack&#x2F;dev&#x2F;bjyt_region_1&#x2F;CREATE_VM_LOCAL_STORAGE.yaml&quot;: &quot;&#123;\&quot;heat_template_version\&quot;: \&quot;2013-05-23\&quot;, \&quot;description\&quot;: \&quot;Template for Create VM\&quot;, \&quot;parameters\&quot;: &#123;\&quot;image_id\&quot;: &#123;\&quot;type\&quot;: \&quot;string\&quot;, \&quot;description\&quot;: \&quot;Image ID or image name to use for the server\&quot;, \&quot;constraints\&quot;: [&#123;\&quot;custom_constraint\&quot;: \&quot;glance.image\&quot;&#125;]&#125;, \&quot;secgroup_id\&quot;: &#123;\&quot;type\&quot;: \&quot;string\&quot;, \&quot;description\&quot;: \&quot;Id of the security groupe\&quot;&#125;, \&quot;network_id\&quot;: &#123;\&quot;type\&quot;: \&quot;string\&quot;, \&quot;description\&quot;: \&quot;network id\&quot;&#125;, \&quot;flavor_id\&quot;: &#123;\&quot;type\&quot;: \&quot;string\&quot;, \&quot;description\&quot;: \&quot;Flavor for the server to be created\&quot;, \&quot;constraints\&quot;: [&#123;\&quot;custom_constraint\&quot;: \&quot;nova.flavor\&quot;&#125;]&#125;, \&quot;server_az\&quot;: &#123;\&quot;type\&quot;: \&quot;string\&quot;, \&quot;description\&quot;: \&quot;Availablity zone of the VM\&quot;, \&quot;default\&quot;: \&quot;nova\&quot;&#125;&#125;, \&quot;resources\&quot;: &#123;\&quot;server\&quot;: &#123;\&quot;type\&quot;: \&quot;OS::Nova::Server\&quot;, \&quot;properties\&quot;: &#123;\&quot;availability_zone\&quot;: &#123;\&quot;get_param\&quot;: \&quot;server_az\&quot;&#125;, \&quot;image\&quot;: &#123;\&quot;get_param\&quot;: \&quot;image_id\&quot;&#125;, \&quot;flavor\&quot;: &#123;\&quot;get_param\&quot;: \&quot;flavor_id\&quot;&#125;, \&quot;networks\&quot;: [&#123;\&quot;network\&quot;: &#123;\&quot;get_param\&quot;: \&quot;network_id\&quot;&#125;&#125;], \&quot;security_groups\&quot;: [&#123;\&quot;get_param\&quot;: \&quot;secgroup_id\&quot;&#125;]&#125;&#125;&#125;, \&quot;outputs\&quot;: &#123;\&quot;server_id\&quot;: &#123;\&quot;value\&quot;: &#123;\&quot;get_resource\&quot;: \&quot;server\&quot;&#125;&#125;, \&quot;server_ip\&quot;: &#123;\&quot;description\&quot;: \&quot;Network IP address of server\&quot;, \&quot;value\&quot;: &#123;\&quot;get_attr\&quot;: [\&quot;server\&quot;, \&quot;first_address\&quot;]&#125;&#125;, \&quot;novnc_console_url\&quot;: &#123;\&quot;value\&quot;: &#123;\&quot;get_attr\&quot;: [\&quot;server\&quot;, \&quot;console_urls\&quot;, \&quot;novnc\&quot;]&#125;, \&quot;description\&quot;: \&quot;novnc console URLs for the server\&quot;&#125;&#125;&#125;&quot;</span><br><span class="line">	&#125;,</span><br><span class="line">	&quot;environment&quot;: &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="更多"><a href="#更多" class="headerlink" title="更多"></a>更多</h4><p>经过以上两个实例，我相信大多数人对Heat编排都有一个大致了解，其实编排不难，难的是资源逻辑的整合。现在社区里面有一些开源的Heat模板，里面几乎包含了大部分的高级用法。感兴趣的朋友可以去了解下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ git <span class="built_in">clone</span> git://git.openstack.org/openstack/heat-templates</span><br></pre></td></tr></table></figure>
+
+
+
+<p>参考：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1f2482792683">https://www.jianshu.com/p/1f2482792683</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/" data-id="ckkw911ej0007s8169ofs02bd" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/02/24/openstack-heat%E7%BC%96%E6%8E%92%E6%A8%A1%E6%9D%BF%E4%BD%BF%E7%94%A8%E6%B5%8B%E8%AF%95/" data-id="cklj38r4u0000sc16geuyfm6q" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
@@ -252,10 +544,10 @@
 
 
   
-    <article id="post-go-常用格式转换方法" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-kata-与原生docker集成使用" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/" class="article-date">
-  <time datetime="2021-01-05T11:51:39.000Z" itemprop="datePublished">2021-01-05</time>
+    <a href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2021-02-22T02:21:04.000Z" itemprop="datePublished">2021-02-22</time>
 </a>
     
   </div>
@@ -266,7 +558,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/">go-常用格式转换方法</a>
+      <a class="article-title" href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/">kata-与原生docker集成使用</a>
     </h1>
   
 
@@ -274,267 +566,65 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. bytes转字符串</span><br><span class="line">	str:&#x3D;string(bytes_data)</span><br><span class="line">2. </span><br></pre></td></tr></table></figure>
+        <p>使用kata container 与docker集成</p>
+<p><strong>⒈KataContainers？</strong></p>
+<p>　　Kata Containers是新的虚拟机实现，可以实现和现在容器生态无缝连接，与时下最流行的容器编排工具k8s完美结合，提供容器的快速启动，和虚拟机的安全隔离，与Docker技术相比，容器之间不共用内核，使得隔离性更好。</p>
+<p>　　Kata Containers 项目的主要目标是将虚拟化的安全隔离优势和容器的快速启动特点结合起来。</p>
+<p><strong>⒉即生Docker，何来Kata Containers？</strong><br>　　Linux 容器轻巧，快速且易于集成到许多不同的应用程序工作流程中。但是，在运行容器时存在一些潜在的安全问题，特别是在单个操作系统中的多租户容器：最终，容器共享一个内核、 I / O 的一条路径、网络和内存等。</p>
+<p>　　使用Docker轻量级的容器时，最大的问题就是会碰到安全性的问题，其中几个不同的容器可以互相的进行攻击，如果把这个内核给攻掉了，其他所有容器都会崩溃。如果使用KVM等虚拟化技术，会完美解决安全性的问题，但是会影响速度。</p>
+<p>　　Kata旨在通过虚拟机管理程序来缓解这种安全问题——创建一个外观和感觉像容器的虚拟机。<br>　　Kata Containers项目通过整合Intel Clear Containers和Hyper runV技术，能够支持不同平台的硬件，并且兼容Open Container Initiative(OCI)和Kubernetes container runtime interface(CRI)接口规范。Kata Containers项目现在由OpenStack基金会管理，代码托管在Github(<a target="_blank" rel="noopener" href="https://github.com/kata-containers)%E4%B8%8A%E3%80%82">https://github.com/kata-containers)上。</a></p>
+<p><strong>⒊使用Kata Containers替换Docker？</strong></p>
+<p>　　从docker架构上看，kata-container和原来的runc是平级的。大家知道docker只是管理容器生命周期的框架，真正启动容器最早用的是LXC，然后是runc，现在也可以换成kata了。所以说kata-container可以当做docker的一个插件，启动kata-container可以通过docker命令。Kata最大的亮点是解决了传统容器共享内核的安全和隔离问题，办法是让每个容器运行在一个轻量级的虚拟机中，使用单独的内核。 </p>
+<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152257944-1238620662.jpg" alt="img"></p>
+<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152447829-1224252548.jpg" alt="img"></p>
+<p><strong>⒋现在开始？</strong></p>
+<p>　　⒈安装Kata Containers容器包（以Centos 7 x86_64为例） </p>
+<p>这里使用snap部署</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#yum install epel-release</span><br><span class="line">#yum install snapd</span><br><span class="line">#systemctl enable --now snapd.socket</span><br><span class="line">#ln -s &#x2F;var&#x2F;lib&#x2F;snapd&#x2F;snap &#x2F;snap</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#snap install kata-containers --classic</span><br><span class="line">遇到报错：error: too early for operation, device not yet seeded or device model not acknowledged</span><br><span class="line">再执行一次 #yum -y install snapd 就可以了</span><br><span class="line">#snap install kata-containers --classic</span><br></pre></td></tr></table></figure>
 
+<p><img src="/images/kata/2021-02-22_11h08_20.png"></p>
+<h2 id="配置Kata-Container"><a href="#配置Kata-Container" class="headerlink" title="配置Kata Container"></a>配置Kata Container</h2><p>默认情况下Kata container以只读文件系统形式挂载在<code>/snap/kata-containers</code>路径下，因此默认配置文件不能修改，但是<code>kata-runtime</code>支持从指定路径加载配置文件而不是从默认路径，使用以下命令修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;kata-containers</span><br><span class="line">#cp &#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;share&#x2F;defaults&#x2F;kata-containers&#x2F;configuration.toml &#x2F;etc&#x2F;kata-containers&#x2F;</span><br><span class="line">#cat &#x2F;etc&#x2F;kata-containers&#x2F;configuration.toml</span><br></pre></td></tr></table></figure>
 
+<p>可以通过修改<code>/etc/kata-containers/configuration.toml</code>文件来更改kata container的配置，暂时我们不修改</p>
+<h2 id="更改Docker运行时"><a href="#更改Docker运行时" class="headerlink" title="更改Docker运行时"></a>更改Docker运行时</h2><p>在更改Docker运行时前，检查一下Docker默认的运行时，运行命令<code>docker info | grep -i runtime</code>，结果如下所示，现有可供选择的运行时仅有<code>runc</code>，默认的运行时也为<code>runc</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: runc</span><br><span class="line"> Default Runtime: runc</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/" data-id="ckkw911e50000s816flly9acp" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+<p>要将<code>runc</code>更换为kata container提供的<code>kata-runtime</code>，使用以下两种方法<strong>之一</strong>进行替换：</p>
+<p><strong>注意官方文档上给出的文件路径为<code>/usr/bin/kata-runtime</code>，这是通过<code>kata-manager</code>安装kata container时的路径，通过snap安装的kata container，路径应为<code>/snap/kata-containers/current/usr/bin/kata-runtime</code></strong></p>
+<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png" alt=":one:"> 通过<code>systemd</code>文件夹，具体命令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;</span><br><span class="line">#cat &lt;&lt;EOF | sudo tee &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;kata-containers.conf</span><br><span class="line">[Service]</span><br><span class="line">ExecStart&#x3D;</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;dockerd -D --add-runtime kata-runtime&#x3D;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime --default-runtime&#x3D;kata-runtime</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 
-    </footer>
-  </div>
-  
-</article>
+<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0032-20e3.png" alt=":two:"> 通过docker <code>daemon.json</code>文件，在<code>/etc/docker/daemon.json</code>文件中添加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;default-runtime&quot;: &quot;kata-runtime&quot;,</span><br><span class="line">  &quot;runtimes&quot;: &#123;</span><br><span class="line">    &quot;kata-runtime&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>这里选择看起来更简单些的方式2，我是使用的第一种，都可以，配置好后还需要<strong>重启Docker服务</strong>使之生效，运行如下命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart docker</span><br></pre></td></tr></table></figure>
 
-  
-    <article id="post-SPF漏掉之DNS记录设置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" class="article-date">
-  <time datetime="2021-01-04T23:47:16.000Z" itemprop="datePublished">2021-01-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
-    </h1>
-  
+<p>此时再次查看docker运行时配置，发现可供的选择多了一个<code>kata-runtime</code>，并且默认为<code>kata-runtime</code>，如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: kata-runtime runc</span><br><span class="line"> Default Runtime: kata-runtime</span><br></pre></td></tr></table></figure>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>SPF 记录是一种域名服务（DNS）记录，用于标识哪些邮件服务器可以代表您的域名发送电子邮件。 SPF 记录的目的是为了防止垃圾邮件发送者在您的域名上，使用伪造的发件人地址发送邮件。</p>
-<p>若您未对您的域名添加 SPF 解析记录，则黑客可以仿冒以该域名为后缀的邮箱，来发送垃圾邮件。</p>
-<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><p>在您的 DNS 服务提供商处，为您的域名添加一条 TXT 记录：</p>
-<ul>
-<li><p>将主机字段（Host）设置为您子域名的名称。（例如，如果您的电子邮件地址是<code>contact@mail.example.com</code>，则为 <code>mail</code>。）如果不使用子域名，则将其设为<code>@</code>。</p>
-</li>
-<li><p>用您的 SPF 记录填写 TXT 值字段。例如 <code>v = spf1 a mx include：secureserver.net〜all</code>。</p>
-</li>
-</ul>
-<p>目前已经越来越多的收件人服务器要验证发送者域名的 SPF 设置。也就是发送的 Ip 或服务器必须在 SPF 中有记录才接受邮件。</p>
-<p>首先你必须有自己的真实顶级域名。没有的话是不可能设置SPF 的.<br>SPF 是域名的一条 TXT 解析记录。</p>
-<p><strong>SPF 设置说明：</strong></p>
-<p>\1. 把《速递专家》安装到服务器或VPS上面<br>\2. 域名的解析设置里边添加一条TXT解析</p>
-<p>主机名一般为：@，解析值为：<strong>v=spf1 ip4:你的服务器IP ~all</strong></p>
-<p>例1：假设你的服务器 IP为 123.123.123.123，则 SPF 记录值为</p>
-<ol>
-<li>v=spf1 ip4:123.123.123.123 ~all</li>
-</ol>
-<p>例2：如果有多个IP可以并排书写，例如：</p>
-<ol>
-<li>v=spf1 ip4:123.123.123.123 ip4:123.123.123.124 ~all</li>
-</ol>
-<p>例3：如果有很多连续地址，比如 123.123.123.1 到 123.123.123.255，则可以解析</p>
-<ol>
-<li>v=spf1 ip4:123.123.123.0/24 ~all</li>
-</ol>
+<p><img src="/images/kata/2021-02-22_14h01_54.png"></p>
+<h2 id="运行kata-runtime-docker"><a href="#运行kata-runtime-docker" class="headerlink" title="运行kata-runtime docker"></a>运行kata-runtime docker</h2><p>拉取测试镜像busybox：<code>docker pull busybox 运行测试：</code></p>
+<p>#docker run busybox uname -a</p>
+<p><code>默认的运行时已经改为为</code>kata-runtime<code>，如果想要使用之前的</code>runc<code>，可以通过参数</code>–runtime=runc`来指定：</p>
+<p>#docker run –runtime=runc busybox uname -a`</p>
+<p><img src="/images/kata/2021-02-22_14h18_27.png"></p>
+<h2 id="卸载Kata-Container"><a href="#卸载Kata-Container" class="headerlink" title="卸载Kata Container"></a>卸载Kata Container</h2><p>运行命令：</p>
+<p>#snap remove kata-containers<br>删除相关的配置文件：</p>
+<p>#rm -r /etc/kata-containers</p>
+<p>#rm /etc/docker/daemon.json`</p>
+<p>参考：<a target="_blank" rel="noopener" href="https://snapcraft.io/install/kata-containers/centos">https://snapcraft.io/install/kata-containers/centos</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" data-id="ckjj7tvdw0000u816djdfc2ug" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" data-id="cklg08r9n00033c164tcnhmb9" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-开启go-module" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" class="article-date">
-  <time datetime="2021-01-04T06:30:16.000Z" itemprop="datePublished">2021-01-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ go mod init</span><br><span class="line">go: modules disabled inside GOPATH&#x2F;src by GO111MODULE&#x3D;auto; see &#39;go help modules&#39;</span><br></pre></td></tr></table></figure>
-
-<p>开启go module：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set GO111MODULE&#x3D;on    &#x2F;&#x2F;windows</span><br><span class="line">export GO111MODULE&#x3D;on &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
-
-<p>上面的命令开启go module是临时开启</p>
-<p>永久开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置powershell</span><br><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;  &#x2F;&#x2F;windows</span><br><span class="line">#echo &#39;export GO111MODULE&#x3D;on&#39; &gt;&gt; &#x2F;etc&#x2F;profile &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" data-id="ckjj7tvep0006u816ei7d5698" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-gin-常见问题解决" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
-  <time datetime="2021-01-04T02:19:49.000Z" itemprop="datePublished">2021-01-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">go-gin 常见问题解决</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="安装过程中遇到的问题"><a href="#安装过程中遇到的问题" class="headerlink" title="安装过程中遇到的问题"></a>安装过程中遇到的问题</h4><ul>
-<li><p>cannot find package “github.com/go-playground/validator/v10”</p>
-<p>发现github上确实没有该代码</p>
-<ul>
-<li>解决方法：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># cd $GOPATH</span><br><span class="line"># go get &quot;gopkg.in&#x2F;go-playground&#x2F;validator.v10&quot;</span><br><span class="line"># cp -rf $GOPATH&#x2F;src&#x2F;gopkg.in&#x2F;go-playground&#x2F;validator.v10&#x2F;*   $GOPATH&#x2F;src&#x2F;vendor&#x2F;github.com&#x2F;go-playground&#x2F;validator&#x2F;v10&#x2F;</span><br><span class="line"># govendor add +external</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>cannot find package “golang.org/x/sys/unix”</p>
-<ul>
-<li>解决方法：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p $GOPATH&#x2F;src&#x2F;golang.org&#x2F;x</span><br><span class="line"># cd $GOPATH&#x2F;src&#x2F;golang.org&#x2F;x</span><br><span class="line"># git clone https:&#x2F;&#x2F;github.com&#x2F;golang&#x2F;sys.git</span><br><span class="line"># govendor add +external</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" data-id="ckjj7tveo0004u8161ieygad6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-更改默认存储目录-root-dir" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/" class="article-date">
-  <time datetime="2021-01-03T14:30:28.000Z" itemprop="datePublished">2021-01-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/">docker-更改默认存储目录 root dir</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="确保停止docker服务"><a href="#确保停止docker服务" class="headerlink" title="确保停止docker服务"></a>确保停止docker服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemstl stop docker.service</span><br></pre></td></tr></table></figure>
-
-<h3 id="2、修改-etc-docker-daemon-json文件值，文件不存在需手动创建"><a href="#2、修改-etc-docker-daemon-json文件值，文件不存在需手动创建" class="headerlink" title="2、修改/etc/docker/daemon.json文件值，文件不存在需手动创建"></a>2、修改/etc/docker/daemon.json文件值，文件不存在需手动创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;docker</span><br><span class="line"># vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure>
-
-<p>新增以下信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;data-root&quot;: &quot;&#x2F;data&#x2F;docker&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、启动docker服务-systemstl-start-docker-service"><a href="#3、启动docker服务-systemstl-start-docker-service" class="headerlink" title="3、启动docker服务# systemstl start docker.service"></a>3、启动docker服务<code># systemstl start docker.service</code></h3><h3 id="4、docker-info-验证Docker-Root-Dir的值-是否已修改为-data-docker"><a href="#4、docker-info-验证Docker-Root-Dir的值-是否已修改为-data-docker" class="headerlink" title="4、docker info 验证Docker Root Dir的值 是否已修改为/data/docker"></a>4、<code>docker info</code> 验证Docker Root Dir的值 是否已修改为<code>/data/docker</code></h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/" data-id="ckjj7tven0003u816dk6kfaap" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-ce-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2020-12-30T02:15:24.000Z" itemprop="datePublished">2020-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>CentosOS 7 安装docker-ce</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># step 1: 安装必要的一些系统工具</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># Step 2: 添加软件源信息</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line"># Step 3: 更新并安装Docker-CE</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"># Step 4: 开启Docker服务</span><br><span class="line">sudo service docker start</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" data-id="ckjatz3nx0003hc1610b80nr4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
 
     </footer>
   </div>
@@ -547,7 +637,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -571,7 +661,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18.75px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -580,7 +670,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -593,23 +683,23 @@
       <ul>
         
           <li>
-            <a href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/">gitlab-gitlab runner ci docker 报错</a>
+            <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
           </li>
         
           <li>
-            <a href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/">docker-安装docker-ce</a>
+            <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
           </li>
         
           <li>
-            <a href="/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/">openstack-neutron创建keepalived vip</a>
+            <a href="/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/">openstack-裸金属ironic创建及调度-3</a>
           </li>
         
           <li>
-            <a href="/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/">openstack-虚机创建失败排查</a>
+            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/">openstack-裸金属ironic创建及调度-2</a>
           </li>
         
           <li>
-            <a href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/">linux-golang打开markdown失败</a>
+            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/">openstack-裸金属ironic创建及调度-1</a>
           </li>
         
       </ul>

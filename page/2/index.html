@@ -67,10 +67,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-kata-与原生docker集成使用" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python-人脸识别模块安装" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time datetime="2021-02-22T02:21:04.000Z" itemprop="datePublished">2021-02-22</time>
+    <a href="/2021/04/06/python-%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2021-04-06T06:26:05.000Z" itemprop="datePublished">2021-04-06</time>
 </a>
     
   </div>
@@ -81,7 +81,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/">kata-与原生docker集成使用</a>
+      <a class="article-title" href="/2021/04/06/python-%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85/">python-人脸识别模块安装</a>
     </h1>
   
 
@@ -89,65 +89,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>使用kata container 与docker集成</p>
-<p><strong>⒈KataContainers？</strong></p>
-<p>　　Kata Containers是新的虚拟机实现，可以实现和现在容器生态无缝连接，与时下最流行的容器编排工具k8s完美结合，提供容器的快速启动，和虚拟机的安全隔离，与Docker技术相比，容器之间不共用内核，使得隔离性更好。</p>
-<p>　　Kata Containers 项目的主要目标是将虚拟化的安全隔离优势和容器的快速启动特点结合起来。</p>
-<p><strong>⒉即生Docker，何来Kata Containers？</strong><br>　　Linux 容器轻巧，快速且易于集成到许多不同的应用程序工作流程中。但是，在运行容器时存在一些潜在的安全问题，特别是在单个操作系统中的多租户容器：最终，容器共享一个内核、 I / O 的一条路径、网络和内存等。</p>
-<p>　　使用Docker轻量级的容器时，最大的问题就是会碰到安全性的问题，其中几个不同的容器可以互相的进行攻击，如果把这个内核给攻掉了，其他所有容器都会崩溃。如果使用KVM等虚拟化技术，会完美解决安全性的问题，但是会影响速度。</p>
-<p>　　Kata旨在通过虚拟机管理程序来缓解这种安全问题——创建一个外观和感觉像容器的虚拟机。<br>　　Kata Containers项目通过整合Intel Clear Containers和Hyper runV技术，能够支持不同平台的硬件，并且兼容Open Container Initiative(OCI)和Kubernetes container runtime interface(CRI)接口规范。Kata Containers项目现在由OpenStack基金会管理，代码托管在Github(<a target="_blank" rel="noopener" href="https://github.com/kata-containers)%E4%B8%8A%E3%80%82">https://github.com/kata-containers)上。</a></p>
-<p><strong>⒊使用Kata Containers替换Docker？</strong></p>
-<p>　　从docker架构上看，kata-container和原来的runc是平级的。大家知道docker只是管理容器生命周期的框架，真正启动容器最早用的是LXC，然后是runc，现在也可以换成kata了。所以说kata-container可以当做docker的一个插件，启动kata-container可以通过docker命令。Kata最大的亮点是解决了传统容器共享内核的安全和隔离问题，办法是让每个容器运行在一个轻量级的虚拟机中，使用单独的内核。 </p>
-<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152257944-1238620662.jpg" alt="img"></p>
-<p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152447829-1224252548.jpg" alt="img"></p>
-<p><strong>⒋现在开始？</strong></p>
-<p>　　⒈安装Kata Containers容器包（以Centos 7 x86_64为例） </p>
-<p>这里使用snap部署</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#yum install epel-release</span><br><span class="line">#yum install snapd</span><br><span class="line">#systemctl enable --now snapd.socket</span><br><span class="line">#ln -s &#x2F;var&#x2F;lib&#x2F;snapd&#x2F;snap &#x2F;snap</span><br></pre></td></tr></table></figure>
+        <p>社区知名人脸识别模块</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#snap install kata-containers --classic</span><br><span class="line">遇到报错：error: too early for operation, device not yet seeded or device model not acknowledged</span><br><span class="line">再执行一次 #yum -y install snapd 就可以了</span><br><span class="line">#snap install kata-containers --classic</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/kata/2021-02-22_11h08_20.png"></p>
-<h2 id="配置Kata-Container"><a href="#配置Kata-Container" class="headerlink" title="配置Kata Container"></a>配置Kata Container</h2><p>默认情况下Kata container以只读文件系统形式挂载在<code>/snap/kata-containers</code>路径下，因此默认配置文件不能修改，但是<code>kata-runtime</code>支持从指定路径加载配置文件而不是从默认路径，使用以下命令修改：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;kata-containers</span><br><span class="line">#cp &#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;share&#x2F;defaults&#x2F;kata-containers&#x2F;configuration.toml &#x2F;etc&#x2F;kata-containers&#x2F;</span><br><span class="line">#cat &#x2F;etc&#x2F;kata-containers&#x2F;configuration.toml</span><br></pre></td></tr></table></figure>
-
-<p>可以通过修改<code>/etc/kata-containers/configuration.toml</code>文件来更改kata container的配置，暂时我们不修改</p>
-<h2 id="更改Docker运行时"><a href="#更改Docker运行时" class="headerlink" title="更改Docker运行时"></a>更改Docker运行时</h2><p>在更改Docker运行时前，检查一下Docker默认的运行时，运行命令<code>docker info | grep -i runtime</code>，结果如下所示，现有可供选择的运行时仅有<code>runc</code>，默认的运行时也为<code>runc</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: runc</span><br><span class="line"> Default Runtime: runc</span><br></pre></td></tr></table></figure>
-
-<p>要将<code>runc</code>更换为kata container提供的<code>kata-runtime</code>，使用以下两种方法<strong>之一</strong>进行替换：</p>
-<p><strong>注意官方文档上给出的文件路径为<code>/usr/bin/kata-runtime</code>，这是通过<code>kata-manager</code>安装kata container时的路径，通过snap安装的kata container，路径应为<code>/snap/kata-containers/current/usr/bin/kata-runtime</code></strong></p>
-<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0031-20e3.png" alt=":one:"> 通过<code>systemd</code>文件夹，具体命令为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#mkdir -p &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;</span><br><span class="line">#cat &lt;&lt;EOF | sudo tee &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;docker.service.d&#x2F;kata-containers.conf</span><br><span class="line">[Service]</span><br><span class="line">ExecStart&#x3D;</span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;bin&#x2F;dockerd -D --add-runtime kata-runtime&#x3D;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime --default-runtime&#x3D;kata-runtime</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://github.githubassets.com/images/icons/emoji/unicode/0032-20e3.png" alt=":two:"> 通过docker <code>daemon.json</code>文件，在<code>/etc/docker/daemon.json</code>文件中添加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;default-runtime&quot;: &quot;kata-runtime&quot;,</span><br><span class="line">  &quot;runtimes&quot;: &#123;</span><br><span class="line">    &quot;kata-runtime&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;&#x2F;snap&#x2F;kata-containers&#x2F;current&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里选择看起来更简单些的方式2，我是使用的第一种，都可以，配置好后还需要<strong>重启Docker服务</strong>使之生效，运行如下命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-<p>此时再次查看docker运行时配置，发现可供的选择多了一个<code>kata-runtime</code>，并且默认为<code>kata-runtime</code>，如下所示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info | grep -i runtime</span><br><span class="line"> Runtimes: kata-runtime runc</span><br><span class="line"> Default Runtime: kata-runtime</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/kata/2021-02-22_14h01_54.png"></p>
-<h2 id="运行kata-runtime-docker"><a href="#运行kata-runtime-docker" class="headerlink" title="运行kata-runtime docker"></a>运行kata-runtime docker</h2><p>拉取测试镜像busybox：<code>docker pull busybox 运行测试：</code></p>
-<p>#docker run busybox uname -a</p>
-<p><code>默认的运行时已经改为为</code>kata-runtime<code>，如果想要使用之前的</code>runc<code>，可以通过参数</code>–runtime=runc`来指定：</p>
-<p>#docker run –runtime=runc busybox uname -a`</p>
-<p><img src="/images/kata/2021-02-22_14h18_27.png"></p>
-<h2 id="卸载Kata-Container"><a href="#卸载Kata-Container" class="headerlink" title="卸载Kata Container"></a>卸载Kata Container</h2><p>运行命令：</p>
-<p>#snap remove kata-containers<br>删除相关的配置文件：</p>
-<p>#rm -r /etc/kata-containers</p>
-<p>#rm /etc/docker/daemon.json`</p>
-<p>参考：<a target="_blank" rel="noopener" href="https://snapcraft.io/install/kata-containers/centos">https://snapcraft.io/install/kata-containers/centos</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/" data-id="cklg08r9n00033c164tcnhmb9" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/04/06/python-%E4%BA%BA%E8%84%B8%E8%AF%86%E5%88%AB%E6%A8%A1%E5%9D%97%E5%AE%89%E8%A3%85/" data-id="ckssanb4c000vto16e8zc8uq7" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
 
     </footer>
   </div>
@@ -156,10 +108,10 @@
 
 
   
-    <article id="post-kata-极速部署kata-container" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-裸金属ironic整理-5" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/" class="article-date">
-  <time datetime="2021-02-20T10:39:43.000Z" itemprop="datePublished">2021-02-20</time>
+    <a href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-5/" class="article-date">
+  <time datetime="2021-04-02T07:35:55.000Z" itemprop="datePublished">2021-04-02</time>
 </a>
     
   </div>
@@ -170,7 +122,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/">kata-极速部署kata container</a>
+      <a class="article-title" href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-5/">openstack-裸金属ironic整理-5</a>
     </h1>
   
 
@@ -178,169 +130,26 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>快速部署kata container</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-rbac.yaml</span><br><span class="line">$ kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-deploy.yaml</span><br></pre></td></tr></table></figure>
+        <h2 id="iSCSI-Deploy-UML"><a href="#iSCSI-Deploy-UML" class="headerlink" title="iSCSI Deploy UML"></a>iSCSI Deploy UML</h2><p>With iscsi deploy interface, the deploy ramdisk publishes the node’s hard drive as an iSCSI share. The ironic-conductor then copies the image to this share. This interface is used by default.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal node create --driver ipmi --deploy-interface iscsi</span><br><span class="line">openstack baremetal node set &lt;NODE&gt; --deploy-interface iscsi</span><br></pre></td></tr></table></figure>
 
 
 
-<p>清理kata</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ kubectl delete -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-deploy.yaml</span><br><span class="line">$ kubectl apply -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-cleanup.yaml</span><br><span class="line"></span><br><span class="line">$ kubectl delete -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-cleanup.yaml</span><br><span class="line">$ kubectl delete -f https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;kata-containers&#x2F;packaging&#x2F;master&#x2F;kata-deploy&#x2F;kata-rbac.yaml</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/20/kata-%E6%9E%81%E9%80%9F%E9%83%A8%E7%BD%B2kata-container/" data-id="cklg08r9n00023c16h5i37h5a" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-gorm使用json字段" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/" class="article-date">
-  <time datetime="2021-02-20T10:08:26.000Z" itemprop="datePublished">2021-02-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/">go-gorm使用json字段</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><code>MySQL</code>到现如今已经是原生支持<code>Json</code>类型（5.7.8版本之后），毕竟JSON存储一直都是NoSql玩的溜，触不及防，MySQL里头也能支持了，且能对JSON数据进行相对的操作。</p>
-<p>NoSql中，对JSON数据天生友好，都算是不固定（弱结构）的数据存储。而MySQL中，字段都是先天所定（强结构），后续更改会相对别扭一些（相对于NoSql型数据库）。</p>
-<p>Go语言中，我们一般使用Gorm和原生SQL对数据库进行操作，虽然中大型项目中，大多前辈以及一些DBA都会推荐使用原生SQL，这样的好处是防止中间层出现<code>意外</code>的错误，以及排查问题方便性。特别的，如果遇到性能问题，使用<code>orm</code>会造成排查问题的一些复杂性。</p>
-<p>当然，我要是为了开发的便利和速度，一般都会选择<code>Gorm</code>。</p>
-<p>由于Gorm原生并不支持JSON数据结构，需要添加一些方法才能正常操作JSON字段。</p>
-<h2 id="JSON字段的支持"><a href="#JSON字段的支持" class="headerlink" title="JSON字段的支持"></a>JSON字段的支持</h2><p>在<code>Gorm</code>需要加入两个函数：<code>Value</code>、<code>Scan</code>。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">type Demo struct &#123;</span><br><span class="line">  id string </span><br><span class="line">  obj  DemoObj  &#96;sql:&quot;TYPE:json&quot;&#96;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct DemoObj struct &#123;</span><br><span class="line">   c1 string</span><br><span class="line">   c2 int</span><br><span class="line">   c3 bool</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c DemoObj) Value() (driver.Value, error) &#123;</span><br><span class="line">  b, err :&#x3D; json.Marshal(c)</span><br><span class="line">  return string(b), err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c *DemoObj) Scan(input interface&#123;&#125;) error &#123;</span><br><span class="line">  return json.Unmarshal(input.([]byte), c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>以下是对数组的支持。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;****************使gorm支持[]string结构*******************&#x2F;</span><br><span class="line">type Strings []string</span><br><span class="line"></span><br><span class="line">func (c Strings) Value() (driver.Value, error) &#123;</span><br><span class="line">	b, err :&#x3D; json.Marshal(c)</span><br><span class="line">	return string(b), err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c *Strings) Scan(input interface&#123;&#125;) error &#123;</span><br><span class="line">	return json.Unmarshal(input.([]byte), c)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;****************使gorm支持[]string结构*******************&#x2F;</span><br><span class="line"></span><br><span class="line">&#x2F;****************使gorm支持[]int64结构*******************&#x2F;</span><br><span class="line">type Int64s []int64</span><br><span class="line"></span><br><span class="line">func (c Int64s) Value() (driver.Value, error) &#123;</span><br><span class="line">	b, err :&#x3D; json.Marshal(c)</span><br><span class="line">	return string(b), err</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func (c *Int64s) Scan(input interface&#123;&#125;) error &#123;</span><br><span class="line">	return json.Unmarshal(input.([]byte), c)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;****************使gorm支持[]int64结构*******************&#x2F;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/20/go-gorm%E4%BD%BF%E7%94%A8json%E5%AD%97%E6%AE%B5/" data-id="cklg08r9h00003c164ngq6me3" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-关于作者" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/20/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" class="article-date">
-  <time datetime="2021-02-20T09:39:45.000Z" itemprop="datePublished">2021-02-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/20/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/">关于作者</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>一名菜鸟攻城狮，</p>
-<p>QQ: 1841356639 </p>
-<p>网名 小新大表哥</p>
-<p>专注 云计算/监控/go</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/20/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" data-id="ckldj7pcd00010k167jxbbzwh" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-记一次虚机代理网关网络不通问题排查" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="article-date">
-  <time datetime="2021-02-20T07:43:12.000Z" itemprop="datePublished">2021-02-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">openstack-记一次虚机代理网关网络不通问题排查</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>背景：VPC网络内，用户两台虚机，VM1 138，VM2 181，用户需要把138流量牵引至181，所以将138 网关改成 181，当客户端 138 发起外网ping 114.114.114.114 时，无法联网</p>
-<p>排查原因：</p>
+<p><img src="https://img-blog.csdnimg.cn/20190506160410435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="E:\开发文档\images\Screenpresso\PXE_Provisioning.png"></p>
 <ol>
-<li>通过tcpdump抓网关网卡包</li>
+<li>通过 Nova API 发起裸金属实例部署请求。</li>
+<li>Nova Scheduler 根据请求中的参数信息（e.g. 硬件模板、镜像等）筛选合适的 ironic node。例如：调度因子通常包含在 Flavor 的 extra_spec 属性中（e.g. cpu_arch、baremetal:deploy_kerner_id、baremmetal:deploy_ramdisk_id）。</li>
+<li>Nova Compute 将部署裸机所需要的信息都整理好，然后 Spawn 一个 Build 任务，主要是调用并传递参数到 Ironic API 实际执行，Ironic 将此任务中所需要的硬件资源信息持久化到数据库中。</li>
+<li>Ironic 与 OpenStack 的其他服务交互，从 Glance 服务获取 Images（Deploy Images &amp; User Images），调用 Neutron 服务为裸机创建端口，调用 Cinder 服务获取Volumes 等。</li>
+<li>Ironic 开始执行真正的裸机部署，PXE Driver 准备好 TFTP 和 Bootloader，IPMI Driver 设置裸机启动模式为 PXE 并起电。<br>裸机启电后，通过 DHCP 获得 Ironic Conductor 的地址并尝试通过 TFTP 从 Conductor 获取 Deploy Images，Conductor 部署好 RAMDisk 之后，IPA 就可以通过 iSCSI 协议将裸机的硬盘暴露出来，Conductor 随后注入 User Images 到裸机磁盘作为根磁盘。<br>根磁盘部署完成后，IPMI Driver 调整裸机引导顺序，完成部署。</li>
 </ol>
-<p>​    网关181回包后138 收不到</p>
-<p>![/images/openstack/image-20210220172329798.png)</p>
-<ol start="2">
-<li><p>抓取网关虚机的宿主机包发现，只回了一个包（tap网卡包回了）</p>
-<p>#tcpdump -i any -nn icmp and host 114.114.114.114</p>
-<p>所以怀疑安全组限制了（包只过了tap网卡后被丢弃）</p>
-<p>追踪这块网卡的iptables</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#iptables -nvL neutron-openvswi-ib8096cab-2</span><br><span class="line">Chain neutron-openvswi-sb8096cab-2 (1 references)</span><br><span class="line"> pkts bytes target     prot opt in     out     source               destination         </span><br><span class="line"> 3818  651K RETURN     all  --  *      *       0.0.0.0&#x2F;0            0.0.0.0&#x2F;0           </span><br><span class="line">3232K  229M RETURN     all  --  *      *       192.168.123.181      0.0.0.0&#x2F;0            MAC FA:16:3E:29:77:83 &#x2F;* Allow traffic from defined IP&#x2F;MAC pairs. *&#x2F;</span><br><span class="line"> 5558  381K DROP       all  --  *      *       0.0.0.0&#x2F;0            0.0.0.0&#x2F;0            &#x2F;* Drop traffic without an IP&#x2F;MAC allow rule. *&#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>发现DROP的大小一直在变大，定位到问题了，那原因是什么呢？</p>
-</li>
-</ol>
-<p>因为 neutron默认防止arp欺骗，只允许源IP和MAC是自己的包才放行，而用户自己做了网关，导致源IP变了，所以被DROP了。</p>
-<p>解决办法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 放行包  （不能永久生效）</span><br><span class="line">#iptables -t filter -I neutron-openvswi-sb8096cab-2  -s 0.0.0.0&#x2F;0 -j RETURN</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2. 把port的安全组关掉</span><br><span class="line">#neutron port-update b8096cab-2536-4d0d-851a-1056b81f11ca --no-security-groups </span><br><span class="line">#neutron port-update b8096cab-2536-4d0d-851a-1056b81f11ca --port_security_enabled&#x3D;False</span><br></pre></td></tr></table></figure>
-
+<h2 id="PXE-Deploy-Driver"><a href="#PXE-Deploy-Driver" class="headerlink" title="PXE Deploy Driver"></a>PXE Deploy Driver</h2><p><img src="https://img-blog.csdnimg.cn/20190506160932587.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" data-id="ckldj7pc900000k16fiv1axho" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-5/" data-id="ckssanb46000hto16aad6fw35" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
@@ -352,10 +161,10 @@
 
 
   
-    <article id="post-go-100道灵魂拷问" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-裸金属ironic整理-4" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/" class="article-date">
-  <time datetime="2021-02-18T14:17:23.000Z" itemprop="datePublished">2021-02-18</time>
+    <a href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/" class="article-date">
+  <time datetime="2021-04-02T07:35:51.000Z" itemprop="datePublished">2021-04-02</time>
 </a>
     
   </div>
@@ -366,7 +175,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
+      <a class="article-title" href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/">openstack-裸金属ironic整理-4</a>
     </h1>
   
 
@@ -374,197 +183,37 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol>
-<li><p>map如何顺序读取</p>
-<p>map不能顺序读取，是因为他是无序的，想要有序读取，首先的解决的问题就是，把 key 变为有序，所以可以把key放入切片，对切片进行排序，遍历切片，通过key取值。</p>
-</li>
-</ol>
+        <h2 id="网络规划"><a href="#网络规划" class="headerlink" title="网络规划"></a>网络规划</h2><p>在ironic网络分为provisoning/cleaning网络 和 业务网络</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>类型</th>
+<th>网卡</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>provisoning/cleaning</td>
+<td>flat</td>
+<td>ext interface</td>
+<td>用于部署阶段,ipa使用</td>
+</tr>
+<tr>
+<td>users</td>
+<td>vlan</td>
+<td>ext interface</td>
+<td>用户业务使用，直通/基础网络</td>
+</tr>
+</tbody></table>
+<p>这里两种网络，共用一个网卡，都使用业务网卡比如 eth1,  eth1对应交换机接口需要配置trunk，并对接口打上pvid， pvid为users 业务网络的vlan号</p>
+<p><img src="https://img-blog.csdn.net/20180425100931818?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p6dGZseWVy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="Ironic网络架构"></p>
+<h1 id="基于-SDN-的网络切换流程"><a href="#基于-SDN-的网络切换流程" class="headerlink" title="基于 SDN 的网络切换流程"></a>基于 SDN 的网络切换流程</h1><p><img src="https://img-blog.csdnimg.cn/20190507154455746.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/" data-id="cklaz218c0000jk16hdcqdcea" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-字符串转成byte数组，会发生内存拷贝吗？" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/" class="article-date">
-  <time datetime="2021-02-18T14:11:27.000Z" itemprop="datePublished">2021-02-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/">go-字符串转成byte数组，会发生内存拷贝吗？</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>字符串转成byte数组，会发生内存拷贝吗？</p>
-<h2 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h2><p>字符串转成切片，会产生拷贝。严格来说，只要是发生类型强转都会发生内存拷贝。那么问题来了。</p>
-<p>频繁的内存拷贝操作听起来对性能不大友好。有没有什么办法可以在字符串转成切片的时候不用发生拷贝呢？</p>
-<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"> &quot;fmt&quot;</span><br><span class="line"> &quot;reflect&quot;</span><br><span class="line"> &quot;unsafe&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"> a :&#x3D;&quot;aaa&quot;</span><br><span class="line"> ssh :&#x3D; *(*reflect.StringHeader)(unsafe.Pointer(&amp;a))</span><br><span class="line"> b :&#x3D; *(*[]byte)(unsafe.Pointer(&amp;ssh))  </span><br><span class="line"> fmt.Printf(&quot;%v&quot;,b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong><code>StringHeader</code> 是字符串在go的底层结构。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type StringHeader struct &#123;</span><br><span class="line"> Data uintptr</span><br><span class="line"> Len  int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong><code>SliceHeader</code> 是切片在go的底层结构。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type SliceHeader struct &#123;</span><br><span class="line"> Data uintptr</span><br><span class="line"> Len  int</span><br><span class="line"> Cap  int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>那么如果想要在底层转换二者，只需要把 StringHeader 的地址强转成 SliceHeader 就行。那么go有个很强的包叫 unsafe 。</p>
-<ol>
-<li><code>unsafe.Pointer(&amp;a)</code>方法可以得到变量a的地址。</li>
-<li><code>(*reflect.StringHeader)(unsafe.Pointer(&amp;a))</code> 可以把字符串a转成底层结构的形式。</li>
-<li><code>(*[]byte)(unsafe.Pointer(&amp;ssh))</code> 可以把ssh底层结构体转成byte的切片的指针。</li>
-<li>再通过 <code>*</code>转为指针指向的实际内容。</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/" data-id="cklaz218f0003jk16f8wdhbi6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-简单聊聊内存逃逸" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/" class="article-date">
-  <time datetime="2021-02-18T14:05:16.000Z" itemprop="datePublished">2021-02-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/">go-简单聊聊内存逃逸</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>知道golang的内存逃逸吗？什么情况下会发生内存逃逸？</p>
-<h2 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h2><p>golang程序变量会携带有一组校验数据，用来证明它的整个生命周期是否在运行时完全可知。如果变量通过了这些校验，它就可以在栈上分配。否则就说它 逃逸 了，必须在堆上分配。</p>
-<p>能引起变量逃逸到堆上的典型情况：</p>
-<ul>
-<li><strong>在方法内把局部变量指针返回</strong> 局部变量原本应该在栈中分配，在栈中回收。但是由于返回时被外部引用，因此其生命周期大于栈，则溢出。</li>
-<li><strong>发送指针或带有指针的值到 channel 中。</strong> 在编译时，是没有办法知道哪个 <code>goroutine</code> 会在 <code>channel</code> 上接收数据。所以编译器没法知道变量什么时候才会被释放。</li>
-<li><strong>在一个切片上存储指针或带指针的值。</strong> 一个典型的例子就是 <code>[]*string</code> 。这会导致切片的内容逃逸。尽管其后面的数组可能是在栈上分配的，但其引用的值一定是在堆上。</li>
-<li><strong>slice 的背后数组被重新分配了，因为 append 时可能会超出其容量( cap )。</strong> slice 初始化的地方在编译时是可以知道的，它最开始会在栈上分配。如果切片背后的存储要基于运行时的数据进行扩充，就会在堆上分配。</li>
-<li><strong>在 interface 类型上调用方法。</strong> 在 interface 类型上调用方法都是动态调度的 —— 方法的真正实现只能在运行时知道。想像一个 io.Reader 类型的变量 r , 调用 r.Read(b) 会使得 r 的值和切片b 的背后存储都逃逸掉，所以会在堆上分配。</li>
-</ul>
-<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p><strong>通过一个例子加深理解，接下来尝试下怎么通过 <code>go build -gcflags=-m</code> 查看逃逸的情况。</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">type A struct &#123;</span><br><span class="line"> s string</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 这是上面提到的 &quot;在方法内把局部变量指针返回&quot; 的情况</span><br><span class="line">func foo(s string) *A &#123;</span><br><span class="line"> a :&#x3D; new(A) </span><br><span class="line"> a.s &#x3D; s</span><br><span class="line"> return a &#x2F;&#x2F;返回局部变量a,在C语言中妥妥野指针，但在go则ok，但a会逃逸到堆</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;</span><br><span class="line"> a :&#x3D; foo(&quot;hello&quot;)</span><br><span class="line"> b :&#x3D; a.s + &quot; world&quot;</span><br><span class="line"> c :&#x3D; b + &quot;!&quot;</span><br><span class="line"> fmt.Println(c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>执行go build -gcflags=-m main.go</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">go build -gcflags&#x3D;-m main.go</span><br><span class="line"># command-line-arguments</span><br><span class="line">.&#x2F;main.go:7:6: can inline foo</span><br><span class="line">.&#x2F;main.go:13:10: inlining call to foo</span><br><span class="line">.&#x2F;main.go:16:13: inlining call to fmt.Println</span><br><span class="line">&#x2F;var&#x2F;folders&#x2F;45&#x2F;qx9lfw2s2zzgvhzg3mtzkwzc0000gn&#x2F;T&#x2F;go-build409982591&#x2F;b001&#x2F;_gomod_.go:6:6: can inline init.0</span><br><span class="line">.&#x2F;main.go:7:10: leaking param: s</span><br><span class="line">.&#x2F;main.go:8:10: new(A) escapes to heap</span><br><span class="line">.&#x2F;main.go:16:13: io.Writer(os.Stdout) escapes to heap</span><br><span class="line">.&#x2F;main.go:16:13: c escapes to heap</span><br><span class="line">.&#x2F;main.go:15:9: b + &quot;!&quot; escapes to heap</span><br><span class="line">.&#x2F;main.go:13:10: main new(A) does not escape</span><br><span class="line">.&#x2F;main.go:14:11: main a.s + &quot; world&quot; does not escape</span><br><span class="line">.&#x2F;main.go:16:13: main []interface &#123;&#125; literal does not escape</span><br><span class="line">&lt;autogenerated&gt;:1: os.(*File).close .this does not escape</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><code>./main.go:8:10: new(A) escapes to heap</code> 说明 <code>new(A)</code> 逃逸了,符合上述提到的常见情况中的第一种。</li>
-<li><code>./main.go:14:11: main a.s + &quot; world&quot; does not escape</code> 说明 b 变量没有逃逸，因为它只在方法内存在，会在方法结束时被回收。</li>
-<li><code>./main.go:15:9: b + &quot;!&quot; escapes to heap</code> 说明 c 变量逃逸，通过<code>fmt.Println(a ...interface&#123;&#125;)</code>打印的变量，都会发生逃逸，感兴趣的朋友可以去查查为什么。</li>
-</ul>
-<p>以上操作其实就叫逃逸分析。下篇文章，跟大家聊聊怎么用一个比较trick的方法使变量不逃逸。方便大家在面试官面前秀一波。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/" data-id="cklaz218e0002jk1660579h5u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-一次虚拟机启动异常排查" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/" class="article-date">
-  <time datetime="2021-02-08T06:33:16.000Z" itemprop="datePublished">2021-02-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>环境 ： openstack stein版本，本地盘存储模式</p>
-<p>故障：虚机启动异常，排查原因</p>
-<p>查看虚机日志</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">2021-02-08 13:58:08.352 7 DEBUG nova.virt.images [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] 5516a827-a2fb-463b-9b03-168e56faa79f was qcow2, converting to raw fetch_to_raw &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;images.py:172</span><br><span class="line">2021-02-08 13:58:08.353 7 DEBUG nova.privsep.utils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Path &#39;&#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#39; supports direct I&#x2F;O supports_direct_io &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;privsep&#x2F;utils.py:66</span><br><span class="line">2021-02-08 13:58:08.353 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Running cmd (subprocess): qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:372</span><br><span class="line">2021-02-08 13:58:10.109 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted&quot; returned: 0 in 1.755s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br><span class="line">2021-02-08 13:58:10.375 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Running cmd (subprocess): &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;bin&#x2F;python -m oslo_concurrency.prlimit --as&#x3D;1073741824 --cpu&#x3D;30 -- env LC_ALL&#x3D;C LANG&#x3D;C qemu-img info &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted --force-share execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:372</span><br><span class="line">2021-02-08 13:58:10.813 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;bin&#x2F;python -m oslo_concurrency.prlimit --as&#x3D;1073741824 --cpu&#x3D;30 -- env LC_ALL&#x3D;C LANG&#x3D;C qemu-img info &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted --force-share&quot; returned: 0 in 0.438s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br><span class="line">2021-02-08 13:58:10.819 7 DEBUG oslo_concurrency.lockutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Lock &quot;344d45fde44ae9163acfa37ab64364ffe2fd0b9c&quot; released by &quot;nova.virt.libvirt.imagebackend.fetch_func_sync&quot; :: held 46.934s inner &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;lockutils.py:339</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Instance failed to spawn: ImageUnacceptable: Image 5516a827-a2fb-463b-9b03-168e56faa79f is unacceptable: Converted to raw, but format is now qcow2</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Traceback (most recent call last):</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py&quot;, line 2613, in _build_resources</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     yield resources</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py&quot;, line 2372, in _build_and_run_instance</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     block_device_info&#x3D;block_device_info)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3358, in spawn</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     block_device_info&#x3D;block_device_info)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3754, in _create_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     fallback_from_host)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3855, in _create_and_inject_local_root</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     instance, size, fallback_from_host)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 8578, in _try_fetch_image_cache</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     trusted_certs&#x3D;instance.trusted_certs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 276, in cache</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 668, in create_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     prepare_template(target&#x3D;base, *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;lockutils.py&quot;, line 328, in inner</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     return f(*args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 272, in fetch_func_sync</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     fetch_func(target&#x3D;target, *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;utils.py&quot;, line 421, in fetch_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     images.fetch_to_raw(context, image_id, target, trusted_certs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;images.py&quot;, line 188, in fetch_to_raw</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     data.file_format)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] ImageUnacceptable: Image 5516a827-a2fb-463b-9b03-168e56faa79f is unacceptable: Converted to raw, but format is now qcow2</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]</span><br><span class="line">2021-02-08 13:58:10.821 7 INFO nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Terminating instance</span><br><span class="line">2021-02-08 13:58:10.823 7 DEBUG nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Start destroying the instance on the hypervisor. _shutdown_instance &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py:2751</span><br></pre></td></tr></table></figure>
-
-<p>pycharm 查看nova代码</p>
-<p>nova/virt/images.py, 查看基本逻辑</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def fetch_to_raw(context, image_href, path, trusted_certs&#x3D;None)</span><br><span class="line">	...</span><br><span class="line">	fetch(context, image_href, path_tmp, trusted_certs)   &#x2F;&#x2F;先从glance api下载镜像到本地_base目录</span><br><span class="line">	...</span><br><span class="line">	if fmt !&#x3D; &quot;raw&quot; and CONF.force_raw_images:</span><br><span class="line">		...</span><br><span class="line">		convert_image(path_tmp, staged, fmt, &#39;raw&#39;) &#x2F;&#x2F;调用qemu convert command转换格式</span><br><span class="line">		...</span><br><span class="line">	    data &#x3D; qemu_img_info(staged)  &#x2F;&#x2F;调用qemu info查看转换后得镜像格式</span><br><span class="line">        if data.file_format !&#x3D; &quot;raw&quot;:</span><br><span class="line">           raise exception.ImageUnacceptable(image_id&#x3D;image_href,    &#x2F;&#x2F;抛出异常</span><br><span class="line">               reason&#x3D;_(&quot;Converted to raw, but format is now %s&quot;) %</span><br><span class="line">               data.file_format)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>总体代码逻辑如上，所以问题基本定位是 qemu convert后镜像依旧是qcow2呢，  那为什么会呢 ？ </p>
-<ol>
-<li>nova-compute 日志中</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-02-08 13:58:10.109 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted&quot; returned: 0 in 1.755s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br></pre></td></tr></table></figure>
-
-<p>说明调用了qemu 发生了convert，WHY ？ 那让我们手工模拟一下代码流程吧</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#glance image-download 5516a827-a2fb-463b-9b03-168e56faa79f --file test.qcow2 --progress</span><br><span class="line">#qemu-img info test.qcow2 </span><br><span class="line">#qemu-img convert -t none -O raw -f qcow2 test.qcow2 test.qcow2.convert</span><br><span class="line">#qemu-img info test.raw.convert </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/openstack/fc4ccb936322f084084628c7bc65b909.png"></p>
-<p>如上图，发现，确实qemu convert 转换失败了，转完依旧是qcow2 ， 这什么鬼？</p>
-<p>定位相关同事，他的操作记录</p>
-<ol>
-<li>glance download 镜像 kali-self-2021.01.19.raw  （原始glance镜像是qcow2，他却保存成了*.raw)</li>
-<li>qemu-img convert -p -f raw -O qcow2 kali-self-2021.01.19.raw kali-self-2021.01.19.qcow2</li>
-<li>glance image-create 上传</li>
-</ol>
-<p>定位到是他 qemu convert 转错了，多转了一遍，把 qcow2 文件当成raw convert to qcow2 了，所以导致这个故障，Done~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/" data-id="ckkw911eq000bs8165opv8t1g" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/" data-id="ckssanb49000nto16guqpclu7" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
@@ -576,10 +225,10 @@
 
 
   
-    <article id="post-go-经典排序算法" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-弹性伸缩调研-2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" class="article-date">
-  <time datetime="2021-02-08T03:06:57.000Z" itemprop="datePublished">2021-02-08</time>
+    <a href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" class="article-date">
+  <time datetime="2021-04-02T04:05:51.000Z" itemprop="datePublished">2021-04-02</time>
 </a>
     
   </div>
@@ -590,7 +239,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/">go-经典排序算法</a>
+      <a class="article-title" href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/">openstack-弹性伸缩调研-2</a>
     </h1>
   
 
@@ -598,15 +247,289 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>go 常用排序算法</p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" data-id="ckssanb400005to16hj994xp2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-弹性伸缩调研-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-1/" class="article-date">
+  <time datetime="2021-04-02T04:05:47.000Z" itemprop="datePublished">2021-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-1/">openstack-弹性伸缩调研-1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-1/" data-id="ckssanb400007to162d4lajwr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-裸金属ironic整理-3" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-3/" class="article-date">
+  <time datetime="2021-04-01T02:54:58.000Z" itemprop="datePublished">2021-04-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-3/">openstack-裸金属ironic整理-3</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>需要配置网络，以便裸金属服务管理baremetal节点可以与neutron网络服务通信以实现DHCP，PXE引导和其他要求。</p>
+<p><img src="https://support.huaweicloud.com/dpmg-kunpengcpfs/zh-cn_image_0000001088626391.png" alt="点击放大"></p>
+<p><img src="https://res-img3.huaweicloud.com/content/dam/cloudbu-site/archive/china/zh-cn/support/resource/framework/v3/images/support-doc-new-note.svg" alt="img">说明：</p>
+<p>要求：</p>
+<ol>
+<li>裸金属服务管理baremetal节点与 IPMI OOB Network（即BMC管理网络）互通：Ironic Conductor节点可以通过 ipmitool管理BM Node，可以在ironic-conductor节点通过ipmi命令操作裸金属服务器节点验证。</li>
+<li>Provisioning Network复用External Network 与 BM Nodes二层互通：BM Node可以从 Provisioning Network DHCP获取到IP地址和TFTP服务器的访问接口，要求裸金属服务器PXE网口和裸金属服务发放Provisioning network在二层互通。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/08/go-%E7%BB%8F%E5%85%B8%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" data-id="ckkw911eg0005s816bjft7zpq" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-3/" data-id="ckssanb44000dto164emc7ebw" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-裸金属ironic整理-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-2/" class="article-date">
+  <time datetime="2021-04-01T02:54:52.000Z" itemprop="datePublished">2021-04-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-2/">openstack-裸金属ironic整理-2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="openstack-裸金属ironic探索"><a href="#openstack-裸金属ironic探索" class="headerlink" title="openstack 裸金属ironic探索"></a>openstack 裸金属ironic探索</h2><h4 id="部署流程"><a href="#部署流程" class="headerlink" title="部署流程"></a>部署流程</h4><p><img src="https://ironic-book.readthedocs.io/zh_CN/latest/_images/deployment_architecture_2.png" alt="../_images/deployment_architecture_2.png"></p>
+<p><img src="https://ironic-book.readthedocs.io/zh_CN/latest/_images/deployment_steps.png" alt="../_images/deployment_steps.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-2/" data-id="ckssanb43000bto167pp61xpm" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-裸金属ironic整理-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-1/" class="article-date">
+  <time datetime="2021-04-01T02:54:48.000Z" itemprop="datePublished">2021-04-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-1/">openstack-裸金属ironic整理-1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="openstack-裸金属ironic探索"><a href="#openstack-裸金属ironic探索" class="headerlink" title="openstack 裸金属ironic探索"></a>openstack 裸金属ironic探索</h2><h4 id="组件-术语"><a href="#组件-术语" class="headerlink" title="组件/术语"></a>组件/术语</h4><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>分类</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ironic-api</td>
+<td>ironic</td>
+<td>api 服务,接收用户请求，传递给ironic-conductor</td>
+</tr>
+<tr>
+<td>ironic-conductor</td>
+<td>ironic</td>
+<td>根据请求执行相应的，创建、开机、关机、删除等操作</td>
+</tr>
+<tr>
+<td>ironic-inspector</td>
+<td>ironic</td>
+<td>主机发现服务，硬件自检工具</td>
+</tr>
+<tr>
+<td>ironic-python-agent</td>
+<td>ironic</td>
+<td>pxe启动进入的一个bootstrap镜像, 部署引导系统的 agent服务</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-1/" data-id="ckssanb45000fto167oe96k61" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-python-初试pbr打包" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/29/python-%E5%88%9D%E8%AF%95pbr%E6%89%93%E5%8C%85/" class="article-date">
+  <time datetime="2021-03-29T11:51:34.000Z" itemprop="datePublished">2021-03-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/29/python-%E5%88%9D%E8%AF%95pbr%E6%89%93%E5%8C%85/">python-初试pbr打包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/29/python-%E5%88%9D%E8%AF%95pbr%E6%89%93%E5%8C%85/" data-id="ckssanb4c000tto16a6fw7jx5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-gitlab-gitlab-runner-ci-docker-报错" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/" class="article-date">
+  <time datetime="2021-03-24T07:10:27.000Z" itemprop="datePublished">2021-03-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/">gitlab-gitlab runner ci docker 报错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用gitlab runner做ci，但当docker build时报错  Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock </p>
+<p>解决：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#usermod -aG docker gitlab-runner</span><br><span class="line">#service docker restart</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/" data-id="ckmq12ntp00006c165ghc5tee" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
 
     </footer>
   </div>
@@ -619,7 +542,7 @@
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -643,7 +566,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 20px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 12.5px;">mysql</a> <a href="/tags/openstack/" style="font-size: 18.75px;">openstack</a> <a href="/tags/python/" style="font-size: 13.75px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -652,7 +575,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -665,23 +588,23 @@
       <ul>
         
           <li>
-            <a href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/">gitlab-gitlab runner ci docker 报错</a>
+            <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
           </li>
         
           <li>
-            <a href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/">docker-安装docker-ce</a>
+            <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
           </li>
         
           <li>
-            <a href="/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/">openstack-neutron创建keepalived vip</a>
+            <a href="/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/">openstack-裸金属ironic创建及调度-3</a>
           </li>
         
           <li>
-            <a href="/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/">openstack-虚机创建失败排查</a>
+            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/">openstack-裸金属ironic创建及调度-2</a>
           </li>
         
           <li>
-            <a href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/">linux-golang打开markdown失败</a>
+            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/">openstack-裸金属ironic创建及调度-1</a>
           </li>
         
       </ul>
