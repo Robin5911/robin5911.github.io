@@ -10,18 +10,18 @@
   <meta name="description" content="OVN-L3 NAT出外网&#x2F;fip方案参考网上，TOPO是这么个意思~  正如上面所看到的，我们添加了以下新组件：  OVN网关路由器（edge1） 逻辑交换机（transit），用于连接edge1和tenant1路由器 逻辑交换机（outside），用于将edge1连接到实验室网络  我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层~ 12345678910111213">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ovs&#x2F;ovn 虚拟化学习整理(五)">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/index.html">
+<meta property="og:url" content="https://tonyzhang1989-github-io.vercel.app/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/index.html">
 <meta property="og:site_name" content="老Zhang博客">
 <meta property="og:description" content="OVN-L3 NAT出外网&#x2F;fip方案参考网上，TOPO是这么个意思~  正如上面所看到的，我们添加了以下新组件：  OVN网关路由器（edge1） 逻辑交换机（transit），用于连接edge1和tenant1路由器 逻辑交换机（outside），用于将edge1连接到实验室网络  我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层~ 12345678910111213">
 <meta property="og:locale">
-<meta property="og:image" content="https://tonyzhang1989.github.io/images/ovn/OVN-network-fig-2.png">
-<meta property="og:image" content="https://tonyzhang1989.github.io/images/ovn/ovn-15.png">
+<meta property="og:image" content="https://tonyzhang1989-github-io.vercel.app/images/ovn/OVN-network-fig-2.png">
+<meta property="og:image" content="https://tonyzhang1989-github-io.vercel.app/images/ovn/ovn-15.png">
 <meta property="article:published_time" content="2020-12-03T03:21:39.000Z">
 <meta property="article:modified_time" content="2020-12-14T10:17:57.655Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="虚拟化">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tonyzhang1989.github.io/images/ovn/OVN-network-fig-2.png">
+<meta name="twitter:image" content="https://tonyzhang1989-github-io.vercel.app/images/ovn/OVN-network-fig-2.png">
   
     <link rel="alternate" href="/atom.xml" title="老Zhang博客" type="application/atom+xml">
   
@@ -65,7 +65,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989-github-io.vercel.app"></form>
       </div>
     </div>
   </div>
@@ -133,7 +133,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/" data-id="cki8ehl7w0000d4169ynghj7g" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989-github-io.vercel.app/2020/12/03/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%94/" data-id="cki8ehl7w0000d4169ynghj7g" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>

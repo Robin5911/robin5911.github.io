@@ -10,7 +10,7 @@
   <meta name="description" content="问题知道golang的内存逃逸吗？什么情况下会发生内存逃逸？ 回答golang程序变量会携带有一组校验数据，用来证明它的整个生命周期是否在运行时完全可知。如果变量通过了这些校验，它就可以在栈上分配。否则就说它 逃逸 了，必须在堆上分配。 能引起变量逃逸到堆上的典型情况：  在方法内把局部变量指针返回 局部变量原本应该在栈中分配，在栈中回收。但是由于返回时被外部引用，因此其生命周期大于栈，则溢出。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go-简单聊聊内存逃逸">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/index.html">
+<meta property="og:url" content="https://tonyzhang1989-github-io.vercel.app/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/index.html">
 <meta property="og:site_name" content="老Zhang博客">
 <meta property="og:description" content="问题知道golang的内存逃逸吗？什么情况下会发生内存逃逸？ 回答golang程序变量会携带有一组校验数据，用来证明它的整个生命周期是否在运行时完全可知。如果变量通过了这些校验，它就可以在栈上分配。否则就说它 逃逸 了，必须在堆上分配。 能引起变量逃逸到堆上的典型情况：  在方法内把局部变量指针返回 局部变量原本应该在栈中分配，在栈中回收。但是由于返回时被外部引用，因此其生命周期大于栈，则溢出。">
 <meta property="og:locale">
@@ -62,7 +62,7 @@
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989-github-io.vercel.app"></form>
       </div>
     </div>
   </div>
@@ -116,7 +116,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/" data-id="cklaz218e0002jk1660579h5u" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989-github-io.vercel.app/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/" data-id="cklaz218e0002jk1660579h5u" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
