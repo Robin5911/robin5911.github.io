@@ -67,57 +67,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-grpc-python-安装grpc" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" class="article-date">
-  <time datetime="2020-10-09T03:12:21.000Z" itemprop="datePublished">2020-10-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/">grpc python 安装grpc</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>基于CentOS 7 , Python 3.6 安装grpc模块</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">#pip3 install grpcio</span><br><span class="line">#pip3 install grpcio --ignore-installed</span><br><span class="line"></span><br><span class="line">#pip3 install grpcio-tools</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" data-id="ckg1ynecf0001v8167jbnf0md" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-grpc-grpc简介" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/" class="article-date">
@@ -599,6 +548,49 @@ var _hmt = _hmt || [];
     </div>
     <footer class="article-footer">
       <a data-url="https://blog.kubestack.cn/2020/09/29/Linux-vim-%E6%8A%A5%E9%94%99-E437/" data-id="ckfp8dl4h0001pg16borw2ny0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux-更改CentOS-7-网卡名称" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" class="article-date">
+  <time datetime="2020-09-29T14:18:26.000Z" itemprop="datePublished">2020-09-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/">Linux 更改CentOS 7 网卡名称</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="centos-7-默认网卡为-ensXX-考虑更改为-ethXX"><a href="#centos-7-默认网卡为-ensXX-考虑更改为-ethXX" class="headerlink" title="centos 7 默认网卡为 ensXX, 考虑更改为 ethXX"></a>centos 7 默认网卡为 ensXX, 考虑更改为 ethXX</h6><p>#vim /etc/default/grub</p>
+<p>GRUB_CMDLINE_LINUX </p>
+<p>新增 net.ifnames=0 biosdevname=0</p>
+<p>#grub2-mkconfig -o /boot/grub2/grub.cfg</p>
+<p>#reboot</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" data-id="ckfp8dl4v0003pg16f1l66ax3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
