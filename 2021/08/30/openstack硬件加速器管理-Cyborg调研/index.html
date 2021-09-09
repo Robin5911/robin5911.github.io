@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>openstack硬件加速器管理 - Cyborg调研 | 老Zhang博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="简介随着5G、互联网、物联网等技术的发展, 对计算业务进行加速、卸载的需求日渐增多, Cyborg项目由此诞生。 Cyborg(以前叫做Nomad)是OpenStack用于管理硬件和软件加速资源框架, 包括GPU、FPGA、加解密卡, NVMe&#x2F;NOF SSDs, ODP, DPDK&#x2F;SPDK等, Cyborg就是OpenStack中的加速即服务(Acceleration as a Service">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openstack硬件加速器管理 - Cyborg调研">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/index.html">
+<meta property="og:site_name" content="老Zhang博客">
+<meta property="og:description" content="简介随着5G、互联网、物联网等技术的发展, 对计算业务进行加速、卸载的需求日渐增多, Cyborg项目由此诞生。 Cyborg(以前叫做Nomad)是OpenStack用于管理硬件和软件加速资源框架, 包括GPU、FPGA、加解密卡, NVMe&#x2F;NOF SSDs, ODP, DPDK&#x2F;SPDK等, Cyborg就是OpenStack中的加速即服务(Acceleration as a Service">
+<meta property="og:locale">
+<meta property="og:image" content="https://tonyzhang1989.github.io/images/cyborg.jpg">
+<meta property="article:published_time" content="2021-08-30T03:38:07.000Z">
+<meta property="article:modified_time" content="2021-08-30T04:02:20.403Z">
+<meta property="article:author" content="Tonyzhang1989">
+<meta property="article:tag" content="openstack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://tonyzhang1989.github.io/images/cyborg.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="老Zhang博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="https://fonts.lug.ustc.edu.cn/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="google-site-verification" content="XkIGmrbqh5J83cILz5wx9StkgaQzjhGx0UfHTxlma00" />
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">老Zhang博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-openstack硬件加速器管理-Cyborg调研" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/" class="article-date">
+  <time datetime="2021-08-30T03:38:07.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      openstack硬件加速器管理 - Cyborg调研
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>随着5G、互联网、物联网等技术的发展, 对计算业务进行加速、卸载的需求日渐增多, Cyborg项目由此诞生。</p>
+<p>Cyborg(以前叫做Nomad)是OpenStack用于管理硬件和软件加速资源框架, 包括GPU、FPGA、加解密卡, NVMe/NOF SSDs, ODP, DPDK/SPDK等, Cyborg就是OpenStack中的加速即服务(Acceleration as a Service)。该项目在OpenStack Q版本时正式发布, 由华为、联想、红帽主导，是一个很年轻的项目, 目前功能还不是很完善。</p>
+<p>Cyborg通过管理、使用计算节点上的加速器硬件, 可以提供电信运营商在NFV以及边缘计算场景下的各种加速服务、提高用户体验、降低CPU负载。运维人员可以通过Cyborg列出、识别和发现加速器，挂载、卸载加速器实例, 安装、卸载驱动。它可以单独使用或与 Nova 或 Ironic 结合使用。</p>
+<h4 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h4><p>Cyborg采用经典架构，由cyborg-api、cyborg-conductor、cyborg-agent、 cyborg-db几个模块组成。其中Cyborg-agent位于计算节点，用于监控加速器；cyborg-conductor位于控制节点，管理整个系统和操作数据库。cyborg-api和cyborg-db分别为接口和数据库，均位于控制节点。</p>
+<p><img src="/images/cyborg.jpg"></p>
+<h4 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h4><p>从Cyborg的架构图和API来看, 其主要工作流程如下:</p>
+<ol>
+<li><p>cyborg-api会接收用户创建加速器的API调用, 通过cyborg-conductor保存到cyborg-db</p>
+</li>
+<li><p>cyborg-conductor通过rpc调用计算节点上的cyborg-agent, cyborg-agent会调用对应的厂商驱动, 最后由厂商驱动来执行配置计算节点底层的加速资源</p>
+</li>
+<li><p>计算节点上的cyborg-agent通过定时查询加速资源使用情况, 并通过API发送给placement服务, 该信息最终会给nova在调度时使用。</p>
+</li>
+</ol>
+<p>注: 由于加速设备可能存在多个设备互相关联的层次化结构, 如SRIOV PF和VF之间有关联关系。Nova在O版时, 为resource-providers数据库进行了扩展, 支持了设备的层次化关系。</p>
+<p><a target="_blank" rel="noopener" href="http://specs.openstack.org/openstack/nova-specs/specs/ocata/approved/nested-resource-providers.html">http://specs.openstack.org/openstack/nova-specs/specs/ocata/approved/nested-resource-providers.html</a></p>
+<ol start="4">
+<li>Nova进行调度, 并在虚拟机中挂载虚拟加速设备给用户使用</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/" data-id="cktcragsp0006hs169s554wna" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          logstash - 基于docker部署
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">mysql-查询重复数据</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/spdk/" style="font-size: 10px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/">logstash - 基于docker部署</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
+          </li>
+        
+          <li>
+            <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2021 Tonyzhang1989<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>

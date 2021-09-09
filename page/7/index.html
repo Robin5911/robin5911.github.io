@@ -67,6 +67,146 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-go-Linux源码安装go" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" class="article-date">
+  <time datetime="2020-12-21T01:53:49.000Z" itemprop="datePublished">2020-12-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">go-Linux源码安装go</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用go 1.14 版本</p>
+<p>#wget <a target="_blank" rel="noopener" href="https://golang.org/dl/go1.14.15.linux-amd64.tar.gz">https://golang.org/dl/go1.14.15.linux-amd64.tar.gz</a></p>
+<p>#tar zxvf go1.14.15.linux-amd64.tar.gz</p>
+<p>#mv go /usr/local/</p>
+<p>#vim /etc/profile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">export GOROOT&#x3D;&#x2F;usr&#x2F;local&#x2F;go</span><br><span class="line">export GOBIN&#x3D;$GOROOT&#x2F;bin</span><br><span class="line">export GOPKG&#x3D;$GOROOT&#x2F;pkg&#x2F;tool&#x2F;linux_amd64</span><br><span class="line">export GOARCH&#x3D;amd64</span><br><span class="line">export GOOS&#x3D;linux</span><br><span class="line">export GOPATH&#x3D;&#x2F;opt&#x2F;golang</span><br><span class="line"></span><br><span class="line">export PATH&#x3D;$PATH:$GOBIN:$GOPKG:$GOPATH&#x2F;bin</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" data-id="ckixwof840000ko160zby3vc2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kubernetes-与kata" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/17/kubernetes-%E4%B8%8Ekata/" class="article-date">
+  <time datetime="2020-12-17T06:51:28.000Z" itemprop="datePublished">2020-12-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/17/kubernetes-%E4%B8%8Ekata/">kubernetes中的kata</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-1-OCI-和-CRI-O"><a href="#1-1-OCI-和-CRI-O" class="headerlink" title="1.1 OCI 和 CRI-O"></a>1.1 OCI 和 CRI-O</h2><p>OCI 标准是为了避免容器标准被 Docker 独家挟持而出现的。</p>
+<p>CRI 标准将 Kubelet 与运行时解耦，实现 CRI 标准的容器管理程序都可以用于 Pod 创建。</p>
+<p>CRI-O 插件同时实现了 CRI 和 OCI 标准，可以用于替换 Containerd 直接与 runV 等 OCI runtime 对接。</p>
+<p>如下图：</p>
+<p><a href="/images/kata/cri-oci.jpg"><img src="/images/kata/cri-oci.jpg" alt="img"></a></p>
+<h3 id="1-2-Kata-与-Containerd"><a href="#1-2-Kata-与-Containerd" class="headerlink" title="1.2 Kata 与 Containerd"></a>1.2 Kata 与 Containerd</h3><p>为了兼容 OCI 标准，Docker 将管理运行时的功能从 Docker Daemon 中剥离出来，形成了 Containerd 。在运行容器时，可以不用 Docker 的 runc ，而替换为 kata-runtime 。</p>
+<p><a href=""><img src="/images/kata/runc-kata.jpg" alt="img"></a></p>
+<h3 id="1-3-Kata-与-Kuberntes-的集成"><a href="#1-3-Kata-与-Kuberntes-的集成" class="headerlink" title="1.3 Kata 与 Kuberntes 的集成"></a>1.3 Kata 与 Kuberntes 的集成</h3><p>如下图，Kata 主要替换的是 OCI runtime 层，其他部分与基于 Docker runc 的 Kubernetes 并无差异。同时，基于 kata-runtime 的 Pod 和基于 runc 的 Pod 可以共存于集群之中。</p>
+<p><a href="/images/kata/kata-k8s.jpg"><img src="/images/kata/kata-k8s.jpg" alt="img"></a></p>
+<p>目前的主要问题是，Kata 不支持 host 网络。而 Kubernetes 中，etcd、nodelocaldns、kube-apiserver、kube-scheduler、metrics-server、node-exporter、kube-proxy、calico、kube-controller-manager 等，也就是 Static Pod 和 Daemonset 都会使用 host 网络。所以在安装部署时，依然使用 runc 作为默认的运行时，而将 kata-runtime 作为可选的运行时给特定的负载使用。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/17/kubernetes-%E4%B8%8Ekata/" data-id="ckishnwvi00004s160ehke9zn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-更换mysql地址" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" class="article-date">
+  <time datetime="2020-12-16T04:22:45.000Z" itemprop="datePublished">2020-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/">openstack-更换mysql地址</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为延时问题，openstack 集群因为需要更换mysql地址，</p>
+<p>原本以为变更完yaml使用 kolla-ansible reconfigure 一下就可以了，但发现仍然有部分连接旧mysql数据库</p>
+<p>排查发现连接的nova_cell0数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#grep mysql -R &#x2F;etc&#x2F;kolla</span><br><span class="line">排查数据库地址都是正确的，为什么仍然有连接旧数据库的地址呢？ 怀疑数据库表数据存在写死的问题~</span><br></pre></td></tr></table></figure>
+
+<p>由于是连接的nova_cell0 ， 想到cell设计为了拆分数据库等，查一下数据库吧？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mysql -h***************</span><br><span class="line">发现nova_api的cell_mappings表中记录的mysql的endpoint，但cell0的仍然是旧的</span><br><span class="line">&gt;update cell_mappings set database_connection&#x3D;&#39;mysql+pymysql:&#x2F;&#x2F;nova:********@10.220.*.*:21200&#x2F;nova_cell0&#39; where id&#x3D;1;</span><br></pre></td></tr></table></figure>
+
+<p>问题解决~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" data-id="ckishnwvo00024s165774eazg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-linux-python生成主机唯一UUID" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" class="article-date">
@@ -506,336 +646,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-ovs-ovn-虚拟化学习整理-二" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/" class="article-date">
-  <time datetime="2020-12-02T04:31:34.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/">ovs/ovn 虚拟化学习整理(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>基于CentOS 7 x86_64</p>
-<table>
-<thead>
-<tr>
-<th>主机</th>
-<th>角色</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>10.175.130.248</td>
-<td>Central</td>
-<td>目前仅支持单节点</td>
-</tr>
-<tr>
-<td>10.175.132.47</td>
-<td>Node1</td>
-<td></td>
-</tr>
-<tr>
-<td>10.145.69.40</td>
-<td>Node2</td>
-<td></td>
-</tr>
-</tbody></table>
-<h4 id="一、-系统初始化"><a href="#一、-系统初始化" class="headerlink" title="一、 系统初始化"></a>一、 系统初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">配置repo源</span><br><span class="line">#vim &#x2F;etc&#x2F;yum.repos.d&#x2F;stein.repo</span><br><span class="line">[openstack-stein]</span><br><span class="line">name&#x3D;OpenStack Stein Repository</span><br><span class="line">#baseurl&#x3D;http:&#x2F;&#x2F;mirror.centos.org&#x2F;centos&#x2F;7&#x2F;cloud&#x2F;$basearch&#x2F;openstack-stein&#x2F;</span><br><span class="line">mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;7&amp;arch&#x3D;$basearch&amp;repo&#x3D;cloud-openstack-stein</span><br><span class="line">gpgcheck&#x3D;0</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-CentOS-SIG-Cloud</span><br><span class="line">关闭防火墙&#x2F;selinux</span><br><span class="line">#systemctl stop firewalld</span><br><span class="line">#systemctl disable firewalld</span><br></pre></td></tr></table></figure>
-
-<p>|<br>|<br>|</p>
-<h3 id="二、部署服务"><a href="#二、部署服务" class="headerlink" title="二、部署服务"></a>二、部署服务</h3><h5 id="Central-节点"><a href="#Central-节点" class="headerlink" title="Central 节点"></a>Central 节点</h5><p># yum install -y openvswitch-ovn-central.x86_64 openvswitch-ovn-host.x86_64</p>
-<p># systemctl enable ovn-northd openvswitch ovn-controller</p>
-<p># systemctl start ovn-northd ovn-controller </p>
-<h5 id="Node节点"><a href="#Node节点" class="headerlink" title="Node节点"></a>Node节点</h5><p># yum install -y openvswitch.x86_64 openvswitch-ovn-host.x86_64 </p>
-<p>#systemctl enable openvswitch ovn-controller </p>
-<p>#systemctl start ovn-controller </p>
-<h3 id="三、-配置OVN"><a href="#三、-配置OVN" class="headerlink" title="三、 配置OVN"></a>三、 配置OVN</h3><p>配置ovs与ovn相连接</p>
-<h5 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.130.248</span><br><span class="line">#ovn-nbctl set-connection ptcp:6641:$Centralip</span><br><span class="line">#ovn-sbctl set-connection ptcp:6642:$Centralip</span><br><span class="line">#netstat -ntlp</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn-01.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve,vxlan</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$Centralip</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="node-1-2-节点"><a href="#node-1-2-节点" class="headerlink" title="node 1/2 节点"></a>node 1/2 节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.130.248</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve,vxlan</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$MY_IP_ADDRESS</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn/ovn-2.png"></p>
-<p><img src="/images/ovn/ovn-3.png"></p>
-<p>所有服务器重启一下</p>
-<p>#reboot</p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">net_mlx5: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">net_mlx5: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx5)</span><br><span class="line">PMD: net_mlx4: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">PMD: net_mlx4: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx4)</span><br><span class="line">解决：#yum install libibverbs -y</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/" data-id="cki7431330003ko162p2jb0hf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ovs-ovn-虚拟化学习整理-一" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/" class="article-date">
-  <time datetime="2020-12-02T04:30:45.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/">ovs/ovn 虚拟化学习整理(一)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>OVN是由开发出OVS的那群出色的程序员们的另一个优秀的作品。这个网络虚拟化项目从2015初宣告启动， 到不久前才发布第一个正式版本OVN 2.6 。在这篇文章中，我会配置一个简单示例：在三个主机之间配置一个layer-2 overlay 网络。<br>首先讲一下OVN工作机制中的2种角色：</p>
-<ul>
-<li>OVN Central ——目前只能有一台主机承担这个角色。该主机将成为和外部资源（比如云管理平台）集成的API中心节点。中心节点运行着OVN 北向数据库和OVN南向数据库。OVN北向数据库，用于描述上层的逻辑网络组件，比如逻辑交换机/逻辑端口。南向数据库，其将北向数据库的逻辑网络数据格式转换为物理网络数据格式并进行存储。</li>
-<li>OVN Host ——所有提供虚拟机或虚拟网络的节点。OVN Host 运行着 “chassis controller” ，它上连OVN南向数据库并作为其记录的物理网络信息授权来源，下接OVS 并成为其openflow 控制器。</li>
-</ul>
-<h3 id="OVN的实现了哪些功能？拥有哪些特性？"><a href="#OVN的实现了哪些功能？拥有哪些特性？" class="headerlink" title="OVN的实现了哪些功能？拥有哪些特性？"></a>OVN的实现了哪些功能？拥有哪些特性？</h3><p>Logical switches：逻辑交换机，用来做二层转发。<br>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。<br>Logical routers：逻辑路由器，分布式的，用来做三层转发。<br>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。<br>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
-<p>OVN网关发布的时候，还存在着某些限制：</p>
-<ul>
-<li><p>网关路由器仅可以经由逻辑交换机连接到其他路由器，而DLR已经可以经由一条链路直连路由器。社区正在进行相关工作来解决掉这个限制。</p>
-</li>
-<li><p>OVN支持多个网关路由器绑定到环境中，这意味着可以逻辑空间执行入站ECMP路由。然而，OVN当前不支持网关路由器之间的出站ECMP。这个特性也同样是OVN未来需要加强的。</p>
-</li>
-</ul>
-<p>基于OVN的neutron网络架构如下</p>
-<p> <img src="https://www.debugger.wiki/sourceimg/190706/cc51795bdcf29c2b9ff4e8e37d0f3826.jpg" alt="技术图片"></p>
-<h2 id="ovs-ovn-学习资料"><a href="#ovs-ovn-学习资料" class="headerlink" title="[ovs ovn 学习资料]"></a>[ovs ovn 学习资料]</h2><p><strong>0、A Primer on OVN</strong></p>
-<p><a target="_blank" rel="noopener" href="http://blog.spinhirne.com/2016/09/a-primer-on-ovn.html">http://blog.spinhirne.com/2016/09/a-primer-on-ovn.html</a></p>
-<p><strong>1、Open Virtual Networking With Docker</strong></p>
-<p><a target="_blank" rel="noopener" href="http://docs.openvswitch.org/en/latest/howto/docker/">http://docs.openvswitch.org/en/latest/howto/docker/</a></p>
-<p><strong>2、Multi-Host Docker network</strong></p>
-<p><a target="_blank" rel="noopener" href="https://wiredcraft.com/blog/multi-host-docker-network/">https://wiredcraft.com/blog/multi-host-docker-network/</a></p>
-<p><strong>3、ovn-namespace</strong></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/shettyg/ovn-namespace">https://github.com/shettyg/ovn-namespace</a></p>
-<p> <strong>4、OVN简介PPT</strong></p>
-<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/slides/OVN_Barcelona.pdf">http://openvswitch.org/support/slides/OVN_Barcelona.pdf</a></p>
-<p><strong>5、What is Open Virtual Network (OVN)? How It Works （包含了各种关于网络虚拟化的介绍的连接）</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/">https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/</a></p>
-<p><strong>6、Open vSwitch 相关论文</strong></p>
-<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/papers/">http://openvswitch.org/support/papers/</a></p>
-<p><strong>７、OVN, Bringing Native Virtual Networking to OVS</strong></p>
-<p><a target="_blank" rel="noopener" href="https://networkheresy.com/category/open-vswitch/">https://networkheresy.com/category/open-vswitch/</a></p>
-<p><strong>8、基于Open vSwitch的OpenFlow实践</strong></p>
-<p><a target="_blank" rel="noopener" href="http://www.chenshake.com/based-on-openflow-practices-open-vswitch/">http://www.chenshake.com/based-on-openflow-practices-open-vswitch/</a></p>
-<p><strong>9、ovs源码分析</strong></p>
-<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/column/details/openvswitch.html">http://blog.csdn.net/column/details/openvswitch.html</a></p>
-<p><strong>10、ovs orbit</strong></p>
-<p><a target="_blank" rel="noopener" href="https://ovsorbit.org/">https://ovsorbit.org/</a></p>
-<p><strong>11、introduction to ovn</strong></p>
-<p><a target="_blank" rel="noopener" href="http://galsagie.github.io/2015/04/20/ovn-1/">http://galsagie.github.io/2015/04/20/ovn-1/</a></p>
-<p><strong>12、Russell Bryant的博客</strong></p>
-<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/category/ovs/">https://blog.russellbryant.net/category/ovs/</a></p>
-<p><strong>13、ovn architecture</strong></p>
-<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/dist-docs/ovn-architecture.7.html">http://openvswitch.org/support/dist-docs/ovn-architecture.7.html</a></p>
-<p><strong>14、OVN Logical Flows and ovn-trace</strong></p>
-<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/">https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/</a></p>
-<p><strong>15、Justin Pettit的个人主页（其中包含了ovs, ovn相关的各种论文，博客和视频）</strong> </p>
-<p><a target="_blank" rel="noopener" href="http://yuba.stanford.edu/~jpettit/">http://yuba.stanford.edu/~jpettit/</a></p>
-<p><strong>16、ovs 2.5.0源码分析</strong></p>
-<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/one_clouder/article/category/6359278/1">http://blog.csdn.net/one_clouder/article/category/6359278/1</a></p>
-<p><strong>17、netwoking-ovn - OpenStack Neutron integration with OVN</strong></p>
-<p><a target="_blank" rel="noopener" href="https://docs.openstack.org/networking-ovn/latest/">https://docs.openstack.org/networking-ovn/latest/</a></p>
-<p><strong>18、OVN路由功能详解</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html">https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html</a></p>
-<p><strong>19、OVS博客</strong></p>
-<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/popsuper1982/p/5848879.html">http://www.cnblogs.com/popsuper1982/p/5848879.html</a></p>
-<p><strong>20、OVSDB RFC</strong></p>
-<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc7047/">https://datatracker.ietf.org/doc/rfc7047/</a></p>
-<p><strong>21、openstack底层技术-openflow在ovs中的应用</strong></p>
-<p><a target="_blank" rel="noopener" href="http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/">http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/" data-id="cki7431330002ko16ax9ldlep" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-初试kubernetes集群集成Kata" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" class="article-date">
-  <time datetime="2020-12-02T01:58:24.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/">初试kubernetes集群集成Kata</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="一、部署kubernetes"><a href="#一、部署kubernetes" class="headerlink" title="一、部署kubernetes"></a>一、部署kubernetes</h5><p>使用 <a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 部署生产kubernetes集群 , CNI插件使用了kube-ovn</p>
-<p>下载镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">images&#x3D;(</span><br><span class="line">  kube-apiserver:v1.18.10</span><br><span class="line">  kube-controller-manager:v1.18.10</span><br><span class="line">  kube-scheduler:v1.18.10</span><br><span class="line">  kube-proxy:v1.18.10</span><br><span class="line">  pause:3.2</span><br><span class="line">  k8s-dns-node-cache:1.15.13</span><br><span class="line">  cluster-proportional-autoscaler-amd64:1.8.1</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">    docker pull registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">    docker tag registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName k8s.gcr.io&#x2F;$imageName</span><br><span class="line">    docker rmi registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-<p>其他步骤略</p>
-<h5 id="二、安装kata"><a href="#二、安装kata" class="headerlink" title="二、安装kata"></a>二、安装kata</h5><h5 id="2-1-安装kata命令行工具"><a href="#2-1-安装kata命令行工具" class="headerlink" title="2.1 安装kata命令行工具"></a>2.1 安装kata命令行工具</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;os-release</span><br><span class="line">yum -y install yum-utils</span><br><span class="line">ARCH&#x3D;$(arch)</span><br><span class="line">BRANCH&#x3D;&quot;$&#123;BRANCH:-master&#125;&quot;</span><br><span class="line">yum-config-manager --add-repo &quot;http:&#x2F;&#x2F;download.opensuse.org&#x2F;repositories&#x2F;home:&#x2F;katacontainers:&#x2F;releases:&#x2F;$&#123;ARCH&#125;:&#x2F;$&#123;BRANCH&#125;&#x2F;CentOS_$&#123;VERSION_ID&#125;&#x2F;home:katacontainers:releases:$&#123;ARCH&#125;:$&#123;BRANCH&#125;.repo&quot;</span><br><span class="line">(没发现上面版本，我使用的http:&#x2F;&#x2F;download.opensuse.org&#x2F;repositories&#x2F;home:&#x2F;katacontainers:&#x2F;releases:&#x2F;x86_64:&#x2F;stable-1.10&#x2F;CentOS_7&#x2F;home:katacontainers:releases:x86_64:stable-1.10.repo)</span><br><span class="line">yum -y install kata-runtime kata-proxy kata-shim</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-2-检测硬件是否支持-Kata"><a href="#2-2-检测硬件是否支持-Kata" class="headerlink" title="2.2 检测硬件是否支持 Kata"></a>2.2 检测硬件是否支持 Kata</h5><p>Kata 对硬件的要求需要满足以下任意条件：</p>
-<ul>
-<li>Intel VT-x technology.</li>
-<li>ARM Hyp mode (virtualization extension).</li>
-<li>IBM Power Systems.</li>
-<li>IBM Z mainframes.</li>
-</ul>
-<p>安装完 <code>kata-runtime</code> 之后，执行检测命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#kata-runtime kata-check</span><br><span class="line"></span><br><span class="line">System is capable of running Kata Containers</span><br><span class="line">System can currently create Kata Containers</span><br></pre></td></tr></table></figure>
-
-<p>这里的输出表示，运行环境支持 Kata Containers 。</p>
-<h5 id="2-3-配置并测试docker"><a href="#2-3-配置并测试docker" class="headerlink" title="2.3 配置并测试docker"></a>2.3 配置并测试docker</h5><ul>
-<li>配置 kata-runtime 参数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure>
-
-<p>新增如下内容，默认依然使用 runc，但是通过指定 runtime 参数可以使用 Kata 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;runtimes&quot;: &#123;</span><br><span class="line">    &quot;kata-runtime&quot;: &#123;</span><br><span class="line">      &quot;path&quot;: &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>重启 Docker 服务</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>测试 Kata 是否安装成功</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker run --runtime&#x3D;kata-runtime  busybox uname -a</span><br><span class="line"></span><br><span class="line">Linux 249a23f53475 5.4.60-65.1.container #1 SMP Thu Jan 1 00:00:00 UTC 1970 x86_64 GNU&#x2F;Linux</span><br><span class="line">docker run busybox uname -a</span><br><span class="line"></span><br><span class="line">Linux b4812ed8990c 3.10.0-1127.el7.x86_64 #1 SMP Tue Mar 31 23:36:51 UTC 2020 x86_64 GNU&#x2F;Linux</span><br></pre></td></tr></table></figure>
-
-<p>kata-runtime 容器使用的内核版本与宿主机不同，这就说明 kata-runtime 配置成功了。</p>
-<p>![/images/kata/image-20201217151727250.png)</p>
-<h5 id="2-4-配置kubelet"><a href="#2-4-配置kubelet" class="headerlink" title="2.4 配置kubelet"></a>2.4 配置kubelet</h5><ul>
-<li>新增配置文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;</span><br><span class="line">cat &lt;&lt; EOF | sudo tee  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;0-containerd.conf</span><br><span class="line">[Service]                                                 </span><br><span class="line">Environment&#x3D;&quot;KUBELET_EXTRA_ARGS&#x3D;--container-runtime&#x3D;remote --runtime-request-timeout&#x3D;15m --container-runtime-endpoint&#x3D;unix:&#x2F;&#x2F;&#x2F;run&#x2F;containerd&#x2F;containerd.sock&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>重启生效</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
-
-<p>这里使用的是 containerd 。如果使用 CRI-O ，配置会不一样。</p>
-<h5 id="2-5-给-Kubernetes-提供-kata-runtime"><a href="#2-5-给-Kubernetes-提供-kata-runtime" class="headerlink" title="2.5 给 Kubernetes 提供 kata-runtime"></a>2.5 给 Kubernetes 提供 kata-runtime</h5><p>通过直接创建 Container 可以使用 kata-runtime 。但在集群中，我们该如何告诉 Kubernetes 哪些负载需要使用 kata-runtime 呢？根据不同的版本，Kata 提供了不同的方式。</p>
-<p>首先都需要生成 containerd 配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">containerd config default &gt; &#x2F;etc&#x2F;containerd&#x2F;config.toml</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>RuntimeClass 的方式</li>
-</ul>
-<p>这种方式对相关组件版本有要求：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Kata Containers v1.5.0 or above (including 1.5.0-rc)</span><br><span class="line">Containerd v1.2.0 or above</span><br><span class="line">Kubernetes v1.12.0 or above</span><br></pre></td></tr></table></figure>
-
-<p>我所使用的是</p>
-<p>kubernetes: 1.18.10</p>
-<p>containerd: 1.2.13</p>
-<p>kata : 1.10</p>
-<p>在 config.toml 配置文件中，“no_pivot = false”下增加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.runtimes]</span><br><span class="line">  [plugins.cri.containerd.runtimes.runc]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.runc.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;runc&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br><span class="line">  [plugins.cri.containerd.runtimes.kata]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.kata.v2&quot;</span><br><span class="line">  [plugins.cri.containerd.runtimes.katacli]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.katacli.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br></pre></td></tr></table></figure>
-
-<p>这里 <code>[plugins.cri.containerd.runtimes.kata]</code> 中的 kata 将被作为 RuntimeClass handler 关键字。</p>
-<ul>
-<li>使用 <code>untrusted_workload_runtime</code> 的方式</li>
-</ul>
-<p>对于不符合上述版本要求的环境，可以使用之前的方式。</p>
-<p>在配置文件中新增如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.untrusted_workload_runtime]</span><br><span class="line">  runtime_type &#x3D; &quot;io.containerd.runtime.v1.linux&quot;</span><br><span class="line">  runtime_engine &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br></pre></td></tr></table></figure>
-
-<p>最后，都需要重启 containerd。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart containerd</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/kata/2020-12-17_18h31_55.png"></p>
-<h4 id="三、使用kata-runtime"><a href="#三、使用kata-runtime" class="headerlink" title="三、使用kata-runtime"></a>三、使用kata-runtime</h4><h5 id="3-1-RuntimeClass-方式"><a href="#3-1-RuntimeClass-方式" class="headerlink" title="3.1 RuntimeClass 方式"></a>3.1 RuntimeClass 方式</h5><ul>
-<li>创建 RuntimeClass</li>
-</ul>
-<p>kata-runtime.yaml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kind: RuntimeClass</span><br><span class="line">apiVersion: node.k8s.io&#x2F;v1beta1</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-containers</span><br><span class="line">handler: kata</span><br></pre></td></tr></table></figure>
-
-<p>#kubectl create -f kata-runtime.yaml</p>
-<p>也可以为 runc 创建 RuntimeClass</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl get runtimeclass</span><br><span class="line"></span><br><span class="line">NAME              CREATED AT</span><br><span class="line">kata-containers   2020-08-30</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建负载 kata-pod.yaml</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-nginx</span><br><span class="line">spec:</span><br><span class="line">  runtimeClassName: kata-containers</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>#kubectl apply -f kata-pod.yaml</p>
-<ul>
-<li>查看负载</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kata-runtime list</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2020/12/02/%E5%88%9D%E8%AF%95kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" data-id="cki74313b0005ko1627ve1cy7" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -854,7 +664,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
     </div>
   </div>
 
@@ -864,7 +674,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/spdk/" style="font-size: 10px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -873,7 +683,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -886,23 +696,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/">logstash - 基于docker部署</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
+          </li>
+        
+          <li>
             <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
           </li>
         
           <li>
             <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/">openstack-裸金属ironic创建及调度-3</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/">openstack-裸金属ironic创建及调度-2</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/">openstack-裸金属ironic创建及调度-1</a>
           </li>
         
       </ul>

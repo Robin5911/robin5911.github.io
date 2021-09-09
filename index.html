@@ -67,6 +67,183 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-spdk-spdk安装指南" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" class="article-date">
+  <time datetime="2021-09-09T06:04:50.000Z" itemprop="datePublished">2021-09-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?ae11d5a19bdcf766771692d64967eeb1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>基于 CentOS 7 x86_64 安装spdk环境, 需要支持rbd和rdma</p>
+<p>环境 : gcc-4.8.5</p>
+<ol>
+<li>下载源码文件(网络不稳定, git中途失败请重复多次运行)</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#git clone https:&#x2F;&#x2F;github.com&#x2F;spdk&#x2F;spdk</span><br><span class="line">#cd spdk</span><br><span class="line">#git checkout v21.04</span><br><span class="line">#git submodule update --init</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>安装必需环境</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo scripts&#x2F;pkgdep.sh --all</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>构建</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure --with-rbd --with-rdma</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h4><ol>
+<li>已经安装librbd，spdk却不识别librbd</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure --with-rbd --with-rdma</span><br><span class="line">Notice: ISA-L, compression &amp; crypto require NASM version 2.14 or newer. Turning off default ISA-L and crypto features.</span><br><span class="line">Using default SPDK env in &#x2F;root&#x2F;spdk&#x2F;lib&#x2F;env_dpdk</span><br><span class="line">Using default DPDK in &#x2F;root&#x2F;spdk&#x2F;dpdk&#x2F;build</span><br><span class="line">Using &#39;verbs&#39; RDMA provider</span><br><span class="line">--with-rbd requires librados and librbd.</span><br><span class="line">Please install then re-run this script.</span><br></pre></td></tr></table></figure>
+
+<p>安装 librbd-devel</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" data-id="cktcrags20000hs162oupfyop" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-logstash-基于docker部署" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/" class="article-date">
+  <time datetime="2021-08-31T08:51:59.000Z" itemprop="datePublished">2021-08-31</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/">logstash - 基于docker部署</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>下载docker镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#docker pull docker.elastic.co&#x2F;logstash&#x2F;logstash:7.6.2</span><br></pre></td></tr></table></figure>
+
+<p>创建本地配置目录</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;usr&#x2F;local&#x2F;logstash&#x2F;config</span><br></pre></td></tr></table></figure>
+
+<p>配置logstash.yml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;logstash&#x2F;config&#x2F;logstash.yml</span><br><span class="line"></span><br><span class="line">config:</span><br><span class="line">  reload:</span><br><span class="line">    automatic: true</span><br><span class="line">    interval: 3s</span><br><span class="line">xpack:</span><br><span class="line">  management.enabled: false</span><br><span class="line">  monitoring.enabled: false</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/" data-id="cktcrags40001hs16f0zr61l3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack硬件加速器管理-Cyborg调研" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/" class="article-date">
+  <time datetime="2021-08-30T03:38:07.000Z" itemprop="datePublished">2021-08-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>随着5G、互联网、物联网等技术的发展, 对计算业务进行加速、卸载的需求日渐增多, Cyborg项目由此诞生。</p>
+<p>Cyborg(以前叫做Nomad)是OpenStack用于管理硬件和软件加速资源框架, 包括GPU、FPGA、加解密卡, NVMe/NOF SSDs, ODP, DPDK/SPDK等, Cyborg就是OpenStack中的加速即服务(Acceleration as a Service)。该项目在OpenStack Q版本时正式发布, 由华为、联想、红帽主导，是一个很年轻的项目, 目前功能还不是很完善。</p>
+<p>Cyborg通过管理、使用计算节点上的加速器硬件, 可以提供电信运营商在NFV以及边缘计算场景下的各种加速服务、提高用户体验、降低CPU负载。运维人员可以通过Cyborg列出、识别和发现加速器，挂载、卸载加速器实例, 安装、卸载驱动。它可以单独使用或与 Nova 或 Ironic 结合使用。</p>
+<h4 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h4><p>Cyborg采用经典架构，由cyborg-api、cyborg-conductor、cyborg-agent、 cyborg-db几个模块组成。其中Cyborg-agent位于计算节点，用于监控加速器；cyborg-conductor位于控制节点，管理整个系统和操作数据库。cyborg-api和cyborg-db分别为接口和数据库，均位于控制节点。</p>
+<p><img src="/images/cyborg.jpg"></p>
+<h4 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h4><p>从Cyborg的架构图和API来看, 其主要工作流程如下:</p>
+<ol>
+<li><p>cyborg-api会接收用户创建加速器的API调用, 通过cyborg-conductor保存到cyborg-db</p>
+</li>
+<li><p>cyborg-conductor通过rpc调用计算节点上的cyborg-agent, cyborg-agent会调用对应的厂商驱动, 最后由厂商驱动来执行配置计算节点底层的加速资源</p>
+</li>
+<li><p>计算节点上的cyborg-agent通过定时查询加速资源使用情况, 并通过API发送给placement服务, 该信息最终会给nova在调度时使用。</p>
+</li>
+</ol>
+<p>注: 由于加速设备可能存在多个设备互相关联的层次化结构, 如SRIOV PF和VF之间有关联关系。Nova在O版时, 为resource-providers数据库进行了扩展, 支持了设备的层次化关系。</p>
+<p><a target="_blank" rel="noopener" href="http://specs.openstack.org/openstack/nova-specs/specs/ocata/approved/nested-resource-providers.html">http://specs.openstack.org/openstack/nova-specs/specs/ocata/approved/nested-resource-providers.html</a></p>
+<ol start="4">
+<li>Nova进行调度, 并在虚拟机中挂载虚拟加速设备给用户使用</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://tonyzhang1989.github.io/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/" data-id="cktcragsp0006hs169s554wna" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mysql-查询重复数据" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" class="article-date">
@@ -730,146 +907,6 @@
 
 
   
-    <article id="post-openstack-裸金属ironic整理-6" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-6/" class="article-date">
-  <time datetime="2021-04-22T11:36:16.000Z" itemprop="datePublished">2021-04-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-6/">openstack-裸金属ironic整理-6</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Direct-Deploy-UML"><a href="#Direct-Deploy-UML" class="headerlink" title="Direct Deploy UML"></a>Direct Deploy UML</h2><p>*With direct deploy interface, the deploy ramdisk fetches the image from an HTTP location. It can be an object storage (swift or RadosGW) temporary URL or a user-provided HTTP URL. The deploy ramdisk then copies the image to the target disk. *</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal node create --driver ipmi --deploy-interface direct</span><br><span class="line">openstack baremetal node set &lt;NODE&gt; --deploy-interface direct</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://img-blog.csdnimg.cn/20190506160607912.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20190507152743937.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<ol>
-<li>加入 Provision Network。</li>
-<li>重启裸机。</li>
-<li>IPA 通过 lookup 从 Ironic Conductor 取得它对应的 ironic_node_uuid。</li>
-<li>IPA 通过 Heartbeat 与 Ironic 通信，驱动部署流程触发 ironic-conductor 发送 prepare_image 命令到 IPA，让 IPA 直接<strong>（Direct）</strong>下载并注入用户镜像到本地磁盘。写镜像是一个耗时较长的动作，通常 300GB 大小的镜像需要十分钟左右。</li>
-<li>ironic-conductor 收到 Heartbeat 消息后（从 ironic-api 过来的 RPC 消息），根据当前状态的不同有相应的处理。第一个 Heartbeat 消息会触发 ironic-conductor 下发 prepare_image 到 IPA，以后的 Heartbeat 消息会触发 ironic-conductor 查询 IPA 上的 command status，它的目的是要监控 prepare_image 等 command 是否还在运行中。一旦 command status 显示命令结束。就会继续下一步部署操作，包括设置物理服务器从磁盘启动、关机、切换网络、开机。知道部署流程结束。</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-6/" data-id="ckssanb47000jto16byid9kef" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mysql-排查故障常用命令" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/14/mysql-%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time datetime="2021-04-14T09:21:28.000Z" itemprop="datePublished">2021-04-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/14/mysql-%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">mysql-排查故障常用命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>整理的常用mysql排查命令</p>
-<p>mysql 8.0 </p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">## 当前运行的所有事务</span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> information_schema.innodb_trx\G;</span><br><span class="line">## 查看锁使用情况</span><br><span class="line">mysql&gt; show status like <span class="string">&#x27;innodb_row_lock_%&#x27;</span>;</span><br><span class="line">+-------------------------------+--------+</span><br><span class="line">| Variable_name                 | Value  |</span><br><span class="line">+-------------------------------+--------+</span><br><span class="line">| Innodb_row_lock_current_waits | <span class="number">1</span>      |</span><br><span class="line">| Innodb_row_lock_time          | <span class="number">479764</span> |</span><br><span class="line">| Innodb_row_lock_time_avg      | <span class="number">39980</span>  |</span><br><span class="line">| Innodb_row_lock_time_max      | <span class="number">51021</span>  |</span><br><span class="line">| Innodb_row_lock_waits         | <span class="number">12</span>     |</span><br><span class="line">+-------------------------------+--------+</span><br><span class="line"><span class="number">5</span> rows <span class="keyword">in</span> set (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">解释如下：</span><br><span class="line">Innodb_row_lock_current_waits : 当前等待锁的数量</span><br><span class="line">Innodb_row_lock_time : 系统启动到现在，锁定的总时间长度</span><br><span class="line">Innodb_row_lock_time_avg : 每次平均锁定的时间</span><br><span class="line">Innodb_row_lock_time_max : 最长一次锁定时间</span><br><span class="line">Innodb_row_lock_waits : 系统启动到现在总共锁定的次数 </span><br><span class="line"></span><br><span class="line"># 查询是否锁表</span><br><span class="line">mysql&gt; show OPEN TABLES where In_use &gt; <span class="number">0</span>;</span><br><span class="line">+----------+-------+--------+-------------+</span><br><span class="line">| Database | Table | In_use | Name_locked |</span><br><span class="line">+----------+-------+--------+-------------+</span><br><span class="line">| test     | tx1   |      <span class="number">1</span> |           <span class="number">0</span> |</span><br><span class="line">+----------+-------+--------+-------------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> set (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/04/14/mysql-%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-id="ckssanb3z0003to165e2cf9ws" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-map赋值前要先初始化：assignment-to-entry-in-nil-map" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/09/go-map%E8%B5%8B%E5%80%BC%E5%89%8D%E8%A6%81%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9Aassignment-to-entry-in-nil-map/" class="article-date">
-  <time datetime="2021-04-09T08:25:26.000Z" itemprop="datePublished">2021-04-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/09/go-map%E8%B5%8B%E5%80%BC%E5%89%8D%E8%A6%81%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9Aassignment-to-entry-in-nil-map/">go-map赋值前要先初始化：assignment to entry in nil map</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>注意这种map的嵌套的形式，make只初始化了map[string]T部分(T为map[int]int)，所以下面的赋值会出现错误：</p>
-<p>错误用法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test :&#x3D; make(map[string]map[int]int)</span><br><span class="line">test[&quot;go&quot;][0] &#x3D; 0 &#x2F;&#x2F; error</span><br></pre></td></tr></table></figure>
-
-<p>正确用法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">test :&#x3D; make(map[string]map[int]int)</span><br><span class="line">test[&quot;go&quot;] &#x3D; make(map[int]int)</span><br><span class="line">test[&quot;go&quot;][0] &#x3D; 0</span><br></pre></td></tr></table></figure>
-
-<p>常用用法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test :&#x3D; make(map[string]map[int]int)</span><br><span class="line">if test[&quot;go&quot;] &#x3D;&#x3D; nil &#123;</span><br><span class="line">	test[&quot;go&quot;] &#x3D; make(map[int]int)</span><br><span class="line">&#125;</span><br><span class="line">test[&quot;go&quot;][0] &#x3D; 0</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/04/09/go-map%E8%B5%8B%E5%80%BC%E5%89%8D%E8%A6%81%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9Aassignment-to-entry-in-nil-map/" data-id="ckssanb3x0000to167e319lye" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -888,7 +925,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
     </div>
   </div>
 
@@ -898,7 +935,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 15px;">python</a> <a href="/tags/spdk/" style="font-size: 10px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -907,7 +944,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">January 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -920,23 +957,23 @@
       <ul>
         
           <li>
+            <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/">logstash - 基于docker部署</a>
+          </li>
+        
+          <li>
+            <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
+          </li>
+        
+          <li>
             <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
           </li>
         
           <li>
             <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/">openstack-裸金属ironic创建及调度-3</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/">openstack-裸金属ironic创建及调度-2</a>
-          </li>
-        
-          <li>
-            <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/">openstack-裸金属ironic创建及调度-1</a>
           </li>
         
       </ul>
