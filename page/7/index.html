@@ -68,6 +68,99 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-go-Linux源码安装go" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" class="article-date">
+  <time datetime="2020-12-21T01:53:49.000Z" itemprop="datePublished">2020-12-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/">go-Linux源码安装go</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用go 1.14 版本</p>
+<p>#wget <a target="_blank" rel="noopener" href="https://golang.org/dl/go1.14.15.linux-amd64.tar.gz">https://golang.org/dl/go1.14.15.linux-amd64.tar.gz</a></p>
+<p>#tar zxvf go1.14.15.linux-amd64.tar.gz</p>
+<p>#mv go /usr/local/</p>
+<p>#vim /etc/profile</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">export GOROOT&#x3D;&#x2F;usr&#x2F;local&#x2F;go</span><br><span class="line">export GOBIN&#x3D;$GOROOT&#x2F;bin</span><br><span class="line">export GOPKG&#x3D;$GOROOT&#x2F;pkg&#x2F;tool&#x2F;linux_amd64</span><br><span class="line">export GOARCH&#x3D;amd64</span><br><span class="line">export GOOS&#x3D;linux</span><br><span class="line">export GOPATH&#x3D;&#x2F;opt&#x2F;golang</span><br><span class="line"></span><br><span class="line">export PATH&#x3D;$PATH:$GOBIN:$GOPKG:$GOPATH&#x2F;bin</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/21/go-Linux%E6%BA%90%E7%A0%81%E5%AE%89%E8%A3%85go/" data-id="ckixwof840000ko160zby3vc2" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kubernetes-与kata" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/17/kubernetes-%E4%B8%8Ekata/" class="article-date">
+  <time datetime="2020-12-17T06:51:28.000Z" itemprop="datePublished">2020-12-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/17/kubernetes-%E4%B8%8Ekata/">kubernetes中的kata</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="1-1-OCI-和-CRI-O"><a href="#1-1-OCI-和-CRI-O" class="headerlink" title="1.1 OCI 和 CRI-O"></a>1.1 OCI 和 CRI-O</h2><p>OCI 标准是为了避免容器标准被 Docker 独家挟持而出现的。</p>
+<p>CRI 标准将 Kubelet 与运行时解耦，实现 CRI 标准的容器管理程序都可以用于 Pod 创建。</p>
+<p>CRI-O 插件同时实现了 CRI 和 OCI 标准，可以用于替换 Containerd 直接与 runV 等 OCI runtime 对接。</p>
+<p>如下图：</p>
+<p><a href="/images/kata/cri-oci.jpg"><img src="/images/kata/cri-oci.jpg" alt="img"></a></p>
+<h3 id="1-2-Kata-与-Containerd"><a href="#1-2-Kata-与-Containerd" class="headerlink" title="1.2 Kata 与 Containerd"></a>1.2 Kata 与 Containerd</h3><p>为了兼容 OCI 标准，Docker 将管理运行时的功能从 Docker Daemon 中剥离出来，形成了 Containerd 。在运行容器时，可以不用 Docker 的 runc ，而替换为 kata-runtime 。</p>
+<p><a href=""><img src="/images/kata/runc-kata.jpg" alt="img"></a></p>
+<h3 id="1-3-Kata-与-Kuberntes-的集成"><a href="#1-3-Kata-与-Kuberntes-的集成" class="headerlink" title="1.3 Kata 与 Kuberntes 的集成"></a>1.3 Kata 与 Kuberntes 的集成</h3><p>如下图，Kata 主要替换的是 OCI runtime 层，其他部分与基于 Docker runc 的 Kubernetes 并无差异。同时，基于 kata-runtime 的 Pod 和基于 runc 的 Pod 可以共存于集群之中。</p>
+<p><a href="/images/kata/kata-k8s.jpg"><img src="/images/kata/kata-k8s.jpg" alt="img"></a></p>
+<p>目前的主要问题是，Kata 不支持 host 网络。而 Kubernetes 中，etcd、nodelocaldns、kube-apiserver、kube-scheduler、metrics-server、node-exporter、kube-proxy、calico、kube-controller-manager 等，也就是 Static Pod 和 Daemonset 都会使用 host 网络。所以在安装部署时，依然使用 runc 作为默认的运行时，而将 kata-runtime 作为可选的运行时给特定的负载使用。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/17/kubernetes-%E4%B8%8Ekata/" data-id="ckishnwvi00004s160ehke9zn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-openstack-更换mysql地址" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" class="article-date">
@@ -263,17 +356,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?ae11d5a19bdcf766771692d64967eeb1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<h2 id="一-kubelet概述"><a href="#一-kubelet概述" class="headerlink" title="一    kubelet概述"></a>一    kubelet概述</h2><h3 id="1-1-kubelet作用"><a href="#1-1-kubelet作用" class="headerlink" title="1.1    kubelet作用"></a>1.1    kubelet作用</h3><p>在Kubernetes集群中，在每个Node（又称Minion）上都会启动一个kubelet服务进程。该进程用于处理Master下发到本节点的任务，管理Pod及Pod中的容器。每个kubelet进程都会在API Server上注册节点自身的信息，定期向Master汇报节点资源的使用情况，并通过cAdvisor监控容器和节点资源。</p>
+        <h2 id="一-kubelet概述"><a href="#一-kubelet概述" class="headerlink" title="一    kubelet概述"></a>一    kubelet概述</h2><h3 id="1-1-kubelet作用"><a href="#1-1-kubelet作用" class="headerlink" title="1.1    kubelet作用"></a>1.1    kubelet作用</h3><p>在Kubernetes集群中，在每个Node（又称Minion）上都会启动一个kubelet服务进程。该进程用于处理Master下发到本节点的任务，管理Pod及Pod中的容器。每个kubelet进程都会在API Server上注册节点自身的信息，定期向Master汇报节点资源的使用情况，并通过cAdvisor监控容器和节点资源。</p>
 <h2 id="二-节点管理"><a href="#二-节点管理" class="headerlink" title="二    节点管理"></a>二    节点管理</h2><p>节点通过设置kubelet的启动参数“–register-node”，来决定是否向API Server注册自己。如果该参数的值为true，那么kubelet将试着通过API Server注册自己。在自注册时，kubelet启动时还包含下列参数。</p>
 <ul>
 <li>–api-servers：API Server的位置。</li>
@@ -564,201 +647,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-ovs-ovn-虚拟化学习整理-二" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/" class="article-date">
-  <time datetime="2020-12-02T04:31:34.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/">ovs/ovn 虚拟化学习整理(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>基于CentOS 7 x86_64</p>
-<table>
-<thead>
-<tr>
-<th>主机</th>
-<th>角色</th>
-<th>备注</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>10.175.130.248</td>
-<td>Central</td>
-<td>目前仅支持单节点</td>
-</tr>
-<tr>
-<td>10.175.132.47</td>
-<td>Node1</td>
-<td></td>
-</tr>
-<tr>
-<td>10.145.69.40</td>
-<td>Node2</td>
-<td></td>
-</tr>
-</tbody></table>
-<h4 id="一、-系统初始化"><a href="#一、-系统初始化" class="headerlink" title="一、 系统初始化"></a>一、 系统初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">配置repo源</span><br><span class="line">#vim &#x2F;etc&#x2F;yum.repos.d&#x2F;stein.repo</span><br><span class="line">[openstack-stein]</span><br><span class="line">name&#x3D;OpenStack Stein Repository</span><br><span class="line">#baseurl&#x3D;http:&#x2F;&#x2F;mirror.centos.org&#x2F;centos&#x2F;7&#x2F;cloud&#x2F;$basearch&#x2F;openstack-stein&#x2F;</span><br><span class="line">mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;7&amp;arch&#x3D;$basearch&amp;repo&#x3D;cloud-openstack-stein</span><br><span class="line">gpgcheck&#x3D;0</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-CentOS-SIG-Cloud</span><br><span class="line">关闭防火墙&#x2F;selinux</span><br><span class="line">#systemctl stop firewalld</span><br><span class="line">#systemctl disable firewalld</span><br></pre></td></tr></table></figure>
-
-<p>|<br>|<br>|</p>
-<h3 id="二、部署服务"><a href="#二、部署服务" class="headerlink" title="二、部署服务"></a>二、部署服务</h3><h5 id="Central-节点"><a href="#Central-节点" class="headerlink" title="Central 节点"></a>Central 节点</h5><p># yum install -y openvswitch-ovn-central.x86_64 openvswitch-ovn-host.x86_64</p>
-<p># systemctl enable ovn-northd openvswitch ovn-controller</p>
-<p># systemctl start ovn-northd ovn-controller </p>
-<h5 id="Node节点"><a href="#Node节点" class="headerlink" title="Node节点"></a>Node节点</h5><p># yum install -y openvswitch.x86_64 openvswitch-ovn-host.x86_64 </p>
-<p>#systemctl enable openvswitch ovn-controller </p>
-<p>#systemctl start ovn-controller </p>
-<h3 id="三、-配置OVN"><a href="#三、-配置OVN" class="headerlink" title="三、 配置OVN"></a>三、 配置OVN</h3><p>配置ovs与ovn相连接</p>
-<h5 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.130.248</span><br><span class="line">#ovn-nbctl set-connection ptcp:6641:$Centralip</span><br><span class="line">#ovn-sbctl set-connection ptcp:6642:$Centralip</span><br><span class="line">#netstat -ntlp</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn-01.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve,vxlan</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$Centralip</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="node-1-2-节点"><a href="#node-1-2-节点" class="headerlink" title="node 1/2 节点"></a>node 1/2 节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.130.248</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve,vxlan</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$MY_IP_ADDRESS</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn/ovn-2.png"></p>
-<p><img src="/images/ovn/ovn-3.png"></p>
-<p>所有服务器重启一下</p>
-<p>#reboot</p>
-<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">net_mlx5: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">net_mlx5: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx5)</span><br><span class="line">PMD: net_mlx4: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">PMD: net_mlx4: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx4)</span><br><span class="line">解决：#yum install libibverbs -y</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%BA%8C/" data-id="cki7431330003ko162p2jb0hf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-ovs-ovn-虚拟化学习整理-一" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/" class="article-date">
-  <time datetime="2020-12-02T04:30:45.000Z" itemprop="datePublished">2020-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/">ovs/ovn 虚拟化学习整理(一)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>OVN是由开发出OVS的那群出色的程序员们的另一个优秀的作品。这个网络虚拟化项目从2015初宣告启动， 到不久前才发布第一个正式版本OVN 2.6 。在这篇文章中，我会配置一个简单示例：在三个主机之间配置一个layer-2 overlay 网络。<br>首先讲一下OVN工作机制中的2种角色：</p>
-<ul>
-<li>OVN Central ——目前只能有一台主机承担这个角色。该主机将成为和外部资源（比如云管理平台）集成的API中心节点。中心节点运行着OVN 北向数据库和OVN南向数据库。OVN北向数据库，用于描述上层的逻辑网络组件，比如逻辑交换机/逻辑端口。南向数据库，其将北向数据库的逻辑网络数据格式转换为物理网络数据格式并进行存储。</li>
-<li>OVN Host ——所有提供虚拟机或虚拟网络的节点。OVN Host 运行着 “chassis controller” ，它上连OVN南向数据库并作为其记录的物理网络信息授权来源，下接OVS 并成为其openflow 控制器。</li>
-</ul>
-<h3 id="OVN的实现了哪些功能？拥有哪些特性？"><a href="#OVN的实现了哪些功能？拥有哪些特性？" class="headerlink" title="OVN的实现了哪些功能？拥有哪些特性？"></a>OVN的实现了哪些功能？拥有哪些特性？</h3><p>Logical switches：逻辑交换机，用来做二层转发。<br>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。<br>Logical routers：逻辑路由器，分布式的，用来做三层转发。<br>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。<br>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
-<p>OVN网关发布的时候，还存在着某些限制：</p>
-<ul>
-<li><p>网关路由器仅可以经由逻辑交换机连接到其他路由器，而DLR已经可以经由一条链路直连路由器。社区正在进行相关工作来解决掉这个限制。</p>
-</li>
-<li><p>OVN支持多个网关路由器绑定到环境中，这意味着可以逻辑空间执行入站ECMP路由。然而，OVN当前不支持网关路由器之间的出站ECMP。这个特性也同样是OVN未来需要加强的。</p>
-</li>
-</ul>
-<p>基于OVN的neutron网络架构如下</p>
-<p> <img src="https://www.debugger.wiki/sourceimg/190706/cc51795bdcf29c2b9ff4e8e37d0f3826.jpg" alt="技术图片"></p>
-<h2 id="ovs-ovn-学习资料"><a href="#ovs-ovn-学习资料" class="headerlink" title="[ovs ovn 学习资料]"></a>[ovs ovn 学习资料]</h2><p><strong>0、A Primer on OVN</strong></p>
-<p><a target="_blank" rel="noopener" href="http://blog.spinhirne.com/2016/09/a-primer-on-ovn.html">http://blog.spinhirne.com/2016/09/a-primer-on-ovn.html</a></p>
-<p><strong>1、Open Virtual Networking With Docker</strong></p>
-<p><a target="_blank" rel="noopener" href="http://docs.openvswitch.org/en/latest/howto/docker/">http://docs.openvswitch.org/en/latest/howto/docker/</a></p>
-<p><strong>2、Multi-Host Docker network</strong></p>
-<p><a target="_blank" rel="noopener" href="https://wiredcraft.com/blog/multi-host-docker-network/">https://wiredcraft.com/blog/multi-host-docker-network/</a></p>
-<p><strong>3、ovn-namespace</strong></p>
-<p><a target="_blank" rel="noopener" href="https://github.com/shettyg/ovn-namespace">https://github.com/shettyg/ovn-namespace</a></p>
-<p> <strong>4、OVN简介PPT</strong></p>
-<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/slides/OVN_Barcelona.pdf">http://openvswitch.org/support/slides/OVN_Barcelona.pdf</a></p>
-<p><strong>5、What is Open Virtual Network (OVN)? How It Works （包含了各种关于网络虚拟化的介绍的连接）</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/">https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/</a></p>
-<p><strong>6、Open vSwitch 相关论文</strong></p>
-<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/papers/">http://openvswitch.org/support/papers/</a></p>
-<p><strong>７、OVN, Bringing Native Virtual Networking to OVS</strong></p>
-<p><a target="_blank" rel="noopener" href="https://networkheresy.com/category/open-vswitch/">https://networkheresy.com/category/open-vswitch/</a></p>
-<p><strong>8、基于Open vSwitch的OpenFlow实践</strong></p>
-<p><a target="_blank" rel="noopener" href="http://www.chenshake.com/based-on-openflow-practices-open-vswitch/">http://www.chenshake.com/based-on-openflow-practices-open-vswitch/</a></p>
-<p><strong>9、ovs源码分析</strong></p>
-<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/column/details/openvswitch.html">http://blog.csdn.net/column/details/openvswitch.html</a></p>
-<p><strong>10、ovs orbit</strong></p>
-<p><a target="_blank" rel="noopener" href="https://ovsorbit.org/">https://ovsorbit.org/</a></p>
-<p><strong>11、introduction to ovn</strong></p>
-<p><a target="_blank" rel="noopener" href="http://galsagie.github.io/2015/04/20/ovn-1/">http://galsagie.github.io/2015/04/20/ovn-1/</a></p>
-<p><strong>12、Russell Bryant的博客</strong></p>
-<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/category/ovs/">https://blog.russellbryant.net/category/ovs/</a></p>
-<p><strong>13、ovn architecture</strong></p>
-<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/dist-docs/ovn-architecture.7.html">http://openvswitch.org/support/dist-docs/ovn-architecture.7.html</a></p>
-<p><strong>14、OVN Logical Flows and ovn-trace</strong></p>
-<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/">https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/</a></p>
-<p><strong>15、Justin Pettit的个人主页（其中包含了ovs, ovn相关的各种论文，博客和视频）</strong> </p>
-<p><a target="_blank" rel="noopener" href="http://yuba.stanford.edu/~jpettit/">http://yuba.stanford.edu/~jpettit/</a></p>
-<p><strong>16、ovs 2.5.0源码分析</strong></p>
-<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/one_clouder/article/category/6359278/1">http://blog.csdn.net/one_clouder/article/category/6359278/1</a></p>
-<p><strong>17、netwoking-ovn - OpenStack Neutron integration with OVN</strong></p>
-<p><a target="_blank" rel="noopener" href="https://docs.openstack.org/networking-ovn/latest/">https://docs.openstack.org/networking-ovn/latest/</a></p>
-<p><strong>18、OVN路由功能详解</strong></p>
-<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html">https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html</a></p>
-<p><strong>19、OVS博客</strong></p>
-<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/popsuper1982/p/5848879.html">http://www.cnblogs.com/popsuper1982/p/5848879.html</a></p>
-<p><strong>20、OVSDB RFC</strong></p>
-<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc7047/">https://datatracker.ietf.org/doc/rfc7047/</a></p>
-<p><strong>21、openstack底层技术-openflow在ovs中的应用</strong></p>
-<p><a target="_blank" rel="noopener" href="http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/">http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/02/ovs-ovn-%E8%99%9A%E6%8B%9F%E5%8C%96%E5%AD%A6%E4%B9%A0%E6%95%B4%E7%90%86-%E4%B8%80/" data-id="cki7431330002ko16ax9ldlep" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -787,7 +675,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.5px;">python</a> <a href="/tags/spdk/" style="font-size: 10px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.5px;">python</a> <a href="/tags/spdk/" style="font-size: 12.5px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -809,6 +697,14 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/">spdk-基于spdk vhost qemu启动虚机</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/">spdk-spdk bdev (ceph rbd)块设备操作</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
           </li>
         
@@ -818,14 +714,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
-          </li>
-        
-          <li>
-            <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
           </li>
         
       </ul>

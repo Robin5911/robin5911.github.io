@@ -68,6 +68,99 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-spdk-基于spdk-vhost-qemu启动虚机" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/" class="article-date">
+  <time datetime="2021-09-10T07:40:52.000Z" itemprop="datePublished">2021-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/">spdk-基于spdk vhost qemu启动虚机</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>qemu启动虚机，driver使用基于spdk的vhost-user-scsi技术， bdev backend为ceph rbd</p>
+<p>创建vhost device (上文创建rbd dev名称为Ceph1)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#scripts&#x2F;rpc.py vhost_create_scsi_controller --cpumask 0x1 vhost.0</span><br><span class="line">#scripts&#x2F;rpc.py vhost_scsi_controller_add_target vhost.0 0 Ceph1</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/" data-id="ckte5vgp80001dw165h9ef50n" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-spdk-spdk-bdev-ceph-rbd-块设备操作" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/" class="article-date">
+  <time datetime="2021-09-10T07:39:37.000Z" itemprop="datePublished">2021-09-10</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/">spdk-spdk bdev (ceph rbd)块设备操作</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因虚拟机后端存储使用rbd, 所以下面spdk bdev 基于ceph rbd </p>
+<p>导入ceph集群配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#vim &#x2F;etc&#x2F;ceph&#x2F;conf.conf</span><br></pre></td></tr></table></figure>
+
+<p>创建volume</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#rbd create volumes&#x2F;volume-demo-001 --size 100</span><br><span class="line">#rpc.py bdev_rbd_create volumes volume-demo-001 100</span><br></pre></td></tr></table></figure>
+
+<p>删除volume</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#rpc.py bdev_rbd_delete Ceph1</span><br></pre></td></tr></table></figure>
+
+<p>resize volume</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#rpc.py bdev_rbd_resize Ceph1 102400</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/" data-id="ckte5vgp60000dw165pn706s8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-spdk-spdk安装指南" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" class="article-date">
@@ -809,95 +902,6 @@
 
 
   
-    <article id="post-openstack-裸金属ironic整理-8" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-8/" class="article-date">
-  <time datetime="2021-04-22T11:36:24.000Z" itemprop="datePublished">2021-04-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-8/">openstack-裸金属ironic整理-8</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>裸金属存储架构</p>
-<p>存储</p>
-<p><img src="http://www.taocloudx.com/uploads/200629/1-200629144A0300.png" alt="img"></p>
-<p><img src="https://img-blog.csdn.net/20180314191409617" alt="img"></p>
-<p>ceph iscsi 集群架构</p>
-<p><img src="https://img-blog.csdnimg.cn/img_convert/68a05d45effae6d6610b8013aa24c8f4.png" alt="image"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-8/" data-id="ckssanb4a000pto1639u8crn1" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-裸金属ironic整理-7" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-7/" class="article-date">
-  <time datetime="2021-04-22T11:36:20.000Z" itemprop="datePublished">2021-04-22</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-7/">openstack-裸金属ironic整理-7</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="PXE概述"><a href="#PXE概述" class="headerlink" title="PXE概述"></a>PXE概述</h2><p>PXE 是描述客户端-服务器与网络引导软件交互的行业标准，并使用 DHCP 和 TFTP 协议。本指南介绍了一种使用 PXE 环境安装 Clear Linux OS 的方法。</p>
-<p>名为 <a target="_blank" rel="noopener" href="http://ipxe.org/">iPXE</a> 的 PXE 扩展新增了对 HTTP、iSCSI、AoE 和 FCoE 等协议的支持。iPXE 支持在没有内置 PXE 支持的计算机上使用网络引导。</p>
-<p>要通过 iPXE 安装 Clear Linux OS，必须创建一个 PXE 客户端。图 1 描述了 PXE 服务器和 PXE 客户端之间的信息流。</p>
-<p><img src="https://docs.01.org/clearlinux/latest/zh_CN/_images/network-boot-flow.png" alt="PXE information flow"></p>
-<p>看一下 ironic dnsmasq配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#cat &#x2F;etc&#x2F;kolla&#x2F;ironic-dnsmasq&#x2F;dnsmasq.conf</span><br><span class="line"></span><br><span class="line">port&#x3D;0</span><br><span class="line">interface&#x3D;ironic_port</span><br><span class="line">dhcp-range&#x3D;172.66.0.200,172.66.0.250</span><br><span class="line">dhcp-option&#x3D;option:tftp-server,172.66.0.235</span><br><span class="line">dhcp-option&#x3D;option:server-ip-address,172.66.0.235</span><br><span class="line">bind-interfaces</span><br><span class="line">dhcp-sequential-ip</span><br><span class="line">dhcp-option&#x3D;210,&#x2F;tftpboot&#x2F;</span><br><span class="line">dhcp-match&#x3D;ipxe,175</span><br><span class="line">dhcp-match&#x3D;set:efi,option:client-arch,7</span><br><span class="line">dhcp-match&#x3D;set:efi,option:client-arch,9</span><br><span class="line"># Client is already running iPXE; move to next stage of chainloading</span><br><span class="line">dhcp-option&#x3D;tag:ipxe,option:bootfile-name,http:&#x2F;&#x2F;10.145.69.8:8089&#x2F;inspector.ipxe</span><br><span class="line"># Client is PXE booting over EFI without iPXE ROM,</span><br><span class="line"># send EFI version of iPXE chainloader</span><br><span class="line">dhcp-option&#x3D;tag:efi,tag:!ipxe,option:bootfile-name,ipxe.efi</span><br><span class="line">dhcp-option&#x3D;option:bootfile-name,pxelinux.0</span><br><span class="line">dhcp-hostsdir&#x3D;&#x2F;etc&#x2F;dnsmasq&#x2F;dhcp-hostsdir</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-7/" data-id="ckssanb48000lto163o560lfv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -926,7 +930,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.5px;">python</a> <a href="/tags/spdk/" style="font-size: 10px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.5px;">python</a> <a href="/tags/spdk/" style="font-size: 12.5px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -948,6 +952,14 @@
       <ul>
         
           <li>
+            <a href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/">spdk-基于spdk vhost qemu启动虚机</a>
+          </li>
+        
+          <li>
+            <a href="/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/">spdk-spdk bdev (ceph rbd)块设备操作</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
           </li>
         
@@ -957,14 +969,6 @@
         
           <li>
             <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
-          </li>
-        
-          <li>
-            <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
-          </li>
-        
-          <li>
-            <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
           </li>
         
       </ul>
