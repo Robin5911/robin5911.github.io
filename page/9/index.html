@@ -68,52 +68,6 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-网络虚拟化-通过macvlan-虚拟出新网卡" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/" class="article-date">
-  <time datetime="2020-11-13T09:59:05.000Z" itemprop="datePublished">2020-11-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/">网络虚拟化-通过macvlan 虚拟出新网卡</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>加载模块</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># modprobe macvlan</span><br><span class="line"># lsmod | grep macvlan</span><br><span class="line">  macvlan    19239    0</span><br></pre></td></tr></table></figure>
-
-<p>配置网卡</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">通过macvlan 虚拟出网卡 mac_eth4_1 , 通过eth4 出去</span><br><span class="line">#ip link add link eth4 mac_eth4_1 type macvlan</span><br><span class="line">#ip addr add 192.168.100.111&#x2F;24 dev mac_eth4_1</span><br></pre></td></tr></table></figure>
-
-<p>多台主机互通测试</p>
-<p><img src="/images/macvlan-1.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/11/13/%E7%BD%91%E7%BB%9C%E8%99%9A%E6%8B%9F%E5%8C%96-%E9%80%9A%E8%BF%87macvlan-%E8%99%9A%E6%8B%9F%E5%87%BA%E6%96%B0%E7%BD%91%E5%8D%A1/" data-id="ckhg7z9cp000gdo16b38k8gp6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-kolla-ansible-build-openstack-arm镜像" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/11/13/kolla-ansible-build-openstack-arm%E9%95%9C%E5%83%8F/" class="article-date">
@@ -665,6 +619,58 @@ var _hmt = _hmt || [];
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-TCP-IP-四次挥手简述" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/" class="article-date">
+  <time datetime="2020-11-03T10:15:41.000Z" itemprop="datePublished">2020-11-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/">TCP/IP 四次挥手简述</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="四次挥手过程"><a href="#四次挥手过程" class="headerlink" title="四次挥手过程"></a>四次挥手过程</h3><ul>
+<li>第一次挥手：客户端发出释放FIN=1，自己序列号seq=u，进入FIN-WAIT-1状态</li>
+<li>第二次挥手：服务器收到客户端的后，发出ACK=1确认标志和客户端的确认号ack=u+1，自己的序列号seq=v，进入CLOSE-WAIT状态</li>
+<li>第三次挥手：客户端收到服务器确认结果后，进入FIN-WAIT-2状态。此时服务器发送释放FIN=1信号，确认标志ACK=1，确认序号ack=u+1，自己序号seq=w，服务器进入LAST-ACK（最后确认态）</li>
+<li>第四次挥手：客户端收到回复后，发送确认ACK=1，ack=w+1，自己的seq=u+1，客户端进入TIME-WAIT（时间等待）。客户端经过2个最长报文段寿命后，客户端CLOSE；服务器收到确认后，立刻进入CLOSE状态。</li>
+</ul>
+<p><img src="/images/tcp-2.png"></p>
+<p>​    1. 为什么客户端最后还要等待2MSL？</p>
+<ul>
+<li>客户端需要保证最后一次发送的ACK报文到服务器，如果服务器未收到，可以请求客户端重发，这样客户端还有时间再发，重启2MSL计时。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">推荐使用小程序 ipip查询,查IP查域名查备案,密码生成二维码生成,简直是运维开发神器</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ipip.png"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/11/03/TCP-IP-%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B%E7%AE%80%E8%BF%B0/" data-id="cki8ta3dt00013w162v58352t" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
 
     </footer>
   </div>
