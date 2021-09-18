@@ -3,6 +3,17 @@
 <head>
   <meta charset="utf-8">
   
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?ae11d5a19bdcf766771692d64967eeb1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+  
 
   
   <title>老Zhang博客</title>
@@ -29,16 +40,6 @@
 <link rel="stylesheet" href="/css/style.css">
 
 <meta name="google-site-verification" content="XkIGmrbqh5J83cILz5wx9StkgaQzjhGx0UfHTxlma00" />
-
-<script type="text/javascript">
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?ae11d5a19bdcf766771692d64967eeb1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
 
 <meta name="generator" content="Hexo 5.2.0"></head>
 
@@ -77,6 +78,363 @@ var _hmt = _hmt || [];
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-容器-linux-namespace及网络" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" class="article-date">
+  <time datetime="2020-09-30T09:23:26.000Z" itemprop="datePublished">2020-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/">容器虚拟化 linux namespace及虚拟网卡/路由网络</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>网络命名空间<br>在 Linux 中，网络名字空间可以被认为是隔离的拥有单独网络栈（网卡、路由转发表、iptables）的环境。网络名字空间经常用来隔离网络设备和服务，只有拥有同样网络名字空间的设备，才能看到彼此。</p>
+<p>从逻辑上说，网络命名空间是网络栈的副本，有自己的网络设备、路由选择表、邻接表、Netfilter表、网络套接字、网络procfs条目、网络sysfs条目和其他网络资源。</p>
+<p>从系统的角度来看，当通过clone()系统调用创建新进程时，传递标志CLONE_NEWNET将在新进程中创建一个全新的网络命名空间。</p>
+<p>从用户的角度来看，我们只需使用工具ip（package is iproute2）来创建一个新的持久网络命名空间。</p>
+<p>创建netns<br>查看是否存在命名空间：ip netns list</p>
+<p>若报错，需要更新系统内核，以及 ip 工具程序。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">列出网卡</span><br><span class="line">#ip netns list</span><br><span class="line">添加命名空间</span><br><span class="line">#ip netns add ns1</span><br></pre></td></tr></table></figure>
+
+<p>创建新的虚拟网卡：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link add veth0 type veth peer name veth1</span><br></pre></td></tr></table></figure>
+
+<p>同时创建veth0和veth1两个虚拟网卡<br>这个时候这两个网卡还都属于“default”或“global”命名空间，和物理网卡一样。<br>把其中一个网卡转移到命名空间ns1中：ip link set veth1 netns ns1</p>
+<p>验证：ip netns exec ns1 ip link list<br>删除：ip netns exec ns1 ip link del veth1</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link set veth1 netns ns1</span><br></pre></td></tr></table></figure>
+
+<p>配置命名空间中的端口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip addr add 10.1.1.100&#x2F;24 dev veth1</span><br><span class="line">#ip netns exec ns1 ip link set veth1 up</span><br><span class="line">#ip netns exec ns1 ip link set lo up</span><br></pre></td></tr></table></figure>
+
+<p>配置宿主机上网卡ip：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ip addr add 10.1.1.101&#x2F;24 dev veth0</span><br><span class="line">#ip link set veth0 up</span><br></pre></td></tr></table></figure>
+<p>此时在ns1中ping自己10.1.1.100能通： (掩码都是24,网络在一个二层内)<br>ip netns exec ns1 ping 10.1.1.100<br>PING 10.1.1.100 (10.1.1.100) 56(84) bytes of data.<br>64 bytes from 10.1.1.100: icmp_seq=1 ttl=64 time=0.058 ms</p>
+<p>但还不能ping通10.1.1.101，因为ns1中未设置路由。<br><img src="../images/2020-09-30_17h44_36.png"><br>设置命名空间路由<br>设置默认路由</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip route add default via 10.1.1.100</span><br><span class="line">#ip netns exec ns1 ip route show</span><br><span class="line">default via 10.1.1.100 dev veth1</span><br></pre></td></tr></table></figure>
+<p>此时能够ping通主机：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping 10.1.1.101</span><br><span class="line">PING 10.1.1.2 (10.1.1.101) 56(84) bytes of data.</span><br><span class="line">64 bytes from 10.1.1.101: icmp_seq&#x3D;1 ttl&#x3D;64 time&#x3D;0.086 ms</span><br></pre></td></tr></table></figure>
+
+<p>使能IP转发<br>但是到了这里依旧还不够，ns1命名空间中已经可以联通主机上的网络，但是依旧连不同主机以外的外部网络。这个时候必须在host主机上启动转发，并且在iptables中设置伪装。</p>
+<p>Linux系统的IP转发的意思是，当Linux主机存在多个网卡的时候，允许一个网卡的数据包转发到另外一张网卡；在linux系统中默认禁止IP转发功能，可以打开如下文件查看，如果值为0说明禁止进行IP转发：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward：</span><br><span class="line"></span><br><span class="line">#使能ip转发</span><br><span class="line"></span><br><span class="line">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward</span><br></pre></td></tr></table></figure>
+<p>#刷新forward规则<br>iptables -F FORWARD<br>iptables -t nat -F</p>
+<p>#刷新nat规则<br>iptables -t nat -L -n</p>
+<p>#使能IP伪装<br>iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -o ens32 -j MASQUERADE # ens32连接外网<br><img src="../images/2020-09-30_17h55_58.png"><br>#允许veth0和ens32之间的转发<br>iptables -A FORWARD -i ens32 -o veth0 -j ACCEPT<br>iptables -A FORWARD -o ens32 -i veth0 -j ACCEPT</p>
+<p>使能IP伪装这条语句，添加了一条规则到NAT表的POSTROUTING链中，对于源IP地址为10.1.1.0网段的数据包，用ens32网口的IP地址替换并发送。<br>iptables -A FORWARD这两条语句使能物理网口ens32和veth0之间的数据转发<br>总结<br>Linux网络命名空间提供了强大的虚拟化功能，使用得当能够达到事半功倍的效果。</p>
+<p>本文简要介绍了Linux提供的6种命名空间，对命名空间的作用和使用场景作了详细的介绍。</p>
+<p>着重对Linux网络命名空间进行了讲解，包括命名空间的创建、使用，与主机通信以及与外部网络的连接等。</p>
+<p>对于一般的应用而言，掌握网络命名空间的创建、使用、ip命令等就能顺当使用命名空间了。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" data-id="ckfp8dl5e000jpg16b1q5glwf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-django-3-0-启用swagger" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" class="article-date">
+  <time datetime="2020-09-30T08:34:36.000Z" itemprop="datePublished">2020-09-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/">django 3.0 使用swagger</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<p>以前我们熟知的swaggger已经不再支持 django 3.0，可以使用 drf_yasg<br>支持如下：</p>
+<p>Django Rest Framework: 3.8, 3.9, 3.10, 3.11<br>Django: 1.11, 2.2, 3.0<br>Python: 2.7, 3.6, 3.7, 3.8</p>
+<p>安装drf_yasg</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -U drf-yasg</span><br></pre></td></tr></table></figure>
+<p>settings.py 开启app</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS &#x3D; [</span><br><span class="line">   ...</span><br><span class="line">   &#39;drf_yasg&#39;,</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>根 url.py</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework import permissions</span><br><span class="line">from drf_yasg.views import get_schema_view</span><br><span class="line">from drf_yasg import openapi</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">schema_view &#x3D; get_schema_view(</span><br><span class="line">   openapi.Info(</span><br><span class="line">      title&#x3D;&quot;Snippets API&quot;,</span><br><span class="line">      default_version&#x3D;&#39;v1&#39;,</span><br><span class="line">      description&#x3D;&quot;Test description&quot;,</span><br><span class="line">      terms_of_service&#x3D;&quot;https:&#x2F;&#x2F;www.google.com&#x2F;policies&#x2F;terms&#x2F;&quot;,</span><br><span class="line">      contact&#x3D;openapi.Contact(email&#x3D;&quot;contact@snippets.local&quot;),</span><br><span class="line">      license&#x3D;openapi.License(name&#x3D;&quot;BSD License&quot;),</span><br><span class="line">   ),</span><br><span class="line">   public&#x3D;True,</span><br><span class="line">   permission_classes&#x3D;(permissions.AllowAny,),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">   url(r&#39;^swagger(?P&lt;format&gt;\.json|\.yaml)$&#39;, schema_view.without_ui(cache_timeout&#x3D;0), name&#x3D;&#39;schema-json&#39;),</span><br><span class="line">   url(r&#39;^swagger&#x2F;$&#39;, schema_view.with_ui(&#39;swagger&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-swagger-ui&#39;),</span><br><span class="line">   url(r&#39;^redoc&#x2F;$&#39;, schema_view.with_ui(&#39;redoc&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-redoc&#39;),</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>访问/swagger 看一下吧 </p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" data-id="ckfp8dl580009pg169tgxf6dl" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-glance-镜像导入" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" class="article-date">
+  <time datetime="2020-09-29T14:26:42.000Z" itemprop="datePublished">2020-09-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/">glance 镜像导入</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>基于rbd存储, 上传glance镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">openstack image create &quot;CentOS 7.6 64bit&quot; \</span><br><span class="line"> --disk-format raw --container-format bare \</span><br><span class="line"> --public --min-disk 50 \</span><br><span class="line"> --property hw_disk_bus&#x3D;scsi --property hw_scsi_model&#x3D;virtio-scsi \</span><br><span class="line"> --property hw_video_model&#x3D;qxl --property vm_mode&#x3D;hvm \</span><br><span class="line"> --property os_distro&#x3D;centos \</span><br><span class="line"> --property os_type&#x3D;linux \</span><br><span class="line"> --property hw_qemu_guest_agent&#x3D;yes</span><br></pre></td></tr></table></figure>
+
+<p>#rbd -p sata_pool1 import –image-format 2 CentOS76.raw</p>
+<p>#rbd -p sata_pool1 snap create –image  CentOS76.raw –snap snap  </p>
+<p>#rbd -p sata_pool1 snap protect –image  CentOS76.raw –snap snap</p>
+<p>#glance location-add –url rbd://$ceph_fsid/sata_pool1/CentOS76.raw/snap $image_uuid</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" data-id="ckfp8dl540005pg16enu18g1f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-goproxy代理" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" class="article-date">
+  <time datetime="2020-09-29T14:23:55.000Z" itemprop="datePublished">2020-09-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/">go goproxy代理</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> In Linux or macOS, you can execute the below commands. </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Enable the go modules feature</span><br><span class="line">export GO111MODULE&#x3D;on</span><br><span class="line"># Set the GOPROXY environment variable</span><br><span class="line">export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br></pre></td></tr></table></figure>
+
+<p>Or, write it into the <code>.bashrc</code> or <code>.bash_profile</code> file.</p>
+<p>In Windows, you can execute the below commands.</p>
+<p>PowerShell Copy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;</span><br><span class="line"># Set the GOPROXY environment variable</span><br><span class="line">$env:GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;goproxy.io&quot;</span><br></pre></td></tr></table></figure>
+
+<p>Now, when you build and run your applications, go will fetch dependencies via goproxy.io. See more information in the <a target="_blank" rel="noopener" href="https://github.com/goproxyio/goproxy">goproxy repository</a>.</p>
+<p>If your Go version &gt;= 1.13, the GOPRIVATE environment variable controls which modules the go command considers to be private (not available publicly) and should therefore not use the proxy or checksum database. For example:</p>
+<p>Go version &gt;= 1.13 Copy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io,direct</span><br><span class="line"># Set environment variable allow bypassing the proxy for selected modules</span><br><span class="line">go env -w GOPRIVATE&#x3D;*.corp.example.com</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" data-id="ckfp8dl5c000gpg169sii8jcg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux-使用阿里云yum源" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/29/Linux-%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91yum%E6%BA%90/" class="article-date">
+  <time datetime="2020-09-29T14:21:56.000Z" itemprop="datePublished">2020-09-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/29/Linux-%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91yum%E6%BA%90/">Linux 使用阿里云yum源</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- Global site tag (gtag.js) - Google Analytics --&gt;</span><br><span class="line">&lt;script async src&#x3D;&quot;https:&#x2F;&#x2F;www.googletagmanager.com&#x2F;gtag&#x2F;js?id&#x3D;G-XBYBL322DY&quot;&gt;&lt;&#x2F;script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">  window.dataLayer &#x3D; window.dataLayer || [];</span><br><span class="line">  function gtag()&#123;dataLayer.push(arguments);&#125;</span><br><span class="line">  gtag(&#39;js&#39;, new Date());</span><br><span class="line"></span><br><span class="line">  gtag(&#39;config&#39;, &#39;G-XBYBL322DY&#39;);</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+
+<p>基于CentOS 7 x86_64</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;aliyun-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo </span><br><span class="line"></span><br><span class="line">#wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;aliyun-epel.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;epel-7.repo </span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/29/Linux-%E4%BD%BF%E7%94%A8%E9%98%BF%E9%87%8C%E4%BA%91yum%E6%BA%90/" data-id="ckfp8dl4c0000pg166lpj36em" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux-vim-报错-E437" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/29/Linux-vim-%E6%8A%A5%E9%94%99-E437/" class="article-date">
+  <time datetime="2020-09-29T14:21:00.000Z" itemprop="datePublished">2020-09-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/29/Linux-vim-%E6%8A%A5%E9%94%99-E437/">Linux vim 报错 E437</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>E437: terminal capability “cm” required</p>
+<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
+<p>解决办法：</p>
+<p>执行export TERM=xterm;</p>
+<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
+<p>或者</p>
+<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
+<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/29/Linux-vim-%E6%8A%A5%E9%94%99-E437/" data-id="ckfp8dl4h0001pg16borw2ny0" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux-更改CentOS-7-网卡名称" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" class="article-date">
+  <time datetime="2020-09-29T14:18:26.000Z" itemprop="datePublished">2020-09-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/">Linux 更改CentOS 7 网卡名称</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="centos-7-默认网卡为-ensXX-考虑更改为-ethXX"><a href="#centos-7-默认网卡为-ensXX-考虑更改为-ethXX" class="headerlink" title="centos 7 默认网卡为 ensXX, 考虑更改为 ethXX"></a>centos 7 默认网卡为 ensXX, 考虑更改为 ethXX</h6><p>#vim /etc/default/grub</p>
+<p>GRUB_CMDLINE_LINUX </p>
+<p>新增 net.ifnames=0 biosdevname=0</p>
+<p>#grub2-mkconfig -o /boot/grub2/grub.cfg</p>
+<p>#reboot</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/09/29/Linux-%E6%9B%B4%E6%94%B9CentOS-7-%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0/" data-id="ckfp8dl4v0003pg16f1l66ax3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-docker-安装MySQL-8-0" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -227,272 +585,11 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-openstack-neutron-网络分析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/openstack-neutron-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-09-29T03:23:05.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/openstack-neutron-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">openstack neutron 网络分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/09/29/openstack-neutron-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" data-id="ckfp8dl5d000hpg1654z4dlss" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubernetes-flannel-网络分析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-09-29T02:58:45.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">kubernetes flannel 网络分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>Flannel是kubernetes的CNI网络插件之一，实质上是一种主机 overlay网络 。flannel支持多种网络转发模式，常用的是vxlan、hostgw等，我们这里以常用的 VXLAN协议讲解。</p>
-<p>**Flannel 特点 : **</p>
-<ol>
-<li><p>使集群中的不同Node主机创建的Docker容器都具有全集群唯一的虚拟IP地址。</p>
-</li>
-<li><p>建立一个覆盖网络（overlay network），通过这个覆盖网络，将数据包原封不动的传递到目标容器。覆盖网络是建立在另一个网络之上并由其基础设施支持的虚拟网络。覆盖网络通过将一个分组封装在另一个分组内来将网络服务与底层基础设施分离。在将封装的数据包转发到端点后，将其解封装。</p>
-</li>
-<li><p>创建一个新的虚拟网卡flannel0接收docker网桥的数据，通过维护路由表，对接收到的数据进行封包和转发（vxlan）。</p>
-</li>
-<li><p>etcd保证了所有node上flanned所看到的配置是一致的。同时每个node上的flanned监听etcd上的数据变化，实时感知集群中node的变化。</p>
-</li>
-</ol>
-<p><strong>各个组件的解释：</strong></p>
-<p><code>Cni0 </code> :网桥设备，每创建一个pod都会创建一对 veth pair。其中一端是pod中的eth0，另一端是Cni0网桥中的端口（网卡）。Pod中从网卡eth0发出的流量都会发送到Cni0网桥设备的端口（网卡）上。</p>
-<p>Cni0 设备获得的ip地址是该节点分配到的网段的第一个地址。</p>
-<p><code>Flannel.1 </code>: overlay网络的设备，用来进行 vxlan 报文的处理（封包和解包）。不同node之间的pod数据流量都从overlay设备以隧道的形式发送到对端。</p>
-<p><code>Flanneld </code>：flannel在每个主机中运行flanneld作为agent，它会为所在主机从集群的网络地址空间中，获取一个小的网段subnet，本主机内所有容器的IP地址都将从中分配。同时Flanneld监听K8s集群数据库，为flannel.1设备提供封装数据时必要的mac，ip等网络数据信息。</p>
-<p><strong>不同node上的pod的通信流程：</strong></p>
-<ol>
-<li><p>pod中产生数据，根据pod的路由信息，将数据发送到Cni0</p>
-</li>
-<li><p>Cni0 根据节点的路由表，将数据发送到隧道设备flannel.1</p>
-</li>
-<li><p>Flannel.1查看数据包的目的ip，从flanneld获得对端隧道设备的必要信息，封装数据包。</p>
-</li>
-<li><p>Flannel.1将数据包发送到对端设备。对端节点的网卡接收到数据包，发现数据包为overlay数据包，解开外层封装，并发送内层封装到flannel.1设备。</p>
-</li>
-<li><p>Flannel.1设备查看数据包，根据路由表匹配，将数据发送给Cni0设备。</p>
-</li>
-<li><p>Cni0匹配路由表，发送数据给网桥上对应的端口。</p>
-</li>
-</ol>
-<p>测试集群 k8s定义的flannel网络(POD CIDR) 为172.20.0.0/16。</p>
-<p>下面用用案例解释网络内不同POD间通信的一个网络实现吧</p>
-<p><img src="/images/flannel-net2.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.100 - pod1 路由</span><br><span class="line">#kubectl -n stack exec -it api-0 -- bash</span><br><span class="line">#ip route show</span><br><span class="line"></span><br><span class="line">default via 172.20.0.1 dev eth0 </span><br><span class="line">172.20.0.0&#x2F;24 dev eth0 proto kernel scope link src 172.20.0.73</span><br><span class="line">172.20.0.0&#x2F;16 via 172.20.0.1 dev eth0</span><br></pre></td></tr></table></figure>
-
-
-
-<p><img src="/images/image-20201016183244304.png" alt="image-20201016183244304"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.101 - pod2 路由</span><br><span class="line">#kubectl -n stack exec -it redis-64c6c549ff-5plcq -- bash</span><br><span class="line">#ip route show</span><br><span class="line"></span><br><span class="line">default via 172.20.1.1 dev eth0 </span><br><span class="line">172.20.0.0&#x2F;16 via 172.20.1.1 dev eth0 </span><br><span class="line">172.20.1.0&#x2F;24 dev eth0 proto kernel scope link src 172.20.1.11 </span><br></pre></td></tr></table></figure>
-
-
-<p><img src="/images/image-20201016183228551.png" alt="image-20201016183228551"></p>
-<p>由此可看出，默认POD 网卡网关走 .1 网关，而网关即为cni0 的IP，下一步分析流量到了宿主机之后的走向~~</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.100 宿主机路由</span><br><span class="line">#ip route -n</span><br><span class="line">default via 10.19.114.1 dev eth0 </span><br><span class="line">10.19.114.0&#x2F;24 dev eth0 proto kernel scope link src 10.19.114.100 </span><br><span class="line">10.250.250.0&#x2F;24 dev eth1 proto kernel scope link src 10.250.250.100 </span><br><span class="line">172.17.0.0&#x2F;16 dev docker0 proto kernel scope link src 172.17.0.1 </span><br><span class="line">172.20.0.0&#x2F;24 dev cni0 proto kernel scope link src 172.20.0.1 </span><br><span class="line">172.20.1.0&#x2F;24 via 172.20.1.0 dev flannel.1 onlink </span><br><span class="line">172.20.2.0&#x2F;24 via 172.20.2.0 dev flannel.1 onlink</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">10.19.114.101 宿主机路由</span><br><span class="line">#ip route -n</span><br><span class="line">default via 10.19.114.1 dev eth0 </span><br><span class="line">10.19.114.0&#x2F;24 dev eth0 proto kernel scope link src 10.19.114.101 </span><br><span class="line">10.250.250.0&#x2F;24 dev eth1 proto kernel scope link src 10.250.250.101 </span><br><span class="line">172.17.0.0&#x2F;16 dev docker0 proto kernel scope link src 172.17.0.1 </span><br><span class="line">172.20.0.0&#x2F;24 via 172.20.0.0 dev flannel.1 onlink </span><br><span class="line">172.20.1.0&#x2F;24 dev cni0 proto kernel scope link src 172.20.1.1 </span><br><span class="line">172.20.2.0&#x2F;24 via 172.20.2.0 dev flannel.1 onlink </span><br></pre></td></tr></table></figure>
-
-<p>由如上路由可知，据最小匹配原则，匹配到上面的一条路由表项。从10.19.114.100 上去往172.20.1.0/24 网段的包，发送172.20.1.0 网关，网关设备是flannel.1</p>
-<p>flannel.1为vxlan设备，当数据包来到flannel.1时，需要将数据包封装起来。此时的dst ip 为172.20.1.11，src ip为172.20.0.73。数据包继续封装需要知道172.20.1.11  ip地址对应的mac地址。此时，flannel.1不会发送arp请求去获得172.20.1.11 的mac地址，而是由Linux kernel将一个“L3 Miss”事件请求发送的用户空间的flanned程序。Flanned程序收到内核的请求事件之后，从etcd查找能够匹配该地址的子网的flannel.1设备的mac地址，即发往的pod所在host中flannel.1设备的mac地址。Flannel在为Node节点分配ip网段时记录了所有的网段和mac等信息，所以能够知道。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip neigh |grep 172</span><br><span class="line">172.20.2.0 dev flannel.1 lladdr 82:c4:0e:f2:00:6f PERMANENT</span><br><span class="line">172.20.1.0 dev flannel.1 lladdr 42:6e:8b:9b:e2:73 PERMANENT</span><br></pre></td></tr></table></figure>
-
-<p>到这里，vxlan的内层数据包就完成了封装。格式是这样的：</p>
-<p><img src="/images/2020-10-19-201025.png"></p>
-<p>VXLAN的转发过程主要依赖于FDB(Forwarding Database)实现, VXLAN设备根据MAC地址来查找相应的VTEP IP地址，继而将二层数据帧封装发送至相应VTEP。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#&#x2F;sbin&#x2F;bridge fdb show dev flannel.1</span><br><span class="line">42:6e:8b:9b:e2:73 dst 10.19.114.101 self permanent</span><br><span class="line">ba:8b:ce:f3:b8:51 dst 10.19.114.101 self permanent</span><br><span class="line">42:6f:c7:06:3e:a0 dst 10.19.114.102 self permanent</span><br><span class="line">82:c4:0e:f2:00:6f dst 10.19.114.102 self permanent</span><br></pre></td></tr></table></figure>
-
-
-
-<p>kernel需要查看node上的fdb(forwarding database)以获得内层封包中目的vtep设备所在的node地址。因为已经从arp table中查到目的设备mac地址为42:6e:8b:9b:e2:73，同时在fdb中存在该mac地址对应的node节点的IP地址。如果fdb中没有这个信息，那么kernel会向用户空间的flanned程序发起”L2 MISS”事件。flanneld收到该事件后，会查询etcd，获取该vtep设备对应的node的”Public IP“，并将信息注册到fdb中。</p>
-<p>当内核查看fdb获得了发往机器的ip地址后，arp得到mac地址，之后就能完成vxlan的外层封装。</p>
-<p><img src="/images/vxlan-flannel-2.png"></p>
-<p>具体可以通过wireshark抓包分析</p>
-<p><img src="/images/wire2020-10-19-205700.png"></p>
-<p>10.19.114.101节点的eth0网卡接收到vxlan设备包，kernal将识别出这是一个vxlan包，将包拆开之后转给节点上的flannel.1设备。这样数据包就从发送节点到达目的节点，flannel.1设备将接收到一个如下的数据包</p>
-<p><img src="/images/2020-10-19-201025.png"></p>
-<p>目的地址为172.20.1.11，到达10.19.114.101 flannel.1后查找自己的路由表，根据路由表完成转发，由下图可知，flannel.1将去往172.20.1.0/24的流量转发到cni0上去。。</p>
-<p><img src="/images/image-20201020121043455.png" alt="image-20201020121011465"></p>
-<p>查看cni0网桥信息, cni0 网络通过绑定pod 的网卡和宿主机网卡，通过veth实现通信</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">#brctl show</span><br><span class="line">bridge name     bridge id               STP enabled     interfaces</span><br><span class="line">cni0            8000.a656432b14cf       no              veth1f7db117</span><br><span class="line">                                                        veth3ee31d24</span><br><span class="line">                                                        veth521bc030</span><br><span class="line">                                                        veth5a59ced4</span><br><span class="line">                                                        veth649412bd</span><br><span class="line">                                                        veth65bbf59f</span><br><span class="line">                                                        veth6ed62916</span><br><span class="line">                                                        veth7e8e7733</span><br><span class="line">                                                        veth9787b6ba</span><br><span class="line">                                                        veth98c762b8</span><br><span class="line">                                                        vethaf05d94b</span><br><span class="line">                                                        vethc07c69cd</span><br><span class="line">                                                        vethdf62bded</span><br><span class="line">                                                        vethe2cf7392</span><br><span class="line">                                                        vethf4995a29</span><br><span class="line">docker0         8000.024216a031b6       no</span><br></pre></td></tr></table></figure>
-
-
-
-<p>由下图可知 172.20.1.11 的POD 网卡 对应 link-netnsid 0</p>
-<p><img src="/images/image-20201020121943429.png" alt="image-20201020121943429"></p>
-<p>由下图可知 172.20.1.11 的POD 网卡 在宿主机上的veth 为 vethf4995a29</p>
-<p><img src="/images/image-20201020121907024.png" alt="image-20201020121907024"></p>
-<p>所以在cni0网桥上挂载的pod的veth pair为vethf4995a29 ， eth0@if21和vethf4995a29@if3组成的一对veth，pair。从而将流量注入到pod的eth0网卡上</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/09/29/kubernetes-flannel-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" data-id="ckfp8dl5a000dpg1685z56jvn" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-python-生成器、迭代器理解" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/12/05/python-%E7%94%9F%E6%88%90%E5%99%A8%E3%80%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%90%86%E8%A7%A3/" class="article-date">
-  <time datetime="2019-12-05T14:10:15.000Z" itemprop="datePublished">2019-12-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/12/05/python-%E7%94%9F%E6%88%90%E5%99%A8%E3%80%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%90%86%E8%A7%A3/">python-生成器、迭代器理解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>顾名思义，迭代器就是用于迭代操作（for 循环）的对象，它像列表一样可以迭代获取其中的每一个元素，任何实现了__next__ 方法 （python2 是 next）的对象都可以称为迭代器。</p>
-<p>它与列表的区别在于，构建迭代器的时候，不像列表把所有元素一次性加载到内存，而是以一种延迟计算（lazy evaluation）方式返回元素，这正是它的优点。比如列表含有中一千万个整数，需要占超过400M的内存，而迭代器只需要几十个字节的空间。因为它并没有把所有元素装载到内存中，而是等到调用 next 方法时候才返回该元素（按需调用 call by need 的方式，本质上 for 循环就是不断地调用迭代器的next方法）。</p>
-<p><img src="/images/python/iterator.png"></p>
-<p>以斐波那契数列为例来实现一个迭代器：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">class Fib(object):</span><br><span class="line">    def __init__(self, n):</span><br><span class="line">        self.pre_pre &#x3D; 0</span><br><span class="line">        self.pre &#x3D; 1</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        :param n: int, 指明生成数列的前n个数</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        self.n &#x3D; n</span><br><span class="line">        # index用来保存当前⽣成到数列中的第几个数了</span><br><span class="line">        self.index &#x3D; 0</span><br><span class="line"></span><br><span class="line">    def __next__(self):</span><br><span class="line">        if self.n &gt; 0 and self.index &lt; self.n:</span><br><span class="line">            value &#x3D; self.pre</span><br><span class="line">            self.pre_pre,self.pre &#x3D; self.pre, self.pre_pre+self.pre</span><br><span class="line">            self.index +&#x3D;1</span><br><span class="line">            return value</span><br><span class="line">        else:</span><br><span class="line">            return StopIteration()</span><br><span class="line"></span><br><span class="line">    def __iter__(self):</span><br><span class="line">        return self</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    # 传入 10, 输出10位斐波那契数列 1,1,2,3,5,8,13,21,34,55</span><br><span class="line">    resp&#x3D;[]</span><br><span class="line">    n&#x3D;10</span><br><span class="line">    f &#x3D; Fib(n)</span><br><span class="line">    for i in range(0,n):</span><br><span class="line">        resp.append(f.__next__())</span><br><span class="line">    print(resp)</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br><span class="line">#[1, 1, 2, 3, 5, 8, 13, 21, 34, 55]</span><br></pre></td></tr></table></figure>
-
-<h3 id="生成器"><a href="#生成器" class="headerlink" title="生成器"></a>生成器</h3><p>生成器算得上是Python语言中最吸引人的特性之一，生成器其实是一种特殊的迭代器，不过这种迭代器更加优雅。它不需要再像上面的类一样写iter()和next()方法了，只需要一个yiled关键字。 生成器一定是迭代器（反之不成立），因此任何生成器也是以一种懒加载的模式来生成值。用生成器来实现斐波那契数列：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">from itertools import islice</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def fib():</span><br><span class="line">    prev, curr &#x3D; 0, 1</span><br><span class="line">    while True:</span><br><span class="line">        yield curr  # 循环探针yield</span><br><span class="line">        prev, curr &#x3D; curr, curr + prev</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    f &#x3D; fib()</span><br><span class="line">    resp &#x3D; list(islice(f, 0, 10))  # [1, 1, 2, 3, 5, 8, 13, 21, 34, 55]</span><br><span class="line">    return resp</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    print(main())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2019/12/05/python-%E7%94%9F%E6%88%90%E5%99%A8%E3%80%81%E8%BF%AD%E4%BB%A3%E5%99%A8%E7%90%86%E8%A7%A3/" data-id="ckiciu7b60004bg16dwe249iw" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-python-面试题集锦" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/10/04/python-%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E9%94%A6/" class="article-date">
-  <time datetime="2019-10-03T23:23:21.000Z" itemprop="datePublished">2019-10-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/10/04/python-%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E9%94%A6/">python 面试题集锦</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p>如何在Python中实现多线程</p>
-<p>Python有一个多线程库，但是用多线程来加速代码的效果并不是那么的好，</p>
-<p>Python有一个名为Global Interpreter Lock（GIL）的结构。GIL确保每次只能执行一个“线程”。一个线程获取GIL执行相关操作，然后将GIL传递到下一个线程。</p>
-<p>虽然看起来程序被多线程并行执行，但它们实际上只是轮流使用相同的CPU核心。</p>
-<p>所有这些GIL传递都增加了执行的开销。这意味着多线程并不能让程序运行的更快。</p>
-<p>是否可以考虑协程？</p>
-</li>
-<li><p>循环names列表，打印每个元素的索引值和元素，当索引值为偶数时，把对应的元素改成-1。（考点列表元素，索引循环）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">for index,i in enumerate(names):</span><br><span class="line"></span><br><span class="line">	if index%2&#x3D;&#x3D;0:</span><br><span class="line"></span><br><span class="line">		names[index]&#x3D;-1</span><br><span class="line"></span><br><span class="line">		print(&quot;索引 %d 为偶数,值已重置 &quot;,index)</span><br><span class="line"></span><br><span class="line">	print(names)</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2019/10/04/python-%E9%9D%A2%E8%AF%95%E9%A2%98%E9%9B%86%E9%94%A6/" data-id="cki9h3lnn00001s16dssh06el" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/11/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span>
+    <a class="extend prev" rel="prev" href="/page/11/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="page-number" href="/page/11/">11</a><span class="page-number current">12</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/13/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -506,7 +603,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
     </div>
   </div>
 
@@ -516,7 +613,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 16.25px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.5px;">docker</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.75px;">go</a> <a href="/tags/grpc/" style="font-size: 11.25px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.5px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.5px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.25px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.75px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.5px;">python</a> <a href="/tags/spdk/" style="font-size: 12.5px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.22px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -538,23 +635,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/">spdk-基于spdk vhost qemu启动虚机</a>
+            <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">openstack-qemu源码编译安装</a>
           </li>
         
           <li>
-            <a href="/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/">spdk-spdk bdev (ceph rbd)块设备操作</a>
+            <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
           </li>
         
           <li>
-            <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
+            <a href="/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/">spdk-基于spdk虚拟机性能测试对比</a>
           </li>
         
           <li>
-            <a href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/">logstash - 基于docker部署</a>
+            <a href="/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/">es-创建索引</a>
           </li>
         
           <li>
-            <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
+            <a href="/2021/09/15/Linux-%E5%86%85%E5%AD%98%E4%B8%8D%E9%87%8A%E6%94%BE-Used%E4%B8%8E%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8%E4%B8%8D%E7%AC%A6/">Linux-内存不释放,Used与实际使用不符</a>
           </li>
         
       </ul>
