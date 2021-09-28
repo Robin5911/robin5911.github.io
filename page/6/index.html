@@ -79,6 +79,49 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-go-判断字符串是否包含在数组中" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" class="article-date">
+  <time datetime="2021-01-26T08:21:45.000Z" itemprop="datePublished">2021-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>判断数组中是否包含某字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func IsContain(items []string, item string) bool &#123;</span><br><span class="line">	for _, eachItem :&#x3D; range items &#123;</span><br><span class="line">		if eachItem &#x3D;&#x3D; item &#123;</span><br><span class="line">			return true</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if IsContain(fip.Tags,&quot;router_forward&quot;)&#123;</span><br><span class="line">			portForwardFips +&#x3D; 1</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" data-id="ckkw911ea0001s8165hx6hswf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-openstack-meter配置" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" class="article-date">
@@ -493,52 +536,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-docker-清空container-logs" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" class="article-date">
-  <time datetime="2020-12-29T12:18:28.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/">docker-清空container logs</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>docker默认会记录容器从一开始运行到现在为止所有的日志内容，而且目前docker并没有提供日志管理工具对日志内容进行清理。 只能手工进行清理。</p>
-<ol>
-<li><p>找出docker container日志文件所在的路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除或者清空日志文件内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo |sudo tee $(docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" data-id="ckjatz3nw0001hc1615z92kec" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -589,15 +586,15 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">openstack-qemu源码编译安装</a>
           </li>
         
           <li>
             <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/">spdk-基于spdk虚拟机性能测试对比</a>
           </li>
         
           <li>

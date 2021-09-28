@@ -16,19 +16,19 @@ var _hmt = _hmt || [];
   
 
   
-  <title>spdk-基于spdk虚拟机性能测试对比 | 老Zhang博客</title>
+  <title>CentOS 8-libvirt 7 编译安装 | 老Zhang博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="对比 普通模式(qemu rbd+主机网络)启动虚拟机的IO，qemu+spdk+主机网络的虚拟机IO，qemu+spdk+rdma网络的虚拟机IO，三者对比测试IO 时延差异 环境 ： 同机房，ceph rbd 存储集群 (nvme盘) 使用fio测试，bs&#x3D;4k, numjobs&#x3D;4,iodepth&#x3D;16，这里主要用于对比三者之间的时延性能差异 1#fio -filename&#x3D;&amp;#x">
+  <meta name="description" content="基于CentOS 8 x86_64编译安装libvirt 7.2 12345678#yum -y install ninja #yum install -y meson gcc cmake#wget https:&#x2F;&#x2F;libvirt.org&#x2F;sources&#x2F;libvirt-7.2.0.tar.xz#tar xvf libvirt-7.2.0.tar.xz#cd">
 <meta property="og:type" content="article">
-<meta property="og:title" content="spdk-基于spdk虚拟机性能测试对比">
-<meta property="og:url" content="https://blog.kubestack.cn/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/index.html">
+<meta property="og:title" content="CentOS 8-libvirt 7 编译安装">
+<meta property="og:url" content="https://blog.kubestack.cn/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="老Zhang博客">
-<meta property="og:description" content="对比 普通模式(qemu rbd+主机网络)启动虚拟机的IO，qemu+spdk+主机网络的虚拟机IO，qemu+spdk+rdma网络的虚拟机IO，三者对比测试IO 时延差异 环境 ： 同机房，ceph rbd 存储集群 (nvme盘) 使用fio测试，bs&#x3D;4k, numjobs&#x3D;4,iodepth&#x3D;16，这里主要用于对比三者之间的时延性能差异 1#fio -filename&#x3D;&amp;#x">
+<meta property="og:description" content="基于CentOS 8 x86_64编译安装libvirt 7.2 12345678#yum -y install ninja #yum install -y meson gcc cmake#wget https:&#x2F;&#x2F;libvirt.org&#x2F;sources&#x2F;libvirt-7.2.0.tar.xz#tar xvf libvirt-7.2.0.tar.xz#cd">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-09-16T07:06:12.000Z">
-<meta property="article:modified_time" content="2021-09-18T03:18:11.105Z">
+<meta property="article:published_time" content="2021-09-28T03:40:37.000Z">
+<meta property="article:modified_time" content="2021-09-28T10:35:36.622Z">
 <meta property="article:author" content="Tonyzhang1989">
-<meta property="article:tag" content="spdk">
+<meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="老Zhang博客" type="application/atom+xml">
@@ -80,10 +80,10 @@ var _hmt = _hmt || [];
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-spdk-基于spdk虚拟机性能测试对比" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-CentOS-8-libvirt-7-编译安装" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/" class="article-date">
-  <time datetime="2021-09-16T07:06:12.000Z" itemprop="datePublished">2021-09-16</time>
+    <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2021-09-28T03:40:37.000Z" itemprop="datePublished">2021-09-28</time>
 </a>
     
   </div>
@@ -94,7 +94,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      spdk-基于spdk虚拟机性能测试对比
+      CentOS 8-libvirt 7 编译安装
     </h1>
   
 
@@ -102,52 +102,49 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>对比 普通模式(qemu rbd+主机网络)启动虚拟机的IO，qemu+spdk+主机网络的虚拟机IO，qemu+spdk+rdma网络的虚拟机IO，三者对比测试IO 时延差异</p>
-<p>环境 ： 同机房，ceph rbd 存储集群 (nvme盘)</p>
-<p>使用fio测试，bs=4k, numjobs=4,iodepth=16，这里主要用于对比三者之间的时延性能差异</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#fio -filename&#x3D;&#x2F;dev&#x2F;sdb -direct&#x3D;1 -iodepth 16 -thread -rw&#x3D;randread -ioengine&#x3D;psync -bs&#x3D;4k -size&#x3D;10G -numjobs&#x3D;4 -runtime&#x3D;180 -group_reporting -name&#x3D;test</span><br></pre></td></tr></table></figure>
+        <p>基于CentOS 8 x86_64编译安装libvirt 7.2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#yum -y install ninja </span><br><span class="line">#yum install -y meson gcc cmake</span><br><span class="line">#wget https:&#x2F;&#x2F;libvirt.org&#x2F;sources&#x2F;libvirt-7.2.0.tar.xz</span><br><span class="line">#tar xvf libvirt-7.2.0.tar.xz</span><br><span class="line">#cd libvirt-7.2.0</span><br><span class="line">#meson build --prefix&#x3D;&#x2F;usr</span><br><span class="line">#ninja -C build</span><br><span class="line">#ninja -C build install</span><br></pre></td></tr></table></figure>
 
-<ol>
-<li>普通虚拟机直接fio 数据盘测试</li>
-<li></li>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#libvirtd --version</span><br></pre></td></tr></table></figure>
+
+
+
+<p>启动测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;sbin&#x2F;libvirtd --listen</span><br></pre></td></tr></table></figure>
+
+<p>报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : libvirt version: 7.2.0</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : hostname: openstack160.********</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: error : virNetTLSContextCheckCertFile:110 : Cannot read CA certificate &#39;&#x2F;etc&#x2F;pki&#x2F;CA&#x2F;cacert.pem&#39;: No such file or directory</span><br><span class="line"></span><br><span class="line">先临时修改了&#x2F;etc&#x2F;libvirt&#x2F;libvirtd.conf 关闭tls</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><ol>
+<li>ERROR: Program ‘rpcgen portable-rpcgen’ not found</li>
 </ol>
-<table>
-<thead>
-<tr>
-<th>虚机</th>
-<th>随机读(时延)</th>
-<th>随机写(时延)</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>普通虚机</td>
-<td>243-313us/12.7-16k</td>
-<td>710-724us/5500-5610</td>
-</tr>
-<tr>
-<td>spdk + host network</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>spdk + rdma</td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rpcgen</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>ERROR: Dependency “gnutls” not found, tried pkgconfig</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gnutls-devel</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>ERROR: Dependency “libxml-2.0” not found, tried pkgconfig</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libxml2-devel</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>ERROR: Problem encountered: XDR is required for remote driver</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libtirpc-devel</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/" data-id="cktpm2y72000b841636xq17n6" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" data-id="cku40uuy90000ss16ebg94xqc" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
 
     </footer>
   </div>
@@ -155,19 +152,10 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          openstack-qemu不支持自定义内存分配
-        
-      </div>
-    </a>
   
-  
-    <a href="/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">es-创建索引</div>
+      <div class="article-nav-title">openstack-qemu源码编译安装</div>
     </a>
   
 </nav>
@@ -218,15 +206,15 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">openstack-qemu源码编译安装</a>
           </li>
         
           <li>
             <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/">spdk-基于spdk虚拟机性能测试对比</a>
           </li>
         
           <li>

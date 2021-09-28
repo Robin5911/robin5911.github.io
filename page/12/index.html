@@ -79,6 +79,76 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-linux-定位IO过高进程" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
+  <time datetime="2020-10-09T01:54:02.000Z" itemprop="datePublished">2020-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位IO过高进程</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+
+<p>操作系统IO过高，可以通过基础工具 top/iostat 查看</p>
+<ol>
+<li><p>通过 top 的 %cpu 的wa（wait）指标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#top</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>iostat 的%util 指标</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#iostat -dx 1</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<p>如何定位具体哪个进程/服务造成io过高呢？</p>
+<ol>
+<li><p>最简单的可以通过 iotop 定位， 通过IO百分比定位进程</p>
+</li>
+<li><p>通过判断进程是 D状态 定位</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for x in &#96;seq 1 1 10&#96;; do ps -eo state,pid,cmd | grep &quot;^D&quot;; echo &quot;----&quot;; sleep 5; done</span><br></pre></td></tr></table></figure>
+
+<p>ps 进程状态</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PROCESS STATE CODES </span><br><span class="line">    D uninterruptible sleep (usually IO) </span><br><span class="line">    R running or runnable (on run queue) </span><br><span class="line">    S interruptible sleep (waiting for an event to complete) </span><br><span class="line">    T stopped, either by a job control signal or because it is being traced. </span><br><span class="line">    W paging (not valid since the 2.6.xx kernel) </span><br><span class="line">    X dead (should never be seen) </span><br><span class="line">    Z defunct (&quot;zombie&quot;) process, terminated but not reaped by its parent.</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>定位哪个文件造成IO过高，可以通过 lsof 或者 pt-ioprofile 跟踪进程pid来继续定位</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" data-id="ckg1lssot0000hc1600955y6u" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-容器-linux-namespace及网络" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" class="article-date">
@@ -539,52 +609,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-kubernetes-calico-网络分析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2020-09-29T03:52:57.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/">kubernetes calico 网络分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Calico架构"><a href="#Calico架构" class="headerlink" title="Calico架构"></a>Calico架构</h2><p><img src="/images/calico.png"></p>
-<p>Calico主要由Felix、etcd、BGP client、BGP Route Reflector组成。</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">Etcd</a>：负责存储网络信息</li>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">BGP client</a>：负责将Felix配置的路由信息分发到其他节点</li>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">Felix</a>：Calico Agent，每个节点都需要运行，主要负责配置路由、配置ACLs、报告状态</li>
-<li><a target="_blank" rel="noopener" href="https://docs.projectcalico.org/v3.0/reference/architecture/">BGP Route Reflector</a>：大规模部署时需要用到，作为BGP client的中心连接点，可以避免每个节点互联</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/09/29/kubernetes-calico-%E7%BD%91%E7%BB%9C%E5%88%86%E6%9E%90/" data-id="ckfp8dl5a000cpg1688cbd32s" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -635,15 +659,15 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">openstack-qemu源码编译安装</a>
           </li>
         
           <li>
             <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/">spdk-基于spdk虚拟机性能测试对比</a>
           </li>
         
           <li>

@@ -79,6 +79,52 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-docker-清空container-logs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" class="article-date">
+  <time datetime="2020-12-29T12:18:28.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/">docker-清空container logs</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>docker默认会记录容器从一开始运行到现在为止所有的日志内容，而且目前docker并没有提供日志管理工具对日志内容进行清理。 只能手工进行清理。</p>
+<ol>
+<li><p>找出docker container日志文件所在的路径</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>删除或者清空日志文件内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo |sudo tee $(docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" data-id="ckjatz3nw0001hc1615z92kec" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-文学生活" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" class="article-date">
@@ -517,47 +563,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-linux-python生成主机唯一UUID" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" class="article-date">
-  <time datetime="2020-12-14T04:22:28.000Z" itemprop="datePublished">2020-12-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/">linux-python生成主机唯一UUID</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>主机需要有一个唯一的uuid，对于物理机存在主板uuid获取不到的情况，所以根据相关信息，生成一个</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python</span><br><span class="line">#coding: utf-8</span><br><span class="line">import re</span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">    兼容python2&#x2F;python3</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">#默认shell执行函数</span><br><span class="line">def shellutil(cmd):</span><br><span class="line">    p &#x3D; subprocess.Popen(cmd,stdin&#x3D;subprocess.PIPE,stdout&#x3D;subprocess.PIPE,stderr&#x3D;subprocess.PIPE,shell&#x3D;True)</span><br><span class="line">    return p.communicate()</span><br><span class="line">#获取厂商信息</span><br><span class="line">def getManufacturer():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep Manufacturer|awk -F&#39;: &#39; &#39;&#123;print $2&#125;&#39;&quot;</span><br><span class="line">    resp&#x3D;shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower().zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;null&quot;</span><br><span class="line">#获取主板sn</span><br><span class="line">def getSN():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep &#39;Serial Number&#39;|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower()[0:4].zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;0000&quot;</span><br><span class="line">#获取设备UUID</span><br><span class="line">def getUUID():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -s system-uuid&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    uuid &#x3D; resp[0].decode(&#39;UTF-8&#39;)</span><br><span class="line">    match &#x3D; re.match(r&#39;(.*?)-(.*?)-(.*?)-(.*?)-(.*?)&#39;, uuid, re.M | re.I)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot; and match:</span><br><span class="line">        return resp[0].strip()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;ERROR&quot;</span><br><span class="line">#获取默认路由网卡mac</span><br><span class="line">def getFirstIpMac():</span><br><span class="line">    resp&#x3D;[]</span><br><span class="line">    eth_cmd&#x3D;&quot;ip route|grep default|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    eth_resp &#x3D; shellutil(eth_cmd)</span><br><span class="line">    if eth_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(0,eth_resp[0].strip().decode(&#39;UTF-8&#39;).lower().zfill(4))</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(0,&quot;lo&quot;.lower().zfill(4))</span><br><span class="line">    mac_cmd&#x3D;&#39;ifconfig eth2|egrep &quot;:[0-9a-z]*:&quot;|awk \&#39;&#123;print $2&#125;\&#39;&#39;</span><br><span class="line">    mac_resp&#x3D;shellutil(mac_cmd)</span><br><span class="line">    if mac_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(1,mac_resp[0].decode(&#39;UTF-8&#39;).replace(&quot;:&quot;,&quot;&quot;)[4:])</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(1,&quot;00000000&quot;)</span><br><span class="line">    return resp</span><br><span class="line">def main():</span><br><span class="line">    uuid_err_pre &#x3D; &quot;00000000&quot;</span><br><span class="line">    uuid&#x3D;getUUID()</span><br><span class="line">    route_eth&#x3D; getFirstIpMac()[0]</span><br><span class="line">    route_eth_mac&#x3D;getFirstIpMac()[1]</span><br><span class="line">    if uuid !&#x3D; &quot;ERROR&quot;:</span><br><span class="line">        print(uuid)</span><br><span class="line">    else:</span><br><span class="line">        fact&#x3D;getManufacturer()[0:4]</span><br><span class="line">        print(&#39;&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;&#39;.format(uuid_err_pre,fact,getSN(),route_eth,route_eth_mac))</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" data-id="ckio8h1ne00006s16e29d7qfd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -608,15 +613,15 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">openstack-qemu源码编译安装</a>
           </li>
         
           <li>
             <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/16/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/">spdk-基于spdk虚拟机性能测试对比</a>
           </li>
         
           <li>
