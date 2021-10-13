@@ -79,6 +79,131 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-一次虚拟机启动异常排查" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/" class="article-date">
+  <time datetime="2021-02-08T06:33:16.000Z" itemprop="datePublished">2021-02-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>环境 ： openstack stein版本，本地盘存储模式</p>
+<p>故障：虚机启动异常，排查原因</p>
+<p>查看虚机日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">2021-02-08 13:58:08.352 7 DEBUG nova.virt.images [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] 5516a827-a2fb-463b-9b03-168e56faa79f was qcow2, converting to raw fetch_to_raw &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;images.py:172</span><br><span class="line">2021-02-08 13:58:08.353 7 DEBUG nova.privsep.utils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Path &#39;&#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#39; supports direct I&#x2F;O supports_direct_io &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;privsep&#x2F;utils.py:66</span><br><span class="line">2021-02-08 13:58:08.353 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Running cmd (subprocess): qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:372</span><br><span class="line">2021-02-08 13:58:10.109 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted&quot; returned: 0 in 1.755s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br><span class="line">2021-02-08 13:58:10.375 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Running cmd (subprocess): &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;bin&#x2F;python -m oslo_concurrency.prlimit --as&#x3D;1073741824 --cpu&#x3D;30 -- env LC_ALL&#x3D;C LANG&#x3D;C qemu-img info &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted --force-share execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:372</span><br><span class="line">2021-02-08 13:58:10.813 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;bin&#x2F;python -m oslo_concurrency.prlimit --as&#x3D;1073741824 --cpu&#x3D;30 -- env LC_ALL&#x3D;C LANG&#x3D;C qemu-img info &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted --force-share&quot; returned: 0 in 0.438s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br><span class="line">2021-02-08 13:58:10.819 7 DEBUG oslo_concurrency.lockutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Lock &quot;344d45fde44ae9163acfa37ab64364ffe2fd0b9c&quot; released by &quot;nova.virt.libvirt.imagebackend.fetch_func_sync&quot; :: held 46.934s inner &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;lockutils.py:339</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Instance failed to spawn: ImageUnacceptable: Image 5516a827-a2fb-463b-9b03-168e56faa79f is unacceptable: Converted to raw, but format is now qcow2</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Traceback (most recent call last):</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py&quot;, line 2613, in _build_resources</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     yield resources</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py&quot;, line 2372, in _build_and_run_instance</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     block_device_info&#x3D;block_device_info)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3358, in spawn</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     block_device_info&#x3D;block_device_info)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3754, in _create_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     fallback_from_host)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3855, in _create_and_inject_local_root</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     instance, size, fallback_from_host)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 8578, in _try_fetch_image_cache</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     trusted_certs&#x3D;instance.trusted_certs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 276, in cache</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 668, in create_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     prepare_template(target&#x3D;base, *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;lockutils.py&quot;, line 328, in inner</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     return f(*args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 272, in fetch_func_sync</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     fetch_func(target&#x3D;target, *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;utils.py&quot;, line 421, in fetch_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     images.fetch_to_raw(context, image_id, target, trusted_certs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;images.py&quot;, line 188, in fetch_to_raw</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     data.file_format)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] ImageUnacceptable: Image 5516a827-a2fb-463b-9b03-168e56faa79f is unacceptable: Converted to raw, but format is now qcow2</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]</span><br><span class="line">2021-02-08 13:58:10.821 7 INFO nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Terminating instance</span><br><span class="line">2021-02-08 13:58:10.823 7 DEBUG nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Start destroying the instance on the hypervisor. _shutdown_instance &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py:2751</span><br></pre></td></tr></table></figure>
+
+<p>pycharm 查看nova代码</p>
+<p>nova/virt/images.py, 查看基本逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def fetch_to_raw(context, image_href, path, trusted_certs&#x3D;None)</span><br><span class="line">	...</span><br><span class="line">	fetch(context, image_href, path_tmp, trusted_certs)   &#x2F;&#x2F;先从glance api下载镜像到本地_base目录</span><br><span class="line">	...</span><br><span class="line">	if fmt !&#x3D; &quot;raw&quot; and CONF.force_raw_images:</span><br><span class="line">		...</span><br><span class="line">		convert_image(path_tmp, staged, fmt, &#39;raw&#39;) &#x2F;&#x2F;调用qemu convert command转换格式</span><br><span class="line">		...</span><br><span class="line">	    data &#x3D; qemu_img_info(staged)  &#x2F;&#x2F;调用qemu info查看转换后得镜像格式</span><br><span class="line">        if data.file_format !&#x3D; &quot;raw&quot;:</span><br><span class="line">           raise exception.ImageUnacceptable(image_id&#x3D;image_href,    &#x2F;&#x2F;抛出异常</span><br><span class="line">               reason&#x3D;_(&quot;Converted to raw, but format is now %s&quot;) %</span><br><span class="line">               data.file_format)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总体代码逻辑如上，所以问题基本定位是 qemu convert后镜像依旧是qcow2呢，  那为什么会呢 ？ </p>
+<ol>
+<li>nova-compute 日志中</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-02-08 13:58:10.109 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted&quot; returned: 0 in 1.755s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br></pre></td></tr></table></figure>
+
+<p>说明调用了qemu 发生了convert，WHY ？ 那让我们手工模拟一下代码流程吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#glance image-download 5516a827-a2fb-463b-9b03-168e56faa79f --file test.qcow2 --progress</span><br><span class="line">#qemu-img info test.qcow2 </span><br><span class="line">#qemu-img convert -t none -O raw -f qcow2 test.qcow2 test.qcow2.convert</span><br><span class="line">#qemu-img info test.raw.convert </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/openstack/fc4ccb936322f084084628c7bc65b909.png"></p>
+<p>如上图，发现，确实qemu convert 转换失败了，转完依旧是qcow2 ， 这什么鬼？</p>
+<p>定位相关同事，他的操作记录</p>
+<ol>
+<li>glance download 镜像 kali-self-2021.01.19.raw  （原始glance镜像是qcow2，他却保存成了*.raw)</li>
+<li>qemu-img convert -p -f raw -O qcow2 kali-self-2021.01.19.raw kali-self-2021.01.19.qcow2</li>
+<li>glance image-create 上传</li>
+</ol>
+<p>定位到是他 qemu convert 转错了，多转了一遍，把 qcow2 文件当成raw convert to qcow2 了，所以导致这个故障，Done~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/" data-id="ckkw911eq000bs8165opv8t1g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-练习题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" class="article-date">
+  <time datetime="2021-01-26T08:45:06.000Z" itemprop="datePublished">2021-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol start="2">
+<li><p>交替打印数字和字母</p>
+<p>使用两个 <code>goroutine</code> 交替打印序列，一个 <code>goroutine</code> 打印数字， 另外一个 <code>goroutine</code> 打印字母， 最终效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12AB34CD56EF78GH910IJ1112KL1314MN1516OP1718QR1920ST2122UV2324WX2526YZ2728</span><br></pre></td></tr></table></figure>
+
+<p>思路：</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>判断字符串中字符是否全都不同</p>
+<p>请实现一个算法，确定一个字符串的所有字符【是否全都不同】。这里我们要求【不允许使用额外的存储结构】。 给定一个string，请返回一个bool值,true代表所有字符全都不同，false代表存在相同的字符。 保证字符串中的字符为【ASCII字符】。字符串的长度小于等于【3000】。</p>
+<p>思路:</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" data-id="ckkw911ed0003s816a4or61h4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-go-判断字符串是否包含在数组中" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" class="article-date">
@@ -454,88 +579,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-docker-ce-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2020-12-30T02:15:24.000Z" itemprop="datePublished">2020-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>CentosOS 7 安装docker-ce</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># step 1: 安装必要的一些系统工具</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># Step 2: 添加软件源信息</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line"># Step 3: 更新并安装Docker-CE</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"># Step 4: 开启Docker服务</span><br><span class="line">sudo service docker start</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" data-id="ckjatz3nx0003hc1610b80nr4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-influxdb-基本使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time datetime="2020-12-29T12:23:27.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">influxdb 基本使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>influxdb 基本使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">使用数据库</span><br><span class="line">&gt;show databases;</span><br><span class="line">&gt;use db1;</span><br><span class="line"></span><br><span class="line">查询表</span><br><span class="line">&gt;show measurements;</span><br><span class="line">&gt;select * table1 where endpoint&#x3D;&#39;xxxxxxxxxxxxxxxxxxxxx&#39; LIMIT 10;</span><br><span class="line"></span><br><span class="line">删除表</span><br><span class="line">&gt;drop measurement table1;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="ckjatz3ny0005hc16cfe9cu0w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -564,7 +607,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.22px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 13.33px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -573,7 +616,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -586,6 +629,14 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/">kata-Kata Container介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/">openstack-cinder nvmf target 测试</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
           </li>
         
@@ -595,14 +646,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/">es-创建索引</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/15/Linux-%E5%86%85%E5%AD%98%E4%B8%8D%E9%87%8A%E6%94%BE-Used%E4%B8%8E%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8%E4%B8%8D%E7%AC%A6/">Linux-内存不释放,Used与实际使用不符</a>
           </li>
         
       </ul>

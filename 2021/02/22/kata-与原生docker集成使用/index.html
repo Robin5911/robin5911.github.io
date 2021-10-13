@@ -18,12 +18,12 @@ var _hmt = _hmt || [];
   
   <title>kata-与原生docker集成使用 | 老Zhang博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?ae11d5a19bdcf766771692d64967eeb1&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
+  <meta name="description" content="使用kata container 与docker集成 ⒈KataContainers？ 　　Kata Containers是新的虚拟机实现，可以实现和现在容器生态无缝连接，与时下最流行的容器编排工具k8s完美结合，提供容器的快速启动，和虚拟机的安全隔离，与Docker技术相比，容器之间不共用内核，使得隔离性更好。 　　Kata Containers 项目的主要目标是将虚拟化的安全隔离优势和容器的快">
 <meta property="og:type" content="article">
 <meta property="og:title" content="kata-与原生docker集成使用">
 <meta property="og:url" content="https://blog.kubestack.cn/2021/02/22/kata-%E4%B8%8E%E5%8E%9F%E7%94%9Fdocker%E9%9B%86%E6%88%90%E4%BD%BF%E7%94%A8/index.html">
 <meta property="og:site_name" content="老Zhang博客">
-<meta property="og:description" content="var _hmt &#x3D; _hmt || []; (function() {   var hm &#x3D; document.createElement(&quot;script&quot;);   hm.src &#x3D; &quot;https:&#x2F;&#x2F;hm.baidu.com&#x2F;hm.js?ae11d5a19bdcf766771692d64967eeb1&quot;;   var s &#x3D; document.getElementsByTagName(&quot;sc">
+<meta property="og:description" content="使用kata container 与docker集成 ⒈KataContainers？ 　　Kata Containers是新的虚拟机实现，可以实现和现在容器生态无缝连接，与时下最流行的容器编排工具k8s完美结合，提供容器的快速启动，和虚拟机的安全隔离，与Docker技术相比，容器之间不共用内核，使得隔离性更好。 　　Kata Containers 项目的主要目标是将虚拟化的安全隔离优势和容器的快">
 <meta property="og:locale">
 <meta property="og:image" content="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152257944-1238620662.jpg">
 <meta property="og:image" content="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152447829-1224252548.jpg">
@@ -33,7 +33,7 @@ var _hmt = _hmt || [];
 <meta property="og:image" content="https://blog.kubestack.cn/images/kata/2021-02-22_14h01_54.png">
 <meta property="og:image" content="https://blog.kubestack.cn/images/kata/2021-02-22_14h18_27.png">
 <meta property="article:published_time" content="2021-02-22T02:21:04.000Z">
-<meta property="article:modified_time" content="2021-09-09T10:13:28.792Z">
+<meta property="article:modified_time" content="2021-10-13T07:26:29.972Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="kata">
 <meta name="twitter:card" content="summary">
@@ -110,17 +110,7 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?ae11d5a19bdcf766771692d64967eeb1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>使用kata container 与docker集成</p>
+        <p>使用kata container 与docker集成</p>
 <p><strong>⒈KataContainers？</strong></p>
 <p>　　Kata Containers是新的虚拟机实现，可以实现和现在容器生态无缝连接，与时下最流行的容器编排工具k8s完美结合，提供容器的快速启动，和虚拟机的安全隔离，与Docker技术相比，容器之间不共用内核，使得隔离性更好。</p>
 <p>　　Kata Containers 项目的主要目标是将虚拟化的安全隔离优势和容器的快速启动特点结合起来。</p>
@@ -128,11 +118,11 @@ var _hmt = _hmt || [];
 <p>　　使用Docker轻量级的容器时，最大的问题就是会碰到安全性的问题，其中几个不同的容器可以互相的进行攻击，如果把这个内核给攻掉了，其他所有容器都会崩溃。如果使用KVM等虚拟化技术，会完美解决安全性的问题，但是会影响速度。</p>
 <p>　　Kata旨在通过虚拟机管理程序来缓解这种安全问题——创建一个外观和感觉像容器的虚拟机。<br>　　Kata Containers项目通过整合Intel Clear Containers和Hyper runV技术，能够支持不同平台的硬件，并且兼容Open Container Initiative(OCI)和Kubernetes container runtime interface(CRI)接口规范。Kata Containers项目现在由OpenStack基金会管理，代码托管在Github(<a target="_blank" rel="noopener" href="https://github.com/kata-containers)%E4%B8%8A%E3%80%82">https://github.com/kata-containers)上。</a></p>
 <p><strong>⒊使用Kata Containers替换Docker？</strong></p>
-<p>　　从docker架构上看，kata-container和原来的runc是平级的。大家知道docker只是管理容器生命周期的框架，真正启动容器最早用的是LXC，然后是runc，现在也可以换成kata了。所以说kata-container可以当做docker的一个插件，启动kata-container可以通过docker命令。Kata最大的亮点是解决了传统容器共享内核的安全和隔离问题，办法是让每个容器运行在一个轻量级的虚拟机中，使用单独的内核。 </p>
+<p>　　从docker架构上看，kata-container和原来的runc是平级的。大家知道docker只是管理容器生命周期的框架，真正启动容器最早用的是LXC，然后是runc，现在也可以换成kata了。所以说kata-container可以当做docker的一个插件，启动kata-container可以通过docker命令。Kata最大的亮点是解决了传统容器共享内核的安全和隔离问题，办法是让每个容器运行在一个轻量级的虚拟机中，使用单独的内核。</p>
 <p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152257944-1238620662.jpg" alt="img"></p>
 <p><img src="https://img2018.cnblogs.com/common/1364290/201912/1364290-20191225152447829-1224252548.jpg" alt="img"></p>
 <p><strong>⒋现在开始？</strong></p>
-<p>　　⒈安装Kata Containers容器包（以Centos 7 x86_64为例） </p>
+<p>　　⒈安装Kata Containers容器包（以Centos 7 x86_64为例）</p>
 <p>这里使用snap部署</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#yum install epel-release</span><br><span class="line">#yum install snapd</span><br><span class="line">#systemctl enable --now snapd.socket</span><br><span class="line">#ln -s &#x2F;var&#x2F;lib&#x2F;snapd&#x2F;snap &#x2F;snap</span><br></pre></td></tr></table></figure>
 
@@ -227,7 +217,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 12.22px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 13.33px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -236,7 +226,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -249,6 +239,14 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/">kata-Kata Container介绍</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/">openstack-cinder nvmf target 测试</a>
+          </li>
+        
+          <li>
             <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
           </li>
         
@@ -258,14 +256,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/">es-创建索引</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/15/Linux-%E5%86%85%E5%AD%98%E4%B8%8D%E9%87%8A%E6%94%BE-Used%E4%B8%8E%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8%E4%B8%8D%E7%AC%A6/">Linux-内存不释放,Used与实际使用不符</a>
           </li>
         
       </ul>
