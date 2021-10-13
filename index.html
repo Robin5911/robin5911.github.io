@@ -79,6 +79,114 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-github下载超时加速" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/" class="article-date">
+  <time datetime="2021-10-13T09:05:16.000Z" itemprop="datePublished">2021-10-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/">github下载超时加速</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>国内访问github太慢，甚至超时，咋办？</p>
+<p>第一步：找 IP<br>首先找到 github.com 的 IP 地址，可以在 IPAddress 网站上查找。还可以添加 github.global.ssl.fastly.net 的映射，这个有助于加速。</p>
+<p>注意：隔段时间地址会变，网上找的有些都过期了，建议还是自己去查询一下。</p>
+<p>第二步：修改 host<br>vim /etc/hosts<br>将找到的最新地址映射添加到 hosts 中。</p>
+<p>亲测,确实有效果噢~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/" data-id="ckupbrtpc0001ww16e2x33prf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Linux-CentOS-关闭ipv6" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" class="article-date">
+  <time datetime="2021-10-13T08:37:09.000Z" itemprop="datePublished">2021-10-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/">Linux-CentOS 关闭ipv6</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Post describes procedure to disable IPv6 on CentOS/RHEL 7. There are 2 ways to do this :</p>
+<ol>
+<li>Disable IPv6 in kernel module (requires reboot)</li>
+<li>Disable IPv6 using sysctl settings (no reboot required)</li>
+</ol>
+<p>To verify if IPv6 is enabled or not, execute :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ifconfig -a | grep inet6</span><br></pre></td></tr></table></figure>
+<pre><code>    inet6 fe80::211:aff:fe6a:9de4  prefixlen 64  scopeid 0x20
+    inet6 ::1  prefixlen 128  scopeid 0x10[host]</code></pre>
+<ol>
+<li>Disable IPv6 in kernel module (requires reboot)</li>
+<li>Edit /etc/default/grub and add ipv6.disable=1 in line GRUB_CMDLINE_LINUX, e.g.:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cat &#x2F;etc&#x2F;default&#x2F;grub</span><br></pre></td></tr></table></figure>
+<p>GRUB_TIMEOUT=5<br>GRUB_DEFAULT=saved<br>GRUB_DISABLE_SUBMENU=true<br>GRUB_TERMINAL_OUTPUT=”console”<br>GRUB_CMDLINE_LINUX=”ipv6.disable=1 crashkernel=auto rhgb quiet”<br>GRUB_DISABLE_RECOVERY=”true”<br>2. Regenerate a GRUB configuration file and overwrite existing one:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># grub2-mkconfig -o &#x2F;boot&#x2F;grub2&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>Restart system and verify no line “inet6” in “ip addr show” command output.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># shutdown -r now</span><br><span class="line"># ip addr show | grep net6</span><br></pre></td></tr></table></figure></li>
+<li>Disable IPv6 using sysctl settings (no reboot required)</li>
+<li>Append below lines in /etc/sysctl.conf:</li>
+</ol>
+<p>net.ipv6.conf.all.disable_ipv6 = 1<br>net.ipv6.conf.default.disable_ipv6 = 1<br>NOTE : To disable IPv6 on a single interface add below lines to /etc/sysctl.conf :<br>net.ipv6.conf.[interface].disable_ipv6 = 1 ### put interface name here [interface]<br>net.ipv6.conf.default.disable_ipv6 = 1<br>2. To make the settings affective, execute :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure>
+<p>NOTE : make sure the file /etc/ssh/sshd_config contains the line AddressFamily inet to avoid breaking SSH Xforwarding if you are using the sysctl method<br>3. Add the AddressFamily line to sshd_config :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span><br></pre></td></tr></table></figure>
+<p>….<br>AddressFamily inet<br>….<br>Restart sshd for changes to get get effect :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl restart sshd</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" data-id="ckupbrtp70000ww16c1u5aini" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-kata-Kata-Container介绍" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/" class="article-date">
@@ -493,106 +601,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-elastic-panic-elastic-Error-all-shards-failed" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/09/13/elastic-panic-elastic-Error-all-shards-failed/" class="article-date">
-  <time datetime="2021-09-13T10:03:33.000Z" itemprop="datePublished">2021-09-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/13/elastic-panic-elastic-Error-all-shards-failed/">elastic-Error all shards failed</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>第一次尝试使用 elastics的go sdk “github.com/olivere/elastic” ，有go版本的真不错，</p>
-<p>不料却报错了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">panic: elastic: Error 400 (Bad Request): all shards failed [type&#x3D;search_phase_execution_exception]</span><br></pre></td></tr></table></figure>
-
-<p>上代码吧</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;elastic-analysis-go&#x2F;es&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;github.com&#x2F;olivere&#x2F;elastic&quot;</span><br><span class="line">)</span><br><span class="line">var (</span><br><span class="line">	IndexName &#x3D; &quot;openstack_error_logs&quot;</span><br><span class="line">)</span><br><span class="line">func main()&#123;</span><br><span class="line">	ctx :&#x3D; context.Background()</span><br><span class="line">	_ &#x3D; es.CreateClient(&quot;http:&#x2F;&#x2F;10.224.144.15:9011&quot;, &quot;USERNAME&quot;, &quot;PASSWORD&quot;)</span><br><span class="line">	&#x2F;&#x2F;create terms agg order by openstack region</span><br><span class="line">	aggs :&#x3D; elastic.NewValueCountAggregation().Field(&quot;programname&quot;)</span><br><span class="line"></span><br><span class="line">	searchResult,err :&#x3D; es.EsClient.Search().</span><br><span class="line">						Index(IndexName).</span><br><span class="line">		Query(elastic.NewMatchAllQuery()). &#x2F;&#x2F; 设置查询条件</span><br><span class="line">		Aggregation(&quot;total&quot;, aggs). &#x2F;&#x2F; 设置聚合条件，并为聚合条件设置一个名字</span><br><span class="line">		Size(0).</span><br><span class="line">		Do(ctx)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	&#x2F;&#x2F; 使用ValueCount函数和前面定义的聚合条件名称，查询结果</span><br><span class="line">	agg, found :&#x3D; searchResult.Aggregations.ValueCount(&quot;total&quot;)</span><br><span class="line">	if found &#123;</span><br><span class="line">		&#x2F;&#x2F; 打印结果，注意：这里使用的是取值运算符</span><br><span class="line">		fmt.Println(*agg.Value)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h4 id="原因分析："><a href="#原因分析：" class="headerlink" title="原因分析："></a>原因分析：</h4><p>当使用到Field 精准匹配相关的查询时，所以查询的关键字在es上的类型，必须是keyword而不能是text，比如你的搜索条件是 ”programname”:”neutron”,那么该programname 字段的es类型得是keyword，而不能是text<br>改成使用 elastic.NewValueCountAggregation().Field(“programname.keyword”) 就可以了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/13/elastic-panic-elastic-Error-all-shards-failed/" data-id="cktpm4ftt0000os16360udly4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elastic/" rel="tag">elastic</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spdk-基于spdk-vhost-qemu启动虚机" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/" class="article-date">
-  <time datetime="2021-09-10T07:40:52.000Z" itemprop="datePublished">2021-09-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/">spdk-基于spdk vhost qemu启动虚机</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>qemu启动虚机，driver使用基于spdk的vhost-user-scsi技术， bdev backend为ceph rbd</p>
-<p>创建vhost device (上文创建rbd dev名称为Ceph0)</p>
-<h5 id="virtio-blk"><a href="#virtio-blk" class="headerlink" title="virtio-blk"></a>virtio-blk</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#scripts&#x2F;rpc.py vhost_create_blk_controller --cpumask 0x1 vhost.1 Ceph1</span><br><span class="line">#scripts&#x2F;rpc.py bdev_virtio_attach_controller --dev-type blk --trtype user --traddr &#x2F;opt&#x2F;tmp&#x2F;vhost.1 --vq-count 2 --vq-size 512 VirtioBlk1</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="virtio-scsi"><a href="#virtio-scsi" class="headerlink" title="virtio-scsi"></a>virtio-scsi</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#scripts&#x2F;rpc.py vhost_create_scsi_controller --cpumask 0x1 vhost.0</span><br><span class="line">#scripts&#x2F;rpc.py vhost_scsi_controller_add_target vhost.0 0 Ceph0</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="启动虚拟机"><a href="#启动虚拟机" class="headerlink" title="启动虚拟机"></a>启动虚拟机</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;qemu42&#x2F;bin&#x2F;qemu-system-x86_64    --enable-kvm   \</span><br><span class="line">-cpu host -smp 4,sockets&#x3D;4,cores&#x3D;1,threads&#x3D;1   \</span><br><span class="line">-m 1G -object memory-backend-file,id&#x3D;mem0,size&#x3D;1G,mem-path&#x3D;&#x2F;dev&#x2F;hugepages,share&#x3D;on \</span><br><span class="line">-numa node,memdev&#x3D;mem0   \</span><br><span class="line">-drive file&#x3D;&#x2F;opt&#x2F;a0c4f799-aecf-4ebd-af51-03b2f2f14c5a.qcow2,if&#x3D;none,id&#x3D;disk   \</span><br><span class="line">-device ide-hd,drive&#x3D;disk,bootindex&#x3D;0   \</span><br><span class="line">-chardev socket,id&#x3D;spdk_vhost_scsi0,path&#x3D;&#x2F;opt&#x2F;tmp&#x2F;vhost.0   \</span><br><span class="line">-device vhost-user-scsi-pci,id&#x3D;scsi0,chardev&#x3D;spdk_vhost_scsi0,bootindex&#x3D;1  \</span><br><span class="line">-vnc 0.0.0.0:3 \</span><br><span class="line">-device virtio-net-pci,netdev&#x3D;net0 -netdev tap,id&#x3D;net0,ifname&#x3D;tap0,script&#x3D;no,downscript&#x3D;no</span><br></pre></td></tr></table></figure>
-
-<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">libvirt 貌似只支持管理qemu vhost-user-blk方式，不支持vhost-user-scsi方式</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="cinder"><a href="#cinder" class="headerlink" title="cinder"></a>cinder</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cinder type-create sata_high_io</span><br><span class="line">cinder type-key sata_high_io set volume_backend_name&#x3D;rbd-1</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/" data-id="ckte5vgp80001dw165h9ef50n" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -621,7 +629,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12.22px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 13.33px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 13px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -643,6 +651,14 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/">github下载超时加速</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/">Linux-CentOS 关闭ipv6</a>
+          </li>
+        
+          <li>
             <a href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/">kata-Kata Container介绍</a>
           </li>
         
@@ -652,14 +668,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">openstack-qemu源码编译安装</a>
-          </li>
-        
-          <li>
-            <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
           </li>
         
       </ul>
