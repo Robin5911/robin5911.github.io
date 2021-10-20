@@ -79,6 +79,388 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-裸金属ironic整理-8" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-8/" class="article-date">
+  <time datetime="2021-04-22T11:36:24.000Z" itemprop="datePublished">2021-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-8/">openstack-裸金属ironic整理-8</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>裸金属存储架构</p>
+<p>存储</p>
+<p><img src="http://www.taocloudx.com/uploads/200629/1-200629144A0300.png" alt="img"></p>
+<p><img src="https://img-blog.csdn.net/20180314191409617" alt="img"></p>
+<p>ceph iscsi 集群架构</p>
+<p><img src="https://img-blog.csdnimg.cn/img_convert/68a05d45effae6d6610b8013aa24c8f4.png" alt="image"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-8/" data-id="ckssanb4a000pto1639u8crn1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-裸金属ironic整理-7" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-7/" class="article-date">
+  <time datetime="2021-04-22T11:36:20.000Z" itemprop="datePublished">2021-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-7/">openstack-裸金属ironic整理-7</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="PXE概述"><a href="#PXE概述" class="headerlink" title="PXE概述"></a>PXE概述</h2><p>PXE 是描述客户端-服务器与网络引导软件交互的行业标准，并使用 DHCP 和 TFTP 协议。本指南介绍了一种使用 PXE 环境安装 Clear Linux OS 的方法。</p>
+<p>名为 <a target="_blank" rel="noopener" href="http://ipxe.org/">iPXE</a> 的 PXE 扩展新增了对 HTTP、iSCSI、AoE 和 FCoE 等协议的支持。iPXE 支持在没有内置 PXE 支持的计算机上使用网络引导。</p>
+<p>要通过 iPXE 安装 Clear Linux OS，必须创建一个 PXE 客户端。图 1 描述了 PXE 服务器和 PXE 客户端之间的信息流。</p>
+<p><img src="https://docs.01.org/clearlinux/latest/zh_CN/_images/network-boot-flow.png" alt="PXE information flow"></p>
+<p>看一下 ironic dnsmasq配置</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">#cat &#x2F;etc&#x2F;kolla&#x2F;ironic-dnsmasq&#x2F;dnsmasq.conf</span><br><span class="line"></span><br><span class="line">port&#x3D;0</span><br><span class="line">interface&#x3D;ironic_port</span><br><span class="line">dhcp-range&#x3D;172.66.0.200,172.66.0.250</span><br><span class="line">dhcp-option&#x3D;option:tftp-server,172.66.0.235</span><br><span class="line">dhcp-option&#x3D;option:server-ip-address,172.66.0.235</span><br><span class="line">bind-interfaces</span><br><span class="line">dhcp-sequential-ip</span><br><span class="line">dhcp-option&#x3D;210,&#x2F;tftpboot&#x2F;</span><br><span class="line">dhcp-match&#x3D;ipxe,175</span><br><span class="line">dhcp-match&#x3D;set:efi,option:client-arch,7</span><br><span class="line">dhcp-match&#x3D;set:efi,option:client-arch,9</span><br><span class="line"># Client is already running iPXE; move to next stage of chainloading</span><br><span class="line">dhcp-option&#x3D;tag:ipxe,option:bootfile-name,http:&#x2F;&#x2F;10.145.69.8:8089&#x2F;inspector.ipxe</span><br><span class="line"># Client is PXE booting over EFI without iPXE ROM,</span><br><span class="line"># send EFI version of iPXE chainloader</span><br><span class="line">dhcp-option&#x3D;tag:efi,tag:!ipxe,option:bootfile-name,ipxe.efi</span><br><span class="line">dhcp-option&#x3D;option:bootfile-name,pxelinux.0</span><br><span class="line">dhcp-hostsdir&#x3D;&#x2F;etc&#x2F;dnsmasq&#x2F;dhcp-hostsdir</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-7/" data-id="ckssanb48000lto163o560lfv" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-裸金属ironic整理-6" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-6/" class="article-date">
+  <time datetime="2021-04-22T11:36:16.000Z" itemprop="datePublished">2021-04-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-6/">openstack-裸金属ironic整理-6</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Direct-Deploy-UML"><a href="#Direct-Deploy-UML" class="headerlink" title="Direct Deploy UML"></a>Direct Deploy UML</h2><p>*With direct deploy interface, the deploy ramdisk fetches the image from an HTTP location. It can be an object storage (swift or RadosGW) temporary URL or a user-provided HTTP URL. The deploy ramdisk then copies the image to the target disk. *</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal node create --driver ipmi --deploy-interface direct</span><br><span class="line">openstack baremetal node set &lt;NODE&gt; --deploy-interface direct</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://img-blog.csdnimg.cn/20190506160607912.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20190507152743937.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<ol>
+<li>加入 Provision Network。</li>
+<li>重启裸机。</li>
+<li>IPA 通过 lookup 从 Ironic Conductor 取得它对应的 ironic_node_uuid。</li>
+<li>IPA 通过 Heartbeat 与 Ironic 通信，驱动部署流程触发 ironic-conductor 发送 prepare_image 命令到 IPA，让 IPA 直接<strong>（Direct）</strong>下载并注入用户镜像到本地磁盘。写镜像是一个耗时较长的动作，通常 300GB 大小的镜像需要十分钟左右。</li>
+<li>ironic-conductor 收到 Heartbeat 消息后（从 ironic-api 过来的 RPC 消息），根据当前状态的不同有相应的处理。第一个 Heartbeat 消息会触发 ironic-conductor 下发 prepare_image 到 IPA，以后的 Heartbeat 消息会触发 ironic-conductor 查询 IPA 上的 command status，它的目的是要监控 prepare_image 等 command 是否还在运行中。一旦 command status 显示命令结束。就会继续下一步部署操作，包括设置物理服务器从磁盘启动、关机、切换网络、开机。知道部署流程结束。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/22/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-6/" data-id="ckssanb47000jto16byid9kef" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mysql-排查故障常用命令" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/14/mysql-%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="article-date">
+  <time datetime="2021-04-14T09:21:28.000Z" itemprop="datePublished">2021-04-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/14/mysql-%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">mysql-排查故障常用命令</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>整理的常用mysql排查命令</p>
+<p>mysql 8.0 </p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">## 当前运行的所有事务</span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> information_schema.innodb_trx\G;</span><br><span class="line">## 查看锁使用情况</span><br><span class="line">mysql&gt; show status like <span class="string">&#x27;innodb_row_lock_%&#x27;</span>;</span><br><span class="line">+-------------------------------+--------+</span><br><span class="line">| Variable_name                 | Value  |</span><br><span class="line">+-------------------------------+--------+</span><br><span class="line">| Innodb_row_lock_current_waits | <span class="number">1</span>      |</span><br><span class="line">| Innodb_row_lock_time          | <span class="number">479764</span> |</span><br><span class="line">| Innodb_row_lock_time_avg      | <span class="number">39980</span>  |</span><br><span class="line">| Innodb_row_lock_time_max      | <span class="number">51021</span>  |</span><br><span class="line">| Innodb_row_lock_waits         | <span class="number">12</span>     |</span><br><span class="line">+-------------------------------+--------+</span><br><span class="line"><span class="number">5</span> rows <span class="keyword">in</span> set (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">解释如下：</span><br><span class="line">Innodb_row_lock_current_waits : 当前等待锁的数量</span><br><span class="line">Innodb_row_lock_time : 系统启动到现在，锁定的总时间长度</span><br><span class="line">Innodb_row_lock_time_avg : 每次平均锁定的时间</span><br><span class="line">Innodb_row_lock_time_max : 最长一次锁定时间</span><br><span class="line">Innodb_row_lock_waits : 系统启动到现在总共锁定的次数 </span><br><span class="line"></span><br><span class="line"># 查询是否锁表</span><br><span class="line">mysql&gt; show OPEN TABLES where In_use &gt; <span class="number">0</span>;</span><br><span class="line">+----------+-------+--------+-------------+</span><br><span class="line">| Database | Table | In_use | Name_locked |</span><br><span class="line">+----------+-------+--------+-------------+</span><br><span class="line">| test     | tx1   |      <span class="number">1</span> |           <span class="number">0</span> |</span><br><span class="line">+----------+-------+--------+-------------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> set (<span class="number">0.00</span> sec)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/14/mysql-%E6%8E%92%E6%9F%A5%E6%95%85%E9%9A%9C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" data-id="ckssanb3z0003to165e2cf9ws" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-map赋值前要先初始化：assignment-to-entry-in-nil-map" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/09/go-map%E8%B5%8B%E5%80%BC%E5%89%8D%E8%A6%81%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9Aassignment-to-entry-in-nil-map/" class="article-date">
+  <time datetime="2021-04-09T08:25:26.000Z" itemprop="datePublished">2021-04-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/09/go-map%E8%B5%8B%E5%80%BC%E5%89%8D%E8%A6%81%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9Aassignment-to-entry-in-nil-map/">go-map赋值前要先初始化：assignment to entry in nil map</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>注意这种map的嵌套的形式，make只初始化了map[string]T部分(T为map[int]int)，所以下面的赋值会出现错误：</p>
+<p>错误用法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">test :&#x3D; make(map[string]map[int]int)</span><br><span class="line">test[&quot;go&quot;][0] &#x3D; 0 &#x2F;&#x2F; error</span><br></pre></td></tr></table></figure>
+
+<p>正确用法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">test :&#x3D; make(map[string]map[int]int)</span><br><span class="line">test[&quot;go&quot;] &#x3D; make(map[int]int)</span><br><span class="line">test[&quot;go&quot;][0] &#x3D; 0</span><br></pre></td></tr></table></figure>
+
+<p>常用用法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test :&#x3D; make(map[string]map[int]int)</span><br><span class="line">if test[&quot;go&quot;] &#x3D;&#x3D; nil &#123;</span><br><span class="line">	test[&quot;go&quot;] &#x3D; make(map[int]int)</span><br><span class="line">&#125;</span><br><span class="line">test[&quot;go&quot;][0] &#x3D; 0</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/09/go-map%E8%B5%8B%E5%80%BC%E5%89%8D%E8%A6%81%E5%85%88%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9Aassignment-to-entry-in-nil-map/" data-id="ckssanb3x0000to167e319lye" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-裸金属ironic整理-5" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-5/" class="article-date">
+  <time datetime="2021-04-02T07:35:55.000Z" itemprop="datePublished">2021-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-5/">openstack-裸金属ironic整理-5</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="iSCSI-Deploy-UML"><a href="#iSCSI-Deploy-UML" class="headerlink" title="iSCSI Deploy UML"></a>iSCSI Deploy UML</h2><p>With iscsi deploy interface, the deploy ramdisk publishes the node’s hard drive as an iSCSI share. The ironic-conductor then copies the image to this share. This interface is used by default.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">openstack baremetal node create --driver ipmi --deploy-interface iscsi</span><br><span class="line">openstack baremetal node set &lt;NODE&gt; --deploy-interface iscsi</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="https://img-blog.csdnimg.cn/20190506160410435.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="E:\开发文档\images\Screenpresso\PXE_Provisioning.png"></p>
+<ol>
+<li>通过 Nova API 发起裸金属实例部署请求。</li>
+<li>Nova Scheduler 根据请求中的参数信息（e.g. 硬件模板、镜像等）筛选合适的 ironic node。例如：调度因子通常包含在 Flavor 的 extra_spec 属性中（e.g. cpu_arch、baremetal:deploy_kerner_id、baremmetal:deploy_ramdisk_id）。</li>
+<li>Nova Compute 将部署裸机所需要的信息都整理好，然后 Spawn 一个 Build 任务，主要是调用并传递参数到 Ironic API 实际执行，Ironic 将此任务中所需要的硬件资源信息持久化到数据库中。</li>
+<li>Ironic 与 OpenStack 的其他服务交互，从 Glance 服务获取 Images（Deploy Images &amp; User Images），调用 Neutron 服务为裸机创建端口，调用 Cinder 服务获取Volumes 等。</li>
+<li>Ironic 开始执行真正的裸机部署，PXE Driver 准备好 TFTP 和 Bootloader，IPMI Driver 设置裸机启动模式为 PXE 并起电。<br>裸机启电后，通过 DHCP 获得 Ironic Conductor 的地址并尝试通过 TFTP 从 Conductor 获取 Deploy Images，Conductor 部署好 RAMDisk 之后，IPA 就可以通过 iSCSI 协议将裸机的硬盘暴露出来，Conductor 随后注入 User Images 到裸机磁盘作为根磁盘。<br>根磁盘部署完成后，IPMI Driver 调整裸机引导顺序，完成部署。</li>
+</ol>
+<h2 id="PXE-Deploy-Driver"><a href="#PXE-Deploy-Driver" class="headerlink" title="PXE Deploy Driver"></a>PXE Deploy Driver</h2><p><img src="https://img-blog.csdnimg.cn/20190506160932587.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-5/" data-id="ckssanb46000hto16aad6fw35" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-裸金属ironic整理-4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/" class="article-date">
+  <time datetime="2021-04-02T07:35:51.000Z" itemprop="datePublished">2021-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/">openstack-裸金属ironic整理-4</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="网络规划"><a href="#网络规划" class="headerlink" title="网络规划"></a>网络规划</h2><p>在ironic网络分为provisoning/cleaning网络 和 业务网络</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>类型</th>
+<th>网卡</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>provisoning/cleaning</td>
+<td>flat</td>
+<td>ext interface</td>
+<td>用于部署阶段,ipa使用</td>
+</tr>
+<tr>
+<td>users</td>
+<td>vlan</td>
+<td>ext interface</td>
+<td>用户业务使用，直通/基础网络</td>
+</tr>
+</tbody></table>
+<p>这里两种网络，共用一个网卡，都使用业务网卡比如 eth1,  eth1对应交换机接口需要配置trunk，并对接口打上pvid， pvid为users 业务网络的vlan号</p>
+<p><img src="https://img-blog.csdn.net/20180425100931818?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p6dGZseWVy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="Ironic网络架构"></p>
+<h1 id="基于-SDN-的网络切换流程"><a href="#基于-SDN-的网络切换流程" class="headerlink" title="基于 SDN 的网络切换流程"></a>基于 SDN 的网络切换流程</h1><p><img src="https://img-blog.csdnimg.cn/20190507154455746.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/" data-id="ckssanb49000nto16guqpclu7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-弹性伸缩调研-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" class="article-date">
+  <time datetime="2021-04-02T04:05:51.000Z" itemprop="datePublished">2021-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/">openstack-弹性伸缩调研-2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" data-id="ckssanb400005to16hj994xp2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-openstack-弹性伸缩调研-1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-1/" class="article-date">
@@ -163,389 +545,11 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-openstack-裸金属ironic整理-2" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-2/" class="article-date">
-  <time datetime="2021-04-01T02:54:52.000Z" itemprop="datePublished">2021-04-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-2/">openstack-裸金属ironic整理-2</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="openstack-裸金属ironic探索"><a href="#openstack-裸金属ironic探索" class="headerlink" title="openstack 裸金属ironic探索"></a>openstack 裸金属ironic探索</h2><h4 id="部署流程"><a href="#部署流程" class="headerlink" title="部署流程"></a>部署流程</h4><p><img src="https://ironic-book.readthedocs.io/zh_CN/latest/_images/deployment_architecture_2.png" alt="../_images/deployment_architecture_2.png"></p>
-<p><img src="https://ironic-book.readthedocs.io/zh_CN/latest/_images/deployment_steps.png" alt="../_images/deployment_steps.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-2/" data-id="ckssanb43000bto167pp61xpm" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-裸金属ironic整理-1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-1/" class="article-date">
-  <time datetime="2021-04-01T02:54:48.000Z" itemprop="datePublished">2021-04-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-1/">openstack-裸金属ironic整理-1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="openstack-裸金属ironic探索"><a href="#openstack-裸金属ironic探索" class="headerlink" title="openstack 裸金属ironic探索"></a>openstack 裸金属ironic探索</h2><h4 id="组件-术语"><a href="#组件-术语" class="headerlink" title="组件/术语"></a>组件/术语</h4><table>
-<thead>
-<tr>
-<th>组件</th>
-<th>分类</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ironic-api</td>
-<td>ironic</td>
-<td>api 服务,接收用户请求，传递给ironic-conductor</td>
-</tr>
-<tr>
-<td>ironic-conductor</td>
-<td>ironic</td>
-<td>根据请求执行相应的，创建、开机、关机、删除等操作</td>
-</tr>
-<tr>
-<td>ironic-inspector</td>
-<td>ironic</td>
-<td>主机发现服务，硬件自检工具</td>
-</tr>
-<tr>
-<td>ironic-python-agent</td>
-<td>ironic</td>
-<td>pxe启动进入的一个bootstrap镜像, 部署引导系统的 agent服务</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-1/" data-id="ckssanb45000fto167oe96k61" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-gitlab-gitlab-runner-ci-docker-报错" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/" class="article-date">
-  <time datetime="2021-03-24T07:10:27.000Z" itemprop="datePublished">2021-03-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/">gitlab-gitlab runner ci docker 报错</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>使用gitlab runner做ci，但当docker build时报错  Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock </p>
-<p>解决：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#usermod -aG docker gitlab-runner</span><br><span class="line">#service docker restart</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/03/24/gitlab-gitlab-runner-ci-docker-%E6%8A%A5%E9%94%99/" data-id="ckmq12ntp00006c165ghc5tee" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-安装docker-ce" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/" class="article-date">
-  <time datetime="2021-03-24T06:22:01.000Z" itemprop="datePublished">2021-03-24</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/">docker-安装docker-ce</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>安装stable docker-ce的repo</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#cd &#x2F;etc&#x2F;yum.repos.d&#x2F;</span><br><span class="line">#wget https:&#x2F;&#x2F;download.docker.com&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br></pre></td></tr></table></figure>
-
-<p>#yum -y install docker-ce</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/03/24/docker-%E5%AE%89%E8%A3%85docker-ce/" data-id="ckmn280lc0000tg161yiuhtth" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-neutron创建keepalived-vip" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/" class="article-date">
-  <time datetime="2021-03-19T06:15:44.000Z" itemprop="datePublished">2021-03-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/">openstack-neutron创建keepalived vip</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>用户需要使用keepalived， 需要申请一个vip</p>
-<p>rs: 10.20.32.22,12,23</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#neutron port-create --fixed-ip ip_address&#x3D;10.20.32.100 fed51c88-367b-4613-b366-a701317eed61</span><br><span class="line"></span><br><span class="line">#neutron port-list|egrep &#39;20.12|20.22|20.23&#39;</span><br><span class="line">#neutron port-update PORT_ID1 --allowed_address_pairs list&#x3D;true type&#x3D;dict ip_address&#x3D;10.20.32.100</span><br><span class="line">#neutron port-update PORT_ID2 --allowed_address_pairs list&#x3D;true type&#x3D;dict ip_address&#x3D;10.20.32.100</span><br><span class="line">#neutron port-update PORT_ID3 --allowed_address_pairs list&#x3D;true type&#x3D;dict ip_address&#x3D;10.20.32.100</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/" data-id="ckmh4kdsr0008z4167awk8luu" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-虚机创建失败排查" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/" class="article-date">
-  <time datetime="2021-03-15T23:48:37.000Z" itemprop="datePublished">2021-03-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/">openstack-虚机创建失败排查</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>openstack虚机创建失败，排查原因</p>
-<p>现象：</p>
-<p>​    “message”: “No valid host was found. There are not enough hosts available.”, “code”: 500</p>
-<p>思路：</p>
-<ol>
-<li>查看nova-compute</li>
-<li>查看scheduler 和 placement 的日志</li>
-<li></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#nova-manage cell_v2 discover_hosts --verbose</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/" data-id="ckmh4kdss0009z41618cb6wiy" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-linux-golang打开markdown失败" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/" class="article-date">
-  <time datetime="2021-03-15T08:29:37.000Z" itemprop="datePublished">2021-03-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/">linux-golang打开markdown失败</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在centos 7 上开发，golang无法打开markdown文件，报错 </p>
-<pre><code>JCEF browser component failed to start
-            Missing native libraries:     libXss.so.1</code></pre>
-<p>使用yum查找谁提供的包</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#yum whatprovides libXss</span><br><span class="line">#yum install libXScrnSaver</span><br></pre></td></tr></table></figure>
-
-<p>nice, markdown 可以打开了</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/03/15/linux-golang%E6%89%93%E5%BC%80markdown%E5%A4%B1%E8%B4%A5/" data-id="ckmh4kdso0005z416eee41ezv" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-gorm使用子查询查询数据" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time datetime="2021-03-11T06:43:50.000Z" itemprop="datePublished">2021-03-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">go-gorm使用子查询查询数据</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>gorm 使用子查询查询数据</p>
-<p>我想实现如下SQL的查询</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;SELECT id,hostname FROM &#96;physical_nodes&#96;  WHERE &#96;physical_nodes&#96;.&#96;deleted_at&#96; IS NULL AND ((model &#x3D; &#39;&#39; and id not in ((SELECT hid FROM &#96;hardware_infos&#96;  WHERE (cpu_core &#x3D; &#39;&#39; or mem_size &#x3D; &#39;&#39; or </span><br><span class="line">disk &#x3D; &#39;&#39;))))) ;</span><br></pre></td></tr></table></figure>
-
-<p>通过gorm 实现</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ds :&#x3D; db.GetDB()</span><br><span class="line">var pns []model.PhysicalNode</span><br><span class="line">&#x2F;&#x2F;查询没有model而且hardware info cpu ram disk 为null的</span><br><span class="line">sql :&#x3D; fmt.Sprintf(&quot;model &#x3D; &#39;&#39; and id not in (?)&quot;)</span><br><span class="line">subSql :&#x3D; fmt.Sprintf(&quot;cpu_core &#x3D; &#39;&#39; or mem_size &#x3D; &#39;&#39; or disk &#x3D; &#39;&#39;&quot;)</span><br><span class="line">subQuery :&#x3D; ds.Select(&quot;hid&quot;).Table(&quot;hardware_infos&quot;).Where(subSql).SubQuery()</span><br><span class="line"></span><br><span class="line">err :&#x3D; ds.Select(&quot;id,hostname&quot;).Where(sql,subQuery).Find(&amp;pns).Error</span><br><span class="line">if err !&#x3D; nil &#123;</span><br><span class="line">	logger.Error(&quot;db query error : &quot;,err)</span><br><span class="line">	return nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/03/11/go-gorm%E4%BD%BF%E7%94%A8%E5%AD%90%E6%9F%A5%E8%AF%A2%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" data-id="ckmh4kdsm0001z416fmj59kti" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -569,7 +573,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 12px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 13px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 13px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -591,23 +595,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/">github下载超时加速</a>
+            <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
           </li>
         
           <li>
-            <a href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/">Linux-CentOS 关闭ipv6</a>
+            <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/">小白解说之Docker容器入门</a>
           </li>
         
           <li>
-            <a href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/">kata-Kata Container介绍</a>
+            <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BOpenStack%E5%85%A5%E9%97%A8/">小白解说之OpenStack</a>
           </li>
         
           <li>
-            <a href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/">openstack-cinder nvmf target 测试</a>
+            <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/">小白解说之KataContainer</a>
           </li>
         
           <li>
-            <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
+            <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/">小白解说之Kubernetes入门</a>
           </li>
         
       </ul>
