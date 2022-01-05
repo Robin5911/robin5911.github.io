@@ -16,19 +16,19 @@ var _hmt = _hmt || [];
   
 
   
-  <title>小白说</title>
+  <title>小白说互联网</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:type" content="website">
-<meta property="og:title" content="小白说">
+<meta property="og:title" content="小白说互联网">
 <meta property="og:url" content="https://blog.kubestack.cn/page/3/index.html">
-<meta property="og:site_name" content="小白说">
+<meta property="og:site_name" content="小白说互联网">
 <meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:locale">
 <meta property="article:author" content="Tonyzhang1989">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="小白说" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="小白说互联网" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -51,7 +51,7 @@ var _hmt = _hmt || [];
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">小白说</a>
+        <a href="/" id="logo">小白说互联网</a>
       </h1>
       
     </div>
@@ -79,10 +79,10 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-openstack-服务连接mysql报错" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-nvmf-基本使用" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/09/14/openstack-%E6%9C%8D%E5%8A%A1%E8%BF%9E%E6%8E%A5mysql%E6%8A%A5%E9%94%99/" class="article-date">
-  <time datetime="2021-09-14T04:23:53.000Z" itemprop="datePublished">2021-09-14</time>
+    <a href="/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="article-date">
+  <time datetime="2021-10-19T04:19:36.000Z" itemprop="datePublished">2021-10-19</time>
 </a>
     
   </div>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/14/openstack-%E6%9C%8D%E5%8A%A1%E8%BF%9E%E6%8E%A5mysql%E6%8A%A5%E9%94%99/">openstack-服务连接mysql报错</a>
+      <a class="article-title" href="/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">nvmf 基本使用</a>
     </h1>
   
 
@@ -101,23 +101,21 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>openstack集群nova/neutron等组件，经常报mysql lost connection 错误，非常烦人，具体报错如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">(Background on this error at: http:&#x2F;&#x2F;sqlalche.me&#x2F;e&#x2F;e3q8)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines Traceback (most recent call last):</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_db&#x2F;sqlalchemy&#x2F;engines.py&quot;, line 73, in _connect_ping_listener</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     connection.scalar(select([1]))</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;engine&#x2F;base.py&quot;, line 920, in scalar</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     return self.execute(object_, *multiparams, **params).scalar()</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;engine&#x2F;base.py&quot;, line 988, in execute</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     return meth(self, multiparams, params)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;sql&#x2F;elements.py&quot;, line 287, in _execute_on_connection</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     return connection._execute_clauseelement(self, multiparams, params)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;engine&#x2F;base.py&quot;, line 1107, in _execute_clauseelement</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     distilled_params,</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;engine&#x2F;base.py&quot;, line 1248, in _execute_context</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     e, statement, parameters, cursor, context</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;engine&#x2F;base.py&quot;, line 1464, in _handle_dbapi_exception</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     util.raise_from_cause(newraise, exc_info)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;util&#x2F;compat.py&quot;, line 398, in raise_from_cause</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     reraise(type(exception), exception, tb&#x3D;exc_tb, cause&#x3D;cause)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;engine&#x2F;base.py&quot;, line 1244, in _execute_context</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     cursor, statement, parameters, context</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib64&#x2F;python2.7&#x2F;site-packages&#x2F;sqlalchemy&#x2F;engine&#x2F;default.py&quot;, line 552, in do_execute</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     cursor.execute(statement, parameters)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;pymysql&#x2F;cursors.py&quot;, line 170, in execute</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     result &#x3D; self._query(query)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;pymysql&#x2F;cursors.py&quot;, line 328, in _query</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     conn.query(q)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;pymysql&#x2F;connections.py&quot;, line 517, in query</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     self._affected_rows &#x3D; self._read_query_result(unbuffered&#x3D;unbuffered)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;pymysql&#x2F;connections.py&quot;, line 732, in _read_query_result</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     result.read()</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;pymysql&#x2F;connections.py&quot;, line 1075, in read</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     first_packet &#x3D; self.connection._read_packet()</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;pymysql&#x2F;connections.py&quot;, line 657, in _read_packet</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     packet_header &#x3D; self._read_bytes(4)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;pymysql&#x2F;connections.py&quot;, line 707, in _read_bytes</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines     CR.CR_SERVER_LOST, &quot;Lost connection to MySQL server during query&quot;)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines DBConnectionError: (pymysql.err.OperationalError) (2013, &#39;Lost connection to MySQL server during query&#39;)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines [SQL: SELECT 1]</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines (Background on this error at: http:&#x2F;&#x2F;sqlalche.me&#x2F;e&#x2F;e3q8)</span><br><span class="line">2021-09-08 18:28:05.866 132 ERROR oslo_db.sqlalchemy.engines</span><br><span class="line">2021-09-08 18:28:06.035 132 ERROR oslo_db.sqlalchemy.engines [req-a50d7dba-7060-4983-932f-9a6fd1105b3a - - - - -] Database connection was found disconnected; reconnecting: DBConnectionError: (pymysql.err.OperationalError) (2013, &#39;Lost connection to MySQL server during query&#39;)</span><br></pre></td></tr></table></figure>
+        <p>背景: 虚拟化openstack测试使用nvmf<br>配置 NVMe/RDMA 客户端</p>
+<p>安装mlnx_nvme-ofed driver</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">下载 MLNX_OFED_LINUX-5.4-1.0.3.0-rhel8.1-x86_64.iso</span><br><span class="line">安装 kmod-mlnx-nvme-5.4-OFED.5.4.1.0.3.1.rhel8u1.x86_64</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum install nvme-cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># modprobe nvme-rdma</span><br></pre></td></tr></table></figure>
 
-<p>这是什么原因呢？ 分析如下：</p>
-<p>​    从报错信息能看到是查询时和数据库mysql丢了连接？ 为什么？ </p>
-<p>因为openstack组件连接数据库使用oslo_db，封装的基于sqlalchemy的连接池，所以怀疑是连接池里的连接没有回收，导致使用了过期的连接。</p>
-<p>上代码：</p>
-<p>#vi /var/lib/kolla/venv/lib/python2.7/site-packages/oslo_db/options.py</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">cfg.IntOpt(</span><br><span class="line">        &#39;connection_recycle_time&#39;,</span><br><span class="line">        default&#x3D;3600,</span><br><span class="line">        deprecated_opts&#x3D;[</span><br><span class="line">            cfg.DeprecatedOpt(&#39;idle_timeout&#39;,</span><br><span class="line">                              group&#x3D;&quot;DATABASE&quot;),</span><br><span class="line">            cfg.DeprecatedOpt(&#39;idle_timeout&#39;,</span><br><span class="line">                              group&#x3D;&quot;database&quot;),</span><br><span class="line">            cfg.DeprecatedOpt(&#39;sql_idle_timeout&#39;,</span><br><span class="line">                              group&#x3D;&#39;DEFAULT&#39;),</span><br><span class="line">            cfg.DeprecatedOpt(&#39;sql_idle_timeout&#39;,</span><br><span class="line">                              group&#x3D;&#39;DATABASE&#39;),</span><br><span class="line">            cfg.DeprecatedOpt(&#39;idle_timeout&#39;,</span><br><span class="line">                              group&#x3D;&#39;sql&#39;)</span><br><span class="line">        ],</span><br><span class="line">        help&#x3D;&#39;Connections which have been present in the connection &#39;</span><br><span class="line">             &#39;pool longer than this number of seconds will be replaced &#39;</span><br><span class="line">             &#39;with a new one the next time they are checked out from &#39;</span><br><span class="line">             &#39;the pool.&#39;),</span><br></pre></td></tr></table></figure>
+<h4 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># nvme connect -t rdma -n nqn.2021-10.io.spdk:cnode2 -a 10.224.129.226 -s 4420</span><br><span class="line">Failed to open &#x2F;dev&#x2F;nvme-fabrics: No such file or directory</span><br><span class="line"></span><br><span class="line">解决:</span><br><span class="line">#modprobe nvme_fabrics</span><br></pre></td></tr></table></figure>
 
-<p>默认回收时间3600s， 但是我的mysql wait_time 为 1800s，所以只需mysql wait_timeout 大于回收时间就行拉</p>
-<p>done~</p>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Failed to write to &#x2F;dev&#x2F;nvme-fabrics: Invalid argument</span><br><span class="line">nvme_fabrics: no handler found for transport rdma.</span><br><span class="line">解决: 安装mlx_ofd drvier</span><br><span class="line">https:&#x2F;&#x2F;www.mellanox.com&#x2F;products&#x2F;infiniband-drivers&#x2F;linux&#x2F;mlnx_ofed</span><br><span class="line">下载 MLNX_OFED_LINUX-5.4-1.0.3.0-rhel8.1-x86_64.iso</span><br><span class="line">安装 kmod-mlnx-nvme-5.4-OFED.5.4.1.0.3.1.rhel8u1.x86_64</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/14/openstack-%E6%9C%8D%E5%8A%A1%E8%BF%9E%E6%8E%A5mysql%E6%8A%A5%E9%94%99/" data-id="cktpm2y6v000784164ftq9hr4" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="ckuzbjk5m0002nk169azc9t6y" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
@@ -129,10 +127,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-elastic-panic-elastic-Error-all-shards-failed" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-kubernetes集群集成Kata" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/09/13/elastic-panic-elastic-Error-all-shards-failed/" class="article-date">
-  <time datetime="2021-09-13T10:03:33.000Z" itemprop="datePublished">2021-09-13</time>
+    <a href="/2021/10/14/kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" class="article-date">
+  <time datetime="2021-10-14T01:58:24.000Z" itemprop="datePublished">2021-10-14</time>
 </a>
     
   </div>
@@ -143,7 +141,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/13/elastic-panic-elastic-Error-all-shards-failed/">elastic-Error all shards failed</a>
+      <a class="article-title" href="/2021/10/14/kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/">kubernetes集群集成Kata</a>
     </h1>
   
 
@@ -151,22 +149,97 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>第一次尝试使用 elastics的go sdk “github.com/olivere/elastic” ，有go版本的真不错，</p>
-<p>不料却报错了</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">panic: elastic: Error 400 (Bad Request): all shards failed [type&#x3D;search_phase_execution_exception]</span><br></pre></td></tr></table></figure>
+        <p>环境 : CentOS 8.1 x86_64</p>
+<p>kata 2 做了很多优化, 故使用kata 2 版本, 操作系统选用高内核, CentOS 8 (社区CentOS 7只支持kata 1) , 同时操作系统开启 ipv6</p>
+<h5 id="一、部署kubernetes"><a href="#一、部署kubernetes" class="headerlink" title="一、部署kubernetes"></a>一、部署kubernetes</h5><p>使用 <a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 部署生产kubernetes集群 , CNI插件使用了kube-ovn</p>
+<p>遇到网络问题，需离线下载镜像,以及确保能访问github(<a href="https://blog.kubestack.cn/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/">github加速</a>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">images&#x3D;(</span><br><span class="line">  kube-apiserver:v1.18.10</span><br><span class="line">  kube-controller-manager:v1.18.10</span><br><span class="line">  kube-scheduler:v1.18.10</span><br><span class="line">  kube-proxy:v1.18.10</span><br><span class="line">  pause:3.2</span><br><span class="line">  k8s-dns-node-cache:1.15.13</span><br><span class="line">  cluster-proportional-autoscaler-amd64:1.8.1</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">    docker pull registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">    docker tag registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName k8s.gcr.io&#x2F;$imageName</span><br><span class="line">    docker rmi registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
 
-<p>上代码吧</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line">	&quot;context&quot;</span><br><span class="line">	&quot;elastic-analysis-go&#x2F;es&quot;</span><br><span class="line">	&quot;fmt&quot;</span><br><span class="line">	&quot;github.com&#x2F;olivere&#x2F;elastic&quot;</span><br><span class="line">)</span><br><span class="line">var (</span><br><span class="line">	IndexName &#x3D; &quot;openstack_error_logs&quot;</span><br><span class="line">)</span><br><span class="line">func main()&#123;</span><br><span class="line">	ctx :&#x3D; context.Background()</span><br><span class="line">	_ &#x3D; es.CreateClient(&quot;http:&#x2F;&#x2F;10.224.144.15:9011&quot;, &quot;USERNAME&quot;, &quot;PASSWORD&quot;)</span><br><span class="line">	&#x2F;&#x2F;create terms agg order by openstack region</span><br><span class="line">	aggs :&#x3D; elastic.NewValueCountAggregation().Field(&quot;programname&quot;)</span><br><span class="line"></span><br><span class="line">	searchResult,err :&#x3D; es.EsClient.Search().</span><br><span class="line">						Index(IndexName).</span><br><span class="line">		Query(elastic.NewMatchAllQuery()). &#x2F;&#x2F; 设置查询条件</span><br><span class="line">		Aggregation(&quot;total&quot;, aggs). &#x2F;&#x2F; 设置聚合条件，并为聚合条件设置一个名字</span><br><span class="line">		Size(0).</span><br><span class="line">		Do(ctx)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		panic(err)</span><br><span class="line">	&#125;</span><br><span class="line">	&#x2F;&#x2F; 使用ValueCount函数和前面定义的聚合条件名称，查询结果</span><br><span class="line">	agg, found :&#x3D; searchResult.Aggregations.ValueCount(&quot;total&quot;)</span><br><span class="line">	if found &#123;</span><br><span class="line">		&#x2F;&#x2F; 打印结果，注意：这里使用的是取值运算符</span><br><span class="line">		fmt.Println(*agg.Value)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>kubernetes部署步骤参考kubespray官网即可略</p>
+<h5 id="二、安装kata-2-0"><a href="#二、安装kata-2-0" class="headerlink" title="二、安装kata 2.0"></a>二、安装kata 2.0</h5><h5 id="2-1-安装kata-组件"><a href="#2-1-安装kata-组件" class="headerlink" title="2.1 安装kata 组件"></a>2.1 安装kata 组件</h5><p>Install the Kata Containers components with the following commands:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -E dnf install -y centos-release-advanced-virtualization</span><br><span class="line">$ sudo -E dnf module disable -y virt:rhel</span><br><span class="line">$ source &#x2F;etc&#x2F;os-release</span><br><span class="line">$ cat &lt;&lt;EOF | sudo -E tee &#x2F;etc&#x2F;yum.repos.d&#x2F;kata-containers.repo</span><br><span class="line">  [kata-containers]</span><br><span class="line">  name&#x3D;Kata Containers</span><br><span class="line">  baseurl&#x3D;http:&#x2F;&#x2F;mirror.centos.org&#x2F;$contentdir&#x2F;$releasever&#x2F;virt&#x2F;$basearch&#x2F;kata-containers</span><br><span class="line">  enabled&#x3D;1</span><br><span class="line">  gpgcheck&#x3D;1</span><br><span class="line">  skip_if_unavailable&#x3D;1</span><br><span class="line">  EOF</span><br><span class="line">$ sudo -E dnf install -y kata-containers</span><br></pre></td></tr></table></figure>
 
-<h4 id="原因分析："><a href="#原因分析：" class="headerlink" title="原因分析："></a>原因分析：</h4><p>当使用到Field 精准匹配相关的查询时，所以查询的关键字在es上的类型，必须是keyword而不能是text，比如你的搜索条件是 ”programname”:”neutron”,那么该programname 字段的es类型得是keyword，而不能是text<br>改成使用 elastic.NewValueCountAggregation().Field(“programname.keyword”) 就可以了</p>
+<h5 id="2-2-检测硬件是否支持-Kata"><a href="#2-2-检测硬件是否支持-Kata" class="headerlink" title="2.2 检测硬件是否支持 Kata"></a>2.2 检测硬件是否支持 Kata</h5><p>Kata 对硬件的要求需要满足以下任意条件：</p>
+<ul>
+<li>Intel VT-x technology.</li>
+<li>ARM Hyp mode (virtualization extension).</li>
+<li>IBM Power Systems.</li>
+<li>IBM Z mainframes.</li>
+</ul>
+<p>安装完 <code>kata-runtime</code> 之后，执行检测命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#kata-runtime kata-check</span><br><span class="line"></span><br><span class="line">System is capable of running Kata Containers</span><br><span class="line">System can currently create Kata Containers</span><br></pre></td></tr></table></figure>
+
+<p>这里的输出表示，运行环境支持 Kata Containers 。</p>
+<h5 id="2-3-配置集成kubelet"><a href="#2-3-配置集成kubelet" class="headerlink" title="2.3 配置集成kubelet"></a>2.3 配置集成kubelet</h5><ul>
+<li>新增配置文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;</span><br><span class="line">cat &lt;&lt; EOF | sudo tee  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;0-containerd.conf</span><br><span class="line">[Service]                                                 </span><br><span class="line">Environment&#x3D;&quot;KUBELET_EXTRA_ARGS&#x3D;--container-runtime&#x3D;remote --runtime-request-timeout&#x3D;15m --container-runtime-endpoint&#x3D;unix:&#x2F;&#x2F;&#x2F;run&#x2F;containerd&#x2F;containerd.sock&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>重启生效</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
+
+<p>这里使用的是 containerd 。如果使用 CRI-O ，配置会不一样。</p>
+<h5 id="2-5-给-Kubernetes-提供-kata-runtime"><a href="#2-5-给-Kubernetes-提供-kata-runtime" class="headerlink" title="2.5 给 Kubernetes 提供 kata-runtime"></a>2.5 给 Kubernetes 提供 kata-runtime</h5><p>通过直接创建 Container 可以使用 kata-runtime 。但在集群中，我们该如何告诉 Kubernetes 哪些负载需要使用 kata-runtime 呢？根据不同的版本，Kata 提供了不同的方式。</p>
+<p>首先都需要生成 containerd 配置文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">containerd config default &gt; &#x2F;etc&#x2F;containerd&#x2F;config.toml</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>RuntimeClass 的方式</li>
+</ul>
+<p>这种方式对相关组件版本有要求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Kata Containers v1.5.0 or above (including 1.5.0-rc)</span><br><span class="line">Containerd v1.2.0 or above</span><br><span class="line">Kubernetes v1.12.0 or above</span><br></pre></td></tr></table></figure>
+
+<p>我所使用的是</p>
+<p>kubernetes: 1.18.10</p>
+<p>containerd: 1.2.13</p>
+<p>kata : 1.10</p>
+<p>在 config.toml 配置文件中，“no_pivot = false”下增加如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.runtimes]</span><br><span class="line">  [plugins.cri.containerd.runtimes.runc]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.runc.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;runc&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br><span class="line">  [plugins.cri.containerd.runtimes.kata]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.kata.v2&quot;</span><br><span class="line">  [plugins.cri.containerd.runtimes.katacli]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.katacli.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br></pre></td></tr></table></figure>
+
+<p>这里 <code>[plugins.cri.containerd.runtimes.kata]</code> 中的 kata 将被作为 RuntimeClass handler 关键字。</p>
+<ul>
+<li>使用 <code>untrusted_workload_runtime</code> 的方式</li>
+</ul>
+<p>对于不符合上述版本要求的环境，可以使用之前的方式。</p>
+<p>在配置文件中新增如下内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.untrusted_workload_runtime]</span><br><span class="line">  runtime_type &#x3D; &quot;io.containerd.runtime.v1.linux&quot;</span><br><span class="line">  runtime_engine &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br></pre></td></tr></table></figure>
+
+<p>最后，都需要重启 containerd。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart containerd</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/kata/2020-12-17_18h31_55.png"></p>
+<h4 id="三、使用kata-runtime"><a href="#三、使用kata-runtime" class="headerlink" title="三、使用kata-runtime"></a>三、使用kata-runtime</h4><h5 id="3-1-RuntimeClass-方式"><a href="#3-1-RuntimeClass-方式" class="headerlink" title="3.1 RuntimeClass 方式"></a>3.1 RuntimeClass 方式</h5><ul>
+<li>创建 RuntimeClass</li>
+</ul>
+<p>kata-runtime.yaml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kind: RuntimeClass</span><br><span class="line">apiVersion: node.k8s.io&#x2F;v1beta1</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-containers</span><br><span class="line">handler: kata</span><br></pre></td></tr></table></figure>
+
+<p>#kubectl create -f kata-runtime.yaml</p>
+<p>也可以为 runc 创建 RuntimeClass</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl get runtimeclass</span><br><span class="line"></span><br><span class="line">NAME              CREATED AT</span><br><span class="line">kata-containers   2020-08-30</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>创建负载 kata-pod.yaml</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-nginx</span><br><span class="line">spec:</span><br><span class="line">  runtimeClassName: kata-containers</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>#kubectl apply -f kata-pod.yaml</p>
+<ul>
+<li>查看负载</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kata-runtime list</span><br></pre></td></tr></table></figure>
+<p>检查hypervisor是否运行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps axu|grep qemu</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/13/elastic-panic-elastic-Error-all-shards-failed/" data-id="cktpm4ftt0000os16360udly4" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/10/14/kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" data-id="ckuzbjk5l0001nk169ea1dfts" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/elastic/" rel="tag">elastic</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
 
     </footer>
   </div>
@@ -175,10 +248,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-spdk-基于spdk-vhost-qemu启动虚机" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-github下载超时加速" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/" class="article-date">
-  <time datetime="2021-09-10T07:40:52.000Z" itemprop="datePublished">2021-09-10</time>
+    <a href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/" class="article-date">
+  <time datetime="2021-10-13T09:05:16.000Z" itemprop="datePublished">2021-10-13</time>
 </a>
     
   </div>
@@ -189,7 +262,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/">spdk-基于spdk vhost qemu启动虚机</a>
+      <a class="article-title" href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/">github下载超时加速</a>
     </h1>
   
 
@@ -197,30 +270,19 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>qemu启动虚机，driver使用基于spdk的vhost-user-scsi技术， bdev backend为ceph rbd</p>
-<p>创建vhost device (上文创建rbd dev名称为Ceph0)</p>
-<h5 id="virtio-blk"><a href="#virtio-blk" class="headerlink" title="virtio-blk"></a>virtio-blk</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#scripts&#x2F;rpc.py vhost_create_blk_controller --cpumask 0x1 vhost.1 Ceph1</span><br><span class="line">#scripts&#x2F;rpc.py bdev_virtio_attach_controller --dev-type blk --trtype user --traddr &#x2F;opt&#x2F;tmp&#x2F;vhost.1 --vq-count 2 --vq-size 512 VirtioBlk1</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="virtio-scsi"><a href="#virtio-scsi" class="headerlink" title="virtio-scsi"></a>virtio-scsi</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#scripts&#x2F;rpc.py vhost_create_scsi_controller --cpumask 0x1 vhost.0</span><br><span class="line">#scripts&#x2F;rpc.py vhost_scsi_controller_add_target vhost.0 0 Ceph0</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="启动虚拟机"><a href="#启动虚拟机" class="headerlink" title="启动虚拟机"></a>启动虚拟机</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;local&#x2F;qemu42&#x2F;bin&#x2F;qemu-system-x86_64    --enable-kvm   \</span><br><span class="line">-cpu host -smp 4,sockets&#x3D;4,cores&#x3D;1,threads&#x3D;1   \</span><br><span class="line">-m 1G -object memory-backend-file,id&#x3D;mem0,size&#x3D;1G,mem-path&#x3D;&#x2F;dev&#x2F;hugepages,share&#x3D;on \</span><br><span class="line">-numa node,memdev&#x3D;mem0   \</span><br><span class="line">-drive file&#x3D;&#x2F;opt&#x2F;a0c4f799-aecf-4ebd-af51-03b2f2f14c5a.qcow2,if&#x3D;none,id&#x3D;disk   \</span><br><span class="line">-device ide-hd,drive&#x3D;disk,bootindex&#x3D;0   \</span><br><span class="line">-chardev socket,id&#x3D;spdk_vhost_scsi0,path&#x3D;&#x2F;opt&#x2F;tmp&#x2F;vhost.0   \</span><br><span class="line">-device vhost-user-scsi-pci,id&#x3D;scsi0,chardev&#x3D;spdk_vhost_scsi0,bootindex&#x3D;1  \</span><br><span class="line">-vnc 0.0.0.0:3 \</span><br><span class="line">-device virtio-net-pci,netdev&#x3D;net0 -netdev tap,id&#x3D;net0,ifname&#x3D;tap0,script&#x3D;no,downscript&#x3D;no</span><br></pre></td></tr></table></figure>
-
-<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">libvirt 貌似只支持管理qemu vhost-user-blk方式，不支持vhost-user-scsi方式</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<h2 id="cinder"><a href="#cinder" class="headerlink" title="cinder"></a>cinder</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cinder type-create sata_high_io</span><br><span class="line">cinder type-key sata_high_io set volume_backend_name&#x3D;rbd-1</span><br></pre></td></tr></table></figure>
+        <p>国内访问github太慢，甚至超时，咋办？</p>
+<p>第一步：找 IP<br>首先找到 github.com 的 IP 地址，可以在 IPAddress 网站上查找。还可以添加 github.global.ssl.fastly.net 的映射，这个有助于加速。</p>
+<p>注意：隔段时间地址会变，网上找的有些都过期了，建议还是自己去查询一下。</p>
+<p>第二步：修改 host<br>vim /etc/hosts<br>将找到的最新地址映射添加到 hosts 中。</p>
+<p>亲测,确实有效果噢~</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk-vhost-qemu%E5%90%AF%E5%8A%A8%E8%99%9A%E6%9C%BA/" data-id="ckte5vgp80001dw165h9ef50n" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/" data-id="ckupbrtpc0001ww16e2x33prf" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
 
     </footer>
   </div>
@@ -229,10 +291,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-spdk-基于spdk虚拟机性能测试对比" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Linux-CentOS-关闭ipv6" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/" class="article-date">
-  <time datetime="2021-09-10T07:40:52.000Z" itemprop="datePublished">2021-09-10</time>
+    <a href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" class="article-date">
+  <time datetime="2021-10-13T08:37:09.000Z" itemprop="datePublished">2021-10-13</time>
 </a>
     
   </div>
@@ -243,7 +305,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/">spdk-基于spdk vhost qemu启动虚机</a>
+      <a class="article-title" href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/">Linux-CentOS 关闭ipv6</a>
     </h1>
   
 
@@ -251,244 +313,199 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>qemu启动虚机，driver使用基于spdk的vhost-user-scsi技术， bdev backend为ceph rbd</p>
-<p>创建vhost device (上文创建rbd dev名称为Ceph0)</p>
-<h5 id="virtio-blk"><a href="#virtio-blk" class="headerlink" title="virtio-blk"></a>virtio-blk</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#scripts&#x2F;rpc.py vhost_create_blk_controller --cpumask 0x1 vhost.1 Ceph1</span><br><span class="line">#scripts&#x2F;rpc.py bdev_virtio_attach_controller --dev-type blk --trtype user --traddr &#x2F;opt&#x2F;tmp&#x2F;vhost.1 --vq-count 2 --vq-size 512 VirtioBlk1</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="virtio-scsi"><a href="#virtio-scsi" class="headerlink" title="virtio-scsi"></a>virtio-scsi</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#scripts&#x2F;rpc.py vhost_create_scsi_controller --cpumask 0x1 vhost.0</span><br><span class="line">#scripts&#x2F;rpc.py vhost_scsi_controller_add_target vhost.0 0 Ceph0</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="启动虚拟机"><a href="#启动虚拟机" class="headerlink" title="启动虚拟机"></a>启动虚拟机</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 \</span><br><span class="line">  --enable-kvm \</span><br><span class="line">  -cpu host -smp 2 \</span><br><span class="line">  -m 1G -object memory-backend-file,id&#x3D;mem0,size&#x3D;1G,mem-path&#x3D;&#x2F;dev&#x2F;hugepages,share&#x3D;on -numa node,memdev&#x3D;mem0 \</span><br><span class="line">  -drive file&#x3D;&#x2F;opt&#x2F;a0c4f799-aecf-4ebd-af51-03b2f2f14c5a.qcow2,if&#x3D;none,id&#x3D;disk \</span><br><span class="line">  -device ide-hd,drive&#x3D;disk,bootindex&#x3D;0 \</span><br><span class="line">  -chardev socket,id&#x3D;spdk_vhost_scsi0,path&#x3D;&#x2F;opt&#x2F;tmp&#x2F;vhost.0 \</span><br><span class="line">  -device vhost-user-scsi-pci,id&#x3D;scsi0,chardev&#x3D;spdk_vhost_scsi0 \</span><br><span class="line">  -vnc 10.224.130.52:3</span><br></pre></td></tr></table></figure>
-
-<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qemu 使用 4.2.0 </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/10/spdk-%E5%9F%BA%E4%BA%8Espdk%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E5%AF%B9%E6%AF%94/" data-id="cktpm2y72000b841636xq17n6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spdk-spdk-bdev-ceph-rbd-块设备操作" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/" class="article-date">
-  <time datetime="2021-09-10T07:39:37.000Z" itemprop="datePublished">2021-09-10</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/">spdk-spdk bdev (ceph rbd)块设备操作</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>因虚拟机后端存储使用rbd, 所以下面spdk bdev 基于ceph rbd</p>
-<p>导入ceph集群配置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#vim &#x2F;etc&#x2F;ceph&#x2F;conf.conf</span><br></pre></td></tr></table></figure>
-
-<p>创建volume</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#rbd create volumes&#x2F;volume-4431ef41-381e-490d-9976-adba14d2c05b --size 102400</span><br><span class="line">#scripts&#x2F;rpc.py bdev_rbd_create volumes volume-4431ef41-381e-490d-9976-adba14d2c05b 512</span><br></pre></td></tr></table></figure>
-
-<p>删除volume</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#rpc.py bdev_rbd_delete Ceph0</span><br></pre></td></tr></table></figure>
-
-<p>resize volume</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#rpc.py bdev_rbd_resize Ceph0 102400</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/10/spdk-spdk-bdev-ceph-rbd-%E5%9D%97%E8%AE%BE%E5%A4%87%E6%93%8D%E4%BD%9C/" data-id="ckte5vgp60000dw165pn706s8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-spdk-spdk安装指南" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" class="article-date">
-  <time datetime="2021-09-09T06:04:50.000Z" itemprop="datePublished">2021-09-09</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/">spdk-spdk安装指南</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基于 CentOS 7 x86_64 安装spdk环境, 需要支持rbd和rdma</p>
-<p>环境 : gcc-4.8.5</p>
+        <p>Post describes procedure to disable IPv6 on CentOS/RHEL 7. There are 2 ways to do this :</p>
 <ol>
-<li>下载源码文件(网络不稳定, git中途失败请重复多次运行)</li>
+<li>Disable IPv6 in kernel module (requires reboot)</li>
+<li>Disable IPv6 using sysctl settings (no reboot required)</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#git clone https:&#x2F;&#x2F;github.com&#x2F;spdk&#x2F;spdk</span><br><span class="line">#cd spdk</span><br><span class="line">#git checkout v21.04</span><br><span class="line">#git submodule update --init</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>To verify if IPv6 is enabled or not, execute :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ifconfig -a | grep inet6</span><br></pre></td></tr></table></figure>
+<pre><code>    inet6 fe80::211:aff:fe6a:9de4  prefixlen 64  scopeid 0x20
+    inet6 ::1  prefixlen 128  scopeid 0x10[host]</code></pre>
+<ol>
+<li>Disable IPv6 in kernel module (requires reboot)</li>
+<li>Edit /etc/default/grub and add ipv6.disable=1 in line GRUB_CMDLINE_LINUX, e.g.:</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cat &#x2F;etc&#x2F;default&#x2F;grub</span><br></pre></td></tr></table></figure>
+<p>GRUB_TIMEOUT=5<br>GRUB_DEFAULT=saved<br>GRUB_DISABLE_SUBMENU=true<br>GRUB_TERMINAL_OUTPUT=”console”<br>GRUB_CMDLINE_LINUX=”ipv6.disable=1 crashkernel=auto rhgb quiet”<br>GRUB_DISABLE_RECOVERY=”true”<br>2. Regenerate a GRUB configuration file and overwrite existing one:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># grub2-mkconfig -o &#x2F;boot&#x2F;grub2&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>Restart system and verify no line “inet6” in “ip addr show” command output.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># shutdown -r now</span><br><span class="line"># ip addr show | grep net6</span><br></pre></td></tr></table></figure></li>
+<li>Disable IPv6 using sysctl settings (no reboot required)</li>
+<li>Append below lines in /etc/sysctl.conf:</li>
+</ol>
+<p>net.ipv6.conf.all.disable_ipv6 = 1<br>net.ipv6.conf.default.disable_ipv6 = 1<br>NOTE : To disable IPv6 on a single interface add below lines to /etc/sysctl.conf :<br>net.ipv6.conf.[interface].disable_ipv6 = 1 ### put interface name here [interface]<br>net.ipv6.conf.default.disable_ipv6 = 1<br>2. To make the settings affective, execute :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure>
+<p>NOTE : make sure the file /etc/ssh/sshd_config contains the line AddressFamily inet to avoid breaking SSH Xforwarding if you are using the sysctl method<br>3. Add the AddressFamily line to sshd_config :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span><br></pre></td></tr></table></figure>
+<p>….<br>AddressFamily inet<br>….<br>Restart sshd for changes to get get effect :</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl restart sshd</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" data-id="ckupbrtp70000ww16c1u5aini" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-kata-Kata-Container介绍" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/" class="article-date">
+  <time datetime="2021-10-13T07:28:47.000Z" itemprop="datePublished">2021-10-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/">kata-Kata Container介绍</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>关于kata的介绍，网上资料很多，过大的官方话就不说了，下面说一些白话一点的，让小白能快速了解的。</p>
+<h4 id="1-首先kata是什么"><a href="#1-首先kata是什么" class="headerlink" title="1. 首先kata是什么"></a>1. 首先kata是什么</h4><p>kata 本质上是和runc 平级的，不同的是runc启动的是容器，而kata 启动的是hypervisor(qemu-kvm/firecraker等)，因为公有云上安全性问题，所以衍生出了kata<br><img src="/images/kata/kata-k8s.jpg" alt="img"></p>
+<h4 id="2-kata-架构是什么样子的"><a href="#2-kata-架构是什么样子的" class="headerlink" title="2. kata 架构是什么样子的"></a>2. kata 架构是什么样子的</h4><p>kata 为了实现安全性，在容器外层包了一层虚拟化hypervisor(这里以qemu-kvm为例)，从而实现了隔离，安全性更高</p>
+<p><img src="/images/kata/jiagou.png" alt="img"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/" data-id="ckup7kegx0000uc16g0oghjm4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-cinder-nvmf-target-测试" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/" class="article-date">
+  <time datetime="2021-10-13T04:26:33.000Z" itemprop="datePublished">2021-10-13</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/">openstack-cinder nvmf target 测试</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/" data-id="ckup7keh20002uc16hs9635fr" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CentOS-8-libvirt-7-编译安装" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2021-09-28T03:40:37.000Z" itemprop="datePublished">2021-09-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>基于CentOS 8 x86_64编译安装libvirt 7.2</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#dnf --enablerepo&#x3D;PowerTools install gcc cmake libxslt-devel</span><br><span class="line">#dnf --enablerepo&#x3D;PowerTools install meson rpcgen</span><br><span class="line">#wget https:&#x2F;&#x2F;libvirt.org&#x2F;sources&#x2F;libvirt-7.2.0.tar.xz</span><br><span class="line">#tar xvf libvirt-7.2.0.tar.xz</span><br><span class="line">#cd libvirt-7.2.0</span><br><span class="line">#meson build --prefix&#x3D;&#x2F;usr</span><br><span class="line">#ninja -C build</span><br><span class="line">#ninja -C build install</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#libvirtd --version</span><br></pre></td></tr></table></figure>
+
+
+
+<p>启动测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;sbin&#x2F;libvirtd --listen</span><br></pre></td></tr></table></figure>
+
+<p>报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : libvirt version: 7.2.0</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : hostname: openstack160.********</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: error : virNetTLSContextCheckCertFile:110 : Cannot read CA certificate &#39;&#x2F;etc&#x2F;pki&#x2F;CA&#x2F;cacert.pem&#39;: No such file or directory</span><br><span class="line"></span><br><span class="line">先临时修改了&#x2F;etc&#x2F;libvirt&#x2F;libvirtd.conf 关闭tls</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">error: Failed to start domain &#39;instance-00000018&#39;</span><br><span class="line">error: can&#39;t connect to virtlogd: Failed to connect socket to &#39;&#x2F;var&#x2F;run&#x2F;libvirt&#x2F;virtlogd-sock&#39;: No such file or directory</span><br><span class="line"></span><br><span class="line">解决 ：virtlogd &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><ol>
+<li>ERROR: Program ‘rpcgen portable-rpcgen’ not found</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rpcgen</span><br></pre></td></tr></table></figure>
 
 <ol start="2">
-<li>安装必需环境</li>
+<li>ERROR: Dependency “gnutls” not found, tried pkgconfig</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo scripts&#x2F;pkgdep.sh --all</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gnutls-devel</span><br></pre></td></tr></table></figure>
 
 <ol start="3">
-<li>构建</li>
+<li>ERROR: Dependency “libxml-2.0” not found, tried pkgconfig</li>
 </ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure --with-rbd --with-rdma --with-ocf</span><br><span class="line">make</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libxml2-devel</span><br></pre></td></tr></table></figure>
 
-<h4 id="启动vhost-target"><a href="#启动vhost-target" class="headerlink" title="启动vhost target"></a>启动vhost target</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#HUGEMEM&#x3D;4096 scripts&#x2F;setup.sh</span><br><span class="line">#build&#x2F;bin&#x2F;vhost -S &#x2F;var&#x2F;tmp -m 0x3</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h4><ol>
-<li>已经安装librbd，spdk却不识别librbd</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">.&#x2F;configure --with-rbd --with-rdma</span><br><span class="line">Notice: ISA-L, compression &amp; crypto require NASM version 2.14 or newer. Turning off default ISA-L and crypto features.</span><br><span class="line">Using default SPDK env in &#x2F;root&#x2F;spdk&#x2F;lib&#x2F;env_dpdk</span><br><span class="line">Using default DPDK in &#x2F;root&#x2F;spdk&#x2F;dpdk&#x2F;build</span><br><span class="line">Using &#39;verbs&#39; RDMA provider</span><br><span class="line">--with-rbd requires librados and librbd.</span><br><span class="line">Please install then re-run this script.</span><br></pre></td></tr></table></figure>
-
-<p>安装 librbd1-devel</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/09/spdk-spdk%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97/" data-id="cktcrags20000hs162oupfyop" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-logstash-基于docker部署" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/" class="article-date">
-  <time datetime="2021-08-31T08:51:59.000Z" itemprop="datePublished">2021-08-31</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/">logstash - 基于docker部署</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>下载docker镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#docker pull docker.elastic.co&#x2F;logstash&#x2F;logstash:7.6.2</span><br></pre></td></tr></table></figure>
-
-<p>创建本地配置目录</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;usr&#x2F;local&#x2F;logstash&#x2F;config</span><br></pre></td></tr></table></figure>
-
-<p>配置logstash.yml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#vim &#x2F;usr&#x2F;local&#x2F;logstash&#x2F;config&#x2F;logstash.yml</span><br><span class="line"></span><br><span class="line">config:</span><br><span class="line">  reload:</span><br><span class="line">    automatic: true</span><br><span class="line">    interval: 3s</span><br><span class="line">xpack:</span><br><span class="line">  management.enabled: false</span><br><span class="line">  monitoring.enabled: false</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/08/31/logstash-%E5%9F%BA%E4%BA%8Edocker%E9%83%A8%E7%BD%B2/" data-id="cktcrags40001hs16f0zr61l3" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack硬件加速器管理-Cyborg调研" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/" class="article-date">
-  <time datetime="2021-08-30T03:38:07.000Z" itemprop="datePublished">2021-08-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/">openstack硬件加速器管理 - Cyborg调研</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>随着5G、互联网、物联网等技术的发展, 对计算业务进行加速、卸载的需求日渐增多, Cyborg项目由此诞生。</p>
-<p>Cyborg(以前叫做Nomad)是OpenStack用于管理硬件和软件加速资源框架, 包括GPU、FPGA、加解密卡, NVMe/NOF SSDs, ODP, DPDK/SPDK等, Cyborg就是OpenStack中的加速即服务(Acceleration as a Service)。该项目在OpenStack Q版本时正式发布, 由华为、联想、红帽主导，是一个很年轻的项目, 目前功能还不是很完善。</p>
-<p>Cyborg通过管理、使用计算节点上的加速器硬件, 可以提供电信运营商在NFV以及边缘计算场景下的各种加速服务、提高用户体验、降低CPU负载。运维人员可以通过Cyborg列出、识别和发现加速器，挂载、卸载加速器实例, 安装、卸载驱动。它可以单独使用或与 Nova 或 Ironic 结合使用。</p>
-<h4 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h4><p>Cyborg采用经典架构，由cyborg-api、cyborg-conductor、cyborg-agent、 cyborg-db几个模块组成。其中Cyborg-agent位于计算节点，用于监控加速器；cyborg-conductor位于控制节点，管理整个系统和操作数据库。cyborg-api和cyborg-db分别为接口和数据库，均位于控制节点。</p>
-<p><img src="/images/cyborg.jpg"></p>
-<h4 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h4><p>从Cyborg的架构图和API来看, 其主要工作流程如下:</p>
-<ol>
-<li><p>cyborg-api会接收用户创建加速器的API调用, 通过cyborg-conductor保存到cyborg-db</p>
-</li>
-<li><p>cyborg-conductor通过rpc调用计算节点上的cyborg-agent, cyborg-agent会调用对应的厂商驱动, 最后由厂商驱动来执行配置计算节点底层的加速资源</p>
-</li>
-<li><p>计算节点上的cyborg-agent通过定时查询加速资源使用情况, 并通过API发送给placement服务, 该信息最终会给nova在调度时使用。</p>
-</li>
-</ol>
-<p>注: 由于加速设备可能存在多个设备互相关联的层次化结构, 如SRIOV PF和VF之间有关联关系。Nova在O版时, 为resource-providers数据库进行了扩展, 支持了设备的层次化关系。</p>
-<p><a target="_blank" rel="noopener" href="http://specs.openstack.org/openstack/nova-specs/specs/ocata/approved/nested-resource-providers.html">http://specs.openstack.org/openstack/nova-specs/specs/ocata/approved/nested-resource-providers.html</a></p>
 <ol start="4">
-<li>Nova进行调度, 并在虚拟机中挂载虚拟加速设备给用户使用</li>
+<li>ERROR: Problem encountered: XDR is required for remote driver</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libtirpc-devel</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>meson.build:918:2: ERROR: Program ‘rst2html5 rst2html5.py rst2html5-3’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install rst2html5</span><br></pre></td></tr></table></figure></li>
+<li>ERROR: Dependency “libapparmor” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;rpmfind.net&#x2F;linux&#x2F;opensuse&#x2F;distribution&#x2F;leap&#x2F;15.3&#x2F;repo&#x2F;oss&#x2F;x86_64&#x2F;libapparmor1-2.13.6-1.24.x86_64.rpm</span><br><span class="line">wget https:&#x2F;&#x2F;ftp.lysator.liu.se&#x2F;pub&#x2F;opensuse&#x2F;distribution&#x2F;leap&#x2F;15.3&#x2F;repo&#x2F;oss&#x2F;x86_64&#x2F;libapparmor-devel-2.13.6-1.24.x86_64.rpm</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+<li>ERROR: C shared or static library ‘attr’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libattr-devel</span><br></pre></td></tr></table></figure></li>
+<li>ERROR: C shared or static library ‘audit’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install audit-libs audit-libs-devel</span><br></pre></td></tr></table></figure></li>
+<li>ERROR: Dependency “bash-completion” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install bash-completion</span><br></pre></td></tr></table></figure></li>
+<li>ERROR: C shared or static library ‘cap-ng’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libcap-ng-devel</span><br></pre></td></tr></table></figure></li>
+<li>ERROR: Dependency “libcurl” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libcurl-devel</span><br></pre></td></tr></table></figure></li>
+<li>ERROR: Dependency “libfuse glusterfs-api libiscsi libnl pcap-config libssh libssh2 netcf numa openwsman pciaccess readline libsasl2 libudev wireshark yajl” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install fuse-devel glusterfs-api-devel libiscsi-devel libnl3-devel libssh-devel libssh2-devel netcf-devel numactl-devel libwsman-devel libpciaccess-devel readline-devel cyrus-sasl-devel systemd-devel wireshark-devel yajl-devel</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/08/30/openstack%E7%A1%AC%E4%BB%B6%E5%8A%A0%E9%80%9F%E5%99%A8%E7%AE%A1%E7%90%86-Cyborg%E8%B0%83%E7%A0%94/" data-id="cktcragsp0006hs169s554wna" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" data-id="cku40uuy90000ss16ebg94xqc" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
@@ -500,10 +517,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-mysql-查询重复数据" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-qemu源码编译安装" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time datetime="2021-08-26T02:11:05.000Z" itemprop="datePublished">2021-08-26</time>
+    <a href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2021-09-17T10:51:08.000Z" itemprop="datePublished">2021-09-17</time>
 </a>
     
   </div>
@@ -514,7 +531,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">mysql-查询重复数据</a>
+      <a class="article-title" href="/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">openstack-qemu源码编译安装</a>
     </h1>
   
 
@@ -522,19 +539,33 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>查询表中重复数据，展示出字段内容和count</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; select user_name,count(*) as count from user group by user_name having count&gt;1;</span><br></pre></td></tr></table></figure>
+        <p>因原openstack 使用qemu 版本为2.0 太低，考虑升级qemu</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#docker pull centos:8</span><br><span class="line">#docker run --name spdk-vhost --privileged&#x3D;true --network&#x3D;host -v &#x2F;opt&#x2F;tmp:&#x2F;opt&#x2F;tmp -it centos:8 bash</span><br></pre></td></tr></table></figure>
 
 
 
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">yum -y install python3 python3-devel wget</span><br><span class="line">wget -O &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-8.repo</span><br><span class="line">yum -y install epel-release</span><br><span class="line">dnf --enablerepo&#x3D;powertools install ninja-build diffutils  pixman-devel</span><br><span class="line">#dnf --enablerepo&#x3D;powertools install gcc gcc-c++ automake libtool zlib-devel glib2-devel bzip2 bzip2-devel libuuid-devel spice-protocol spice-server-devel usbredir-devel libaio-devel make libmount-devel python3-sphinx cmake</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install ceph-common librbd1-devel</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;download.qemu.org&#x2F;qemu-5.2.0.tar.xz --no-check-certificate</span><br><span class="line">tar xvJf qemu-5.2.0.tar.xz</span><br><span class="line">cd qemu-5.2.0</span><br><span class="line">.&#x2F;configure --prefix&#x3D;&#x2F;usr&#x2F; --enable-kvm --enable-rbd</span><br><span class="line">make -j8</span><br><span class="line">make install</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln -sf &#x2F;usr&#x2F;bin&#x2F;qemu-system-x86_64 &#x2F;usr&#x2F;bin&#x2F;qemu-kvm</span><br><span class="line">ln -sf &#x2F;usr&#x2F;bin&#x2F;qemu-system-x86_64 &#x2F;usr&#x2F;libexec&#x2F;qemu-kvm</span><br></pre></td></tr></table></figure>
+
+<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Program dbus-daemon found: YES (&#x2F;bin&#x2F;dbus-daemon)</span><br><span class="line"></span><br><span class="line">..&#x2F;tests&#x2F;qtest&#x2F;meson.build:73:2: ERROR: No program name specified.</span><br><span class="line"></span><br><span class="line">A full log can be found at &#x2F;usr&#x2F;local&#x2F;src&#x2F;qemu-5.2.0&#x2F;build&#x2F;meson-logs&#x2F;meson-log.txt</span><br><span class="line"></span><br><span class="line">ERROR: meson setup failed</span><br></pre></td></tr></table></figure>
+<p>解决</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/08/26/mysql-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" data-id="ckssanb3y0001to16fh0m6bol" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" data-id="cktpm2y6a000184164g1q3mmz" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
 
     </footer>
   </div>
@@ -543,10 +574,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-openstack-裸金属ironic源码创建分析" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-qemu不支持自定义内存分配" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2021-05-27T07:19:26.000Z" itemprop="datePublished">2021-05-27</time>
+    <a href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" class="article-date">
+  <time datetime="2021-09-17T07:23:55.000Z" itemprop="datePublished">2021-09-17</time>
 </a>
     
   </div>
@@ -557,7 +588,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
+      <a class="article-title" href="/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/">openstack-qemu不支持自定义内存分配</a>
     </h1>
   
 
@@ -565,45 +596,68 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>openstack ironic 裸金属创建裸机流程源码分析</p>
-<p>基于 ironic stein</p>
-<p>ironic-api接收到了provision_state的设置请求，然后返回202的异步请求，api请求到了ironic.api.controllers.v1.node.NodeStatesController的provision方法， 然后调用了 _do_provision_action 方法 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;NodeStatesController.provision&#39;)</span><br><span class="line">@expose.expose(None, types.uuid_or_name, wtypes.text,</span><br><span class="line">               types.jsontype, types.jsontype, wtypes.text,</span><br><span class="line">               status_code&#x3D;http_client.ACCEPTED)</span><br><span class="line">def provision(self, node_ident, target, configdrive&#x3D;None,</span><br><span class="line">              clean_steps&#x3D;None, rescue_password&#x3D;None):</span><br><span class="line">***************</span><br><span class="line">self._do_provision_action(rpc_node, target, configdrive, clean_steps,</span><br><span class="line">                              rescue_password)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+        <p>qemu 启动基于vhost-user disk虚拟机 , 报错</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(process:96671): GLib-WARNING **: 15:17:23.577: gmem.c:489: custom memory allocation vtable not supported</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def _do_provision_action(self, rpc_node, target, configdrive&#x3D;None,</span><br><span class="line">                             clean_steps&#x3D;None, rescue_password&#x3D;None):</span><br><span class="line">     ************</span><br><span class="line">     if target in (ir_states.ACTIVE, ir_states.REBUILD):</span><br><span class="line">            rebuild &#x3D; (target &#x3D;&#x3D; ir_states.REBUILD)</span><br><span class="line">            pecan.request.rpcapi.do_node_deploy(context&#x3D;pecan.request.context,</span><br><span class="line">                                                node_id&#x3D;rpc_node.uuid,</span><br><span class="line">                                                rebuild&#x3D;rebuild,</span><br><span class="line">                                                configdrive&#x3D;configdrive,</span><br><span class="line">                                                topic&#x3D;topic)                         </span><br></pre></td></tr></table></figure>
+<p>启动命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">qemu-system-x86_64 \</span><br><span class="line">  --enable-kvm \</span><br><span class="line">  -cpu host -smp 8,sockets&#x3D;8,cores&#x3D;1,threads&#x3D;1 \</span><br><span class="line">  -m 2G -object memory-backend-file,id&#x3D;mem0,size&#x3D;2G,mem-path&#x3D;&#x2F;dev&#x2F;hugepages,share&#x3D;on -numa node,memdev&#x3D;mem0 \</span><br><span class="line">  -chardev socket,id&#x3D;spdk_vhost_scsi0,path&#x3D;&#x2F;etc&#x2F;libvirt&#x2F;qemu&#x2F;spdk&#x2F;vhost.0 \</span><br><span class="line">  -device vhost-user-scsi-pci,id&#x3D;scsi0,chardev&#x3D;spdk_vhost_scsi0 \</span><br><span class="line">  -vnc 10.224.130.52:1</span><br></pre></td></tr></table></figure>
 
-<p>然后RPC调用的ironic.condutor.manager.ConductorManager.do_node_deploy方法, 最终启动一个task ，调用 ironic.condutor.manager.do_node_deploy方法， 如果配置了configdrive会传至swift接口，然后调用 task.driver.deploy.prepare(task) 过程， 不同驱动的动作不一样 pxe_* 驱动使用的是iscsi_deploy.ISCSIDeploy.prepare，本地用的  task.driver.deploy.deploy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;ConductorManager.do_node_deploy&#39;)</span><br><span class="line">@messaging.expected_exceptions(exception.NoFreeConductorWorker,</span><br><span class="line">                               exception.NodeLocked,</span><br><span class="line">                               exception.NodeInMaintenance,</span><br><span class="line">                               exception.InstanceDeployFailure,</span><br><span class="line">                               exception.InvalidStateRequested,</span><br><span class="line">                               exception.NodeProtected)</span><br><span class="line">def do_node_deploy(self, context, node_id, rebuild&#x3D;False,</span><br><span class="line">                   configdrive&#x3D;None):</span><br><span class="line">    ********</span><br><span class="line">    #状态相关检查，确保裸机参数及电源正常</span><br><span class="line">     try:</span><br><span class="line">            task.driver.power.validate(task)</span><br><span class="line">            task.driver.deploy.validate(task)</span><br><span class="line">            utils.validate_instance_info_traits(task.node)</span><br><span class="line">            conductor_steps.validate_deploy_templates(task)</span><br><span class="line">        except exception.InvalidParameterValue as e:</span><br><span class="line">            raise exception.InstanceDeployFailure(</span><br><span class="line">                _(&quot;Failed to validate deploy or power info for node &quot;</span><br><span class="line">                  &quot;%(node_uuid)s. Error: %(msg)s&quot;) %</span><br><span class="line">                &#123;&#39;node_uuid&#39;: node.uuid, &#39;msg&#39;: e&#125;, code&#x3D;e.code)</span><br><span class="line"></span><br><span class="line">        LOG.debug(&quot;do_node_deploy Calling event: %(event)s for node: &quot;</span><br><span class="line">                  &quot;%(node)s&quot;, &#123;&#39;event&#39;: event, &#39;node&#39;: node.uuid&#125;)</span><br><span class="line">        try:</span><br><span class="line">            task.process_event(</span><br><span class="line">                event,</span><br><span class="line">                callback&#x3D;self._spawn_worker,</span><br><span class="line">                call_args&#x3D;(do_node_deploy, task, self.conductor.id,</span><br><span class="line">                           configdrive),</span><br><span class="line">                err_handler&#x3D;utils.provisioning_error_handler)</span><br><span class="line">        except exception.InvalidState:</span><br><span class="line">            raise exception.InvalidStateRequested(</span><br><span class="line">                action&#x3D;event, node&#x3D;task.node.uuid,</span><br><span class="line">                state&#x3D;task.node.provision_state)</span><br></pre></td></tr></table></figure>
+<p>环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">qemu-kvm-ev-2.12.0-44.1.el7_8.1.x86_64</span><br><span class="line">libvirt-client-4.5.0-1.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;do_node_deploy&#39;)</span><br><span class="line">@task_manager.require_exclusive_lock</span><br><span class="line">def do_node_deploy(task, conductor_id&#x3D;None, configdrive&#x3D;None):</span><br><span class="line">    &quot;&quot;&quot;Prepare the environment and deploy a node.&quot;&quot;&quot;</span><br><span class="line">    node &#x3D; task.node</span><br><span class="line"></span><br><span class="line">    try:</span><br><span class="line">        if configdrive:</span><br><span class="line">            if isinstance(configdrive, dict):</span><br><span class="line">                configdrive &#x3D; utils.build_configdrive(node, configdrive)</span><br><span class="line">            _store_configdrive(node, configdrive)</span><br><span class="line">    ******************</span><br><span class="line">    try:</span><br><span class="line">        task.driver.deploy.prepare(task)</span><br></pre></td></tr></table></figure>
-
-<p>如果是iSCSI启动，task.driver.deploy.prepare(task) 调用 iscsi_deploy.py 的 prepare(task),  初次调用 task.driver.boot.prepare_instance(task) ， 配置dhcp ，准备pxe config和缓存镜像， 通过ipmi操控bios配置启动设备</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line">pxe_utils.cache_ramdisk_kernel(task, instance_image_info,</span><br><span class="line">                                           ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line">*****</span><br><span class="line"> pxe_utils.prepare_instance_pxe_config(</span><br><span class="line">                task, instance_image_info,</span><br><span class="line">                iscsi_boot&#x3D;deploy_utils.is_iscsi_boot(task),</span><br><span class="line">                ramdisk_boot&#x3D;(boot_option &#x3D;&#x3D; &quot;ramdisk&quot;),</span><br><span class="line">                ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line">*****</span><br><span class="line"># If it&#39;s going to PXE boot we need to update the DHCP server</span><br><span class="line">            dhcp_opts &#x3D; pxe_utils.dhcp_options_for_instance(</span><br><span class="line">                task, ipxe_enabled)</span><br><span class="line">            provider &#x3D; dhcp_factory.DHCPFactory()</span><br><span class="line">            provider.update_dhcp(task, dhcp_opts)  </span><br><span class="line">*****</span><br><span class="line"> manager_utils.node_set_boot_device(task, boot_device,</span><br><span class="line">                                               persistent&#x3D;persistent)</span><br></pre></td></tr></table></figure>
-
-<p>默认本地启动调用 ironic.drivers.modules.pxe.PXERamdiskDeploy.prepare中会检查boot_option是否正确,  然后调用 populate_storage_driver_internal_info，如果使用iSCSI启动，保存boot的volume 信息至internal_info , 最终调用 调用 ironic.drivers.modules.pxe.PXEBoot.prepare_instance  启动部署</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;RamdiskDeploy.prepare&#39;)</span><br><span class="line">   @task_manager.require_exclusive_lock</span><br><span class="line">   def prepare(self, task):</span><br><span class="line">   *****</span><br><span class="line">    deploy_utils.populate_storage_driver_internal_info(task)</span><br><span class="line">    ******</span><br><span class="line">    if node.provision_state in (states.ACTIVE, states.UNRESCUING):</span><br><span class="line">           # In the event of takeover or unrescue.</span><br><span class="line">           task.driver.boot.prepare_instance(task)</span><br></pre></td></tr></table></figure>
-
-<p>调用 ironic.drivers.modules.pxe.PXEBoot.prepare_instance，  配置dhcp ，准备pxe config和缓存镜像， 通过ipmi操控bios配置启动设备</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">****</span><br><span class="line">#缓存镜像到本地</span><br><span class="line">pxe_utils.cache_ramdisk_kernel(task, instance_image_info,</span><br><span class="line">                                           ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line"> ****</span><br><span class="line"> #为当前裸机准备 单独的 pxe 文件</span><br><span class="line"> pxe_utils.prepare_instance_pxe_config(</span><br><span class="line">                task, instance_image_info,</span><br><span class="line">                iscsi_boot&#x3D;deploy_utils.is_iscsi_boot(task),</span><br><span class="line">                ramdisk_boot&#x3D;(boot_option &#x3D;&#x3D; &quot;ramdisk&quot;),</span><br><span class="line">                ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line">            boot_device &#x3D; boot_devices.PXE</span><br><span class="line">  *****</span><br><span class="line">  #因pxe启动，需update ironic DHCP配置文件配置pxe,bootfile等信息，本地启动时清理pxe文件更改启动设备为磁盘</span><br><span class="line">  # If it&#39;s going to PXE boot we need to update the DHCP server</span><br><span class="line">            dhcp_opts &#x3D; pxe_utils.dhcp_options_for_instance(</span><br><span class="line">                task, ipxe_enabled)</span><br><span class="line">            provider &#x3D; dhcp_factory.DHCPFactory()</span><br><span class="line">            provider.update_dhcp(task, dhcp_opts)</span><br><span class="line">  ****</span><br><span class="line">  #</span><br><span class="line">  manager_utils.node_set_boot_device(task, boot_device,</span><br><span class="line">                                               persistent&#x3D;persistent)</span><br><span class="line">  ****</span><br><span class="line">  #开始部署</span><br><span class="line">  _do_next_deploy_step(task, 0, conductor_id)</span><br></pre></td></tr></table></figure>
-
-<p>调用task.deploy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line">result &#x3D; interface.execute_deploy_step(task, step)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>如果是iSCSI启动直接调用了 iscsi_deploy.ISCSIDeploy.deploy, cinder盘，不需要缓存镜像，所以，关机，切换租户网络，开机</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line"> manager_utils.node_power_action(task, states.POWER_OFF)</span><br><span class="line">            power_state_to_restore &#x3D; (</span><br><span class="line">                manager_utils.power_on_node_if_needed(task))</span><br><span class="line">            task.driver.network.remove_provisioning_network(task)</span><br><span class="line">            task.driver.network.configure_tenant_networks(task)</span><br><span class="line">            manager_utils.restore_power_state_if_needed(</span><br><span class="line">                task, power_state_to_restore)</span><br><span class="line">            task.driver.boot.prepare_instance(task)</span><br><span class="line">            manager_utils.node_power_action(task, states.POWER_ON)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>本地盘 调用pxe.PXEBoot.deploy启动deploy会关机，配置租户网络, 再开机</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line">manager_utils.node_power_action(task, states.POWER_OFF)</span><br><span class="line">******</span><br><span class="line"> task.driver.network.configure_tenant_networks(task)</span><br><span class="line">*****</span><br><span class="line">manager_utils.node_power_action(task, states.POWER_ON)</span><br></pre></td></tr></table></figure>
-
-<p>至此deploy完，本地盘会进入ramdisk， iSCSI启动不走ramdisk会直接进去系统，</p>
+<p>经过谷歌搜索后，发现应该是qemu版本的问题，当前环境qemu的版本为2.0</p>
+<p><a target="_blank" rel="noopener" href="https://bugzilla.redhat.com/show_bug.cgi?id=1594304">https://bugzilla.redhat.com/show_bug.cgi?id=1594304</a> 显示的结果来看，应该是bug问题。建议升级qemu版本。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/" data-id="ckssanb4b000rto16cdlabyql" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/" data-id="cktpm2y6c00058416espm1xgw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-es-创建索引" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/" class="article-date">
+  <time datetime="2021-09-15T08:58:42.000Z" itemprop="datePublished">2021-09-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/">es-创建索引</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>elasticsearch 创建索引</p>
+<p>PUT /myIndex</p>
+<p>传入json</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"></span><br><span class="line"> &quot;settings&quot;:&#123;</span><br><span class="line"></span><br><span class="line">   &quot;number_of_shards&quot;: 5,</span><br><span class="line"></span><br><span class="line">   &quot;number_of_replicas&quot;: 1</span><br><span class="line"></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/" data-id="cktpm2y6b000384162mrp7v4o" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li></ul>
 
     </footer>
   </div>
@@ -616,7 +670,7 @@ var _hmt = _hmt || [];
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -640,7 +694,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 14.44px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15.56px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.27px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 13.64px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19.09px;">go</a> <a href="/tags/grpc/" style="font-size: 10.91px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 14.55px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.36px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.64px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 11.82px;">python</a> <a href="/tags/spdk/" style="font-size: 12.73px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.45px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -649,7 +703,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -662,23 +716,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/">小白解说之gRPC入门</a>
+            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
           </li>
         
           <li>
-            <a href="/2021/10/26/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/">小白大话容器编排之Kubernetes资源对象</a>
+            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
           </li>
         
           <li>
-            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/">小白解说之Prometheus监控入门</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/">虚拟化-ovn入门到精通(四)</a>
           </li>
         
           <li>
-            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/">小白解说之Docker高级用法</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
           </li>
         
           <li>
-            <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>
@@ -693,7 +747,7 @@ var _hmt = _hmt || [];
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2021 Tonyzhang1989<br>
+      &copy; 2022 Tonyzhang1989<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

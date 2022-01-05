@@ -16,19 +16,19 @@ var _hmt = _hmt || [];
   
 
   
-  <title>小白说</title>
+  <title>小白说互联网</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:type" content="website">
-<meta property="og:title" content="小白说">
+<meta property="og:title" content="小白说互联网">
 <meta property="og:url" content="https://blog.kubestack.cn/page/8/index.html">
-<meta property="og:site_name" content="小白说">
+<meta property="og:site_name" content="小白说互联网">
 <meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:locale">
 <meta property="article:author" content="Tonyzhang1989">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="小白说" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="小白说互联网" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -51,7 +51,7 @@ var _hmt = _hmt || [];
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">小白说</a>
+        <a href="/" id="logo">小白说互联网</a>
       </h1>
       
     </div>
@@ -79,10 +79,10 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-go-开启go-module" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-记一次虚机代理网关网络不通问题排查" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" class="article-date">
-  <time datetime="2021-01-04T06:30:16.000Z" itemprop="datePublished">2021-01-04</time>
+    <a href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="article-date">
+  <time datetime="2021-02-20T07:43:12.000Z" itemprop="datePublished">2021-02-20</time>
 </a>
     
   </div>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
+      <a class="article-title" href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">openstack-记一次虚机代理网关网络不通问题排查</a>
     </h1>
   
 
@@ -101,248 +101,37 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ go mod init</span><br><span class="line">go: modules disabled inside GOPATH&#x2F;src by GO111MODULE&#x3D;auto; see &#39;go help modules&#39;</span><br></pre></td></tr></table></figure>
-
-<p>开启go module：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set GO111MODULE&#x3D;on    &#x2F;&#x2F;windows</span><br><span class="line">export GO111MODULE&#x3D;on &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
-
-<p>上面的命令开启go module是临时开启</p>
-<p>永久开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置powershell</span><br><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;  &#x2F;&#x2F;windows</span><br><span class="line">#echo &#39;export GO111MODULE&#x3D;on&#39; &gt;&gt; &#x2F;etc&#x2F;profile &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" data-id="ckjj7tvep0006u816ei7d5698" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-gin-常见问题解决" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
-  <time datetime="2021-01-04T02:19:49.000Z" itemprop="datePublished">2021-01-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/">go-gin 常见问题解决</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="安装过程中遇到的问题"><a href="#安装过程中遇到的问题" class="headerlink" title="安装过程中遇到的问题"></a>安装过程中遇到的问题</h4><ul>
-<li><p>cannot find package “github.com/go-playground/validator/v10”</p>
-<p>发现github上确实没有该代码</p>
-<ul>
-<li>解决方法：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># cd $GOPATH</span><br><span class="line"># go get &quot;gopkg.in&#x2F;go-playground&#x2F;validator.v10&quot;</span><br><span class="line"># cp -rf $GOPATH&#x2F;src&#x2F;gopkg.in&#x2F;go-playground&#x2F;validator.v10&#x2F;*   $GOPATH&#x2F;src&#x2F;vendor&#x2F;github.com&#x2F;go-playground&#x2F;validator&#x2F;v10&#x2F;</span><br><span class="line"># govendor add +external</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>cannot find package “golang.org/x/sys/unix”</p>
-<ul>
-<li>解决方法：</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p $GOPATH&#x2F;src&#x2F;golang.org&#x2F;x</span><br><span class="line"># cd $GOPATH&#x2F;src&#x2F;golang.org&#x2F;x</span><br><span class="line"># git clone https:&#x2F;&#x2F;github.com&#x2F;golang&#x2F;sys.git</span><br><span class="line"># govendor add +external</span><br></pre></td></tr></table></figure></li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" data-id="ckjj7tveo0004u8161ieygad6" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-更改默认存储目录-root-dir" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/" class="article-date">
-  <time datetime="2021-01-03T14:30:28.000Z" itemprop="datePublished">2021-01-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/">docker-更改默认存储目录 root dir</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="确保停止docker服务"><a href="#确保停止docker服务" class="headerlink" title="确保停止docker服务"></a>确保停止docker服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemstl stop docker.service</span><br></pre></td></tr></table></figure>
-
-<h3 id="2、修改-etc-docker-daemon-json文件值，文件不存在需手动创建"><a href="#2、修改-etc-docker-daemon-json文件值，文件不存在需手动创建" class="headerlink" title="2、修改/etc/docker/daemon.json文件值，文件不存在需手动创建"></a>2、修改/etc/docker/daemon.json文件值，文件不存在需手动创建</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#mkdir &#x2F;data&#x2F;docker</span><br><span class="line"># vim &#x2F;etc&#x2F;docker&#x2F;daemon.json</span><br></pre></td></tr></table></figure>
-
-<p>新增以下信息：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">&quot;data-root&quot;: &quot;&#x2F;data&#x2F;docker&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="3、启动docker服务-systemstl-start-docker-service"><a href="#3、启动docker服务-systemstl-start-docker-service" class="headerlink" title="3、启动docker服务# systemstl start docker.service"></a>3、启动docker服务<code># systemstl start docker.service</code></h3><h3 id="4、docker-info-验证Docker-Root-Dir的值-是否已修改为-data-docker"><a href="#4、docker-info-验证Docker-Root-Dir的值-是否已修改为-data-docker" class="headerlink" title="4、docker info 验证Docker Root Dir的值 是否已修改为/data/docker"></a>4、<code>docker info</code> 验证Docker Root Dir的值 是否已修改为<code>/data/docker</code></h3>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/01/03/docker-%E6%9B%B4%E6%94%B9%E9%BB%98%E8%AE%A4%E5%AD%98%E5%82%A8%E7%9B%AE%E5%BD%95-root-dir/" data-id="ckjj7tven0003u816dk6kfaap" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-ce-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2020-12-30T02:15:24.000Z" itemprop="datePublished">2020-12-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/">docker-ce yum安装</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>CentosOS 7 安装docker-ce</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># step 1: 安装必要的一些系统工具</span><br><span class="line">sudo yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line"># Step 2: 添加软件源信息</span><br><span class="line">sudo yum-config-manager --add-repo https:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;docker-ce&#x2F;linux&#x2F;centos&#x2F;docker-ce.repo</span><br><span class="line"># Step 3: 更新并安装Docker-CE</span><br><span class="line">sudo yum makecache fast</span><br><span class="line">sudo yum -y install docker-ce</span><br><span class="line"># Step 4: 开启Docker服务</span><br><span class="line">sudo service docker start</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/30/docker-ce-yum%E5%AE%89%E8%A3%85/" data-id="ckjatz3nx0003hc1610b80nr4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-influxdb-基本使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time datetime="2020-12-29T12:23:27.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">influxdb 基本使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>influxdb 基本使用</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">使用数据库</span><br><span class="line">&gt;show databases;</span><br><span class="line">&gt;use db1;</span><br><span class="line"></span><br><span class="line">查询表</span><br><span class="line">&gt;show measurements;</span><br><span class="line">&gt;select * table1 where endpoint&#x3D;&#39;xxxxxxxxxxxxxxxxxxxxx&#39; LIMIT 10;</span><br><span class="line"></span><br><span class="line">删除表</span><br><span class="line">&gt;drop measurement table1;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/29/influxdb-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="ckjatz3ny0005hc16cfe9cu0w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-docker-清空container-logs" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" class="article-date">
-  <time datetime="2020-12-29T12:18:28.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/">docker-清空container logs</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>docker默认会记录容器从一开始运行到现在为止所有的日志内容，而且目前docker并没有提供日志管理工具对日志内容进行清理。 只能手工进行清理。</p>
+        <p>背景：VPC网络内，用户两台虚机，VM1 138，VM2 181，用户需要把138流量牵引至181，所以将138 网关改成 181，当客户端 138 发起外网ping 114.114.114.114 时，无法联网</p>
+<p>排查原因：</p>
 <ol>
-<li><p>找出docker container日志文件所在的路径</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>删除或者清空日志文件内容</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo |sudo tee $(docker inspect --format&#x3D;&#39;&#123;&#123;.LogPath&#125;&#125;&#39; &lt;container_name_or_id&gt;)</span><br></pre></td></tr></table></figure></li>
+<li>通过tcpdump抓网关网卡包</li>
 </ol>
+<p>​    网关181回包后138 收不到</p>
+<p>![/images/openstack/image-20210220172329798.png)</p>
+<ol start="2">
+<li><p>抓取网关虚机的宿主机包发现，只回了一个包（tap网卡包回了）</p>
+<p>#tcpdump -i any -nn icmp and host 114.114.114.114</p>
+<p>所以怀疑安全组限制了（包只过了tap网卡后被丢弃）</p>
+<p>追踪这块网卡的iptables</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#iptables -nvL neutron-openvswi-ib8096cab-2</span><br><span class="line">Chain neutron-openvswi-sb8096cab-2 (1 references)</span><br><span class="line"> pkts bytes target     prot opt in     out     source               destination         </span><br><span class="line"> 3818  651K RETURN     all  --  *      *       0.0.0.0&#x2F;0            0.0.0.0&#x2F;0           </span><br><span class="line">3232K  229M RETURN     all  --  *      *       192.168.123.181      0.0.0.0&#x2F;0            MAC FA:16:3E:29:77:83 &#x2F;* Allow traffic from defined IP&#x2F;MAC pairs. *&#x2F;</span><br><span class="line"> 5558  381K DROP       all  --  *      *       0.0.0.0&#x2F;0            0.0.0.0&#x2F;0            &#x2F;* Drop traffic without an IP&#x2F;MAC allow rule. *&#x2F;</span><br></pre></td></tr></table></figure>
+
+<p>发现DROP的大小一直在变大，定位到问题了，那原因是什么呢？</p>
+</li>
+</ol>
+<p>因为 neutron默认防止arp欺骗，只允许源IP和MAC是自己的包才放行，而用户自己做了网关，导致源IP变了，所以被DROP了。</p>
+<p>解决办法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 放行包  （不能永久生效）</span><br><span class="line">#iptables -t filter -I neutron-openvswi-sb8096cab-2  -s 0.0.0.0&#x2F;0 -j RETURN</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2. 把port的安全组关掉</span><br><span class="line">#neutron port-update b8096cab-2536-4d0d-851a-1056b81f11ca --no-security-groups </span><br><span class="line">#neutron port-update b8096cab-2536-4d0d-851a-1056b81f11ca --port_security_enabled&#x3D;False</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/29/docker-%E6%B8%85%E7%A9%BAcontainer-logs/" data-id="ckjatz3nw0001hc1615z92kec" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" data-id="ckldj7pc900000k16fiv1axho" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
 
     </footer>
   </div>
@@ -351,10 +140,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-文学生活" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-go-100道灵魂拷问" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" class="article-date">
-  <time datetime="2020-12-29T12:07:51.000Z" itemprop="datePublished">2020-12-29</time>
+    <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/" class="article-date">
+  <time datetime="2021-02-18T14:17:23.000Z" itemprop="datePublished">2021-02-18</time>
 </a>
     
   </div>
@@ -365,7 +154,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/">文学生活</a>
+      <a class="article-title" href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
     </h1>
   
 
@@ -374,67 +163,15 @@ var _hmt = _hmt || [];
     <div class="article-entry" itemprop="articleBody">
       
         <ol>
-<li>良言一句暖三冬，恶语伤人六月寒</li>
+<li><p>map如何顺序读取</p>
+<p>map不能顺序读取，是因为他是无序的，想要有序读取，首先的解决的问题就是，把 key 变为有序，所以可以把key放入切片，对切片进行排序，遍历切片，通过key取值。</p>
+</li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" data-id="ckjatz3nz0006hc16acun9ro4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-golang判断当前主机是物理机还是虚拟机" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="article-date">
-  <time datetime="2020-12-29T10:38:04.000Z" itemprop="datePublished">2020-12-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/">golang判断当前主机是物理机还是虚拟机</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>windows下命令行获取：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic path Win32_ComputerSystem get Model</span><br></pre></td></tr></table></figure>
-
-
-
-<p>linux下命令行获取：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dmidecode | egrep -i &#39;system-product-name|product|domU&#39;</span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">func isVirtualMachine() (bool, error) &#123;</span><br><span class="line">	model :&#x3D; &quot;&quot;</span><br><span class="line">	var cmd *exec.Cmd</span><br><span class="line"></span><br><span class="line">	if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot; &#123;</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;cmd&quot;, &quot;&#x2F;C&quot;, &quot;wmic path Win32_ComputerSystem get Model&quot;)</span><br><span class="line">	&#125; else &#123; &#x2F;&#x2F; linux</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;&#x2F;bin&#x2F;bash&quot;, &quot;-c&quot;, &quot;dmidecode | egrep -i &#39;system-product-name|product|domU&#39;&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	stdout, err :&#x3D; cmd.Output()</span><br><span class="line"></span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return false, err</span><br><span class="line">	&#125;</span><br><span class="line">	model &#x3D; string(stdout)</span><br><span class="line"></span><br><span class="line">	if strings.Contains(model, &quot;VirtualBox&quot;) || strings.Contains(model, &quot;Virtual Machine&quot;) || strings.Contains(model, &quot;VMware Virtual Platform&quot;) ||</span><br><span class="line">		strings.Contains(model, &quot;KVM&quot;) || strings.Contains(model, &quot;Bochs&quot;) || strings.Contains(model, &quot;HVM domU&quot;) &#123;</span><br><span class="line">		return true, nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return false, nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>如果使用夜莺n9e需要更改代码</p>
-<p>将 agent.yml中 cate 改为 auto，同时agent/report/report.go 更改如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">func report() error &#123;</span><br><span class="line">	name, err :&#x3D; os.Hostname()</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;cannot get hostname: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fields, err :&#x3D; gatherFields(config.Config.Report.Fields)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;这里考虑区分物理机还是虚拟机, 当类型是auto 时, 判断处理</span><br><span class="line">	var hostCategory string</span><br><span class="line">	if  config.Config.Report.Cate &#x3D;&#x3D; &quot;auto&quot; &#123;</span><br><span class="line">		isVM, _ :&#x3D; utils.IsVirtualMachine()</span><br><span class="line">		if isVM &#123;</span><br><span class="line">			hostCategory &#x3D;&quot;virtual&quot;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			hostCategory &#x3D;&quot;physical&quot;</span><br><span class="line">		&#125;</span><br><span class="line">		logger.Debugf(&quot;ident: %s , category: %s&quot;, ident,hostCategory)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	form :&#x3D; hostRegisterForm&#123;</span><br><span class="line">		SN:      sn,</span><br><span class="line">		IP:      ip,</span><br><span class="line">		Ident:   ident,</span><br><span class="line">		Name:    name,</span><br><span class="line">		Cate:    hostCategory, &#x2F;&#x2F;config.Config.Report.Cate</span><br><span class="line">		UniqKey: config.Config.Report.UniqKey,</span><br><span class="line">		Fields:  fields,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	content :&#x3D; form.SN + form.IP + form.Ident + form.Name + form.Cate + form.UniqKey</span><br><span class="line">	var keys []string</span><br><span class="line">	for key :&#x3D; range fields &#123;</span><br><span class="line">		keys &#x3D; append(keys, key, fields[key])</span><br><span class="line">	&#125;</span><br><span class="line">	sort.Strings(keys)</span><br><span class="line"></span><br><span class="line">	for _, key :&#x3D; range keys &#123;</span><br><span class="line">		content +&#x3D; fields[key]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	form.Digest &#x3D; str.MD5(content)</span><br><span class="line"></span><br><span class="line">	servers :&#x3D; address.GetHTTPAddresses(&quot;ams&quot;)</span><br><span class="line">	for _, i :&#x3D; range rand.Perm(len(servers)) &#123;</span><br><span class="line">		url :&#x3D; fmt.Sprintf(&quot;http:&#x2F;&#x2F;%s&#x2F;v1&#x2F;ams-ce&#x2F;hosts&#x2F;register&quot;, servers[i])</span><br><span class="line"></span><br><span class="line">		logger.Debugf(&quot;report: %+v&quot;, form)</span><br><span class="line"></span><br><span class="line">		var body errRes</span><br><span class="line">		err :&#x3D; httplib.Post(url).JSONBodyQuiet(form).Header(&quot;X-Srv-Token&quot;, config.Config.Report.Token).SetTimeout(time.Second * 5).ToJSON(&amp;body)</span><br><span class="line">		if err !&#x3D; nil &#123;</span><br><span class="line">			js, _ :&#x3D; json.Marshal(form)</span><br><span class="line">			logger.Errorf(&quot;report payload: %s, token: %s&quot;, string(js), config.Config.Report.Token)</span><br><span class="line">			return fmt.Errorf(&quot;curl %s fail: %v&quot;, url, err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		if body.Err !&#x3D; &quot;&quot; &#123;</span><br><span class="line">			return fmt.Errorf(body.Err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		return nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return fmt.Errorf(&quot;all server instance is dead&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" data-id="ckj9wlgd30000b0167l7g2itn" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/" data-id="cklaz218c0000jk16hdcqdcea" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
@@ -446,10 +183,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-mariadb-10-1-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-go-字符串转成byte数组，会发生内存拷贝吗？" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2020-12-28T02:14:32.000Z" itemprop="datePublished">2020-12-28</time>
+    <a href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/" class="article-date">
+  <time datetime="2021-02-18T14:11:27.000Z" itemprop="datePublished">2021-02-18</time>
 </a>
     
   </div>
@@ -460,7 +197,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/">mariadb 10.1 yum安装</a>
+      <a class="article-title" href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/">go-字符串转成byte数组，会发生内存拷贝吗？</a>
     </h1>
   
 
@@ -468,21 +205,32 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># MariaDB 10.1 CentOS repository list - created 2020-03-09 13:45 UTC</span><br><span class="line"># http:&#x2F;&#x2F;downloads.mariadb.org&#x2F;mariadb&#x2F;repositories&#x2F;</span><br><span class="line">[mariadb]</span><br><span class="line">name &#x3D; MariaDB</span><br><span class="line">baseurl &#x3D; http:&#x2F;&#x2F;yum.mariadb.org&#x2F;10.1&#x2F;centos7-amd64</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;yum.mariadb.org&#x2F;RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck&#x3D;1</span><br></pre></td></tr></table></figure>
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>字符串转成byte数组，会发生内存拷贝吗？</p>
+<h2 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h2><p>字符串转成切片，会产生拷贝。严格来说，只要是发生类型强转都会发生内存拷贝。那么问题来了。</p>
+<p>频繁的内存拷贝操作听起来对性能不大友好。有没有什么办法可以在字符串转成切片的时候不用发生拷贝呢？</p>
+<h2 id="解释"><a href="#解释" class="headerlink" title="解释"></a>解释</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line"></span><br><span class="line">import (</span><br><span class="line"> &quot;fmt&quot;</span><br><span class="line"> &quot;reflect&quot;</span><br><span class="line"> &quot;unsafe&quot;</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"> a :&#x3D;&quot;aaa&quot;</span><br><span class="line"> ssh :&#x3D; *(*reflect.StringHeader)(unsafe.Pointer(&amp;a))</span><br><span class="line"> b :&#x3D; *(*[]byte)(unsafe.Pointer(&amp;ssh))  </span><br><span class="line"> fmt.Printf(&quot;%v&quot;,b)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>After the file is in place, install MariaDB with:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install MariaDB-server MariaDB-client</span><br></pre></td></tr></table></figure>
+<p><strong><code>StringHeader</code> 是字符串在go的底层结构。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">type StringHeader struct &#123;</span><br><span class="line"> Data uintptr</span><br><span class="line"> Len  int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><strong><code>SliceHeader</code> 是切片在go的底层结构。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">type SliceHeader struct &#123;</span><br><span class="line"> Data uintptr</span><br><span class="line"> Len  int</span><br><span class="line"> Cap  int</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
+<p>那么如果想要在底层转换二者，只需要把 StringHeader 的地址强转成 SliceHeader 就行。那么go有个很强的包叫 unsafe 。</p>
+<ol>
+<li><code>unsafe.Pointer(&amp;a)</code>方法可以得到变量a的地址。</li>
+<li><code>(*reflect.StringHeader)(unsafe.Pointer(&amp;a))</code> 可以把字符串a转成底层结构的形式。</li>
+<li><code>(*[]byte)(unsafe.Pointer(&amp;ssh))</code> 可以把ssh底层结构体转成byte的切片的指针。</li>
+<li>再通过 <code>*</code>转为指针指向的实际内容。</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" data-id="ckj7xix5t0004u816f8yr9lde" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/" data-id="cklaz218f0003jk16f8wdhbi6" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
 
     </footer>
   </div>
@@ -491,10 +239,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-vim-报错E437" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-go-简单聊聊内存逃逸" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" class="article-date">
-  <time datetime="2020-12-28T02:13:11.000Z" itemprop="datePublished">2020-12-28</time>
+    <a href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/" class="article-date">
+  <time datetime="2021-02-18T14:05:16.000Z" itemprop="datePublished">2021-02-18</time>
 </a>
     
   </div>
@@ -505,7 +253,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/">vim 报错E437</a>
+      <a class="article-title" href="/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/">go-简单聊聊内存逃逸</a>
     </h1>
   
 
@@ -513,22 +261,328 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>E437: terminal capability “cm” required</p>
-<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
-<p>解决办法：</p>
-<p>执行export TERM=xterm;</p>
-<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
-<p>或者</p>
-<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
-<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
+        <h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><p>知道golang的内存逃逸吗？什么情况下会发生内存逃逸？</p>
+<h2 id="回答"><a href="#回答" class="headerlink" title="回答"></a>回答</h2><p>golang程序变量会携带有一组校验数据，用来证明它的整个生命周期是否在运行时完全可知。如果变量通过了这些校验，它就可以在栈上分配。否则就说它 逃逸 了，必须在堆上分配。</p>
+<p>能引起变量逃逸到堆上的典型情况：</p>
+<ul>
+<li><strong>在方法内把局部变量指针返回</strong> 局部变量原本应该在栈中分配，在栈中回收。但是由于返回时被外部引用，因此其生命周期大于栈，则溢出。</li>
+<li><strong>发送指针或带有指针的值到 channel 中。</strong> 在编译时，是没有办法知道哪个 <code>goroutine</code> 会在 <code>channel</code> 上接收数据。所以编译器没法知道变量什么时候才会被释放。</li>
+<li><strong>在一个切片上存储指针或带指针的值。</strong> 一个典型的例子就是 <code>[]*string</code> 。这会导致切片的内容逃逸。尽管其后面的数组可能是在栈上分配的，但其引用的值一定是在堆上。</li>
+<li><strong>slice 的背后数组被重新分配了，因为 append 时可能会超出其容量( cap )。</strong> slice 初始化的地方在编译时是可以知道的，它最开始会在栈上分配。如果切片背后的存储要基于运行时的数据进行扩充，就会在堆上分配。</li>
+<li><strong>在 interface 类型上调用方法。</strong> 在 interface 类型上调用方法都是动态调度的 —— 方法的真正实现只能在运行时知道。想像一个 io.Reader 类型的变量 r , 调用 r.Read(b) 会使得 r 的值和切片b 的背后存储都逃逸掉，所以会在堆上分配。</li>
+</ul>
+<h2 id="举例"><a href="#举例" class="headerlink" title="举例"></a>举例</h2><p><strong>通过一个例子加深理解，接下来尝试下怎么通过 <code>go build -gcflags=-m</code> 查看逃逸的情况。</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">package main</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line">type A struct &#123;</span><br><span class="line"> s string</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 这是上面提到的 &quot;在方法内把局部变量指针返回&quot; 的情况</span><br><span class="line">func foo(s string) *A &#123;</span><br><span class="line"> a :&#x3D; new(A) </span><br><span class="line"> a.s &#x3D; s</span><br><span class="line"> return a &#x2F;&#x2F;返回局部变量a,在C语言中妥妥野指针，但在go则ok，但a会逃逸到堆</span><br><span class="line">&#125;</span><br><span class="line">func main() &#123;</span><br><span class="line"> a :&#x3D; foo(&quot;hello&quot;)</span><br><span class="line"> b :&#x3D; a.s + &quot; world&quot;</span><br><span class="line"> c :&#x3D; b + &quot;!&quot;</span><br><span class="line"> fmt.Println(c)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>执行go build -gcflags=-m main.go</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">go build -gcflags&#x3D;-m main.go</span><br><span class="line"># command-line-arguments</span><br><span class="line">.&#x2F;main.go:7:6: can inline foo</span><br><span class="line">.&#x2F;main.go:13:10: inlining call to foo</span><br><span class="line">.&#x2F;main.go:16:13: inlining call to fmt.Println</span><br><span class="line">&#x2F;var&#x2F;folders&#x2F;45&#x2F;qx9lfw2s2zzgvhzg3mtzkwzc0000gn&#x2F;T&#x2F;go-build409982591&#x2F;b001&#x2F;_gomod_.go:6:6: can inline init.0</span><br><span class="line">.&#x2F;main.go:7:10: leaking param: s</span><br><span class="line">.&#x2F;main.go:8:10: new(A) escapes to heap</span><br><span class="line">.&#x2F;main.go:16:13: io.Writer(os.Stdout) escapes to heap</span><br><span class="line">.&#x2F;main.go:16:13: c escapes to heap</span><br><span class="line">.&#x2F;main.go:15:9: b + &quot;!&quot; escapes to heap</span><br><span class="line">.&#x2F;main.go:13:10: main new(A) does not escape</span><br><span class="line">.&#x2F;main.go:14:11: main a.s + &quot; world&quot; does not escape</span><br><span class="line">.&#x2F;main.go:16:13: main []interface &#123;&#125; literal does not escape</span><br><span class="line">&lt;autogenerated&gt;:1: os.(*File).close .this does not escape</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>./main.go:8:10: new(A) escapes to heap</code> 说明 <code>new(A)</code> 逃逸了,符合上述提到的常见情况中的第一种。</li>
+<li><code>./main.go:14:11: main a.s + &quot; world&quot; does not escape</code> 说明 b 变量没有逃逸，因为它只在方法内存在，会在方法结束时被回收。</li>
+<li><code>./main.go:15:9: b + &quot;!&quot; escapes to heap</code> 说明 c 变量逃逸，通过<code>fmt.Println(a ...interface&#123;&#125;)</code>打印的变量，都会发生逃逸，感兴趣的朋友可以去查查为什么。</li>
+</ul>
+<p>以上操作其实就叫逃逸分析。下篇文章，跟大家聊聊怎么用一个比较trick的方法使变量不逃逸。方便大家在面试官面前秀一波。</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" data-id="ckj7xix5v0007u816ftf2ccvc" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/" data-id="cklaz218e0002jk1660579h5u" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-一次虚拟机启动异常排查" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/" class="article-date">
+  <time datetime="2021-02-08T06:33:16.000Z" itemprop="datePublished">2021-02-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/">openstack-一次虚拟机启动异常排查</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>环境 ： openstack stein版本，本地盘存储模式</p>
+<p>故障：虚机启动异常，排查原因</p>
+<p>查看虚机日志</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">2021-02-08 13:58:08.352 7 DEBUG nova.virt.images [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] 5516a827-a2fb-463b-9b03-168e56faa79f was qcow2, converting to raw fetch_to_raw &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;images.py:172</span><br><span class="line">2021-02-08 13:58:08.353 7 DEBUG nova.privsep.utils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Path &#39;&#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#39; supports direct I&#x2F;O supports_direct_io &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;privsep&#x2F;utils.py:66</span><br><span class="line">2021-02-08 13:58:08.353 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Running cmd (subprocess): qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:372</span><br><span class="line">2021-02-08 13:58:10.109 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted&quot; returned: 0 in 1.755s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br><span class="line">2021-02-08 13:58:10.375 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Running cmd (subprocess): &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;bin&#x2F;python -m oslo_concurrency.prlimit --as&#x3D;1073741824 --cpu&#x3D;30 -- env LC_ALL&#x3D;C LANG&#x3D;C qemu-img info &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted --force-share execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:372</span><br><span class="line">2021-02-08 13:58:10.813 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;bin&#x2F;python -m oslo_concurrency.prlimit --as&#x3D;1073741824 --cpu&#x3D;30 -- env LC_ALL&#x3D;C LANG&#x3D;C qemu-img info &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted --force-share&quot; returned: 0 in 0.438s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br><span class="line">2021-02-08 13:58:10.819 7 DEBUG oslo_concurrency.lockutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] Lock &quot;344d45fde44ae9163acfa37ab64364ffe2fd0b9c&quot; released by &quot;nova.virt.libvirt.imagebackend.fetch_func_sync&quot; :: held 46.934s inner &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;lockutils.py:339</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Instance failed to spawn: ImageUnacceptable: Image 5516a827-a2fb-463b-9b03-168e56faa79f is unacceptable: Converted to raw, but format is now qcow2</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Traceback (most recent call last):</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py&quot;, line 2613, in _build_resources</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     yield resources</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py&quot;, line 2372, in _build_and_run_instance</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     block_device_info&#x3D;block_device_info)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3358, in spawn</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     block_device_info&#x3D;block_device_info)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3754, in _create_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     fallback_from_host)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 3855, in _create_and_inject_local_root</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     instance, size, fallback_from_host)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py&quot;, line 8578, in _try_fetch_image_cache</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     trusted_certs&#x3D;instance.trusted_certs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 276, in cache</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 668, in create_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     prepare_template(target&#x3D;base, *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;lockutils.py&quot;, line 328, in inner</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     return f(*args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;imagebackend.py&quot;, line 272, in fetch_func_sync</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     fetch_func(target&#x3D;target, *args, **kwargs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;libvirt&#x2F;utils.py&quot;, line 421, in fetch_image</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     images.fetch_to_raw(context, image_id, target, trusted_certs)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;virt&#x2F;images.py&quot;, line 188, in fetch_to_raw</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]     data.file_format)</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] ImageUnacceptable: Image 5516a827-a2fb-463b-9b03-168e56faa79f is unacceptable: Converted to raw, but format is now qcow2</span><br><span class="line">2021-02-08 13:58:10.820 7 ERROR nova.compute.manager [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757]</span><br><span class="line">2021-02-08 13:58:10.821 7 INFO nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Terminating instance</span><br><span class="line">2021-02-08 13:58:10.823 7 DEBUG nova.compute.manager [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] [instance: bc2b194c-d28c-4bd1-960f-42950e5ab757] Start destroying the instance on the hypervisor. _shutdown_instance &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;compute&#x2F;manager.py:2751</span><br></pre></td></tr></table></figure>
+
+<p>pycharm 查看nova代码</p>
+<p>nova/virt/images.py, 查看基本逻辑</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">def fetch_to_raw(context, image_href, path, trusted_certs&#x3D;None)</span><br><span class="line">	...</span><br><span class="line">	fetch(context, image_href, path_tmp, trusted_certs)   &#x2F;&#x2F;先从glance api下载镜像到本地_base目录</span><br><span class="line">	...</span><br><span class="line">	if fmt !&#x3D; &quot;raw&quot; and CONF.force_raw_images:</span><br><span class="line">		...</span><br><span class="line">		convert_image(path_tmp, staged, fmt, &#39;raw&#39;) &#x2F;&#x2F;调用qemu convert command转换格式</span><br><span class="line">		...</span><br><span class="line">	    data &#x3D; qemu_img_info(staged)  &#x2F;&#x2F;调用qemu info查看转换后得镜像格式</span><br><span class="line">        if data.file_format !&#x3D; &quot;raw&quot;:</span><br><span class="line">           raise exception.ImageUnacceptable(image_id&#x3D;image_href,    &#x2F;&#x2F;抛出异常</span><br><span class="line">               reason&#x3D;_(&quot;Converted to raw, but format is now %s&quot;) %</span><br><span class="line">               data.file_format)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>总体代码逻辑如上，所以问题基本定位是 qemu convert后镜像依旧是qcow2呢，  那为什么会呢 ？ </p>
+<ol>
+<li>nova-compute 日志中</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2021-02-08 13:58:10.109 7 DEBUG oslo_concurrency.processutils [req-dd576230-3c75-41ca-b9f3-08b9c957eac5 1c935a2c05c140e18d93f3e189fd0ad7 3a228708dc8742d1adf519b52b613acf - b0a8dae41bc44b3296ae1a75d3e0c370 b0a8dae41bc44b3296ae1a75d3e0c370] CMD &quot;qemu-img convert -t none -O raw -f qcow2 &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.part &#x2F;var&#x2F;lib&#x2F;nova&#x2F;instances&#x2F;_base&#x2F;344d45fde44ae9163acfa37ab64364ffe2fd0b9c.converted&quot; returned: 0 in 1.755s execute &#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_concurrency&#x2F;processutils.py:409</span><br></pre></td></tr></table></figure>
+
+<p>说明调用了qemu 发生了convert，WHY ？ 那让我们手工模拟一下代码流程吧</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#glance image-download 5516a827-a2fb-463b-9b03-168e56faa79f --file test.qcow2 --progress</span><br><span class="line">#qemu-img info test.qcow2 </span><br><span class="line">#qemu-img convert -t none -O raw -f qcow2 test.qcow2 test.qcow2.convert</span><br><span class="line">#qemu-img info test.raw.convert </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/openstack/fc4ccb936322f084084628c7bc65b909.png"></p>
+<p>如上图，发现，确实qemu convert 转换失败了，转完依旧是qcow2 ， 这什么鬼？</p>
+<p>定位相关同事，他的操作记录</p>
+<ol>
+<li>glance download 镜像 kali-self-2021.01.19.raw  （原始glance镜像是qcow2，他却保存成了*.raw)</li>
+<li>qemu-img convert -p -f raw -O qcow2 kali-self-2021.01.19.raw kali-self-2021.01.19.qcow2</li>
+<li>glance image-create 上传</li>
+</ol>
+<p>定位到是他 qemu convert 转错了，多转了一遍，把 qcow2 文件当成raw convert to qcow2 了，所以导致这个故障，Done~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/02/08/openstack-%E4%B8%80%E6%AC%A1%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%90%AF%E5%8A%A8%E5%BC%82%E5%B8%B8%E6%8E%92%E6%9F%A5/" data-id="ckkw911eq000bs8165opv8t1g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-练习题" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" class="article-date">
+  <time datetime="2021-01-26T08:45:06.000Z" itemprop="datePublished">2021-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/">go-练习题</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol start="2">
+<li><p>交替打印数字和字母</p>
+<p>使用两个 <code>goroutine</code> 交替打印序列，一个 <code>goroutine</code> 打印数字， 另外一个 <code>goroutine</code> 打印字母， 最终效果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">12AB34CD56EF78GH910IJ1112KL1314MN1516OP1718QR1920ST2122UV2324WX2526YZ2728</span><br></pre></td></tr></table></figure>
+
+<p>思路：</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="3">
+<li><p>判断字符串中字符是否全都不同</p>
+<p>请实现一个算法，确定一个字符串的所有字符【是否全都不同】。这里我们要求【不允许使用额外的存储结构】。 给定一个string，请返回一个bool值,true代表所有字符全都不同，false代表存在相同的字符。 保证字符串中的字符为【ASCII字符】。字符串的长度小于等于【3000】。</p>
+<p>思路:</p>
+<p>代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">   </span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/26/go-%E7%BB%83%E4%B9%A0%E9%A2%98/" data-id="ckkw911ed0003s816a4or61h4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-判断字符串是否包含在数组中" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" class="article-date">
+  <time datetime="2021-01-26T08:21:45.000Z" itemprop="datePublished">2021-01-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/">go-判断字符串是否包含在数组中</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>判断数组中是否包含某字符串</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">func IsContain(items []string, item string) bool &#123;</span><br><span class="line">	for _, eachItem :&#x3D; range items &#123;</span><br><span class="line">		if eachItem &#x3D;&#x3D; item &#123;</span><br><span class="line">			return true</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if IsContain(fip.Tags,&quot;router_forward&quot;)&#123;</span><br><span class="line">			portForwardFips +&#x3D; 1</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/" data-id="ckkw911ea0001s8165hx6hswf" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-meter配置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" class="article-date">
+  <time datetime="2021-01-07T02:56:35.000Z" itemprop="datePublished">2021-01-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/">openstack-meter配置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>d</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/07/openstack-meter%E9%85%8D%E7%BD%AE/" data-id="ckkw911en0009s816bnyffspk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-gnocchi-metric报错" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/" class="article-date">
+  <time datetime="2021-01-06T12:35:26.000Z" itemprop="datePublished">2021-01-06</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/">openstack-gnocchi metricd报错</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This is the error message in /var/lib/docker/volumes/kolla_logs/_data/gnocchi/gnocchi-metricd.log:</p>
+<p>2018-07-05 08:12:36,365 [9755] ERROR cotyledon.<em>utils: Unhandled exception<br>Traceback (most recent call last):<br> File “/usr/lib/python2.7/site-packages/cotyledon/<em>utils.py”, line 84, in exit_on_exception<br>  yield<br> File “/usr/lib/python2.7/site-packages/cotyledon/<em>service.py”, line 139, in _run<br>  self.run()<br> File “/usr/lib/python2.7/site-packages/gnocchi/cli/metricd.py”, line 76, in run<br>  self._configure()<br> File “/usr/lib/python2.7/site-packages/tenacity/__init</em></em>.py”, line 214, in wrapped_f<br>  return self.call(f, *args, **kw)<br> File “/usr/lib/python2.7/site-packages/tenacity/__init_</em>.py”, line 295, in call<br>  start_time=start_time)<br> File “/usr/lib/python2.7/site-packages/tenacity/<strong>init</strong>.py”, line 252, in iter<br>  return fut.result()<br> File “/usr/lib/python2.7/site-packages/concurrent/futures/<em>base.py”, line 422, in result<br>  return self.__get_result()<br> File “/usr/lib/python2.7/site-packages/tenacity/__init_</em>.py”, line 298, in call<br>  result = fn(*args, **kwargs)<br> File “/usr/lib/python2.7/site-packages/gnocchi/cli/metricd.py”, line 161, in <em>configure<br>  six.moves.range(self.incoming.NUM_SACKS))<br> File “/usr/lib/python2.7/site-packages/gnocchi/incoming/__init_</em>.py”, line 53, in NUM_SACKS<br>  raise SackDetectionError(e)<br>SackDetectionError: [Errno 2] No such file or directory: ‘/var/lib/gnocchi/tmp/gnocchi-config’</p>
+<p>解决方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#gnocchi-upgrade</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/" data-id="ckkw911ej0007s8169ofs02bd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-常用格式转换方法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/" class="article-date">
+  <time datetime="2021-01-05T11:51:39.000Z" itemprop="datePublished">2021-01-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/">go-常用格式转换方法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. bytes转字符串</span><br><span class="line">	str:&#x3D;string(bytes_data)</span><br><span class="line">2. </span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/" data-id="ckkw911e50000s816flly9acp" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
 
     </footer>
   </div>
@@ -541,7 +595,7 @@ var _hmt = _hmt || [];
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/7/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/9/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/7/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><span class="page-number current">8</span><a class="page-number" href="/page/9/">9</a><a class="page-number" href="/page/10/">10</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/9/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -565,7 +619,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 14.44px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15.56px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.27px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 13.64px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19.09px;">go</a> <a href="/tags/grpc/" style="font-size: 10.91px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 14.55px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.36px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.64px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 11.82px;">python</a> <a href="/tags/spdk/" style="font-size: 12.73px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.45px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -574,7 +628,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -587,23 +641,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/">小白解说之gRPC入门</a>
+            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
           </li>
         
           <li>
-            <a href="/2021/10/26/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/">小白大话容器编排之Kubernetes资源对象</a>
+            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
           </li>
         
           <li>
-            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/">小白解说之Prometheus监控入门</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/">虚拟化-ovn入门到精通(四)</a>
           </li>
         
           <li>
-            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/">小白解说之Docker高级用法</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
           </li>
         
           <li>
-            <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>
@@ -618,7 +672,7 @@ var _hmt = _hmt || [];
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2021 Tonyzhang1989<br>
+      &copy; 2022 Tonyzhang1989<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>

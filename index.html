@@ -16,19 +16,19 @@ var _hmt = _hmt || [];
   
 
   
-  <title>小白说</title>
+  <title>小白说互联网</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:type" content="website">
-<meta property="og:title" content="小白说">
+<meta property="og:title" content="小白说互联网">
 <meta property="og:url" content="https://blog.kubestack.cn/index.html">
-<meta property="og:site_name" content="小白说">
+<meta property="og:site_name" content="小白说互联网">
 <meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:locale">
 <meta property="article:author" content="Tonyzhang1989">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="小白说" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="小白说互联网" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -51,7 +51,7 @@ var _hmt = _hmt || [];
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">小白说</a>
+        <a href="/" id="logo">小白说互联网</a>
       </h1>
       
     </div>
@@ -79,10 +79,10 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-小白解说之gRPC入门" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-虚拟化-ovn入门到精通(五)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-27T02:31:14.000Z" itemprop="datePublished">2021-10-27</time>
+    <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/" class="article-date">
+  <time datetime="2021-12-03T03:21:39.000Z" itemprop="datePublished">2021-12-03</time>
 </a>
     
   </div>
@@ -93,7 +93,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/">小白解说之gRPC入门</a>
+      <a class="article-title" href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
     </h1>
   
 
@@ -101,20 +101,63 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家好，我是小白。</p>
-<p>一、先了解rpc<br>远程过程调用（英语：Remote Procedure Call，缩写为 RPC）这个应该都有所耳闻，这是一种计算机通信协议。该协议允许运行于一台计算机的程序调用另一个地址空间（通常为一个开放网络的一台计算机）的子程序，而程序员就像调用本地程序一样，无需额外地为这个交互作用编程（无需关注细节）。RPC是一种服务器-客户端（Client/Server）模式，经典实现是一个通过发送请求-接受回应进行信息交互的系统。</p>
-<p>二、了解gRPC<br>这些年云计算最火热的莫过于Kubernetes，随之带动了微服务的发展。而微服务之间的通信, 自然会联想到rpc通信。<br>gRPC是一种现代化开源的高性能RPC框架，能够运行于任意环境之中。最初由谷歌进行开发。它使用HTTP/2作为传输协议。<br>在gRPC里，客户端可以像调用本地方法一样直接调用其他机器上的服务端应用程序的方法，帮助你更容易创建分布式应用程序和服务。与许多RPC系统一样，gRPC是基于定义一个服务，指定一个可以远程调用的带有参数和返回类型的的方法。在服务端程序中实现这个接口并且运行gRPC服务处理客户端调用。在客户端，有一个stub提供和服务端相同的方法。</p>
-<p>三、gRPC好处</p>
-<p>四、安装grpc和Protocol Buffers v3</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1. 安装grpc</span><br><span class="line">go get -u google.golang.org&#x2F;grpc</span><br><span class="line">go get -u github.com&#x2F;golang&#x2F;protobuf&#x2F;protoc-gen-go</span><br><span class="line"></span><br><span class="line">2. 安装Protocol Buffers v3</span><br><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;protocolbuffers&#x2F;protobuf&#x2F;releases&#x2F;download&#x2F;v3.16.0&#x2F;protoc-3.16.0-linux-x86_64.zip</span><br><span class="line">unzip protoc-3.16.0-linux-x86_64.zip</span><br><span class="line">cp bin&#x2F;protoc &#x2F;usr&#x2F;local&#x2F;bin&#x2F;</span><br></pre></td></tr></table></figure>
+        <h2 id="OVN-L3-网关连接外部网络"><a href="#OVN-L3-网关连接外部网络" class="headerlink" title="OVN-L3 网关连接外部网络"></a>OVN-L3 网关连接外部网络</h2><h4 id="1-网关联通"><a href="#1-网关联通" class="headerlink" title="1. 网关联通"></a>1. 网关联通</h4><p>参考网上，TOPO是这么个意思~</p>
+<p><img src="/images/ovn/OVN-network-fig-2.png"></p>
+<p>正如上面所看到的，我们添加了以下新组件：</p>
+<ul>
+<li>OVN边界网关路由器（edge1）</li>
+<li>逻辑交换机（transit），用于连接edge1和tenant1路由器</li>
+<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
+</ul>
+<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层, NAT出去<del>~</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">     | enp6s0f1 |  Physical Network</span><br><span class="line">     ----------</span><br><span class="line">          |</span><br><span class="line">      ____|_____</span><br><span class="line">     |  bridge  |  br-ex</span><br><span class="line">      ----------</span><br><span class="line">         | mapping</span><br><span class="line">      outside(sw)</span><br><span class="line">         |</span><br><span class="line">         |          &lt;192.168.0.250&#x2F;24&gt;</span><br><span class="line">       edge1(gr)    &lt;10.10.100.1&#x2F;24&gt;                    </span><br><span class="line">         |</span><br><span class="line">         |</span><br><span class="line">     transit(join sw)</span><br><span class="line">         |</span><br><span class="line">         |                &lt;10.10.100.2&#x2F;24&gt;                               </span><br><span class="line">      router-tenant1(dr)  &lt;172.16.250.1&#x2F;24，172.16.251.1&#x2F;24&gt;</span><br><span class="line">     &#x2F;        \</span><br><span class="line">  ls01(sw)    ls02(sw)</span><br><span class="line">  &#x2F;  |        &#x2F;  \</span><br><span class="line">vm1 vm2   vm11 vm12</span><br></pre></td></tr></table></figure>
+
+<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，相当于是集中式的网络节点吧，这里依旧使用central节点作为集中式网关）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-50.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;edge1 options:classis&#x3D;5e959521-218c-4dd3-bf25-ef29a522234b</span><br></pre></td></tr></table></figure>
+
+<p>创建逻辑中转交换机用于连接edge1和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器， 没准将来这块社区能够优化掉~</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl ls-add transit</span><br></pre></td></tr></table></figure>
+
+<p>联通路由器edge1和逻辑交换机transit上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add edge1 edge1-transit 02:d4:1d:8c:d7:ae 10.10.100.1&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add transit transit-edge1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-edge1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-edge1 02:d4:1d:8c:d7:ae</span><br><span class="line">#ovn-nbctl lsp-set-options transit-edge1 router-port&#x3D;edge1-transit</span><br></pre></td></tr></table></figure>
+
+<p>联通路由器tenant1到逻辑交换机transit上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lrp-add router-tenant1 tenant1-transit 02:d4:1d:8c:d9:af 10.10.100.2&#x2F;24</span><br><span class="line">#ovn-nbctl lsp-add transit transit-tenant1</span><br><span class="line">#ovn-nbctl lsp-set-type transit-tenant1 router</span><br><span class="line">#ovn-nbctl lsp-set-addresses transit-tenant1 02:d4:1d:8c:d9:af</span><br><span class="line">#ovn-nbctl lsp-set-options transit-tenant1 router-port&#x3D;tenant1-transit</span><br></pre></td></tr></table></figure>
+
+<p>添加静态路由</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-route-add edge1 &quot;172.16.250.0&#x2F;24&quot; 10.10.100.2</span><br><span class="line">#ovn-nbctl lr-route-add edge1 &quot;172.16.251.0&#x2F;24&quot; 10.10.100.2</span><br><span class="line">#ovn-nbctl lr-route-add router-tenant1 &quot;0.0.0.0&#x2F;0&quot; 10.10.100.1</span><br><span class="line">#ovn-nbctl lr-route-list edge1</span><br><span class="line">#ovn-nbctl lr-route-list router-tenant1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-51.png"></p>
+<p>测试连通性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping -c 2 10.10.100.1</span><br><span class="line">#ip netns exec ns11 ping -c 2 10.10.100.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-52.png"></p>
+<h5 id="至此-vm-到edge1路由器的网络已经联通"><a href="#至此-vm-到edge1路由器的网络已经联通" class="headerlink" title="至此, vm 到edge1路由器的网络已经联通~"></a>至此, vm 到edge1路由器的网络已经联通~</h5><h3 id="2-SNAT联通物理underlay网络"><a href="#2-SNAT联通物理underlay网络" class="headerlink" title="2. SNAT联通物理underlay网络"></a>2. SNAT联通物理underlay网络</h3><p>我们接下去将使用central节点的ens35作为edge1 router和”data” network的连接点。为了完成这个任务，我们需要设置OVN使其通过一个专用的OVS bridge来使用ens35。这种类型的连接在OVN中被称为”localnet”。</p>
+<h5 id="2-1-central节点"><a href="#2-1-central节点" class="headerlink" title="2.1 central节点"></a>2.1 central节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">#在路由器 &#39;edge1&#39;创建新的端口,用于连接outside交换机</span><br><span class="line">ovn-nbctl lrp-add edge1 edge1-outside 02:0a:7f:00:01:29 192.168.0.250&#x2F;24</span><br><span class="line"># set gateway chassis</span><br><span class="line">ovn-nbctl lrp-set-gateway-chassis edge1-outside 5e959521-218c-4dd3-bf25-ef29a522234b</span><br><span class="line"># 新建逻辑交换机，并将它连接到edge1</span><br><span class="line">ovn-nbctl ls-add outside</span><br><span class="line">ovn-nbctl lsp-add outside outside-edge1</span><br><span class="line">ovn-nbctl lsp-set-type outside-edge1 router</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-edge1 02:0a:7f:00:01:29</span><br><span class="line">ovn-nbctl lsp-set-options outside-edge1 nat-addresses&#x3D;router router-port&#x3D;edge1-outside</span><br><span class="line"></span><br><span class="line">#在 &#39;outside&#39;交换机创建localnet端口。把网络名称设置为&quot;physnet1&quot;</span><br><span class="line">ovn-nbctl lsp-add outside outside-localnet</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-localnet unknown</span><br><span class="line">ovn-nbctl lsp-set-type outside-localnet localnet</span><br><span class="line">ovn-nbctl lsp-set-options outside-localnet network_name&#x3D;physnet1</span><br><span class="line"></span><br><span class="line">依旧使用</span><br><span class="line"># 为 eth1新建OVS网桥</span><br><span class="line">ovs-vsctl add-br br-ex</span><br><span class="line"># 为 eth1创建网桥映射： 把 &quot;physnet1&quot; 映射到 br-ex</span><br><span class="line">ovs-vsctl add-port br-ex eth0</span><br><span class="line">ovs-vsctl set Open_vSwitch . external-ids:ovn-bridge-mappings&#x3D;physnet1:br-ex</span><br><span class="line"></span><br><span class="line">#给 br-ex配置ip地址 192.168.0.201&#x2F;24</span><br><span class="line">ip addr add 192.168.0.201&#x2F;24 dev br-ex</span><br><span class="line">ip link set br-ex up</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-53.png"></p>
+<p><img src="/images/ovn/ovn-54.png"></p>
+<h5 id="测试联通"><a href="#测试联通" class="headerlink" title="测试联通"></a>测试联通</h5><p>虚机可以联通 192.168.0.250, 无法联通 192.168.0.201-203</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@q15439v ~]# ip netns exec ns1 ping 192.168.0.250</span><br><span class="line">PING 192.168.0.250 (192.168.0.250) 56(84) bytes of data.</span><br><span class="line">64 bytes from 192.168.0.250: icmp_seq&#x3D;1 ttl&#x3D;253 time&#x3D;0.260 ms</span><br><span class="line">^C</span><br><span class="line">--- 192.168.0.250 ping statistics ---</span><br><span class="line">1 packets transmitted, 1 received, 0% packet loss, time 0ms</span><br><span class="line">rtt min&#x2F;avg&#x2F;max&#x2F;mdev &#x3D; 0.260&#x2F;0.260&#x2F;0.260&#x2F;0.000 ms</span><br><span class="line">[root@q15439v ~]# ip netns exec ns1 ping 192.168.0.201</span><br><span class="line">PING 192.168.0.201 (192.168.0.201) 56(84) bytes of data.</span><br><span class="line">^C</span><br><span class="line">--- 192.168.0.201 ping statistics ---</span><br><span class="line">1 packets transmitted, 0 received, 100% packet loss, time 0ms</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-55.png"><br><img src="/images/ovn/ovn-59.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># create snat rule which will nat to the edge1-outside interface</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;snat&quot; logical_ip&#x3D;172.16.250.0&#x2F;24 external_ip&#x3D;192.168.0.250 -- add logical_router edge1 nat @nat</span><br><span class="line">#ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;dnat_and_snat&quot; logical_ip&#x3D;172.16.250.11 external_ip&#x3D;192.168.0.199 -- add logical_router edge1 nat @nat</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ovn/ovn-511.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">清理nat</span><br><span class="line">ovn-nbctl lr-nat-del edge1 dnat_and_snat 192.168.0.199</span><br><span class="line">ovn-nbctl lr-nat-del edge1 snat 172.16.250.0&#x2F;24</span><br><span class="line">ovn-nbctl ls-del outside</span><br><span class="line">ovn-nbctl lrp-del edge1-outside</span><br><span class="line"></span><br><span class="line">#</span><br><span class="line">ovs-vsctl del-br br-ex</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>TRACE排查</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ovn-trace --detail 交换机id inport &#x3D; 虚机port, eth.src&#x3D; 虚机mac，eth.dst&#x3D;网关mac</span><br><span class="line">ovn-trace --detail 0cd46441-6af4-45db-b201-16cd8342c519 &#39;inport &#x3D;&#x3D; &quot;e69f6f79-7e62-4616-b1b8-be61cf9eac79&quot; &amp;&amp; eth.src &#x3D;&#x3D; fa:16:3e:e9:52:50 &amp;&amp; ip4.src &#x3D;&#x3D; 192.168.99.131 &amp;&amp; eth.dst &#x3D;&#x3D; fa:16:3e:ee:d9:3e &amp;&amp;  ip4.dst &#x3D;&#x3D; 8.8.8.8 &amp;&amp;  ip.ttl &#x3D;&#x3D; 32&#39;</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/" data-id="ckvaiowiu0007lc161mzr0cxr" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/" data-id="cky1083mr000ilg16esnaf6t8" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
 
     </footer>
   </div>
@@ -123,10 +166,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白大话容器编排之Kubernetes资源对象" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-虚拟化-ovn入门到精通(五)-1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/26/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/" class="article-date">
-  <time datetime="2021-10-26T06:07:33.000Z" itemprop="datePublished">2021-10-26</time>
+    <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" class="article-date">
+  <time datetime="2021-12-03T03:21:39.000Z" itemprop="datePublished">2021-12-03</time>
 </a>
     
   </div>
@@ -137,7 +180,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/26/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/">小白大话容器编排之Kubernetes资源对象</a>
+      <a class="article-title" href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
     </h1>
   
 
@@ -145,35 +188,53 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Kubernetes 主要概念和对象介绍有下面这些。<br>    Autoscaling (HPA)<br>    ConfigMap<br>    CronJob<br>    CustomResourceDefinition<br>    DaemonSet<br>    Deployment<br>    Ingress<br>    Job<br>    LocalVolume<br>    Namespace<br>    NetworkPolicy<br>    Node<br>    PersistentVolume<br>    Pod<br>    PodPreset<br>    ReplicaSet<br>    Resource Quota<br>    Secret<br>    SecurityContext<br>    Service<br>    ServiceAccount<br>    StatefulSet<br>    Volume<br>下面咱们主要针对这些资源对象进行分析讲解</p>
+        <h2 id="OVN-L3-网关连接外部网络"><a href="#OVN-L3-网关连接外部网络" class="headerlink" title="OVN-L3 网关连接外部网络"></a>OVN-L3 网关连接外部网络</h2><h4 id="1-网关联通"><a href="#1-网关联通" class="headerlink" title="1. 网关联通"></a>1. 网关联通</h4><p>参考网上，TOPO是这么个意思~</p>
+<p><img src="/images/ovn/OVN-network-fig-2.png"></p>
+<p>正如上面所看到的，我们添加了以下新组件：</p>
+<ul>
+<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
+</ul>
+<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层, NAT出去<del>~</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">     | eth1 |  Physical Network</span><br><span class="line">     ----------</span><br><span class="line">          |</span><br><span class="line">      ____|_____</span><br><span class="line">     |  bridge  |  br-ex 192.168.0.100</span><br><span class="line">      ----------</span><br><span class="line">         | mapping</span><br><span class="line">      outside(sw)</span><br><span class="line">         |                port: tenant1-outside &lt;192.168.0.101&#x2F;24&gt;                               </span><br><span class="line">      router-tenant1(dr)  port: tenant1-localnet &lt;172.16.250.1&#x2F;24，172.16.251.1&#x2F;24&gt;</span><br><span class="line">     &#x2F;        \</span><br><span class="line">  ls01(sw)    ls02(sw)</span><br><span class="line">  &#x2F;  |        &#x2F;  \</span><br><span class="line">vm1 vm2   vm11 vm12</span><br></pre></td></tr></table></figure>
+
+<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，相当于是集中式的网络节点吧）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-50.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;edge1 options:classis&#x3D;32209610-88c9-495e-ab88-134923afea59</span><br></pre></td></tr></table></figure>
+
+<p>创建outside交换机用于连接外网和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器</p>
 <ol>
-<li><p>Autoscaling (HPA)</p>
+<li>联通路由器tenant1到逻辑交换机outside上</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/images/ovn/ovn-61.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># create new port on router &#39;tenant1&#39;</span><br><span class="line">ovn-nbctl lrp-add router-tenant1 tenant1-outside 02:0a:7f:18:01:02 192.168.0.101&#x2F;24</span><br><span class="line"># set gateway chassis(通过ovn-sbctl show 选取central节点作为vtep网关节点)</span><br><span class="line">ovn-nbctl lrp-set-gateway-chassis tenant1-outside fda80787-897d-40af-811c-2c9f7caedb3b</span><br><span class="line"></span><br><span class="line"># create new logical switch and connect it to &#39;router0&#39;</span><br><span class="line">ovn-nbctl ls-add outside</span><br><span class="line">ovn-nbctl lsp-add outside outside-tenant1</span><br><span class="line">ovn-nbctl lsp-set-type outside-tenant1 router</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-tenant1 02:0a:7f:18:01:02</span><br><span class="line">ovn-nbctl lsp-set-options outside-tenant1 router-port&#x3D;tenant1-outside</span><br><span class="line"># ovn-nbctl lsp-set-options outside-tenant1  nat-addresses&#x3D;router router-port&#x3D;tenant1-outside</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建ovs网桥br-ex，并关联逻辑交换机outside</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># create localnet port on &#39;outside&#39;. set the network name to &quot;phynet&quot;</span><br><span class="line">ovn-nbctl lsp-add outside outside-localnet</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-localnet unknown</span><br><span class="line">ovn-nbctl lsp-set-type outside-localnet localnet</span><br><span class="line">ovn-nbctl lsp-set-options outside-localnet network_name&#x3D;phynet1</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在central节点上创建ovs网桥br-ex，然后将eth1挂到ovs网桥上<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># create a bridge , then mapping outside port</span><br><span class="line">ovs-vsctl add-br br-ex</span><br><span class="line">ovs-vsctl set Open_vSwitch . external-ids:ovn-bridge-mappings&#x3D;phynet1:br-ex</span><br><span class="line"></span><br><span class="line"># add nic eth1</span><br><span class="line">ovs-vsctl add-port br-ex eth1</span><br></pre></td></tr></table></figure>
+给 central节点br-ex 配置ip测试联通<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ifconfig br-ex 192.168.0.100&#x2F;24</span><br><span class="line">#ip link set br-ex up</span><br></pre></td></tr></table></figure>
+
 </li>
-<li><p>ConfigMap</p>
-</li>
-<li><p>CronJob</p>
-</li>
-<li><p>CustomResourceDefinition</p>
-</li>
-<li><p>DaemonSet</p>
-</li>
-<li><p>Deployment</p>
-</li>
-<li><p>Ingress</p>
-</li>
-<li><p>Job</p>
-</li>
-<li><p>LocalVolume</p>
-</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.101</span><br><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.100</span><br><span class="line">结果发现 虚机能联通 192.168.0.101，确不能联通192.168.0.100</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>通过snat实现访问外网。通过dnat_and_snat实现fip<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># snat 连外网</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;snat&quot; logical_ip&#x3D;172.16.250.0&#x2F;24 external_ip&#x3D;192.168.0.101 -- add logical_router router-tenant1 nat @nat</span><br><span class="line"># fip</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;dnat_and_snat&quot; logical_ip&#x3D;172.16.250.11 external_ip&#x3D;192.168.0.102 -- add logical_router router-tenant1 nat @nat</span><br></pre></td></tr></table></figure>
+<img src="/images/ovn/ovn-62.png"><br><img src="/images/ovn/ovn-63.png"></li>
 </ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/26/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/" data-id="ckvaiowiq0002lc167y0p212j" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" data-id="cky1083ms000mlg1689qt47i9" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
 
     </footer>
   </div>
@@ -182,10 +243,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白解说之Prometheus监控入门" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-虚拟化-ovn入门到精通(四)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-25T01:52:37.000Z" itemprop="datePublished">2021-10-25</time>
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/" class="article-date">
+  <time datetime="2021-12-02T08:07:57.000Z" itemprop="datePublished">2021-12-02</time>
 </a>
     
   </div>
@@ -196,7 +257,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/">小白解说之Prometheus监控入门</a>
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/">虚拟化-ovn入门到精通(四)</a>
     </h1>
   
 
@@ -204,19 +265,34 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家好，我是小白。今天给大家讲解一下云原生界的监控扛把子普罗米修斯Prometheus。<br><img src="/images/monitor/prometheus.png" alt="avatar"><br>一、开源监控方案<br>开源监控系统种类繁多，随着这么多年技术的革新，云计算大数据等技术的发展, 目前还比较流行的是Prometheus、Nightingale、Open-falcon、Zabbix.<br>大家感兴趣可以自行Google了解一下这些监控系统，我理解各有利弊吧，根据实际场合选择最合适的吧,总而言之，Prometheus更适合云场景下吧。</p>
-<p>二、Prometheus简介<br>Prometheus受启发于Google的Brogmon监控系统（相似的Kubernetes是从Google的Brog系统演变而来），从2012年开始由前Google工程师在Soundcloud以开源软件的形式进行研发，并且于2015年早期对外发布早期版本。2016年5月继Kubernetes之后成为第二个正式加入CNCF基金会的项目，同年6月正式发布1.0版本。2017年底发布了基于全新存储层的2.0版本，能更好地与容器平台、云平台配合。<br><img src="/images/monitor/prometheus-release-roadmaps.png" alt="avatar"><br>Prometheus作为新一代的云原生监控系统，目前已经有超过650+位贡献者参与到Prometheus的研发工作上，并且超过120+项的第三方集成。</p>
-<p>三、Prometheus优缺点<br>优点:<br>  *自定义多维数据模型(时序列数据由metric名和一组key/value标签组成)<br>  *非常高效的存储 平均一个采样数据占 ~3.5 bytes左右，320万的时间序列，每30秒采样，保持60天，消耗磁盘大概228G。<br>  *在多维度上灵活且强大的查询语言(PromQl), 数据查询语句表现力更强大，内置更强大的统计函数。<br>  *不依赖分布式存储，支持单主节点工作<br>  *通过基于HTTP的pull方式采集时序数据<br>  *可以通过push gateway进行时序列数据推送(pushing)<br>  *可以通过服务发现或者静态配置去获取要采集的目标服务器<br>  *多种可视化图表及仪表盘支持<br>  *支持对云或容器的监控，其他大多数监控系统主要对主机监控。<br>缺点:<br>  *Prometheus 是基于 Metric 的监控，不适用于日志（Logs）、事件(Event)、调用链(Tracing)。<br>  *Prometheus 默认是 Pull 模型，HTTP请求 target的url 地址, 合理规划你的网络，尽量不要转发。<br>  *Prometheus不提供持久的长期存储、异常检测、自动水平缩放和用户管理,需要合理选择 Federate、Cortex、Thanos等方案。</p>
-<p>四、Prometheus监控全家桶<br>Prometheus主要由Prometheus Server、Pushgateway、Job/Exporter、Service Discovery、Alertmanager、Dashboard这6个核心模块构成。Prometheus通过服务发现机制发现target，这些目标可以是长时间执行的Job，也可以是短时间执行的Job，还可以是通过Exporter监控的第三方应用程序。被抓取的数据会存储起来，通过PromQL语句在仪表盘等可视化系统中供查询，或者向Alertmanager发送告警信息，告警会通过页面、电子邮件、钉钉信息或者其他形式呈现。</p>
-<p><img src="/images/monitor/prometheus_arch.png" alt="avatar"><br><img src="/images/monitor/prom_grafana.png" alt="avatar"><br><img src="/images/monitor/prom_alert.png" alt="avatar"></p>
+        <h2 id="OVN-L3-路由"><a href="#OVN-L3-路由" class="headerlink" title="OVN-L3 路由"></a>OVN-L3 路由</h2><p>前面我们已经将ovn二层网络打通，下面测试一下三层网关路由功能。</p>
+<p>拓扑图如下</p>
+<p><img src="/images/ovn/router-topo.png"></p>
+<h4 id="central"><a href="#central" class="headerlink" title="central"></a>central</h4><p>创建租户路由器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-add router-tenant1</span><br></pre></td></tr></table></figure>
+
+<p>联通路由器router-tenant1到logicswitch_01</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">给路由器新增连接logicswitch_01的端口 router-ls01,对应的路由器端口IP地址是 172.16.250.1</span><br><span class="line">#ovn-nbctl lrp-add router-tenant1 router-ls01 02:d4:1d:8b:d9:8a 172.16.250.1&#x2F;24</span><br><span class="line">给交换机logicswitch_01新增连接路由器 router_tenant1的端口 logicswitch_01-router</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 logicswitch_01-router</span><br><span class="line">设置 端口logicswitch_01-router 类型是路由器</span><br><span class="line">#ovn-nbctl lsp-set-type logicswitch_01-router router</span><br><span class="line">设置 端口logicswitch_01-router 的mac是02:d5:1d:8b:d9:8a</span><br><span class="line">#ovn-nbctl lsp-set-addresses logicswitch_01-router 02:d4:1d:8b:d9:8a</span><br><span class="line"></span><br><span class="line">#ovn-nbctl lsp-set-options logicswitch_01-router router-port&#x3D;router-ls01</span><br></pre></td></tr></table></figure>
+
+<p>联通路由器router-tenant1到logicswitch_02</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">给路由器新增连接logicswitch_01的端口 router-ls02,对应的路由器端口IP地址是 172.16.251.1</span><br><span class="line">#ovn-nbctl lrp-add router-tenant1 router-ls02 02:d4:1d:8a:d9:8b 172.16.251.1&#x2F;24</span><br><span class="line">给交换机logicswitch_02新增连接路由器 router_tenant1的端口 logicswitch_02-router</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 logicswitch_02-router</span><br><span class="line">设置 端口logicswitch_02-router 类型是路由器</span><br><span class="line">#ovn-nbctl lsp-set-type logicswitch_02-router router</span><br><span class="line">设置 端口logicswitch_02-router 的mac是02:d3:1d:8a:d9:8b</span><br><span class="line">#ovn-nbctl lsp-set-addresses logicswitch_02-router 02:d4:1d:8a:d9:8b</span><br><span class="line"></span><br><span class="line">#ovn-nbctl lsp-set-options logicswitch_02-router router-port&#x3D;router-ls02</span><br></pre></td></tr></table></figure>
+
+<p>VPC 之间的路由已经联通<del>~</del></p>
+<p><img src="/images/ovn/ovn-40.png"></p>
+<p>接下来测试打通172.16.250.0/24 和 172.16.251.0/24</p>
+<h4 id="node"><a href="#node" class="headerlink" title="node"></a>node</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 route add default gw 172.16.250.1</span><br><span class="line">#ip netns exec ns11 route add default gw 172.16.251.1</span><br><span class="line"></span><br><span class="line">#ip netns exec ns2 route add default gw 172.16.250.1</span><br><span class="line">#ip netns exec ns12 route add default gw 172.16.251.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-41.png"></p>
+<p><img src="/images/ovn/ovn-42.png"></p>
+<p>至此，已通过逻辑路由器，打通两个逻辑交换机下的两个VPC网络~</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/" data-id="ckvaiowit0006lc16d01a5b6p" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/" data-id="cky1083mr000klg164mpw9984" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
 
     </footer>
   </div>
@@ -225,10 +301,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白解说之Docker高级用法" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-虚拟化-ovn入门到精通(三)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" class="article-date">
-  <time datetime="2021-10-25T01:52:03.000Z" itemprop="datePublished">2021-10-25</time>
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/" class="article-date">
+  <time datetime="2021-12-02T07:04:02.000Z" itemprop="datePublished">2021-12-02</time>
 </a>
     
   </div>
@@ -239,7 +315,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/">小白解说之Docker高级用法</a>
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
     </h1>
   
 
@@ -247,35 +323,36 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家好，我是小白。上文中给白白们讲解了docker的入门知识，今天讲解一下docker的干活，常规以及高级用法吧。</p>
-<p>下面以自定义启动一台nginx server为例为大家延时一下docker的魅力吧~<br>一、镜像使用<br>镜像是 Docker 的三大组件之一。<br>Docker 运行容器前需要本地存在对应的镜像，如果镜像不存在本地，Docker 会从镜像仓库下载（默认是 Docker Hub 公共注册服务器中的仓库），我们也可以搭建一个本地的镜像仓库比如docker registry或者harbor等。<br>默认社区docker hub已经提供了很丰富的镜像，比如直接docker pull nginx 即可，这里以自定义diy一下nginx镜像为例尝试一下吧。</p>
-<p>下载镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#docker pull centos:7</span><br></pre></td></tr></table></figure>
-<p>使用Dockerfile自定义build镜像<br>#vim nginx.dockerfile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM centos:7</span><br><span class="line">#使用aliyun repo源</span><br><span class="line">RUN curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo</span><br><span class="line">RUN curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;epel.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;epel-7.repo</span><br><span class="line">RUN yum -y install nginx</span><br><span class="line">#定义向外暴露的端口号,多个端口用空格做间隔,启动容器的时候&quot;-p&quot;需要使用此端向外端映射.</span><br><span class="line">EXPOSE 80&#x2F;tcp 443&#x2F;tcp</span><br><span class="line">#定义前台运行的命令,每个Docker只能有一条，如果定义了多条&quot;CMD&quot;指令那么最后一条CMD指令会覆盖之前的(即只有最后一条CMD被执行).</span><br><span class="line">CMD [ &quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot; ]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>#docker build -t mynginx:latest -f nginx.dockerfile .</p>
-<p>二、数据存储<br>通常情况下，我们是不会在容器中存储数据的。docker有个概念叫数据卷volume, 我们会挂载一个主机的文件夹作为数据卷到容器中去，该数据卷可以被许多需要访问的容器访问得到。数据卷可以将本地的磁盘数据和docker容器链接起来，使用容器的应用加载本地的数据，这样就很方便我们的开发。</p>
-<p>而且可以保持数据持久化，当将容器删除时，数据不会丢失。，同时也增强来应用的可移植性（不改变容器配置）。</p>
-<p>Docker内部以及容器之间管理数据，在容器中管理数据主要有两种方式(挂载宿主机目录或挂载docker volume的方式)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-v&#x3D;[]:                 Create a bind mount with: [host-dir]:[container-dir]:[rw|ro].</span><br><span class="line">                       If &quot;container-dir&quot; is missing, then docker creates a new volume.</span><br><span class="line">--volumes-from&#x3D;&quot;&quot;:     Mount all volumes from the given container(s)</span><br></pre></td></tr></table></figure>
-<p>创建volume<br>#docker volume create data</p>
-<p>挂载volume使用<br>#docker *<strong>* -v data:/usr/share/nginx/html ***</strong></p>
-<p>三、网络相关<br>安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络）、 none 、host<br>我们在使用docker run创建Docker容器时，可以用 –net 选项指定容器的网络模式，Docker可以有以下4种网络模式：<br>host模式：使用 –net=host 指定。<br>none模式：使用 –net=none 指定。<br>bridge模式：使用 –net=bridge 指定，默认设置。<br>container模式：使用 –net=container:NAME_or_ID 指定。</p>
-<p>四、资源限制<br>默认情况下，容器是没有资源限制的，它会尽可能地使用宿主机能够分配给它的资源。Docker提供了一种控制分配多少量的内存、CPU或阻塞I/O给一个容器的方式，即通过在docker run或docker create命令时设置运行时配置的标志。</p>
-<ol>
-<li>限制内存使用<br>在Docker中可以强行限制容器的资源使用的限制，即只允许容器使用不超过给定数量的系统内存或其他软限制。下面介绍几个最常用的选项，我们可以在docker run或docker create创建容器时指定，用以限制容器的资源使用限制。</li>
-<li>限制CPU使用<br>默认情况下，每个容器对主机CPU周期的访问权限是不受限制的。我们可以设置各种约束来限制给定容器访问主机的CPU周期。大多数用户使用和配置CFS调度程序（默认）或实时调度程序。下面介绍几个常用的选项，用于配置默认的CFS调度程序，以限制容器对于CPU的使用。</li>
-</ol>
-<p>五、示例<br>使用制作的nginx 镜像，对外提供WEB服务吧~</p>
-<p>创建volume用于保存网页数据<br>#docker volume create nginx_code<br>#echo ‘my web’ &gt; /var/lib/docker/volumes/nginx_code/_data/index.html<br>使用默认网络，并转发80端口到宿主机80端口，-d 后台运行<br>#docker run -d -it –net=bridge  –name=volume-nginx -p 80:80 -v nginx_code:/usr/share/nginx/html mynginx:latest<br>浏览器访问看看吧</p>
+        <h2 id="OVN-L2测试"><a href="#OVN-L2测试" class="headerlink" title="OVN-L2测试"></a>OVN-L2测试</h2><p>前面我们已经将ovn集群部署完成，下面测试一下二层网络的联通性</p>
+<p>定义逻辑网络:创建一个逻辑交换机，然后添加两个交换机端口，并为端口设置IP地址，测试二层联通性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#export vm1_mac&#x3D;02:d4:1d:8c:d9:8f</span><br><span class="line">#export vm2_mac&#x3D;02:d4:1d:8c:d9:8e</span><br><span class="line">#export vm1_ip&#x3D;172.16.250.11</span><br><span class="line">#export vm2_ip&#x3D;172.16.250.12</span><br><span class="line">------------------------------------------------------</span><br><span class="line">#export vm11_mac&#x3D;02:d4:1d:8c:d8:8f</span><br><span class="line">#export vm12_mac&#x3D;02:d4:1d:8c:d8:8e</span><br><span class="line">#export vm11_ip&#x3D;172.16.251.11</span><br><span class="line">#export vm12_ip&#x3D;172.16.251.12</span><br></pre></td></tr></table></figure>
+
+<h4 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">交换机 01</span><br><span class="line">#ovn-nbctl ls-add logicswitch_01</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 ls1-vm1</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls1-vm1 $vm1_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls1-vm1 $vm1_mac</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 ls1-vm2</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls1-vm2 $vm2_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls1-vm2 $vm2_mac</span><br><span class="line">---------------------------------------------------------------------------------------</span><br><span class="line">交换机 02</span><br><span class="line">#ovn-nbctl ls-add logicswitch_02</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 ls2-vm11</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls2-vm11 $vm11_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls2-vm11 $vm11_mac</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 ls2-vm12</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls2-vm12 $vm12_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls2-vm12 $vm12_mac</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-4.png"></p>
+<p>伪造虚拟机: 通过创建网络命名空间，并在br-int上添加端口，然后将端口添加到命名空间，最后通过设置端口的MAC地址和网卡名完成和交换机端口的映射</p>
+<p><img src="/images/ovn/ovn-5.png"></p>
+<h5 id="node1节点-vm1"><a href="#node1节点-vm1" class="headerlink" title="node1节点(vm1)"></a>node1节点(vm1)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机01</span><br><span class="line">#ip netns add ns1</span><br><span class="line">#ovs-vsctl add-port br-int vm1 -- set interface vm1 type&#x3D;internal</span><br><span class="line">#ip link set vm1 netns ns1</span><br><span class="line">#ip netns exec ns1 ip link set vm1 address $vm1_mac</span><br><span class="line">#ip netns exec ns1 ip addr add $vm1_ip&#x2F;24 dev vm1</span><br><span class="line">#ip netns exec ns1 ip link set vm1 up</span><br><span class="line">#ovs-vsctl set Interface vm1 external_ids:iface-id&#x3D;ls1-vm1</span><br><span class="line">#ip netns exec ns1 ip addr show</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机02</span><br><span class="line">#ip netns add ns11</span><br><span class="line">#ovs-vsctl add-port br-int vm11 -- set interface vm11 type&#x3D;internal</span><br><span class="line">#ip link set vm11 netns ns11</span><br><span class="line">#ip netns exec ns11 ip link set vm11 address $vm11_mac</span><br><span class="line">#ip netns exec ns11 ip addr add $vm11_ip&#x2F;24 dev vm11</span><br><span class="line">#ip netns exec ns11 ip link set vm11 up</span><br><span class="line">#ovs-vsctl set Interface vm11 external_ids:iface-id&#x3D;ls2-vm11</span><br><span class="line">#ip netns exec ns11 ip addr show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-6.png"></p>
+<h5 id="node2节点-vm2"><a href="#node2节点-vm2" class="headerlink" title="node2节点(vm2)"></a>node2节点(vm2)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机01</span><br><span class="line">#ip netns add ns2</span><br><span class="line">#ovs-vsctl add-port br-int vm2 -- set interface vm2 type&#x3D;internal</span><br><span class="line">#ip link set vm2 netns ns2</span><br><span class="line">#ip netns exec ns2 ip link set vm2 address $vm2_mac</span><br><span class="line">#ip netns exec ns2 ip addr add $vm2_ip&#x2F;24 dev vm2</span><br><span class="line">#ip netns exec ns2 ip link set vm2 up</span><br><span class="line">#ovs-vsctl set Interface vm2 external_ids:iface-id&#x3D;ls1-vm2</span><br><span class="line">#ip netns exec ns2 ip addr show</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机02</span><br><span class="line">#ip netns add ns12</span><br><span class="line">#ovs-vsctl add-port br-int vm12 -- set interface vm12 type&#x3D;internal</span><br><span class="line">#ip link set vm12 netns ns12</span><br><span class="line">#ip netns exec ns12 ip link set vm12 address $vm12_mac</span><br><span class="line">#ip netns exec ns12 ip addr add $vm12_ip&#x2F;24 dev vm12</span><br><span class="line">#ip netns exec ns12 ip link set vm12 up</span><br><span class="line">#ovs-vsctl set Interface vm12 external_ids:iface-id&#x3D;ls2-vm12</span><br><span class="line">#ip netns exec ns12 ip addr show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-7.png"></p>
+<p><img src="/images/ovn/ovn-9.png"></p>
+<p><img src="/images/ovn/ovn-12.png"></p>
+<p><strong>交换机01喝交换机02下的二层网络已经连通 <del>~</del></strong></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" data-id="ckvaiowir0003lc16arxl8nyx" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/" data-id="cky1083mp000elg168krw71ww" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
 
     </footer>
   </div>
@@ -284,10 +361,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-openstack-ceph-auth创建账号" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-虚拟化-ovn入门到精通(二)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" class="article-date">
-  <time datetime="2021-10-20T02:00:32.000Z" itemprop="datePublished">2021-10-20</time>
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/" class="article-date">
+  <time datetime="2021-12-02T04:31:34.000Z" itemprop="datePublished">2021-12-02</time>
 </a>
     
   </div>
@@ -298,7 +375,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
     </h1>
   
 
@@ -306,13 +383,73 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="OVN安装部署"><a href="#OVN安装部署" class="headerlink" title="OVN安装部署"></a>OVN安装部署</h2><p>基于CentOS 7 x86_64</p>
+<table>
+<thead>
+<tr>
+<th>主机</th>
+<th>角色</th>
+<th>网卡</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.175.160.66</td>
+<td>Central</td>
+<td>eth0/eth1</td>
+<td>目前仅支持单节点</td>
+</tr>
+<tr>
+<td>10.175.160.59</td>
+<td>Node1</td>
+<td>eth0/eth1</td>
+<td>vm1/vm11</td>
+</tr>
+<tr>
+<td>10.175.160.60</td>
+<td>Node2</td>
+<td>eth0/eth1</td>
+<td>vm2/vm12</td>
+</tr>
+</tbody></table>
+<h4 id="一、-系统初始化"><a href="#一、-系统初始化" class="headerlink" title="一、 系统初始化"></a>一、 系统初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">配置repo源,ovn&#x2F;ovs版本2.11.0</span><br><span class="line">#vim &#x2F;etc&#x2F;yum.repos.d&#x2F;stein.repo</span><br><span class="line">[openstack-stein]</span><br><span class="line">name&#x3D;OpenStack Stein Repository</span><br><span class="line">#baseurl&#x3D;http:&#x2F;&#x2F;mirror.centos.org&#x2F;centos&#x2F;7&#x2F;cloud&#x2F;$basearch&#x2F;openstack-stein&#x2F;</span><br><span class="line">mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;7&amp;arch&#x3D;$basearch&amp;repo&#x3D;cloud-openstack-stein</span><br><span class="line">gpgcheck&#x3D;0</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-CentOS-SIG-Cloud</span><br><span class="line">关闭防火墙&#x2F;selinux</span><br><span class="line">#systemctl stop firewalld</span><br><span class="line">#systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、部署服务"><a href="#二、部署服务" class="headerlink" title="二、部署服务"></a>二、部署服务</h3><h5 id="Central-节点"><a href="#Central-节点" class="headerlink" title="Central 节点"></a>Central 节点</h5><p># yum install -y openvswitch-ovn-central.x86_64 openvswitch-ovn-host.x86_64</p>
+<p>#yum install libibverbs -y</p>
+<p># systemctl enable ovn-northd openvswitch ovn-controller</p>
+<p># systemctl start ovn-northd ovn-controller </p>
+<h5 id="Node节点"><a href="#Node节点" class="headerlink" title="Node节点"></a>Node节点</h5><p># yum install -y openvswitch.x86_64 openvswitch-ovn-host.x86_64 </p>
+<p>#yum install libibverbs -y</p>
+<p>#systemctl enable openvswitch ovn-controller </p>
+<p>#systemctl start ovn-controller </p>
+<h3 id="三、-配置OVN"><a href="#三、-配置OVN" class="headerlink" title="三、 配置OVN"></a>三、 配置OVN</h3><p>配置ovs与ovn相连接</p>
+<h5 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.160.66</span><br><span class="line">#ovn-nbctl set-connection ptcp:6641:$Centralip</span><br><span class="line">#ovn-sbctl set-connection ptcp:6642:$Centralip</span><br><span class="line">#netstat -ntlp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn-01.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">overlay网络使用geneve，当然支持geneve,vxlan,gre等</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$Centralip</span><br></pre></td></tr></table></figure>
+
+<h5 id="node-1-节点"><a href="#node-1-节点" class="headerlink" title="node 1 节点"></a>node 1 节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.160.66</span><br><span class="line">#export NodeIP&#x3D;10.175.160.59</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$NodeIP</span><br></pre></td></tr></table></figure>
+
+<h5 id="node2-节点"><a href="#node2-节点" class="headerlink" title="node2 节点"></a>node2 节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.160.66</span><br><span class="line">#export NodeIP&#x3D;10.175.160.60</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$NodeIP</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/ovn/ovn-2.png"></p>
+<p><img src="/images/ovn/ovn-3.png"></p>
+<p>所有服务器重启一下</p>
+<p>#reboot</p>
+<p>至此安装完成~</p>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">net_mlx5: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">net_mlx5: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx5)</span><br><span class="line">PMD: net_mlx4: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">PMD: net_mlx4: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx4)</span><br><span class="line">解决：#yum install libibverbs -y</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" data-id="ckuzbjk5f0000nk16ddql458h" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/" data-id="cky1083mq000hlg169ufj7pc3" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
     </footer>
   </div>
   
@@ -320,10 +457,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白解说之Docker容器入门" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-虚拟化-ovn入门到精通(一)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-19T07:10:06.000Z" itemprop="datePublished">2021-10-19</time>
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/" class="article-date">
+  <time datetime="2021-12-02T04:30:45.000Z" itemprop="datePublished">2021-12-02</time>
 </a>
     
   </div>
@@ -334,7 +471,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/">小白解说之Docker容器入门</a>
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/">虚拟化-ovn入门到精通（一)</a>
     </h1>
   
 
@@ -342,34 +479,83 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家好，我是小白。下面由我给白白们讲解一下火热的容器技术Docker</p>
-<h4 id="Linux容器技术"><a href="#Linux容器技术" class="headerlink" title="Linux容器技术"></a>Linux容器技术</h4><p>Linux 容器LXC 是一个在单一 Linux 主机上提供多个隔离的 Linux 环境的操作系统级虚拟技术。不像虚拟机（VM），容器并不需要运行专用的访客guest操作系统。容器们共享宿主机的host操作系统内核，并使用访客操作系统的系统库来提供所需的功能。由于不需要专用的操作系统，因此容器要比虚拟器启动快得多。<br>容器借助 Linux 内核的 Namespaces、Apparmor、SELinux 情景模式profile、chroot 和 CGroup 等功能来提供类似于虚拟机的隔离环境。Linux 的安全模块可以确保正确地控制容器对宿主机和内核的访问，从而避免各种入侵活动。此外，在宿主机上可以运行不同的 Linux 发行版，只要它们运行在同样的 CPU 架构下。</p>
-<p>简单来说，容器技术就是基于Linux内核提供的一套进程隔离技术，提供的是一种基于各种 Linux 发行版创建容器镜像的方法、一套管理容器生命周期的 API、与该 API 交互的客户端工具、保存快照的功能、在宿主机之间迁移容器实例的能力，等等。</p>
-<h4 id="容器好在哪里"><a href="#容器好在哪里" class="headerlink" title="容器好在哪里"></a>容器好在哪里</h4><p>假设您在开发一个应用。您使用的是一台笔记本电脑，而且您的开发环境具有特定的配置。其他开发人员身处的环境配置可能稍有不同。您正在开发的应用不止依赖于您当前的配置，还需要某些特定的库、依赖项和文件。与此同时，您的企业还拥有标准化的开发和生产环境，有着自己的配置和一系列支持文件。您希望尽可能多在本地模拟这些环境，而不产生重新创建服务器环境的开销。因此，您要如何确保应用能够在这些环境中运行和通过质量检测，并且在部署过程中不出现令人头疼的问题，也无需重新编写代码和进行故障修复？答案就是使用容器。</p>
-<p>容器可以确保您的应用拥有必需的库、依赖项和文件，让您可以在生产中自如地迁移这些应用，无需担心会出现任何负面影响。实际上，您可以将容器镜像中的内容，视为 Linux 发行版的一个安装实例，因为其中完整包含 RPM 软件包、配置文件等内容。但是，安装容器镜像发行版，要比安装新的操作系统副本容易得多。这样可以避免危机，做到皆大欢喜。</p>
-<p>虽然这只是一个常见情况的示例，但在需要很高的可移植性、可配置性和隔离的情况下，我们可以利用 Linux 容器通过很多方式解决难题。Linux 容器的价值在于，它能加速开发并满足新出现的业务需求。在某些情形中（如通过 Apache Kafka 进行实时数据流处理），容器是不可或缺的，因为它们是提供应用所需的可扩展性的唯一途径。无论基础架构是在企业内部还是在云端，或者混合使用两者，容器都能满足您的需求。当然，选择正确的容器平台也同样重要。</p>
-<h4 id="Docker又是什么"><a href="#Docker又是什么" class="headerlink" title="Docker又是什么"></a>Docker又是什么</h4><p>Docker 技术使用 Linux 内核和内核功能（例如 Cgroups 和 namespaces）来分隔进程，以便各进程相互独立运行。这种独立性正是采用容器的目的所在；它可以独立运行多种进程、多个应用，更加充分地发挥基础设施的作用，同时保持各个独立系统的安全性。</p>
-<p>容器工具（包括 Docker）可提供基于镜像的部署模式。这使得它能够轻松跨多种环境，与其依赖程序共享应用或服务组。Docker 还可在这一容器环境中自动部署应用（或者合并多种流程，以构建单个应用）。</p>
-<p>此外，由于这些工具基于 Linux 容器构建，使得 Docker 既易于使用，又别具一格——它可为用户提供前所未有的高度应用程访问权限、快速部署以及版本控制和分发能力。</p>
-<p>Docker技术是否与传统的 Linux 容器相同？<br>否。Docker 技术最初是基于 LXC 技术构建（大多数人都会将这一技术与“传统的”Linux 容器联系在一起），但后来它逐渐摆脱了对这种技术的依赖。就轻量级 虚拟化 这一功能来看，LXC 非常有用，但它无法提供出色的开发人员或用户体验。除了运行容器之外，Docker 技术还具备其他多项功能，包括简化用于构建容器、传输镜像以及控制镜像版本的流程。</p>
-<p>Docker和container的主要区别在于，Docker是一个构建、运行和管理软件容器的平台，而container是一个轻量级软件，它提供操作系统虚拟化，以便在资源隔离的进程中运行应用程序及其依赖项。 容器是一种软件，它捆绑了自己的工具、库和配置文件。 在一个操作系统内核中可以运行多个容器。<br>特点：</p>
-<ol>
-<li>模块化<br>Docker 容器化方法非常注重在不停止整个应用的情况下，单独截取部分应用进行更新或修复的能力。除了这种基于微服务的方法，您还可以采用与面向服务的架构（SOA）类似的使用方法，在多个应用间共享进程。</li>
-<li>层和镜像版本控制<br>每个 Docker 镜像文件都包含多个层。这些层组合在一起，构成单个镜像。每当镜像发生改变时，就会创建一个新的镜像层。用户每次发出命令（例如 run 或 copy）时，都会创建一个新的镜像层。<br>Docker 重复使用这些层来构建新容器，借此帮助加快流程构建。镜像之间会共享中间变化，从而进一步提升速度、规模以及效率。版本控制是镜像层本身自带的能力。每次发生新的更改时，您大都会获得一个内置的更改日志，实现对容器镜像的全盘管控。</li>
-<li>回滚<br>回滚也许是层最值得一提的功能。每个镜像都拥有多个层。举例而言，如果您不喜欢迭代后的镜像版本，完全可以通过回滚，返回之前的版本。这一功能还支持敏捷开发方法，帮助持续实施集成和部署（CI/CD），使其在工具层面成为一种现实。</li>
-<li>快速部署<br>启动和运行新硬件、实施部署并投入使用，这在过去一般需要数天时间。投入的心力和成本往往也让人不堪重负。基于 Docker 的容器可将部署时间缩短到几秒。通过为每个进程构建容器，您可以快速将这些类似进程应用到新的应用程序中。而且，由于无需启动操作系统即可添加或移动容器，因此大幅缩短了部署时间。除此之外，得益于这种部署速度，您可以轻松无虞、经济高效地创建和销毁容器创建的数据。</li>
-</ol>
-<p>因此，Docker 技术是一种更加精细、可控、基于微服务的技术，可为企业提供更高的效率价值。</p>
-<h4 id="Docker蓝图"><a href="#Docker蓝图" class="headerlink" title="Docker蓝图"></a>Docker蓝图</h4><p>docker的主要目标是”Build,Ship and Run any App,Angwhere”,构建，运输，处处运行</p>
-<p>构建：做一个docker镜像<br>运输：docker pull<br>运行：启动一个容器<br>每一个容器，他都有自己的文件系统rootfs.</p>
+        <h4 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h4><p>OVS甚至可以说是网络虚拟化里最重要的工业级开源产品，OVS模仿物理交换机设备的工作流程，实现了很多物理交换机当时才支持的许多网络功能。OVN提供了许多原生的虚拟网络功能，提升了OVS的工作效率和性能。<br>OVN是OpenvSwitch项目组为OpenvSwitch开发SDN控制器，同其他SDN产品相比，OVN对OpenvSwitch 及OpenStack有更好的兼容性和性能。<br>在2016年的OpenStack Austin 峰会上，OVN项目组有个演讲提到了的OVN存在的意义（目标），原文是</p>
+<ul>
+<li>Production-quality</li>
+<li>Straightforward design</li>
+<li>Scale to 1000s of hypervisors (each with many VMs/containers)</li>
+<li>Improved performance and stability over existing OpenStack OVS plugin</li>
+<li>Become preferred method for OpenStack+OVS integration for the majority of use cases</li>
+</ul>
+<p>中文翻译如下：</p>
+<ul>
+<li>可用于生产环境</li>
+<li>简洁的设计</li>
+<li>支持1000台以上的物理机环境（也支持相当数量的虚拟机/容器环境）</li>
+<li>基于已有的OpenStack OVS 插件 来提升性能和稳定性</li>
+<li>成为OpenStack+OVS集成场景下的首选方案</li>
+</ul>
+<h4 id="二、OVN的实现了哪些功能？拥有哪些特性？"><a href="#二、OVN的实现了哪些功能？拥有哪些特性？" class="headerlink" title="二、OVN的实现了哪些功能？拥有哪些特性？"></a>二、OVN的实现了哪些功能？拥有哪些特性？</h4><p>Logical switches：逻辑交换机，用来做二层转发。<br>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。<br>Logical routers：逻辑路由器，分布式的，用来做三层转发。<br>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。<br>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
+<p>OVN网关发布的时候，还存在着某些限制：</p>
+<ul>
+<li><p>网关路由器仅可以经由逻辑交换机连接到其他路由器，而DLR已经可以经由一条链路直连路由器。社区正在进行相关工作来解决掉这个限制。</p>
+</li>
+<li><p>OVN支持多个网关路由器绑定到环境中，这意味着可以逻辑空间执行入站ECMP路由。然而，OVN当前不支持网关路由器之间的出站ECMP。这个特性也同样是OVN未来需要加强的。</p>
+</li>
+</ul>
+<h4 id="三、架构"><a href="#三、架构" class="headerlink" title="三、架构"></a>三、架构</h4><p>基于OVN的neutron网络架构如下</p>
+<p> <img src="https://www.debugger.wiki/sourceimg/190706/cc51795bdcf29c2b9ff4e8e37d0f3826.jpg" alt="技术图片"></p>
+<p>总的来说，ovn的出现 既大大精简了openstack neutron侧架构的实现，又提高了网络侧的性能。</p>
+<h2 id="ovs-ovn-学习资料"><a href="#ovs-ovn-学习资料" class="headerlink" title="[ovs ovn 学习资料]"></a>[ovs ovn 学习资料]</h2><p><strong>1、Open Virtual Networking With Docker</strong></p>
+<p><a target="_blank" rel="noopener" href="http://docs.openvswitch.org/en/latest/howto/docker/">http://docs.openvswitch.org/en/latest/howto/docker/</a></p>
+<p><strong>2、Multi-Host Docker network</strong></p>
+<p><a target="_blank" rel="noopener" href="https://wiredcraft.com/blog/multi-host-docker-network/">https://wiredcraft.com/blog/multi-host-docker-network/</a></p>
+<p><strong>3、ovn-namespace</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shettyg/ovn-namespace">https://github.com/shettyg/ovn-namespace</a></p>
+<p> <strong>4、OVN简介PPT</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/slides/OVN_Barcelona.pdf">http://openvswitch.org/support/slides/OVN_Barcelona.pdf</a></p>
+<p><strong>5、What is Open Virtual Network (OVN)? How It Works （包含了各种关于网络虚拟化的介绍的连接）</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/">https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/</a></p>
+<p><strong>6、Open vSwitch 相关论文</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/papers/">http://openvswitch.org/support/papers/</a></p>
+<p><strong>７、OVN, Bringing Native Virtual Networking to OVS</strong></p>
+<p><a target="_blank" rel="noopener" href="https://networkheresy.com/category/open-vswitch/">https://networkheresy.com/category/open-vswitch/</a></p>
+<p><strong>8、基于Open vSwitch的OpenFlow实践</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.chenshake.com/based-on-openflow-practices-open-vswitch/">http://www.chenshake.com/based-on-openflow-practices-open-vswitch/</a></p>
+<p><strong>9、ovs源码分析</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/column/details/openvswitch.html">http://blog.csdn.net/column/details/openvswitch.html</a></p>
+<p><strong>10、ovs orbit</strong></p>
+<p><a target="_blank" rel="noopener" href="https://ovsorbit.org/">https://ovsorbit.org/</a></p>
+<p><strong>11、introduction to ovn</strong></p>
+<p><a target="_blank" rel="noopener" href="http://galsagie.github.io/2015/04/20/ovn-1/">http://galsagie.github.io/2015/04/20/ovn-1/</a></p>
+<p><strong>12、Russell Bryant的博客</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/category/ovs/">https://blog.russellbryant.net/category/ovs/</a></p>
+<p><strong>13、ovn architecture</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/dist-docs/ovn-architecture.7.html">http://openvswitch.org/support/dist-docs/ovn-architecture.7.html</a></p>
+<p><strong>14、OVN Logical Flows and ovn-trace</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/">https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/</a></p>
+<p><strong>15、Justin Pettit的个人主页（其中包含了ovs, ovn相关的各种论文，博客和视频）</strong> </p>
+<p><a target="_blank" rel="noopener" href="http://yuba.stanford.edu/~jpettit/">http://yuba.stanford.edu/~jpettit/</a></p>
+<p><strong>16、ovs 2.5.0源码分析</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/one_clouder/article/category/6359278/1">http://blog.csdn.net/one_clouder/article/category/6359278/1</a></p>
+<p><strong>17、netwoking-ovn - OpenStack Neutron integration with OVN</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.openstack.org/networking-ovn/latest/">https://docs.openstack.org/networking-ovn/latest/</a></p>
+<p><strong>18、OVN路由功能详解</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html">https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html</a></p>
+<p><strong>19、OVS博客</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/popsuper1982/p/5848879.html">http://www.cnblogs.com/popsuper1982/p/5848879.html</a></p>
+<p><strong>20、OVSDB RFC</strong></p>
+<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc7047/">https://datatracker.ietf.org/doc/rfc7047/</a></p>
+<p><strong>21、openstack底层技术-openflow在ovs中的应用</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/">http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" data-id="ckuzbjk5p0007nk169usm656a" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/" data-id="cky1083mn000clg16cd6054t3" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
 
     </footer>
   </div>
@@ -378,10 +564,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白解说之KataContainer入门" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-小白解说之软件定义网络SDN产品ovn-三" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-19T06:57:17.000Z" itemprop="datePublished">2021-10-19</time>
+    <a href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%89/" class="article-date">
+  <time datetime="2021-11-23T10:21:44.000Z" itemprop="datePublished">2021-11-23</time>
 </a>
     
   </div>
@@ -392,7 +578,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/">小白解说之KataContainer</a>
+      <a class="article-title" href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%89/">小白解说之软件定义网络SDN产品ovn(三)</a>
     </h1>
   
 
@@ -400,37 +586,13 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家好，我是小白。下面由我给白白们讲解一下Kata Container…</p>
-<h4 id="一、Kata-Container背景"><a href="#一、Kata-Container背景" class="headerlink" title="一、Kata Container背景"></a>一、Kata Container背景</h4><p>我们知道，容器的本质是宿主机上的进程，通过namespace实现资源隔离，通过cgroups实现资源限制，通过写时复制机制实现高效的文件操作。所以，容器和宿主机使用的是同一操作系统内核,如果公有云用户使用容器过程中探测到内核安全漏洞，后果可想而知。那么问题来了，如何提高容器的安全性？答案就是kata Container！</p>
-<p>  Kata Container的设计思路:</p>
-<ol>
-<li>如今最安全的莫过于VM虚拟机，只要能做到「secure of VM」，那这个安全性就可以满足公有云的需求了</li>
-<li>操作系统本身的容器机制没法解决安全性问题，需要一个隔离层，<br>借鉴虚拟机的实现方式吧</li>
-<li>虚拟机中如果有个内核，就可以支持我们刚才所提到的 OCI 的定义，也就是说提供了 Linux ABI 的运行环境，在这个运行环境中跑一个 Linux 应用不太难实现。<h4 id="二、Kata-Container架构"><a href="#二、Kata-Container架构" class="headerlink" title="二、Kata Container架构"></a>二、Kata Container架构</h4>目前kata 已经发展到v2版本，对架构做了很大改进，下面内容均以v2版本说明<br><img src="/images/kata/kata-k8s.jpg" alt="avatar"></li>
-</ol>
-<p><img src="/images/kata/kataV2_arch.jpg" alt="avatar"></p>
-<p>上面图片就是kata container的架构图, 由图中我们可以看出, kata 其实和runc是平级的，不同的是runc直接启动容器，而kata启动的是 hypervisor，当hypervisor启动VM之后，agent也启动好了，再grpc通知agent启动容器。<br>具体的过程是这样的：</p>
-<p>当 containerd 拿到一个请求的时候，它会首先创建一个 shim-v2。这个 shim-v2 就是一个 PodSandbox 的代表，也就是那个 VMM 的代表；</p>
-<p>每一个 Pod 都会有一个 shim-v2 来为 containerd/CRI-O 来执行各种各样的操作。shim-v2 会为这个 Pod 启动一个hypervisor虚拟机，在每个hypervisor虚拟机里面分别运行着一个 linux os kernel。比如这里面用的是 qemu 的话，这里使用的是qemu-lite, 一个社区高效精简过的qemu。同时这个里面也没有额外的 Guest 操作系统，不会跑一个完整的像 CentOS, Ubuntu 这样的操作系统；</p>
-<p>后我们会把这个容器的 spec 以及这个容器本身打包的存储，包括 rootfs 和文件系统，交给这个 PodSandbox。这个 PodSandbox 会在虚机中由 kata-agent 把容器启动起来；</p>
-<p>依照 CRI 语义和 OCI 规范，在一个 Pod 里面是可以启动多个相关联的容器的。它们会被放到同一个虚拟机里面，并且可以根据需求共享某些 namespace；</p>
-<p>除了这些之外，其它的一些外置的存储和卷也可以通过热插拔的方式来插到这个 PodSandbox 里面来；</p>
-<p>对于网络来说，目前使用 tcfilter 就可以无缝地接入几乎所有的 Kubernetes 的 CNI 插件。而且我们还提供了一个 enlightened 的模式，这样的话会有一个特制的 CNI 插件来提高容器的网络能力。</p>
-<p>这里可能会有些疑问：</p>
-<ol>
-<li>hypervisor 的选择 qemu / cloud-hypervisor / firecraker ， 速度会如何？</li>
-<li>为什么会有个agent？</li>
-<li></li>
-</ol>
-<h4 id="三、Kata-Container蓝图"><a href="#三、Kata-Container蓝图" class="headerlink" title="三、Kata Container蓝图"></a>三、Kata Container蓝图</h4>
+        
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/" data-id="ckuzbjk5r0008nk165w094fha" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%89/" data-id="cky1083mj0003lg16ehks8nk6" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
     </footer>
   </div>
   
@@ -438,10 +600,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白大话容器编排之Kubernetes入门" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-小白解说之软件定义网络SDN产品ovn-二" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-19T06:57:07.000Z" itemprop="datePublished">2021-10-19</time>
+    <a href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%BA%8C/" class="article-date">
+  <time datetime="2021-11-23T10:21:37.000Z" itemprop="datePublished">2021-11-23</time>
 </a>
     
   </div>
@@ -452,7 +614,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/">小白大话容器编排之Kubernetes入门</a>
+      <a class="article-title" href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%BA%8C/">小白解说之软件定义网络SDN产品ovn(二)</a>
     </h1>
   
 
@@ -460,106 +622,141 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家好，我是小白，小白鼠的白。下面由我给白白们讲解一下云计算火热的容器编排之王Kubernetes…</p>
-<p>上文咱们讲解了Linux容器技术docker，有些基础后理解Kubernetes后就更好理解啦~<br>简言之呢，docker虽然帮助我们实现了容器化，但我们并不仅仅只需要运行一个容器就能满足我们的需求，我们需要自动化部署，弹性伸缩，负载均衡，服务自动发现等等云原生的一整套的需求，而这就是kubernetes能帮我们做到的。<br><img src="/images/k8s/kubernetes_diagram-v3-770x717_0.png" alt="avatar"></p>
-<h4 id="一、何为Kubernetes"><a href="#一、何为Kubernetes" class="headerlink" title="一、何为Kubernetes"></a>一、何为Kubernetes</h4><p>Kubernetes 是谷歌开源的容器集群管理系统，是 Google 多年大规模容器管理技术 Borg 的开源版本，主要功能包括：<br>    基于容器的应用部署、维护和滚动升级<br>    负载均衡和服务发现<br>    跨机器和跨地区的集群调度<br>    自动伸缩<br>    无状态服务和有状态服务<br>    广泛的 Volume 支持<br>    插件机制保证扩展性<br>Kubernetes 发展非常迅速，已经成为容器编排领域的领导者。</p>
-<h4 id="二、Kubernetes架构"><a href="#二、Kubernetes架构" class="headerlink" title="二、Kubernetes架构"></a>二、Kubernetes架构</h4><p><img src="/images/k8s/k8s_arch.png" alt="avatar"><br>Kubernetes 主要由以下几个核心组件组成：<br>    1.etcd 集群持久化数据存储, 保存了整个集群的状态信息等；<br>    2.apiserver 提供了资源操作的唯一入口，并提供认证、授权、访问控制、API 注册和发现等机制；<br>    3.controller manager 负责维护集群的状态，比如故障检测、自动扩展、滚动更新等；<br>    4.scheduler 负责资源的调度，按照预定的调度策略将 Pod 调度到相应的机器上；<br>    5.kubelet 负责维护容器的生命周期，同时也负责 Volume（CVI）和网络（CNI）的管理；<br>    6.Container runtime 负责镜像管理以及 Pod 和容器的真正运行（CRI）；<br>    7.kube-proxy 负责为 Service 提供 cluster 内部的服务发现和负载均衡<br><img src="/images/k8s/kubernetes_diagram-v3-770x717_0.png" alt="avatar"><br>除了核心组件，还有一些推荐的 Add-ons：<br>    *kube-dns 负责为整个集群提供 DNS 服务<br>    *Ingress Controller 为服务提供外网入口<br>    *Heapster 提供资源监控<br>    *Dashboard 提供 GUI<br>    *Federation 提供跨可用区的集群<br>    *Fluentd-elasticsearch 提供集群日志采集、存储与查询</p>
-<h4 id="三、Kubernetes-设计理念"><a href="#三、Kubernetes-设计理念" class="headerlink" title="三、Kubernetes 设计理念"></a>三、Kubernetes 设计理念</h4><p><img src="/images/k8s/pods.png" alt="avatar"><br>1.API设计<br>    *所有API应该是声明式的。<br>    *API对象是彼此互补而且可组合的。<br>    *高层API以操作意图为基础设计<br>    *低层API根据高层API的控制需要设计<br>    *尽量避免简单封装，不要有在外部API无法显式知道的内部隐藏的机制<br>    *API操作复杂度与对象数量成正比<br>    *API对象状态不能依赖于网络连接状态<br>    *尽量避免让操作机制依赖于全局状态，因为在分布式系统中要保证全局状态的同步是非常困难的。<br>2.控制机制设计<br>    *控制逻辑应该只依赖于当前状态。<br>    *尽量避免复杂状态机，控制逻辑不要依赖无法监控的内部状态。<br>    *假设任何错误的可能，并做容错处理。<br>    *假设任何操作都可能被任何操作对象拒绝，甚至被错误解析。<br>    *每个模块都可以在出错后自动恢复。<br>    *每个模块都可以在必要时优雅地降级服务。<br>3. 架构设计<br>    *只有apiserver可以直接访问etcd存储，其他服务必须通过Kubernetes API来访问集群状态<br>    *单节点故障不应该影响集群的状态<br>    *在没有新请求的情况下，所有组件应该在故障恢复后继续执行上次最后收到的请求（比如网络分区或服务重启等）<br>    *所有组件都应该在内存中保持所需要的状态，apiserver将状态写入etcd存储，而其他组件则通过apiserver更新并监听所有的变化<br>    *优先使用事件监听而不是轮询</p>
-<h4 id="四、Kubernetes核心概念"><a href="#四、Kubernetes核心概念" class="headerlink" title="四、Kubernetes核心概念"></a>四、Kubernetes核心概念</h4><p>pod： 一组容器集合，k8s最小调度部署单元<br>      *k8s不能直接控制容器，通过控制pod来间接管理容器<br>      *pod是由pod templates创建而来的，pod template包含于控制器中<br>      *不同控制器对模板的处理方式方式不同，比如，有的会立即删除旧pod，依据新模板创建新pod来保持最新<br>      *一个pod包含一个或多个容器<br>      *一个pod的所有容器共享共享 PID、IPC、Network 和 UTS namespace<br>      *重启一个pod中的容器不会重启pod，因为pod不是进程而是一个容器运行环境，pod会一直存在除非它被删除<br>    pod生命周期中的状态/阶段<br>      *pending：k8s已经知道pod的存在，此时pod还没完全准备好，比如容器还没创建完成、正在下载镜像等，即在做前期的准备工作<br>      *running：pod已经分配到一个节点上了，并且至少有一个容器在运行<br>      *succeeded：终止在pod上的所有容器，全部成功终止，且不重启<br>      *unknown：由于出现了一些错误而使非上边提到的任何一种状态<br>      *failed：终止pod上所有rq，有的容器关闭失败<br>    pod的生命和人类一样，只有一次，从出生到死亡，不可重活<br>控制器controller：控制器，控制pod（启动、停止、删除……）<br>    *ReplicaSet：确保预期pod副本数，保证任何时候都是固定pod数量在工作（动态地根据需求增删pod），通过Deployment来设置ReplicaSet<br>    *ReplicationController：自动增删pod，同ReplicaSet功能相同，ReplicaSet是它的升级版<br>    *Deployment：无状态应用部署，是比ReplicationController更高一层的api，还可以更新回滚ReplicaSet<br>    *StatefulSet：有状态应用部署<br>    *DaemonSet：确保所有node运行同一个pod<br>    *Job：一次性任务，<br>    *Cronjob：定时任务<br>服务service：将一组相关pod关联起来，对外提供服务，提供统一入口，使得pod地址改变不影响服务<br>    *提供负载均衡<br>    *服务的自动发现<br>    *内部DNS域名服务<br>    *定义相关pod访问策略<br>标签label：标记pod,node等资源<br>    *便于识别pod,node<br>    *亲和反亲和等策略<br>命名空间namespace：提供逻辑隔离<br>    *租户隔离</p>
+        <p>d</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/" data-id="ckvaiowif0000lc16f50bg5de" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-进击的Kata-Container-2-0" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/19/%E8%BF%9B%E5%87%BB%E7%9A%84Kata-Container-2-0/" class="article-date">
-  <time datetime="2021-10-19T06:54:55.000Z" itemprop="datePublished">2021-10-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E8%BF%9B%E5%87%BB%E7%9A%84Kata-Container-2-0/">进击的Kata Container 2.0</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E8%BF%9B%E5%87%BB%E7%9A%84Kata-Container-2-0/" data-id="ckuzbjk5v000cnk163yp3gssb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nvmf-基本使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time datetime="2021-10-19T04:19:36.000Z" itemprop="datePublished">2021-10-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">nvmf 基本使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>背景: 虚拟化openstack测试使用nvmf<br>配置 NVMe/RDMA 客户端</p>
-<p>安装mlnx_nvme-ofed driver</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">下载 MLNX_OFED_LINUX-5.4-1.0.3.0-rhel8.1-x86_64.iso</span><br><span class="line">安装 kmod-mlnx-nvme-5.4-OFED.5.4.1.0.3.1.rhel8u1.x86_64</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum install nvme-cli</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># modprobe nvme-rdma</span><br></pre></td></tr></table></figure>
-
-<h4 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># nvme connect -t rdma -n nqn.2021-10.io.spdk:cnode2 -a 10.224.129.226 -s 4420</span><br><span class="line">Failed to open &#x2F;dev&#x2F;nvme-fabrics: No such file or directory</span><br><span class="line"></span><br><span class="line">解决:</span><br><span class="line">#modprobe nvme_fabrics</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Failed to write to &#x2F;dev&#x2F;nvme-fabrics: Invalid argument</span><br><span class="line">nvme_fabrics: no handler found for transport rdma.</span><br><span class="line">解决: 安装mlx_ofd drvier</span><br><span class="line">https:&#x2F;&#x2F;www.mellanox.com&#x2F;products&#x2F;infiniband-drivers&#x2F;linux&#x2F;mlnx_ofed</span><br><span class="line">下载 MLNX_OFED_LINUX-5.4-1.0.3.0-rhel8.1-x86_64.iso</span><br><span class="line">安装 kmod-mlnx-nvme-5.4-OFED.5.4.1.0.3.1.rhel8u1.x86_64</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="ckuzbjk5m0002nk169azc9t6y" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%BA%8C/" data-id="cky1083ml0006lg16aor58g77" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之软件定义网络SDN产品ovn-一" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%80/" class="article-date">
+  <time datetime="2021-11-23T08:08:12.000Z" itemprop="datePublished">2021-11-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%80/">小白解说之软件定义网络SDN产品ovn(一)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给大家分享一下SDN产品之OVN，广泛应用于云计算行业中，今天带大家入门了解一下吧。</p>
+<h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>众所周知，OpenvSwitch 以其丰富的功能和不错的性能，已经成为 Openstack 部署中最受欢迎的虚拟交换机。由于 Openstack Neutron 的架构引入了一些性能问题，比如 neutron-server 要与非常多的 agent 通信，RPC 就是一个性能瓶颈，还有 neutron 里面用到非常多的 namespace，namespace 资源有限而且系统开销比较大，这也是一个性能瓶颈。OVS 社区觉得从长远来看，Neutron 应该让一个其它的项目来做虚拟网络的控制平面，Neutron 只需要提供 API 的处理，于是 便孵化了OVN项目，<strong>OVN 是 OVS 的控制平面，它给 OVS 增加了对虚拟网络的原生支持，大大提高了 OVS 在实际应用环境中的性能和规模</strong>。</p>
+<h4 id="OVN功能"><a href="#OVN功能" class="headerlink" title="OVN功能"></a>OVN功能</h4><ul>
+<li>Provides virtual networking abstraction for OVS, implemented using L2 and L3 overlays, but can also manage connectivity to physical networks</li>
+<li>Supports flexible ACLs (security policies) implemented using flows that use OVS connection tracking<br>Native support for distributed L3 routing using OVS flows, with support for both IPv4 and IPv6</li>
+<li>ARP and IPv6 Neighbor Discovery suppression for known IP-MAC bindings</li>
+<li>Nativesupport for NAT and load balancing using OVS connection tracking</li>
+<li>Native fully distributedsupport for DHCP</li>
+<li>Works with any OVS datapath (such as the default Linux kernel datapath, DPDK, or Hyper-V) that supports all required features (namely Geneve tunnels and OVS connection tracking. See the datapath feature list in the FAQ for details.)</li>
+<li>Supports L3 gateways from logical to physical networks</li>
+<li>Supports software-based L2 gateways</li>
+<li>Supports TOR (Top of Rack) based L2 gateways that implement the hardware_vtep schema</li>
+<li>Can provide networking for both VMs and containers running inside of those VMs, without a second layer of overlay networking</li>
+</ul>
+<p>Logical switches：逻辑交换机，用来做二层转发。</p>
+<p>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。</p>
+<p>Logical routers：逻辑路由器，分布式的，用来做三层转发。</p>
+<p>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。</p>
+<p>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
+<h4 id="OVN架构"><a href="#OVN架构" class="headerlink" title="OVN架构"></a>OVN架构</h4><p><img src="/images/openstack/ovn_arch.png"></p>
+<p>OVN/CMS Plugin 是Neutron的一个插件，作为OVN 和 CMS 之间的接口 。它将CMS中的数据（存储在Neutron DB）翻译成一种“中间格式”。</p>
+<p>这种中间格式就是逻辑网络配置数据，这样CMS中的网络配置数据就能够被OVN理解 （准确的说是能够被OVN的Northbound DB 所理解）。</p>
+<p>Northbound DB 里面存的就是上面OVN/CMS Plugin翻译之后的逻辑网络的相关数据。比如 logical switch，logical router，logical port和ACL。</p>
+<p>Northbound DB 里面的几乎所有的内容都是由 CMS 产生的</p>
+<p>OVN-northd 类似于一个集中的控制器，监听Northbound DB 数据库的内容变化，它把 Northbound DB 里面的逻辑网络的相关数据翻译成 Southbound DB 可以理解的格式（logical datapath flows），并传递给 Southbound DB 进行存储，进而被所有的chassis 读取和应用。 （关于chassis这个概念 ，本人会在下一篇博文中进行介绍。）</p>
+<p>Southbound DB 处在 OVN 架构的核心，它是 OVN 中最重要的部分，它跟 OVN 的其他组件都有交互。 里面存的数据和 Northbound DB 语义完全不一样，主要包含 3 类数据(第二类数据就是OVN-northd 从Northbound DB 翻译过来的)：</p>
+<p>一、物理网络数据，比如 hypervisor的 IP 地址，hypervisor的 tunnel 封装格式；</p>
+<p>二、逻辑网络数据，比如报文如何在逻辑网络中转发；</p>
+<p>三、物理网络和逻辑网络的绑定关系，比如逻辑端口关联到哪个 hypervisor上面。这类数据存储在binding表中，字段有uuid,chassis, logical_datapath, logical_port, mac, parent_port, tag, tunnel_key。</p>
+<p>ovn-controller 是 OVN 里面的 agent，类似于 Neutron 里面的 ovs-agent，它也是运行在每个 hypervisor和软件网关之上。</p>
+<p>它有下面2种功能：<br>（1）把物理网络的信息写到 Southbound DB 里面（这类信息就包括 Southbound DB中的第一类数据）；<br>（2）把 Southbound DB 里面存的一些数据转化成 Openflow flow 配到本地的 OVS table 里面，来实现报文的转发。</p>
+<p>第2个功能的具体实现机制就是：<br>ovn-controller连接到到本地的ovsdb-server ，监控、读取、管理OpenvSwitch的配置信息；</p>
+<p>ovn-controller作为ovs-vswitchd 的Openflow 控制器来控制流量的转发。另外，从架构图中就可看出ovn-controller是一种分布式SDN控制器。</p>
+<p>ovs-vswitchd 和 ovsdb-server 是 OVS 的两个进程：</p>
+<ul>
+<li>ovs-vswitchd ：核心模块，实现交换功能，和Linux内核模块一起，实现基于流的交换；</li>
+<li>ovsdb-server ：是一个数据库。其保存了整个OVS的配置信息，包括接口，流表和VLAN等；ovs-vswitchd从其查询配置信息；</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%80/" data-id="cky1083mg0001lg161toncx4j" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说容器编排之Kubernetes-CRI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/" class="article-date">
+  <time datetime="2021-10-29T06:31:39.000Z" itemprop="datePublished">2021-10-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/">小白解说容器编排之Kubernetes-CRI</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给白白们讲解一下Kubernetes中的概念CRI (Container Runtime Interface)- 容器运行时接口。<br>一、CRI的由来<br>容器的兴起起自Docker，后来有了Kubernetes，所以在Kubernetes CRI 出现之前（也就是 Kubernetes v1.5 之前），Docker 作为第一个容器运行时，Kubelet 通过内嵌的 dockershim 操作 Docker API 来操作容器，进而达到一个面向终态的效果。在这之后，又出现了一种新的容器运行时 - rkt，它也想要成为 Kubernetes 支持的一个容器运行时，当时它也合到了 Kubelet 的代码之中。这两个容器运行时的加入使得 Kubernetes 的代码越来越复杂、难以维护。之后 hyber.sh 加入社区，也想成为第三个容器运行时。</p>
+<p>此时就有人站出来说，想到了标准化，将容器运行时的操作抽象出一个接口，将 Kubelet 代码与具体的容器运行时的实现代码解耦开，只要实现了这样一套接口，就能接入到 Kubernetes 的体系中，这就是我们后来见到的 Container Runtime Interface (CRI)。</p>
+<p>二、CRI实现</p>
+<p>引入了 CRI 接口之后，Kubelet 的架构如上图所示。<br>跟容器最相关的一个 Manager 是 Generic Runtime Manager，就是一个通用的运行时管理器。我们可以看到目前 dockershim 还是存在于 Kubelet 的代码中的，它是当前性能最稳定的一个容器运行时的实现。remote 指的就是 CRI 接口。CRI 接口主要包含两个部分：<br>一个是 CRI Server，即通用的比如说创建、删除容器这样的接口；<br>另外一个是流式数据的接口 Streaming Server，比如 exec、port-forward 这些流式数据的接口。<br>这里需要注意的是，我们的 CNI（容器网络接口）也是在 CRI 进行操作的，因为我们在创建 Pod 的时候需要同时创建网络资源然后注入到 Pod 中。</p>
+<p>目前 CRI 的主要实现：</p>
+<ol>
+<li>CRI-containerd</li>
+<li>CRI-O<br>等等<br>CRI-containerd 是目前社区中比较主流的新一代 CRI 的实现，CRI-O 来自于红帽公司其他就不一一介绍了。</li>
+</ol>
+<p>CRI-containerd<br>这套 CRI 接口是基于 containerd 实现的。在早期的实现中，CRI 其实是作为一个独立进程的，再跟 containerd 进行交互。这样一来又多了一层进程跟进程之间的开销，因此在后来的版本中 CRI 的是直接以插件的形式实现到 containerd 中的，成为了 containerd 的一部分，从而能够可插拔地使用 CRI 接口。</p>
+<p>整个架构看起来非常直观。这里的 Meta services、Runtime service 与 Storage service 都是 containerd 提供的接口。它们是通用的容器相关的接口，包括镜像管理、容器运行时管理等。CRI 在这之上包装了一个 gRPC 的服务。右侧就是具体的容器的实现，比如说，创建容器时就要创建具体的 runtime 和它的 shim，它们和 Container 一起组成了一个 Pod Sandbox。</p>
+<p>CRI-containerd 的一个好处是，containerd 还额外实现了更丰富的容器接口，所以它可以用 containerd 提供的 ctr 工具来调用这些丰富的容器运行时接口，而不只是 CRI 接口。<br>CRI-O<br>CRI-O是通过直接在 OCI 上包装容器接口来实现的一个 CRI 服务。它对外提供的只有具体的 CRI 接口，没有我们前面所提到的 containerd 提供的更丰富的接口。它主要包含两个部分，首先是对容器 runtime 的管理，另一个是对镜像的管理。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/" data-id="cky1083mk0005lg16e1w488s1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
 
     </footer>
   </div>
@@ -572,7 +769,7 @@ var _hmt = _hmt || [];
 
   <nav id="page-nav">
     
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/14/">14</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -596,7 +793,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.78px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 14.44px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 18.89px;">go</a> <a href="/tags/grpc/" style="font-size: 11.11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15.56px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 17.78px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.67px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14.44px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12.22px;">python</a> <a href="/tags/spdk/" style="font-size: 13.33px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.56px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.27px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 13.64px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19.09px;">go</a> <a href="/tags/grpc/" style="font-size: 10.91px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 14.55px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.36px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.64px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 11.82px;">python</a> <a href="/tags/spdk/" style="font-size: 12.73px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.45px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -605,7 +802,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -618,23 +815,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/">小白解说之gRPC入门</a>
+            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
           </li>
         
           <li>
-            <a href="/2021/10/26/%E5%B0%8F%E7%99%BD%E5%A4%A7%E8%AF%9D%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/">小白大话容器编排之Kubernetes资源对象</a>
+            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
           </li>
         
           <li>
-            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/">小白解说之Prometheus监控入门</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/">虚拟化-ovn入门到精通(四)</a>
           </li>
         
           <li>
-            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/">小白解说之Docker高级用法</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
           </li>
         
           <li>
-            <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
+            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>
@@ -649,7 +846,7 @@ var _hmt = _hmt || [];
   
   <div class="outer">
     <div id="footer-info" class="inner">
-      &copy; 2021 Tonyzhang1989<br>
+      &copy; 2022 Tonyzhang1989<br>
       Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
