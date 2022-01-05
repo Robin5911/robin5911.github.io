@@ -79,110 +79,6 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-openstack-记一次虚机代理网关网络不通问题排查" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="article-date">
-  <time datetime="2021-02-20T07:43:12.000Z" itemprop="datePublished">2021-02-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/">openstack-记一次虚机代理网关网络不通问题排查</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>背景：VPC网络内，用户两台虚机，VM1 138，VM2 181，用户需要把138流量牵引至181，所以将138 网关改成 181，当客户端 138 发起外网ping 114.114.114.114 时，无法联网</p>
-<p>排查原因：</p>
-<ol>
-<li>通过tcpdump抓网关网卡包</li>
-</ol>
-<p>​    网关181回包后138 收不到</p>
-<p>![/images/openstack/image-20210220172329798.png)</p>
-<ol start="2">
-<li><p>抓取网关虚机的宿主机包发现，只回了一个包（tap网卡包回了）</p>
-<p>#tcpdump -i any -nn icmp and host 114.114.114.114</p>
-<p>所以怀疑安全组限制了（包只过了tap网卡后被丢弃）</p>
-<p>追踪这块网卡的iptables</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#iptables -nvL neutron-openvswi-ib8096cab-2</span><br><span class="line">Chain neutron-openvswi-sb8096cab-2 (1 references)</span><br><span class="line"> pkts bytes target     prot opt in     out     source               destination         </span><br><span class="line"> 3818  651K RETURN     all  --  *      *       0.0.0.0&#x2F;0            0.0.0.0&#x2F;0           </span><br><span class="line">3232K  229M RETURN     all  --  *      *       192.168.123.181      0.0.0.0&#x2F;0            MAC FA:16:3E:29:77:83 &#x2F;* Allow traffic from defined IP&#x2F;MAC pairs. *&#x2F;</span><br><span class="line"> 5558  381K DROP       all  --  *      *       0.0.0.0&#x2F;0            0.0.0.0&#x2F;0            &#x2F;* Drop traffic without an IP&#x2F;MAC allow rule. *&#x2F;</span><br></pre></td></tr></table></figure>
-
-<p>发现DROP的大小一直在变大，定位到问题了，那原因是什么呢？</p>
-</li>
-</ol>
-<p>因为 neutron默认防止arp欺骗，只允许源IP和MAC是自己的包才放行，而用户自己做了网关，导致源IP变了，所以被DROP了。</p>
-<p>解决办法：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 放行包  （不能永久生效）</span><br><span class="line">#iptables -t filter -I neutron-openvswi-sb8096cab-2  -s 0.0.0.0&#x2F;0 -j RETURN</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2. 把port的安全组关掉</span><br><span class="line">#neutron port-update b8096cab-2536-4d0d-851a-1056b81f11ca --no-security-groups </span><br><span class="line">#neutron port-update b8096cab-2536-4d0d-851a-1056b81f11ca --port_security_enabled&#x3D;False</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" data-id="ckldj7pc900000k16fiv1axho" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-100道灵魂拷问" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/" class="article-date">
-  <time datetime="2021-02-18T14:17:23.000Z" itemprop="datePublished">2021-02-18</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/">go-100道灵魂拷问</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <ol>
-<li><p>map如何顺序读取</p>
-<p>map不能顺序读取，是因为他是无序的，想要有序读取，首先的解决的问题就是，把 key 变为有序，所以可以把key放入切片，对切片进行排序，遍历切片，通过key取值。</p>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/02/18/go-100%E9%81%93%E7%81%B5%E9%AD%82%E6%8B%B7%E9%97%AE/" data-id="cklaz218c0000jk16hdcqdcea" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-go-字符串转成byte数组，会发生内存拷贝吗？" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/02/18/go-%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%88%90byte%E6%95%B0%E7%BB%84%EF%BC%8C%E4%BC%9A%E5%8F%91%E7%94%9F%E5%86%85%E5%AD%98%E6%8B%B7%E8%B4%9D%E5%90%97%EF%BC%9F/" class="article-date">
@@ -591,6 +487,117 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-SPF漏掉之DNS记录设置" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" class="article-date">
+  <time datetime="2021-01-04T23:47:16.000Z" itemprop="datePublished">2021-01-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>SPF 记录是一种域名服务（DNS）记录，用于标识哪些邮件服务器可以代表您的域名发送电子邮件。 SPF 记录的目的是为了防止垃圾邮件发送者在您的域名上，使用伪造的发件人地址发送邮件。</p>
+<p>若您未对您的域名添加 SPF 解析记录，则黑客可以仿冒以该域名为后缀的邮箱，来发送垃圾邮件。</p>
+<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><p>在您的 DNS 服务提供商处，为您的域名添加一条 TXT 记录：</p>
+<ul>
+<li><p>将主机字段（Host）设置为您子域名的名称。（例如，如果您的电子邮件地址是<code>contact@mail.example.com</code>，则为 <code>mail</code>。）如果不使用子域名，则将其设为<code>@</code>。</p>
+</li>
+<li><p>用您的 SPF 记录填写 TXT 值字段。例如 <code>v = spf1 a mx include：secureserver.net〜all</code>。</p>
+</li>
+</ul>
+<p>目前已经越来越多的收件人服务器要验证发送者域名的 SPF 设置。也就是发送的 Ip 或服务器必须在 SPF 中有记录才接受邮件。</p>
+<p>首先你必须有自己的真实顶级域名。没有的话是不可能设置SPF 的.<br>SPF 是域名的一条 TXT 解析记录。</p>
+<p><strong>SPF 设置说明：</strong></p>
+<p>\1. 把《速递专家》安装到服务器或VPS上面<br>\2. 域名的解析设置里边添加一条TXT解析</p>
+<p>主机名一般为：@，解析值为：<strong>v=spf1 ip4:你的服务器IP ~all</strong></p>
+<p>例1：假设你的服务器 IP为 123.123.123.123，则 SPF 记录值为</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.123 ~all</li>
+</ol>
+<p>例2：如果有多个IP可以并排书写，例如：</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.123 ip4:123.123.123.124 ~all</li>
+</ol>
+<p>例3：如果有很多连续地址，比如 123.123.123.1 到 123.123.123.255，则可以解析</p>
+<ol>
+<li>v=spf1 ip4:123.123.123.0/24 ~all</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" data-id="ckjj7tvdw0000u816djdfc2ug" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-go-开启go-module" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" class="article-date">
+  <time datetime="2021-01-04T06:30:16.000Z" itemprop="datePublished">2021-01-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ go mod init</span><br><span class="line">go: modules disabled inside GOPATH&#x2F;src by GO111MODULE&#x3D;auto; see &#39;go help modules&#39;</span><br></pre></td></tr></table></figure>
+
+<p>开启go module：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set GO111MODULE&#x3D;on    &#x2F;&#x2F;windows</span><br><span class="line">export GO111MODULE&#x3D;on &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
+
+<p>上面的命令开启go module是临时开启</p>
+<p>永久开启</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置powershell</span><br><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;  &#x2F;&#x2F;windows</span><br><span class="line">#echo &#39;export GO111MODULE&#x3D;on&#39; &gt;&gt; &#x2F;etc&#x2F;profile &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" data-id="ckjj7tvep0006u816ei7d5698" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -628,7 +635,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -639,6 +646,10 @@ var _hmt = _hmt || [];
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
@@ -654,10 +665,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>

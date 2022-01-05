@@ -79,117 +79,6 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-SPF漏掉之DNS记录设置" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" class="article-date">
-  <time datetime="2021-01-04T23:47:16.000Z" itemprop="datePublished">2021-01-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/">SPF漏掉之DNS记录设置</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h3 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h3><p>SPF 记录是一种域名服务（DNS）记录，用于标识哪些邮件服务器可以代表您的域名发送电子邮件。 SPF 记录的目的是为了防止垃圾邮件发送者在您的域名上，使用伪造的发件人地址发送邮件。</p>
-<p>若您未对您的域名添加 SPF 解析记录，则黑客可以仿冒以该域名为后缀的邮箱，来发送垃圾邮件。</p>
-<h3 id="修复方案"><a href="#修复方案" class="headerlink" title="修复方案"></a>修复方案</h3><p>在您的 DNS 服务提供商处，为您的域名添加一条 TXT 记录：</p>
-<ul>
-<li><p>将主机字段（Host）设置为您子域名的名称。（例如，如果您的电子邮件地址是<code>contact@mail.example.com</code>，则为 <code>mail</code>。）如果不使用子域名，则将其设为<code>@</code>。</p>
-</li>
-<li><p>用您的 SPF 记录填写 TXT 值字段。例如 <code>v = spf1 a mx include：secureserver.net〜all</code>。</p>
-</li>
-</ul>
-<p>目前已经越来越多的收件人服务器要验证发送者域名的 SPF 设置。也就是发送的 Ip 或服务器必须在 SPF 中有记录才接受邮件。</p>
-<p>首先你必须有自己的真实顶级域名。没有的话是不可能设置SPF 的.<br>SPF 是域名的一条 TXT 解析记录。</p>
-<p><strong>SPF 设置说明：</strong></p>
-<p>\1. 把《速递专家》安装到服务器或VPS上面<br>\2. 域名的解析设置里边添加一条TXT解析</p>
-<p>主机名一般为：@，解析值为：<strong>v=spf1 ip4:你的服务器IP ~all</strong></p>
-<p>例1：假设你的服务器 IP为 123.123.123.123，则 SPF 记录值为</p>
-<ol>
-<li>v=spf1 ip4:123.123.123.123 ~all</li>
-</ol>
-<p>例2：如果有多个IP可以并排书写，例如：</p>
-<ol>
-<li>v=spf1 ip4:123.123.123.123 ip4:123.123.123.124 ~all</li>
-</ol>
-<p>例3：如果有很多连续地址，比如 123.123.123.1 到 123.123.123.255，则可以解析</p>
-<ol>
-<li>v=spf1 ip4:123.123.123.0/24 ~all</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/01/05/SPF%E6%BC%8F%E6%8E%89%E4%B9%8BDNS%E8%AE%B0%E5%BD%95%E8%AE%BE%E7%BD%AE/" data-id="ckjj7tvdw0000u816djdfc2ug" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-开启go-module" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" class="article-date">
-  <time datetime="2021-01-04T06:30:16.000Z" itemprop="datePublished">2021-01-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/">go-开启go module</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">λ go mod init</span><br><span class="line">go: modules disabled inside GOPATH&#x2F;src by GO111MODULE&#x3D;auto; see &#39;go help modules&#39;</span><br></pre></td></tr></table></figure>
-
-<p>开启go module：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set GO111MODULE&#x3D;on    &#x2F;&#x2F;windows</span><br><span class="line">export GO111MODULE&#x3D;on &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
-
-<p>上面的命令开启go module是临时开启</p>
-<p>永久开启</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置powershell</span><br><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;  &#x2F;&#x2F;windows</span><br><span class="line">#echo &#39;export GO111MODULE&#x3D;on&#39; &gt;&gt; &#x2F;etc&#x2F;profile &#x2F;&#x2F;linux</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/" data-id="ckjj7tvep0006u816ei7d5698" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-go-gin-常见问题解决" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/01/04/go-gin-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98%E8%A7%A3%E5%86%B3/" class="article-date">
@@ -555,6 +444,113 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-vim-报错E437" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" class="article-date">
+  <time datetime="2020-12-28T02:13:11.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/">vim 报错E437</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>E437: terminal capability “cm” required</p>
+<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
+<p>解决办法：</p>
+<p>执行export TERM=xterm;</p>
+<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
+<p>或者</p>
+<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
+<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" data-id="ckj7xix5v0007u816ftf2ccvc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mariadb-常见故障解决" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" class="article-date">
+  <time datetime="2020-12-23T08:46:42.000Z" itemprop="datePublished">2020-12-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/">mariadb 常见故障解决</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="常见mariadb-故障解决"><a href="#常见mariadb-故障解决" class="headerlink" title="常见mariadb 故障解决"></a>常见mariadb 故障解决</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 启动异常</span><br><span class="line">sed -i &#39;s#safe_to_bootstrap: 0#safe_to_bootstrap: 1#&#39; &#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;mariadb&#x2F;_data&#x2F;grastate.dat</span><br><span class="line"></span><br><span class="line">2. galera cluster 启动一个节点时出现this member has applied more events than the primary component.Data loss is possible. Aborting.</span><br><span class="line">解决：</span><br><span class="line"></span><br><span class="line">cd &#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line"></span><br><span class="line">rm grastate.dat ib_log* -f</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用kolla安装的openstack-mariadb为集群所有节点无法启动"><a href="#使用kolla安装的openstack-mariadb为集群所有节点无法启动" class="headerlink" title="使用kolla安装的openstack mariadb为集群所有节点无法启动"></a>使用kolla安装的openstack mariadb为集群所有节点无法启动</h1><p>转载<a target="_blank" rel="noopener" href="https://me.csdn.net/weixin_30301449">R芮R</a> 最后发布于2018-08-20 22:31:00 阅读数 228 收藏</p>
+<p>展开</p>
+<p>当在做测试时，把所有的openstack节点都关机，再开启做测试时，发现mariadb galera集群启不来，相当于所有的mariadb集群都停止了（跟所有节点断电情况相似），这时候怎么办呢，重新建立galera集群</p>
+<p>方法1：、如果集群中的机器全部重启，如机房断电，第一台启动的服务器必须以空地址启动</p>
+<p>编辑第一个控制节点的 cat /etc/kolla/mariadb/config.json</p>
+<p>…</p>
+<p>“command”: “/usr/bin/mysqld_safe –wsrep_cluster_address=gcomm://“,</p>
+<p>…</p>
+<p>方法2：</p>
+<p>选择节点一个mariadb节点，修改安全启动状态。</p>
+<p>sed -i ‘s/safe_to_bootstrap: 0/safe_to_bootstrap: 1/g’  /var/lib/docker/volumes/mariadb/_data/grastate.dat</p>
+<p>grep “New cluster view” /var/lib/docker/volumes/kolla_logs/_data/mariadb/mariadb.log |awk  -F: ‘END { print $1”:”$2”:”$3 $6”:”$7}’   # 显示如下，显示序列号</p>
+<p>180822 21:45:32 [Note] WSREP 05d50ff4-a17b-11e8-8cfc-02fd70253581:140645, view# -1</p>
+<p>修改seqno:-1</p>
+<p>重启这个mariadb容器</p>
+<p>docker restart mariadb</p>
+<p>接着接入这个容器</p>
+<p>docker exec -it mariadb /bin/bash</p>
+<p>执行mysqld_safe –wsrep-new-cluster</p>
+<p>然后再重启其他的docker节点</p>
+<p>为能正常启动 galera集群，最好正常关闭mariadb docker，命令docker stop mariadb</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" data-id="ckj7xix5i0000u816520b36li" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -592,7 +588,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -603,6 +599,10 @@ var _hmt = _hmt || [];
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
@@ -618,10 +618,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>

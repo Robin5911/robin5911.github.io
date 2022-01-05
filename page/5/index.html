@@ -79,369 +79,6 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-openstack-裸金属ironic源码创建分析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/" class="article-date">
-  <time datetime="2021-05-27T07:19:26.000Z" itemprop="datePublished">2021-05-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/">openstack-裸金属ironic源码创建分析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>openstack ironic 裸金属创建裸机流程源码分析</p>
-<p>基于 ironic stein</p>
-<p>ironic-api接收到了provision_state的设置请求，然后返回202的异步请求，api请求到了ironic.api.controllers.v1.node.NodeStatesController的provision方法， 然后调用了 _do_provision_action 方法 。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;NodeStatesController.provision&#39;)</span><br><span class="line">@expose.expose(None, types.uuid_or_name, wtypes.text,</span><br><span class="line">               types.jsontype, types.jsontype, wtypes.text,</span><br><span class="line">               status_code&#x3D;http_client.ACCEPTED)</span><br><span class="line">def provision(self, node_ident, target, configdrive&#x3D;None,</span><br><span class="line">              clean_steps&#x3D;None, rescue_password&#x3D;None):</span><br><span class="line">***************</span><br><span class="line">self._do_provision_action(rpc_node, target, configdrive, clean_steps,</span><br><span class="line">                              rescue_password)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">def _do_provision_action(self, rpc_node, target, configdrive&#x3D;None,</span><br><span class="line">                             clean_steps&#x3D;None, rescue_password&#x3D;None):</span><br><span class="line">     ************</span><br><span class="line">     if target in (ir_states.ACTIVE, ir_states.REBUILD):</span><br><span class="line">            rebuild &#x3D; (target &#x3D;&#x3D; ir_states.REBUILD)</span><br><span class="line">            pecan.request.rpcapi.do_node_deploy(context&#x3D;pecan.request.context,</span><br><span class="line">                                                node_id&#x3D;rpc_node.uuid,</span><br><span class="line">                                                rebuild&#x3D;rebuild,</span><br><span class="line">                                                configdrive&#x3D;configdrive,</span><br><span class="line">                                                topic&#x3D;topic)                         </span><br></pre></td></tr></table></figure>
-
-<p>然后RPC调用的ironic.condutor.manager.ConductorManager.do_node_deploy方法, 最终启动一个task ，调用 ironic.condutor.manager.do_node_deploy方法， 如果配置了configdrive会传至swift接口，然后调用 task.driver.deploy.prepare(task) 过程， 不同驱动的动作不一样 pxe_* 驱动使用的是iscsi_deploy.ISCSIDeploy.prepare，本地用的  task.driver.deploy.deploy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;ConductorManager.do_node_deploy&#39;)</span><br><span class="line">@messaging.expected_exceptions(exception.NoFreeConductorWorker,</span><br><span class="line">                               exception.NodeLocked,</span><br><span class="line">                               exception.NodeInMaintenance,</span><br><span class="line">                               exception.InstanceDeployFailure,</span><br><span class="line">                               exception.InvalidStateRequested,</span><br><span class="line">                               exception.NodeProtected)</span><br><span class="line">def do_node_deploy(self, context, node_id, rebuild&#x3D;False,</span><br><span class="line">                   configdrive&#x3D;None):</span><br><span class="line">    ********</span><br><span class="line">    #状态相关检查，确保裸机参数及电源正常</span><br><span class="line">     try:</span><br><span class="line">            task.driver.power.validate(task)</span><br><span class="line">            task.driver.deploy.validate(task)</span><br><span class="line">            utils.validate_instance_info_traits(task.node)</span><br><span class="line">            conductor_steps.validate_deploy_templates(task)</span><br><span class="line">        except exception.InvalidParameterValue as e:</span><br><span class="line">            raise exception.InstanceDeployFailure(</span><br><span class="line">                _(&quot;Failed to validate deploy or power info for node &quot;</span><br><span class="line">                  &quot;%(node_uuid)s. Error: %(msg)s&quot;) %</span><br><span class="line">                &#123;&#39;node_uuid&#39;: node.uuid, &#39;msg&#39;: e&#125;, code&#x3D;e.code)</span><br><span class="line"></span><br><span class="line">        LOG.debug(&quot;do_node_deploy Calling event: %(event)s for node: &quot;</span><br><span class="line">                  &quot;%(node)s&quot;, &#123;&#39;event&#39;: event, &#39;node&#39;: node.uuid&#125;)</span><br><span class="line">        try:</span><br><span class="line">            task.process_event(</span><br><span class="line">                event,</span><br><span class="line">                callback&#x3D;self._spawn_worker,</span><br><span class="line">                call_args&#x3D;(do_node_deploy, task, self.conductor.id,</span><br><span class="line">                           configdrive),</span><br><span class="line">                err_handler&#x3D;utils.provisioning_error_handler)</span><br><span class="line">        except exception.InvalidState:</span><br><span class="line">            raise exception.InvalidStateRequested(</span><br><span class="line">                action&#x3D;event, node&#x3D;task.node.uuid,</span><br><span class="line">                state&#x3D;task.node.provision_state)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;do_node_deploy&#39;)</span><br><span class="line">@task_manager.require_exclusive_lock</span><br><span class="line">def do_node_deploy(task, conductor_id&#x3D;None, configdrive&#x3D;None):</span><br><span class="line">    &quot;&quot;&quot;Prepare the environment and deploy a node.&quot;&quot;&quot;</span><br><span class="line">    node &#x3D; task.node</span><br><span class="line"></span><br><span class="line">    try:</span><br><span class="line">        if configdrive:</span><br><span class="line">            if isinstance(configdrive, dict):</span><br><span class="line">                configdrive &#x3D; utils.build_configdrive(node, configdrive)</span><br><span class="line">            _store_configdrive(node, configdrive)</span><br><span class="line">    ******************</span><br><span class="line">    try:</span><br><span class="line">        task.driver.deploy.prepare(task)</span><br></pre></td></tr></table></figure>
-
-<p>如果是iSCSI启动，task.driver.deploy.prepare(task) 调用 iscsi_deploy.py 的 prepare(task),  初次调用 task.driver.boot.prepare_instance(task) ， 配置dhcp ，准备pxe config和缓存镜像， 通过ipmi操控bios配置启动设备</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line">pxe_utils.cache_ramdisk_kernel(task, instance_image_info,</span><br><span class="line">                                           ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line">*****</span><br><span class="line"> pxe_utils.prepare_instance_pxe_config(</span><br><span class="line">                task, instance_image_info,</span><br><span class="line">                iscsi_boot&#x3D;deploy_utils.is_iscsi_boot(task),</span><br><span class="line">                ramdisk_boot&#x3D;(boot_option &#x3D;&#x3D; &quot;ramdisk&quot;),</span><br><span class="line">                ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line">*****</span><br><span class="line"># If it&#39;s going to PXE boot we need to update the DHCP server</span><br><span class="line">            dhcp_opts &#x3D; pxe_utils.dhcp_options_for_instance(</span><br><span class="line">                task, ipxe_enabled)</span><br><span class="line">            provider &#x3D; dhcp_factory.DHCPFactory()</span><br><span class="line">            provider.update_dhcp(task, dhcp_opts)  </span><br><span class="line">*****</span><br><span class="line"> manager_utils.node_set_boot_device(task, boot_device,</span><br><span class="line">                                               persistent&#x3D;persistent)</span><br></pre></td></tr></table></figure>
-
-<p>默认本地启动调用 ironic.drivers.modules.pxe.PXERamdiskDeploy.prepare中会检查boot_option是否正确,  然后调用 populate_storage_driver_internal_info，如果使用iSCSI启动，保存boot的volume 信息至internal_info , 最终调用 调用 ironic.drivers.modules.pxe.PXEBoot.prepare_instance  启动部署</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@METRICS.timer(&#39;RamdiskDeploy.prepare&#39;)</span><br><span class="line">   @task_manager.require_exclusive_lock</span><br><span class="line">   def prepare(self, task):</span><br><span class="line">   *****</span><br><span class="line">    deploy_utils.populate_storage_driver_internal_info(task)</span><br><span class="line">    ******</span><br><span class="line">    if node.provision_state in (states.ACTIVE, states.UNRESCUING):</span><br><span class="line">           # In the event of takeover or unrescue.</span><br><span class="line">           task.driver.boot.prepare_instance(task)</span><br></pre></td></tr></table></figure>
-
-<p>调用 ironic.drivers.modules.pxe.PXEBoot.prepare_instance，  配置dhcp ，准备pxe config和缓存镜像， 通过ipmi操控bios配置启动设备</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">****</span><br><span class="line">#缓存镜像到本地</span><br><span class="line">pxe_utils.cache_ramdisk_kernel(task, instance_image_info,</span><br><span class="line">                                           ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line"> ****</span><br><span class="line"> #为当前裸机准备 单独的 pxe 文件</span><br><span class="line"> pxe_utils.prepare_instance_pxe_config(</span><br><span class="line">                task, instance_image_info,</span><br><span class="line">                iscsi_boot&#x3D;deploy_utils.is_iscsi_boot(task),</span><br><span class="line">                ramdisk_boot&#x3D;(boot_option &#x3D;&#x3D; &quot;ramdisk&quot;),</span><br><span class="line">                ipxe_enabled&#x3D;CONF.pxe.ipxe_enabled)</span><br><span class="line">            boot_device &#x3D; boot_devices.PXE</span><br><span class="line">  *****</span><br><span class="line">  #因pxe启动，需update ironic DHCP配置文件配置pxe,bootfile等信息，本地启动时清理pxe文件更改启动设备为磁盘</span><br><span class="line">  # If it&#39;s going to PXE boot we need to update the DHCP server</span><br><span class="line">            dhcp_opts &#x3D; pxe_utils.dhcp_options_for_instance(</span><br><span class="line">                task, ipxe_enabled)</span><br><span class="line">            provider &#x3D; dhcp_factory.DHCPFactory()</span><br><span class="line">            provider.update_dhcp(task, dhcp_opts)</span><br><span class="line">  ****</span><br><span class="line">  #</span><br><span class="line">  manager_utils.node_set_boot_device(task, boot_device,</span><br><span class="line">                                               persistent&#x3D;persistent)</span><br><span class="line">  ****</span><br><span class="line">  #开始部署</span><br><span class="line">  _do_next_deploy_step(task, 0, conductor_id)</span><br></pre></td></tr></table></figure>
-
-<p>调用task.deploy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line">result &#x3D; interface.execute_deploy_step(task, step)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>如果是iSCSI启动直接调用了 iscsi_deploy.ISCSIDeploy.deploy, cinder盘，不需要缓存镜像，所以，关机，切换租户网络，开机</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line"> manager_utils.node_power_action(task, states.POWER_OFF)</span><br><span class="line">            power_state_to_restore &#x3D; (</span><br><span class="line">                manager_utils.power_on_node_if_needed(task))</span><br><span class="line">            task.driver.network.remove_provisioning_network(task)</span><br><span class="line">            task.driver.network.configure_tenant_networks(task)</span><br><span class="line">            manager_utils.restore_power_state_if_needed(</span><br><span class="line">                task, power_state_to_restore)</span><br><span class="line">            task.driver.boot.prepare_instance(task)</span><br><span class="line">            manager_utils.node_power_action(task, states.POWER_ON)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>本地盘 调用pxe.PXEBoot.deploy启动deploy会关机，配置租户网络, 再开机</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">*****</span><br><span class="line">manager_utils.node_power_action(task, states.POWER_OFF)</span><br><span class="line">******</span><br><span class="line"> task.driver.network.configure_tenant_networks(task)</span><br><span class="line">*****</span><br><span class="line">manager_utils.node_power_action(task, states.POWER_ON)</span><br></pre></td></tr></table></figure>
-
-<p>至此deploy完，本地盘会进入ramdisk， iSCSI启动不走ramdisk会直接进去系统，</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/05/27/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%BA%90%E7%A0%81%E5%88%9B%E5%BB%BA%E5%88%86%E6%9E%90/" data-id="ckssanb4b000rto16cdlabyql" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-裸金属ironic创建及调度-3" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/" class="article-date">
-  <time datetime="2021-05-07T04:04:08.000Z" itemprop="datePublished">2021-05-07</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/">openstack-裸金属ironic创建及调度-3</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="云盘支持"><a href="#云盘支持" class="headerlink" title="云盘支持"></a>云盘支持</h2><p>When user starts bare metal instance with Cinder volume, Nova orchestrates the communication with Cinder and Ironic. The work flow of the boot process is as follows:</p>
-<ol>
-<li>(Preparation) Administrator registers a node with initiator information.</li>
-<li>User asks Cinder to create a boot volume.</li>
-<li>User asks Nova to boot a node from the Cinder volume.</li>
-<li>Nova calls Ironic to collect iSCSI/FC initiator information. Ironic collects initiator information and returns it to Nova.</li>
-<li>Nova calls Cinder to attach the volume to the node. Cinder attaches the volume to the node and returns connection information which includes target information.</li>
-<li>Nova passes the target information for the node to Ironic</li>
-<li>Nova calls Ironic to spawn the instance. Ironic prepares the bare metal node to boot from the remote volume which is identified by target information and powers on the bare metal node.</li>
-</ol>
-<p>In the work flow above, Nova calls Ironic to get/set initiator/target information (4 and 6) and also administrator calls Ironic to set initiator information (1) but currently Ironic has neither those information nor APIs for them.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#pip install rbd-iscsi-client&#x3D;&#x3D;0.1.8 -i https:&#x2F;&#x2F;pypi.tuna.tsinghua.edu.cn&#x2F;simple</span><br><span class="line">#cinder type-create rbd_iscsi</span><br><span class="line">#cinder type-key rbd_iscsi set volume_backend_name&#x3D;rbd_iscsi</span><br><span class="line">#cinder create 100 --display-name iscsi_boot1 --volume-type rbd_iscsi --image-id 3ec7c300-78bc-4d4b-bb1d-aaab4b4c35d7</span><br><span class="line">#cinder create 100 --display-name iscsi_boot2 --volume-type rbd_iscsi</span><br><span class="line">#openstack baremetal node set --storage-interface cinder 5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">#openstack baremetal node set --property capabilities&#x3D;iscsi_boot:True 5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line"></span><br><span class="line">这一步可以理解为注册主机，target中host信息，id名称随便起，最大64bytes</span><br><span class="line">#openstack baremetal volume connector create --node 5e10c067-c0c6-48be-ac6e-749a70045b97 --type iqn --connector-id iqn.2021-04.net.*****.sh.cluster.5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">为该裸机分配磁盘 volume</span><br><span class="line">#openstack baremetal volume target create --node 5e10c067-c0c6-48be-ac6e-749a70045b97 --type iscsi --boot-index 0 --volume cfa8c986-7a79-48fd-88a0-aa997d579fbf --property auth_method&#x3D;&quot;CHAP&quot; --property auth_username&#x3D;&quot;admin&quot; --property auth_password&#x3D;&quot;admin&quot;</span><br><span class="line">#openstack baremetal volume target create --node 5e10c067-c0c6-48be-ac6e-749a70045b97 --type iscsi --boot-index 1 --volume 4e4e41e3-fbfb-4737-bd93-863f48470244 --property auth_method&#x3D;&quot;CHAP&quot; --property auth_username&#x3D;&quot;admin&quot; --property auth_password&#x3D;&quot;admin&quot;</span><br><span class="line"></span><br><span class="line">#openstack server create --image 3ec7c300-78bc-4d4b-bb1d-aaab4b4c35d7 --flavor bms.large --nic net-id&#x3D;cb1356ca-e79b-4d7b-ad29-3267e4c2bc41 bm01</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#cinder create 100 --display-name centos7-grub2-iscsi-pwd  --image-id ea4266e4-456e-4fe0-91c9-a8c15dd2d2d6 --volume-type rbd_iscsi</span><br><span class="line">#gwcli</span><br><span class="line">&gt;cd &#x2F;disks&#x2F;</span><br><span class="line">&gt;create iscsi-data image&#x3D;volume-98ebbe5c-a32f-45ee-be04-61c295bcabe4 size&#x3D;100g</span><br><span class="line">&gt;goto hosts</span><br><span class="line">&gt;create iqn.2021-01.net.*****.sh***:server01</span><br><span class="line">&gt;disk add iscsi-data&#x2F;volume-98ebbe5c-a32f-45ee-be04-61c295bcabe4 size&#x3D;100g</span><br></pre></td></tr></table></figure>
-
-
-
-<p>常见问题：</p>
-<ol>
-<li>volume状态是否是available</li>
-<li></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#cat &#x2F;data&#x2F;docker&#x2F;volumes&#x2F;ironic_ipxe&#x2F;_data&#x2F;78\:ac\:44\:04\:f1\:a9.conf </span><br></pre></td></tr></table></figure>
-
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">#!ipxe</span><br><span class="line"></span><br><span class="line">set attempts:int32 10</span><br><span class="line">set i:int32 0</span><br><span class="line"></span><br><span class="line">goto deploy</span><br><span class="line"></span><br><span class="line">:deploy</span><br><span class="line">imgfree</span><br><span class="line">kernel  selinux&#x3D;0 troubleshoot&#x3D;0 text nofb nomodeset vga&#x3D;normal console&#x3D;tty0 console&#x3D;ttyS0,115200n8 ipa-debug&#x3D;1 BOOTIF&#x3D;$&#123;mac&#125; ipa-api-url&#x3D;http:&#x2F;&#x2F;10.218.105.100:6385 initrd&#x3D;deploy_ramdisk coreos.configdrive&#x3D;0 || goto retry</span><br><span class="line"></span><br><span class="line">initrd  || goto retry</span><br><span class="line">boot</span><br><span class="line"></span><br><span class="line">:retry</span><br><span class="line">iseq $&#123;i&#125; $&#123;attempts&#125; &amp;&amp; goto fail ||</span><br><span class="line">inc i</span><br><span class="line">echo No response, retrying in &#123;i&#125; seconds.</span><br><span class="line">sleep $&#123;i&#125;</span><br><span class="line">goto deploy</span><br><span class="line"></span><br><span class="line">:fail</span><br><span class="line">echo Failed to get a response after $&#123;attempts&#125; attempts</span><br><span class="line">echo Powering off in 30 seconds.</span><br><span class="line">sleep 30</span><br><span class="line">poweroff</span><br><span class="line"></span><br><span class="line">:boot_partition</span><br><span class="line">imgfree</span><br><span class="line">kernel no_kernel root&#x3D;&#123;&#123; ROOT &#125;&#125; ro text nofb nomodeset vga&#x3D;normal console&#x3D;tty0 console&#x3D;ttyS0,115200n8 ipa-debug&#x3D;1 initrd&#x3D;ramdisk || goto boot_partition</span><br><span class="line">initrd no_ramdisk || goto boot_partition</span><br><span class="line">boot</span><br><span class="line"></span><br><span class="line">:boot_ramdisk</span><br><span class="line">imgfree</span><br><span class="line">kernel no_kernel root&#x3D;&#x2F;dev&#x2F;ram0 text nofb nomodeset vga&#x3D;normal console&#x3D;tty0 console&#x3D;ttyS0,115200n8 ipa-debug&#x3D;1  initrd&#x3D;ramdisk || goto boot_ramdisk</span><br><span class="line">initrd no_ramdisk || goto boot_ramdisk</span><br><span class="line">boot</span><br><span class="line"></span><br><span class="line">:boot_iscsi</span><br><span class="line">imgfree</span><br><span class="line">set username iqn.2021-04.net.*****.5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">set password Cc6BK5uTbCsH6hCF</span><br><span class="line">set initiator-iqn iqn.2021-04.net.*****.5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">sanhook --drive 0x80 iscsi:10.206.79.34::3260:1:iqn.2021-04.net.*****.iscsi-gw:ceph-igw || goto fail_iscsi_retry</span><br><span class="line">set username admin</span><br><span class="line">set password admin</span><br><span class="line">sanhook --drive 0x81 iscsi::::: || goto fail_iscsi_retry</span><br><span class="line">set username iqn.2021-04.net.*****.5e10c067-c0c6-48be-ac6e-749a70045b97</span><br><span class="line">set password Cc6BK5uTbCsH6hCF</span><br><span class="line">sanboot --no-describe || goto fail_iscsi_retry</span><br><span class="line"></span><br><span class="line">:fail_iscsi_retry</span><br><span class="line">echo Failed to attach iSCSI volume(s), retrying in 10 seconds.</span><br><span class="line">sleep 10</span><br><span class="line">goto boot_iscsi</span><br><span class="line"></span><br><span class="line">:boot_whole_disk</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<p>bs=16k, iodepth=1</p>
-<p>吞吐</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>顺序读</th>
-<th>顺序写</th>
-<th>随机读</th>
-<th>随机写</th>
-<th>混合随机读写</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据云盘sata</td>
-<td>246MB</td>
-<td>41.8MB</td>
-<td>291MB</td>
-<td>10.1MB</td>
-<td>7799kB/7894kB</td>
-</tr>
-<tr>
-<td>物理盘(sas*2 raid1)</td>
-<td>584MB</td>
-<td>1418MB/s</td>
-<td>127MB</td>
-<td>65.4MB</td>
-<td>40.2MB/40.1MB</td>
-</tr>
-</tbody></table>
-<p>IOPS</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>顺序读</th>
-<th>顺序写</th>
-<th>随机读</th>
-<th>随机写</th>
-<th>混合随机读写</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据云盘sata</td>
-<td>15.0k</td>
-<td>2550</td>
-<td>17.8k</td>
-<td>618</td>
-<td>476/481</td>
-</tr>
-<tr>
-<td>物理盘(sas*2 raid1)</td>
-<td>35.7k</td>
-<td>86.6k</td>
-<td>7747</td>
-<td>3990</td>
-<td>2451/2450</td>
-</tr>
-</tbody></table>
-<p>bs=4k,iodepth=1</p>
-<p>吞吐</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>顺序读</th>
-<th>顺序写</th>
-<th>随机读</th>
-<th>随机写</th>
-<th>混合随机读写</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据云盘sata</td>
-<td>112MB</td>
-<td>14.1MB</td>
-<td>93.1MB</td>
-<td>2490kB</td>
-<td>2212kB/2238kB</td>
-</tr>
-<tr>
-<td>物理盘(sas*2 raid1)</td>
-<td>367MB</td>
-<td>372MB</td>
-<td>21.4MB</td>
-<td>15.0MB</td>
-<td>7252kB/7263kB</td>
-</tr>
-</tbody></table>
-<p>IOPS</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>顺序读</th>
-<th>顺序写</th>
-<th>随机读</th>
-<th>随机写</th>
-<th>混合随机读写</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>数据云盘sata</td>
-<td>27.3k</td>
-<td>3431</td>
-<td>22.7k</td>
-<td>607</td>
-<td>559/565</td>
-</tr>
-<tr>
-<td>物理盘(sas*2 raid1)</td>
-<td>89.5k</td>
-<td>90.8k</td>
-<td>5223</td>
-<td>3904</td>
-<td>1770/1773</td>
-</tr>
-</tbody></table>
-<p>吞吐 bs=1024k,iodepth=128,size=50G,ioengine=psync </p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>顺序读</th>
-<th>顺序写</th>
-<th>随机读</th>
-<th>随机写</th>
-<th>混合随机读写</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>iSCSI云盘sata 600G</td>
-<td>840MB</td>
-<td>85MB</td>
-<td>830MB</td>
-<td>140MB</td>
-<td>135MB/140MB</td>
-</tr>
-<tr>
-<td>iSCSI云盘sata 4T</td>
-<td>840MB</td>
-<td>97MB</td>
-<td>870MB</td>
-<td>140MB</td>
-<td>135MB/140MB</td>
-</tr>
-<tr>
-<td>物理盘(sas*2 raid1) 600G</td>
-<td>520MB</td>
-<td>2650MB</td>
-<td>290MB</td>
-<td>150MB</td>
-<td>95MB/95MB</td>
-</tr>
-<tr>
-<td>物理盘(sata*1 raid0) 4T</td>
-<td>340MB</td>
-<td>140MB</td>
-<td>100MB</td>
-<td>120MB</td>
-<td>55MB/60MB</td>
-</tr>
-<tr>
-<td>物理盘(ssd*1 raid0) 800G</td>
-<td>280MB</td>
-<td>230MB</td>
-<td>420MB</td>
-<td>350MB</td>
-<td>175MB/180MB</td>
-</tr>
-</tbody></table>
-<p>IOPS bs=4k,iodepth=128,size=50G,ioengine=psync</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>顺序读</th>
-<th>顺序写</th>
-<th>随机读</th>
-<th>随机写</th>
-<th>混合随机读写</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>iSCSI云盘sata 600G</td>
-<td>25.9k</td>
-<td>2663</td>
-<td>20k</td>
-<td>799</td>
-<td>602/609</td>
-</tr>
-<tr>
-<td>iSCSI云盘sata 4T</td>
-<td>26k</td>
-<td>3167</td>
-<td>25k</td>
-<td>828</td>
-<td>600/600</td>
-</tr>
-<tr>
-<td>物理盘(sas*2 raid1) 600G</td>
-<td>82.0k</td>
-<td>92.3k</td>
-<td>901</td>
-<td>1232</td>
-<td>685/694</td>
-</tr>
-<tr>
-<td>物理盘(sata*1 raid0) 4T</td>
-<td>5.8k</td>
-<td>7k</td>
-<td>327</td>
-<td>276</td>
-<td>142/148</td>
-</tr>
-<tr>
-<td>物理盘(ssd*1 raid0) 800G</td>
-<td>47.9k</td>
-<td>6k</td>
-<td>46.4k</td>
-<td>39.6k</td>
-<td>20.2k/20.2k</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/05/07/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-3/" data-id="ckssanb430009to16hmlb36nd" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-openstack-裸金属ironic创建及调度-2" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/" class="article-date">
@@ -892,6 +529,106 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-openstack-裸金属ironic整理-4" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/" class="article-date">
+  <time datetime="2021-04-02T07:35:51.000Z" itemprop="datePublished">2021-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/">openstack-裸金属ironic整理-4</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="网络规划"><a href="#网络规划" class="headerlink" title="网络规划"></a>网络规划</h2><p>在ironic网络分为provisoning/cleaning网络 和 业务网络</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>类型</th>
+<th>网卡</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>provisoning/cleaning</td>
+<td>flat</td>
+<td>ext interface</td>
+<td>用于部署阶段,ipa使用</td>
+</tr>
+<tr>
+<td>users</td>
+<td>vlan</td>
+<td>ext interface</td>
+<td>用户业务使用，直通/基础网络</td>
+</tr>
+</tbody></table>
+<p>这里两种网络，共用一个网卡，都使用业务网卡比如 eth1,  eth1对应交换机接口需要配置trunk，并对接口打上pvid， pvid为users 业务网络的vlan号</p>
+<p><img src="https://img-blog.csdn.net/20180425100931818?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p6dGZseWVy/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="Ironic网络架构"></p>
+<h1 id="基于-SDN-的网络切换流程"><a href="#基于-SDN-的网络切换流程" class="headerlink" title="基于 SDN 的网络切换流程"></a>基于 SDN 的网络切换流程</h1><p><img src="https://img-blog.csdnimg.cn/20190507154455746.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9pcy1jbG91ZC5ibG9nLmNzZG4ubmV0,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/02/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-4/" data-id="ckssanb49000nto16guqpclu7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-弹性伸缩调研-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" class="article-date">
+  <time datetime="2021-04-02T04:05:51.000Z" itemprop="datePublished">2021-04-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/">openstack-弹性伸缩调研-2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" data-id="ckssanb400005to16hj994xp2" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -929,7 +666,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -940,6 +677,10 @@ var _hmt = _hmt || [];
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
@@ -955,10 +696,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>

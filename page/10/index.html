@@ -79,113 +79,6 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-vim-报错E437" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" class="article-date">
-  <time datetime="2020-12-28T02:13:11.000Z" itemprop="datePublished">2020-12-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/">vim 报错E437</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>E437: terminal capability “cm” required</p>
-<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
-<p>解决办法：</p>
-<p>执行export TERM=xterm;</p>
-<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
-<p>或者</p>
-<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
-<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" data-id="ckj7xix5v0007u816ftf2ccvc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-mariadb-常见故障解决" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" class="article-date">
-  <time datetime="2020-12-23T08:46:42.000Z" itemprop="datePublished">2020-12-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/">mariadb 常见故障解决</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="常见mariadb-故障解决"><a href="#常见mariadb-故障解决" class="headerlink" title="常见mariadb 故障解决"></a>常见mariadb 故障解决</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 启动异常</span><br><span class="line">sed -i &#39;s#safe_to_bootstrap: 0#safe_to_bootstrap: 1#&#39; &#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;mariadb&#x2F;_data&#x2F;grastate.dat</span><br><span class="line"></span><br><span class="line">2. galera cluster 启动一个节点时出现this member has applied more events than the primary component.Data loss is possible. Aborting.</span><br><span class="line">解决：</span><br><span class="line"></span><br><span class="line">cd &#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line"></span><br><span class="line">rm grastate.dat ib_log* -f</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-<h1 id="使用kolla安装的openstack-mariadb为集群所有节点无法启动"><a href="#使用kolla安装的openstack-mariadb为集群所有节点无法启动" class="headerlink" title="使用kolla安装的openstack mariadb为集群所有节点无法启动"></a>使用kolla安装的openstack mariadb为集群所有节点无法启动</h1><p>转载<a target="_blank" rel="noopener" href="https://me.csdn.net/weixin_30301449">R芮R</a> 最后发布于2018-08-20 22:31:00 阅读数 228 收藏</p>
-<p>展开</p>
-<p>当在做测试时，把所有的openstack节点都关机，再开启做测试时，发现mariadb galera集群启不来，相当于所有的mariadb集群都停止了（跟所有节点断电情况相似），这时候怎么办呢，重新建立galera集群</p>
-<p>方法1：、如果集群中的机器全部重启，如机房断电，第一台启动的服务器必须以空地址启动</p>
-<p>编辑第一个控制节点的 cat /etc/kolla/mariadb/config.json</p>
-<p>…</p>
-<p>“command”: “/usr/bin/mysqld_safe –wsrep_cluster_address=gcomm://“,</p>
-<p>…</p>
-<p>方法2：</p>
-<p>选择节点一个mariadb节点，修改安全启动状态。</p>
-<p>sed -i ‘s/safe_to_bootstrap: 0/safe_to_bootstrap: 1/g’  /var/lib/docker/volumes/mariadb/_data/grastate.dat</p>
-<p>grep “New cluster view” /var/lib/docker/volumes/kolla_logs/_data/mariadb/mariadb.log |awk  -F: ‘END { print $1”:”$2”:”$3 $6”:”$7}’   # 显示如下，显示序列号</p>
-<p>180822 21:45:32 [Note] WSREP 05d50ff4-a17b-11e8-8cfc-02fd70253581:140645, view# -1</p>
-<p>修改seqno:-1</p>
-<p>重启这个mariadb容器</p>
-<p>docker restart mariadb</p>
-<p>接着接入这个容器</p>
-<p>docker exec -it mariadb /bin/bash</p>
-<p>执行mysqld_safe –wsrep-new-cluster</p>
-<p>然后再重启其他的docker节点</p>
-<p>为能正常启动 galera集群，最好正常关闭mariadb docker，命令docker stop mariadb</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" data-id="ckj7xix5i0000u816520b36li" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-shell-经典常用命令宝典" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/" class="article-date">
@@ -605,6 +498,89 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-证书过期之kubeadm重新生成s证书" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" class="article-date">
+  <time datetime="2020-11-30T11:44:28.000Z" itemprop="datePublished">2020-11-30</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/">证书过期之kubeadm重新生成s证书</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h5 id="k8s证书过期之kubeadm重新生成证书"><a href="#k8s证书过期之kubeadm重新生成证书" class="headerlink" title="k8s证书过期之kubeadm重新生成证书"></a>k8s证书过期之kubeadm重新生成证书</h5><p>重新生成证书<br>检查过期<br>新版本(1.15+)：kubeadm alpha certs check-expiration<br>或<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>证书备份<br>cp -rp /etc/kubernetes /etc/kubernetes.bak<br>移除过期证书<br>rm -f /etc/kubernetes/pki/apiserver*<br>rm -f /etc/kubernetes/pki/front-proxy-client.*<br>rm -rf /etc/kubernetes/pki/etcd/healthcheck-client.*<br>rm -rf /etc/kubernetes/pki/etcd/server.*<br>rm -rf /etc/kubernetes/pki/etcd/peer.*<br>备注：可以使用命令openssl x509 -in [证书全路径] -noout -text查看证书详情。</p>
+<p>重新生成证书<br>老版本：kubeadm alpha phase certs all<br>或<br>新版本(1.15+)：kubeadm alpha certs renew all 使用该命令不用提前删除过期证书<br>重新生成配置文件</p>
+<h4 id="重新生成配置"><a href="#重新生成配置" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>mv /etc/kubernetes/*.conf /tmp/<br>老版本：kubeadm alpha phase kubeconfig all<br>或<br>新版本(1.15+)：kubeadm init phase kubeconfig all</p>
+<h4 id="重新生成配置-1"><a href="#重新生成配置-1" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>cp /etc/kubernetes/admin.conf ~/.kube/config<br>重启kubelet<br>systemctl restart kubelet<br>证书过期时间确认<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>集群确认<br>kubectl get nodes</p>
+<h4 id="如果发现集群，能读不能写，则请重启一下组件："><a href="#如果发现集群，能读不能写，则请重启一下组件：" class="headerlink" title="如果发现集群，能读不能写，则请重启一下组件："></a>如果发现集群，能读不能写，则请重启一下组件：</h4><p>docker ps | grep apiserver<br>docker ps  | grep scheduler<br>docker ps  | grep controller-manager</p>
+<p>docker restart 容器标识<br>做一个有底蕴的软件工作者</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" data-id="cki74313h000bko168wysbr1g" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-CentOS-8-使用python3作为默认python" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" class="article-date">
+  <time datetime="2020-11-25T06:56:20.000Z" itemprop="datePublished">2020-11-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>CentOS 8 .上没有默认的<code>python</code>命令。要运行python 3，需要使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#dnf install python3</span><br><span class="line">#alternatives --set python &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" data-id="ckhx95mrp0000s816409w45xl" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -642,7 +618,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -653,6 +629,10 @@ var _hmt = _hmt || [];
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
@@ -668,10 +648,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>

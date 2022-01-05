@@ -79,6 +79,58 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-虚拟化-ovn入门到精通(六)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/" class="article-date">
+  <time datetime="2022-01-04T02:40:15.290Z" itemprop="datePublished">2022-01-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<p>title: 虚拟化-ovn入门到精通(六)<br>date: 2022-01-04 10:40:15<br>tags: 虚拟化</p>
+<h2 id="OVN-DHCP功能"><a href="#OVN-DHCP功能" class="headerlink" title="OVN-DHCP功能"></a>OVN-DHCP功能</h2><p>大概的一个过程是:</p>
+<ol>
+<li><p>创建逻辑交换机</p>
+</li>
+<li><p>创建dhcp options</p>
+</li>
+<li><p>创建逻辑交换机下的端口</p>
+</li>
+<li><p>创建ovs端口并对ovs端口配置DHCP 参数</p>
+</li>
+<li><p>创建新交换机 dhcpNet0， 该网络的虚机使用DHCP分配IP地址, CIDR为 10.0.0.0/24,排除前10个IP</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl ls-add dhcpNet0</span><br><span class="line">#ovn-nbctl set logical_switch dhcpNet0 \</span><br><span class="line">  other_config:subnet&#x3D;&quot;10.0.0.0&#x2F;24&quot; \</span><br><span class="line">  other_config:exclude_ips&#x3D;&quot;10.0.0.1..10.0.0.10&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="2-配置DHCP选项"><a href="#2-配置DHCP选项" class="headerlink" title="2. 配置DHCP选项"></a>2. 配置DHCP选项</h4><p>所有使用dhcp的端口都必须配置dhcp options，下面创建 10.0.0.0/24的dhcp options, 网关为10.0.0.1，租约3600s</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl dhcp-options-create 10.0.0.0&#x2F;24</span><br><span class="line">#CIDR_UUID&#x3D;$(ovn-nbctl --bare --columns&#x3D;_uuid find dhcp_options cidr&#x3D;&quot;10.0.0.0&#x2F;24&quot;)</span><br><span class="line">#ovn-nbctl dhcp-options-set-options $&#123;CIDR_UUID&#125; \</span><br><span class="line">  lease_time&#x3D;3600 \</span><br><span class="line">  router&#x3D;10.0.0.1 \</span><br><span class="line">  server_id&#x3D;10.0.0.1 \</span><br><span class="line">  server_mac&#x3D;c0:ff:ee:00:01:01</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ovn/ovn-600.png"></p>
+</li>
+</ol>
+<h4 id="3-创建交换机端口并配置DHCP-options"><a href="#3-创建交换机端口并配置DHCP-options" class="headerlink" title="3. 创建交换机端口并配置DHCP options"></a>3. 创建交换机端口并配置DHCP options</h4><p>创建交换机端口dnPort1，并配置mac以及使用动态获取IP地址方式，配置归属cidr为前面创建的10.0.0.0/24</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lsp-add dhcpNet0 dnPort1</span><br><span class="line">#ovn-nbctl lsp-set-addresses dnPort1 &quot;c0:ff:ee:00:01:11 dynamic&quot;</span><br><span class="line">#ovn-nbctl lsp-set-dhcpv4-options dnPort1 $CIDR_UUID</span><br></pre></td></tr></table></figure>
+<p><img src="/images/ovn/ovn-601.png"></p>
+<h4 id="4-虚机分配IP地址"><a href="#4-虚机分配IP地址" class="headerlink" title="4. 虚机分配IP地址"></a>4. 虚机分配IP地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">创建ovs端口，分配mac为上面我们交换机dnPort1的mac，并将port添加到br-int上</span><br><span class="line">#ovs-vsctl add-port br-int dnPort1 -- \</span><br><span class="line">  set interface dnPort1 \</span><br><span class="line">    type&#x3D;internal \</span><br><span class="line">    mac&#x3D;&#39;[&quot;c0:ff:ee:00:01:11&quot;]&#39; \</span><br><span class="line">    external_ids:iface-id&#x3D;dnPort1</span><br><span class="line"></span><br><span class="line">我们依旧通过在namespace中模拟，dhclient发DHCP请求获取IP地址</span><br><span class="line">#ip netns add ns3</span><br><span class="line">#ip link set netns ns3 dnPort1</span><br><span class="line">#ip -n ns3 addr add 127.0.0.1&#x2F;8 dev lo</span><br><span class="line">#ip -n ns3 link set lo up</span><br><span class="line"></span><br><span class="line">#ip netns exec ns3 dhclient -v -i dnPort1 --no-pid</span><br></pre></td></tr></table></figure>
+<p>虚机可以顺利DHCP到自己的IP地址~<br><img src="/images/ovn/ovn-602.png"></p>
+<h4 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h4><p>通过使用ovn-trace排查DHCP失败问题</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ovn-trace --summary dhcpNet0 &#39;</span><br><span class="line">  inport&#x3D;&#x3D;&quot;net0Port1&quot; &amp;&amp;</span><br><span class="line">  eth.src&#x3D;&#x3D;c0:ff:ee:00:00:11 &amp;&amp;</span><br><span class="line">  ip4.src&#x3D;&#x3D;0.0.0.0 &amp;&amp;</span><br><span class="line">  ip.ttl&#x3D;&#x3D;1 &amp;&amp;</span><br><span class="line">  ip4.dst&#x3D;&#x3D;255.255.255.255 &amp;&amp;</span><br><span class="line">  udp.src&#x3D;&#x3D;68 &amp;&amp;</span><br><span class="line">  udp.dst&#x3D;&#x3D;67&#39;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/" data-id="cky10ym7g00007816h961an0z" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-虚拟化-ovn入门到精通(五)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/" class="article-date">
@@ -564,157 +616,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白解说之软件定义网络SDN产品ovn-三" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%89/" class="article-date">
-  <time datetime="2021-11-23T10:21:44.000Z" itemprop="datePublished">2021-11-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%89/">小白解说之软件定义网络SDN产品ovn(三)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%89/" data-id="cky1083mj0003lg16ehks8nk6" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-小白解说之软件定义网络SDN产品ovn-二" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%BA%8C/" class="article-date">
-  <time datetime="2021-11-23T10:21:37.000Z" itemprop="datePublished">2021-11-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%BA%8C/">小白解说之软件定义网络SDN产品ovn(二)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>d</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%BA%8C/" data-id="cky1083ml0006lg16aor58g77" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-小白解说之软件定义网络SDN产品ovn-一" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%80/" class="article-date">
-  <time datetime="2021-11-23T08:08:12.000Z" itemprop="datePublished">2021-11-23</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%80/">小白解说之软件定义网络SDN产品ovn(一)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大家好，我是小白。今天给大家分享一下SDN产品之OVN，广泛应用于云计算行业中，今天带大家入门了解一下吧。</p>
-<h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>众所周知，OpenvSwitch 以其丰富的功能和不错的性能，已经成为 Openstack 部署中最受欢迎的虚拟交换机。由于 Openstack Neutron 的架构引入了一些性能问题，比如 neutron-server 要与非常多的 agent 通信，RPC 就是一个性能瓶颈，还有 neutron 里面用到非常多的 namespace，namespace 资源有限而且系统开销比较大，这也是一个性能瓶颈。OVS 社区觉得从长远来看，Neutron 应该让一个其它的项目来做虚拟网络的控制平面，Neutron 只需要提供 API 的处理，于是 便孵化了OVN项目，<strong>OVN 是 OVS 的控制平面，它给 OVS 增加了对虚拟网络的原生支持，大大提高了 OVS 在实际应用环境中的性能和规模</strong>。</p>
-<h4 id="OVN功能"><a href="#OVN功能" class="headerlink" title="OVN功能"></a>OVN功能</h4><ul>
-<li>Provides virtual networking abstraction for OVS, implemented using L2 and L3 overlays, but can also manage connectivity to physical networks</li>
-<li>Supports flexible ACLs (security policies) implemented using flows that use OVS connection tracking<br>Native support for distributed L3 routing using OVS flows, with support for both IPv4 and IPv6</li>
-<li>ARP and IPv6 Neighbor Discovery suppression for known IP-MAC bindings</li>
-<li>Nativesupport for NAT and load balancing using OVS connection tracking</li>
-<li>Native fully distributedsupport for DHCP</li>
-<li>Works with any OVS datapath (such as the default Linux kernel datapath, DPDK, or Hyper-V) that supports all required features (namely Geneve tunnels and OVS connection tracking. See the datapath feature list in the FAQ for details.)</li>
-<li>Supports L3 gateways from logical to physical networks</li>
-<li>Supports software-based L2 gateways</li>
-<li>Supports TOR (Top of Rack) based L2 gateways that implement the hardware_vtep schema</li>
-<li>Can provide networking for both VMs and containers running inside of those VMs, without a second layer of overlay networking</li>
-</ul>
-<p>Logical switches：逻辑交换机，用来做二层转发。</p>
-<p>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。</p>
-<p>Logical routers：逻辑路由器，分布式的，用来做三层转发。</p>
-<p>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。</p>
-<p>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
-<h4 id="OVN架构"><a href="#OVN架构" class="headerlink" title="OVN架构"></a>OVN架构</h4><p><img src="/images/openstack/ovn_arch.png"></p>
-<p>OVN/CMS Plugin 是Neutron的一个插件，作为OVN 和 CMS 之间的接口 。它将CMS中的数据（存储在Neutron DB）翻译成一种“中间格式”。</p>
-<p>这种中间格式就是逻辑网络配置数据，这样CMS中的网络配置数据就能够被OVN理解 （准确的说是能够被OVN的Northbound DB 所理解）。</p>
-<p>Northbound DB 里面存的就是上面OVN/CMS Plugin翻译之后的逻辑网络的相关数据。比如 logical switch，logical router，logical port和ACL。</p>
-<p>Northbound DB 里面的几乎所有的内容都是由 CMS 产生的</p>
-<p>OVN-northd 类似于一个集中的控制器，监听Northbound DB 数据库的内容变化，它把 Northbound DB 里面的逻辑网络的相关数据翻译成 Southbound DB 可以理解的格式（logical datapath flows），并传递给 Southbound DB 进行存储，进而被所有的chassis 读取和应用。 （关于chassis这个概念 ，本人会在下一篇博文中进行介绍。）</p>
-<p>Southbound DB 处在 OVN 架构的核心，它是 OVN 中最重要的部分，它跟 OVN 的其他组件都有交互。 里面存的数据和 Northbound DB 语义完全不一样，主要包含 3 类数据(第二类数据就是OVN-northd 从Northbound DB 翻译过来的)：</p>
-<p>一、物理网络数据，比如 hypervisor的 IP 地址，hypervisor的 tunnel 封装格式；</p>
-<p>二、逻辑网络数据，比如报文如何在逻辑网络中转发；</p>
-<p>三、物理网络和逻辑网络的绑定关系，比如逻辑端口关联到哪个 hypervisor上面。这类数据存储在binding表中，字段有uuid,chassis, logical_datapath, logical_port, mac, parent_port, tag, tunnel_key。</p>
-<p>ovn-controller 是 OVN 里面的 agent，类似于 Neutron 里面的 ovs-agent，它也是运行在每个 hypervisor和软件网关之上。</p>
-<p>它有下面2种功能：<br>（1）把物理网络的信息写到 Southbound DB 里面（这类信息就包括 Southbound DB中的第一类数据）；<br>（2）把 Southbound DB 里面存的一些数据转化成 Openflow flow 配到本地的 OVS table 里面，来实现报文的转发。</p>
-<p>第2个功能的具体实现机制就是：<br>ovn-controller连接到到本地的ovsdb-server ，监控、读取、管理OpenvSwitch的配置信息；</p>
-<p>ovn-controller作为ovs-vswitchd 的Openflow 控制器来控制流量的转发。另外，从架构图中就可看出ovn-controller是一种分布式SDN控制器。</p>
-<p>ovs-vswitchd 和 ovsdb-server 是 OVS 的两个进程：</p>
-<ul>
-<li>ovs-vswitchd ：核心模块，实现交换功能，和Linux内核模块一起，实现基于流的交换；</li>
-<li>ovsdb-server ：是一个数据库。其保存了整个OVS的配置信息，包括接口，流表和VLAN等；ovs-vswitchd从其查询配置信息；</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/11/23/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%9A%E4%B9%89%E7%BD%91%E7%BB%9CSDN%E4%BA%A7%E5%93%81ovn-%E4%B8%80/" data-id="cky1083mg0001lg161toncx4j" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
     <article id="post-小白解说容器编排之Kubernetes-CRI" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/" class="article-date">
@@ -765,6 +666,103 @@ var _hmt = _hmt || [];
 
 
   
+    <article id="post-小白解说之资源控制技术cgroup" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/" class="article-date">
+  <time datetime="2021-10-28T08:29:05.000Z" itemprop="datePublished">2021-10-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/">小白解说之资源控制技术cgroup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给大家讲解一下Linux下的资源控制cgroup。<br>提到cgroup，可能有的同学一时不太清楚做什么用的，但大家应该都用过openstack虚拟机或者docker/kubernetes容器，套餐1C2G，如何实现的呢，答案就是cgroup啦~</p>
+<p>一、何为cgroup<br>Linux cgroups 的全称是 Linux Control Groups，它是 Linux 内核的特性，主要作用是限制、记录和隔离进程组（process groups）使用的物理资源（cpu、memory、IO 等）。<br>cgroups 从设计之初使命就很明确，为进程提供资源控制，它主要的功能包括：<br>    资源限制：限制进程使用的资源上限，比如最大内存、文件系统缓存使用限制<br>    优先级控制：不同的组可以有不同的优先级，比如 CPU 使用和磁盘 IO 吞吐<br>    审计：计算 group 的资源使用情况，可以用来计费<br>    控制：挂起一组进程，或者重启一组进程<br>目前 cgroups 已经成为很多技术的基础，比如 Openstack、LXC、Docker、Kubernetes、systemd等。</p>
+<p>二、cgroup概念<br>cgroup 全程control group，除了它本身的概念，还有 Hierarchy（层级结构） 和 subsystem（子系统） 的概念</p>
+<ol>
+<li><p>cgroups子系统<br>cgroups 的全称是control groups，cgroups为每种可以控制的资源定义了一个子系统。典型的子系统介绍如下：<br> cpu 子系统，主要限制进程的 cpu 使用率。<br> cpuacct 子系统，可以统计 cgroups 中的进程的 cpu 使用报告。<br> cpuset 子系统，可以为 cgroups 中的进程分配单独的 cpu 节点或者内存节点。<br> memory 子系统，可以限制进程的 memory 使用量。<br> blkio 子系统，可以限制进程的块设备 io。<br> devices 子系统，可以控制进程能够访问某些设备。<br> net_cls 子系统，可以标记 cgroups 中进程的网络数据包，然后可以使用 tc 模块（traffic control）对数据包进行控制。<br> freezer 子系统，可以挂起或者恢复 cgroups 中的进程。<br> ns 子系统，可以使不同 cgroups 下面的进程使用不同的 namespace。<br>这里面每一个子系统都需要与内核的其他模块配合来完成资源的控制，比如对 cpu 资源的限制是通过进程调度模块根据 cpu 子系统的配置来完成的；对内存资源的限制则是内存模块根据 memory 子系统的配置来完成的，而对网络数据包的控制则需要 Traffic Control 子系统来配合完成。本文不会讨论内核是如何使用每一个子系统来实现资源的限制，而是重点放在内核是如何把 cgroups 对资源进行限制的配置有效的组织起来的，和内核如何把cgroups 配置和进程进行关联的，以及内核是如何通过 cgroups 文件系统把cgroups的功能暴露给用户态的。</p>
+</li>
+<li><p>cgroups 层级结构（Hierarchy）</p>
+</li>
+</ol>
+<p>内核使用 cgroup 结构体来表示一个 control group 对某一个或者某几个 cgroups 子系统的资源限制。cgroup 结构体可以组织成一颗树的形式，每一棵cgroup 结构体组成的树称之为一个 cgroups 层级结构。cgroups层级结构可以 attach 一个或者几个 cgroups 子系统，当前层级结构可以对其 attach 的 cgroups 子系统进行资源的限制。每一个 cgroups 子系统只能被 attach 到一个 cpu 层级结构中。<br>3. cgroup概念间的关系<br>    系统创建hierarchy 之后，所有的进程都会加入这个hierarchy的cgroup的根节点。在这个cgroup根节点是hierarchy默认创建的。<br>    一个subsystem只能附加到一个hierarchy上面。<br>    一个进程可以作为多个cgroup的成员，但是cgroup必须在不同的hierarchy中。<br>    一个进程fork的子进程和父进程在同一个cgroup中也可以根据需要移到其他cgroup中。<br>三、容器如何使用cgroup的</p>
+<ol>
+<li>Docker容器和cgroup<br>Docker 容器的内存限制放在了 /sys/fs/cgroup/memory/docker 目录下，比如：</li>
+</ol>
+<ol start="2">
+<li>Kubernetes Pod和cgroup<br>CRI-O 是被设计面向 Kubernetes 的，所以在一些目录名中就有浓浓的 k8s 风格。<br>CRI-O 容器的内存限制放在了 /sys/fs/cgroup/memory/kubepods.slice 目录下，这一层目录下，又根据 QoS 创建了三个子目录 kubepods-besteffort.slice、kubepods-burstable.slice、kubepods-guaranteed.sice 分别表示三种不同 QoS Class的内存限制。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n wcloud get pods</span><br><span class="line">#docker inspect k8s_xxxx-scheduler_xxxx-scheduler-0_wcloud_e9ea0db4-cbbb-4902-99d2-21c9b9b3d20b_0 |grep CgroupParent</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;CgroupParent&quot;: &quot;&#x2F;kubepods&#x2F;besteffort&#x2F;pode9ea0db4-cbbb-4902-99d2-21c9b9b3d20b&quot;,</span><br></pre></td></tr></table></figure>
+Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的是Linux Cgroup 。<br>Linux Cgroup 限制资源，是限制进程，只需要在Cgroup配置目录的tasks文件中，添加进程ID，限制立即生效。<br>Linux Cgroup 不仅仅可以限制CPU，内存，还可以限制磁盘IO等。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/" data-id="cky1083mf0000lg161rtxaj8r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之gRPC入门" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/" class="article-date">
+  <time datetime="2021-10-27T02:31:14.000Z" itemprop="datePublished">2021-10-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/">小白解说之gRPC入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给大家讲解一下grpc通信</p>
+<p>一、先了解rpc<br>远程过程调用（英语：Remote Procedure Call，缩写为 RPC）这个应该都有所耳闻，这是一种计算机通信协议。该协议允许运行于一台计算机的程序调用另一个地址空间（通常为一个开放网络的一台计算机）的子程序，而程序员就像调用本地程序一样，无需额外地为这个交互作用编程（无需关注细节）。RPC是一种服务器-客户端（Client/Server）模式，经典实现是一个通过发送请求-接受回应进行信息交互的系统。<br>二、了解gRPC<br>这些年云计算最火热的莫过于Kubernetes，随之带动了微服务的发展。而分布式/微服务之间的通信, 自然会联想到rpc通信。<br>gRPC是一个由Google开源的，跨语言的，高性能的远程过程调用（RPC）框架，能够运行于任意环境之中。最初由谷歌进行开发。它使用HTTP/2作为传输协议，使用 Protocol Buffers 作为序列化协议。<br>三、gRPC好处<br>    *现代高性能轻量级 RPC 框架。<br>    *协定优先 API 开发，默认使用协议缓冲区，允许与语言无关的实现。<br>    *可用于多种语言的工具，以生成强类型服务器和客户端。<br>    *支持客户端、服务器和双向流式处理调用。<br>    *使用 Protobuf 二进制序列化这会大幅减少需要传输的数据量，从而大幅提高性能。<br>    *gRPC可以方便地支持流式通信。</p>
+<p>四、了解Protocol Buffers<br>protocol buffers （ProtoBuf）是一种语言无关、平台无关、可扩展的序列化结构数据的方法，它可用于（数据）通信协议、数据存储等。具有灵活，高效，自动化机制的结构数据序列化方法－可类比 XML，但是比 XML 更小（3 ~ 10倍）、更快（20 ~ 100倍）、更为简单。<br>json\xml都是基于文本格式，protobuf是二进制格式。<br>使用上通过定义数据结构，然后通过 ProtoBuf 工具生成各种语言版本的数据结构类库，用于操作 ProtoBuf 协议数据。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/" data-id="ckvaiowiu0007lc161mzr0cxr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
 
 
   <nav id="page-nav">
@@ -802,7 +800,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/11/">November 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -813,6 +811,10 @@ var _hmt = _hmt || [];
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
@@ -828,10 +830,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
-          </li>
-        
-          <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
           </li>
         
       </ul>
