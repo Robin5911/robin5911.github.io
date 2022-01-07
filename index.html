@@ -79,51 +79,41 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
-    <article id="post-虚拟化-ovn入门到精通(六)" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-虚拟化-OVS-DPDK在CentOS7上的部署调试" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/" class="article-date">
-  <time datetime="2022-01-04T02:40:15.290Z" itemprop="datePublished">2022-01-04</time>
+    <a href="/2022/01/05/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/" class="article-date">
+  <time datetime="2022-01-05T10:15:55.000Z" itemprop="datePublished">2022-01-05</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2022/01/05/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
+    </h1>
+  
+
+      </header>
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<p>title: 虚拟化-ovn入门到精通(六)<br>date: 2022-01-04 10:40:15<br>tags: 虚拟化</p>
-<h2 id="OVN-DHCP功能"><a href="#OVN-DHCP功能" class="headerlink" title="OVN-DHCP功能"></a>OVN-DHCP功能</h2><p>大概的一个过程是:</p>
-<ol>
-<li><p>创建逻辑交换机</p>
-</li>
-<li><p>创建dhcp options</p>
-</li>
-<li><p>创建逻辑交换机下的端口</p>
-</li>
-<li><p>创建ovs端口并对ovs端口配置DHCP 参数</p>
-</li>
-<li><p>创建新交换机 dhcpNet0， 该网络的虚机使用DHCP分配IP地址, CIDR为 10.0.0.0/24,排除前10个IP</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl ls-add dhcpNet0</span><br><span class="line">#ovn-nbctl set logical_switch dhcpNet0 \</span><br><span class="line">  other_config:subnet&#x3D;&quot;10.0.0.0&#x2F;24&quot; \</span><br><span class="line">  other_config:exclude_ips&#x3D;&quot;10.0.0.1..10.0.0.10&quot;</span><br></pre></td></tr></table></figure>
-<h4 id="2-配置DHCP选项"><a href="#2-配置DHCP选项" class="headerlink" title="2. 配置DHCP选项"></a>2. 配置DHCP选项</h4><p>所有使用dhcp的端口都必须配置dhcp options，下面创建 10.0.0.0/24的dhcp options, 网关为10.0.0.1，租约3600s</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl dhcp-options-create 10.0.0.0&#x2F;24</span><br><span class="line">#CIDR_UUID&#x3D;$(ovn-nbctl --bare --columns&#x3D;_uuid find dhcp_options cidr&#x3D;&quot;10.0.0.0&#x2F;24&quot;)</span><br><span class="line">#ovn-nbctl dhcp-options-set-options $&#123;CIDR_UUID&#125; \</span><br><span class="line">  lease_time&#x3D;3600 \</span><br><span class="line">  router&#x3D;10.0.0.1 \</span><br><span class="line">  server_id&#x3D;10.0.0.1 \</span><br><span class="line">  server_mac&#x3D;c0:ff:ee:00:01:01</span><br></pre></td></tr></table></figure>
-<p><img src="/images/ovn/ovn-600.png"></p>
-</li>
-</ol>
-<h4 id="3-创建交换机端口并配置DHCP-options"><a href="#3-创建交换机端口并配置DHCP-options" class="headerlink" title="3. 创建交换机端口并配置DHCP options"></a>3. 创建交换机端口并配置DHCP options</h4><p>创建交换机端口dnPort1，并配置mac以及使用动态获取IP地址方式，配置归属cidr为前面创建的10.0.0.0/24</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lsp-add dhcpNet0 dnPort1</span><br><span class="line">#ovn-nbctl lsp-set-addresses dnPort1 &quot;c0:ff:ee:00:01:11 dynamic&quot;</span><br><span class="line">#ovn-nbctl lsp-set-dhcpv4-options dnPort1 $CIDR_UUID</span><br></pre></td></tr></table></figure>
-<p><img src="/images/ovn/ovn-601.png"></p>
-<h4 id="4-虚机分配IP地址"><a href="#4-虚机分配IP地址" class="headerlink" title="4. 虚机分配IP地址"></a>4. 虚机分配IP地址</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">创建ovs端口，分配mac为上面我们交换机dnPort1的mac，并将port添加到br-int上</span><br><span class="line">#ovs-vsctl add-port br-int dnPort1 -- \</span><br><span class="line">  set interface dnPort1 \</span><br><span class="line">    type&#x3D;internal \</span><br><span class="line">    mac&#x3D;&#39;[&quot;c0:ff:ee:00:01:11&quot;]&#39; \</span><br><span class="line">    external_ids:iface-id&#x3D;dnPort1</span><br><span class="line"></span><br><span class="line">我们依旧通过在namespace中模拟，dhclient发DHCP请求获取IP地址</span><br><span class="line">#ip netns add ns3</span><br><span class="line">#ip link set netns ns3 dnPort1</span><br><span class="line">#ip -n ns3 addr add 127.0.0.1&#x2F;8 dev lo</span><br><span class="line">#ip -n ns3 link set lo up</span><br><span class="line"></span><br><span class="line">#ip netns exec ns3 dhclient -v -i dnPort1 --no-pid</span><br></pre></td></tr></table></figure>
-<p>虚机可以顺利DHCP到自己的IP地址~<br><img src="/images/ovn/ovn-602.png"></p>
-<h4 id="排查问题"><a href="#排查问题" class="headerlink" title="排查问题"></a>排查问题</h4><p>通过使用ovn-trace排查DHCP失败问题</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ovn-trace --summary dhcpNet0 &#39;</span><br><span class="line">  inport&#x3D;&#x3D;&quot;net0Port1&quot; &amp;&amp;</span><br><span class="line">  eth.src&#x3D;&#x3D;c0:ff:ee:00:00:11 &amp;&amp;</span><br><span class="line">  ip4.src&#x3D;&#x3D;0.0.0.0 &amp;&amp;</span><br><span class="line">  ip.ttl&#x3D;&#x3D;1 &amp;&amp;</span><br><span class="line">  ip4.dst&#x3D;&#x3D;255.255.255.255 &amp;&amp;</span><br><span class="line">  udp.src&#x3D;&#x3D;68 &amp;&amp;</span><br><span class="line">  udp.dst&#x3D;&#x3D;67&#39;</span><br></pre></td></tr></table></figure>
+        <h2 id="OVS-DPDK部署"><a href="#OVS-DPDK部署" class="headerlink" title="OVS-DPDK部署"></a>OVS-DPDK部署</h2><p>基于CentOS 7.2 x86_64 物理机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">yum makecache</span><br><span class="line">yum -y update</span><br><span class="line">yum install -y epel-release</span><br><span class="line">yum install -y net-tools tcpdump telnet wget zip unzip vim</span><br><span class="line">yum install -y gcc gcc-c++  kernel-devel kernel-headers kernel.x86_64 net-tools</span><br><span class="line">yum install -y numactl-devel.x86_64 numactl-libs.x86_64</span><br><span class="line">yum install -y libpcap.x86_64 libpcap-devel.x86_64</span><br><span class="line">yum install -y pciutils</span><br><span class="line">yum install -y autoconf automake libtool</span><br></pre></td></tr></table></figure>
+<p>编译DPDK</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">wget http:&#x2F;&#x2F;fast.dpdk.org&#x2F;rel&#x2F;dpdk-19.11.9.tar.xz</span><br><span class="line">tar -xvf dpdk-19.11.9.tar</span><br><span class="line">cd dpdk-stable-19.11.9&#x2F;</span><br><span class="line"></span><br><span class="line">patch lib&#x2F;librte_eal&#x2F;linuxapp&#x2F;igb_uio&#x2F;igb_uio.c</span><br><span class="line"></span><br><span class="line">export RTE_SDK&#x3D;&#x2F;usr&#x2F;local&#x2F;src&#x2F;dpdk-stable-19.11.9</span><br><span class="line">export RTE_TARGET&#x3D;x86_64-native-linuxapp-gcc</span><br><span class="line"></span><br><span class="line">make config T&#x3D;x86_64-native-linuxapp-gcc</span><br><span class="line">sed -ri &#39;s,(PMD_PCAP&#x3D;).*,\1y,&#39; build&#x2F;.config</span><br><span class="line">add in config&#x2F;common_linuxapp : CONFIG_RTE_BUILD_COMBINE_LIBS&#x3D;y</span><br><span class="line"></span><br><span class="line">make</span><br><span class="line">cd $RTE_SDK</span><br><span class="line">make install T&#x3D;x86_64-native-linuxapp-gcc</span><br></pre></td></tr></table></figure>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/" data-id="cky10ym7g00007816h961an0z" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2022/01/05/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/" data-id="cky3zquwk0000oc16bgneaxbr" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
     </footer>
   </div>
   
@@ -813,7 +803,7 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
       <ul>
         
           <li>
-            <a href="/2022/01/04/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%85%AD)/">(no title)</a>
+            <a href="/2022/01/05/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
           </li>
         
           <li>
