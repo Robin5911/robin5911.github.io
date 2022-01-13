@@ -16,13 +16,13 @@ var _hmt = _hmt || [];
   
 
   
-  <title>go-简单聊聊内存逃逸 | 小白说互联网</title>
+  <title>go-简单聊聊内存逃逸 | 小白博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="问题知道golang的内存逃逸吗？什么情况下会发生内存逃逸？ 回答golang程序变量会携带有一组校验数据，用来证明它的整个生命周期是否在运行时完全可知。如果变量通过了这些校验，它就可以在栈上分配。否则就说它 逃逸 了，必须在堆上分配。 能引起变量逃逸到堆上的典型情况：  在方法内把局部变量指针返回 局部变量原本应该在栈中分配，在栈中回收。但是由于返回时被外部引用，因此其生命周期大于栈，则溢出。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go-简单聊聊内存逃逸">
 <meta property="og:url" content="https://blog.kubestack.cn/2021/02/18/go-%E7%AE%80%E5%8D%95%E8%81%8A%E8%81%8A%E5%86%85%E5%AD%98%E9%80%83%E9%80%B8/index.html">
-<meta property="og:site_name" content="小白说互联网">
+<meta property="og:site_name" content="小白博客">
 <meta property="og:description" content="问题知道golang的内存逃逸吗？什么情况下会发生内存逃逸？ 回答golang程序变量会携带有一组校验数据，用来证明它的整个生命周期是否在运行时完全可知。如果变量通过了这些校验，它就可以在栈上分配。否则就说它 逃逸 了，必须在堆上分配。 能引起变量逃逸到堆上的典型情况：  在方法内把局部变量指针返回 局部变量原本应该在栈中分配，在栈中回收。但是由于返回时被外部引用，因此其生命周期大于栈，则溢出。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-02-18T14:05:16.000Z">
@@ -31,7 +31,7 @@ var _hmt = _hmt || [];
 <meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="小白说互联网" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="小白博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -54,7 +54,7 @@ var _hmt = _hmt || [];
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">小白说互联网</a>
+        <a href="/" id="logo">小白博客</a>
       </h1>
       
     </div>
