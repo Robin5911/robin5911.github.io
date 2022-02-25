@@ -79,6 +79,253 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-文学生活" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" class="article-date">
+  <time datetime="2020-12-29T12:07:51.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/">文学生活</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>良言一句暖三冬，恶语伤人六月寒</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/29/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" data-id="ckjatz3nz0006hc16acun9ro4" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-golang判断当前主机是物理机还是虚拟机" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" class="article-date">
+  <time datetime="2020-12-29T10:38:04.000Z" itemprop="datePublished">2020-12-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/">golang判断当前主机是物理机还是虚拟机</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>windows下命令行获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic path Win32_ComputerSystem get Model</span><br></pre></td></tr></table></figure>
+
+
+
+<p>linux下命令行获取：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dmidecode | egrep -i &#39;system-product-name|product|domU&#39;</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">func isVirtualMachine() (bool, error) &#123;</span><br><span class="line">	model :&#x3D; &quot;&quot;</span><br><span class="line">	var cmd *exec.Cmd</span><br><span class="line"></span><br><span class="line">	if runtime.GOOS &#x3D;&#x3D; &quot;windows&quot; &#123;</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;cmd&quot;, &quot;&#x2F;C&quot;, &quot;wmic path Win32_ComputerSystem get Model&quot;)</span><br><span class="line">	&#125; else &#123; &#x2F;&#x2F; linux</span><br><span class="line">		cmd &#x3D; exec.Command(&quot;&#x2F;bin&#x2F;bash&quot;, &quot;-c&quot;, &quot;dmidecode | egrep -i &#39;system-product-name|product|domU&#39;&quot;)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	stdout, err :&#x3D; cmd.Output()</span><br><span class="line"></span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return false, err</span><br><span class="line">	&#125;</span><br><span class="line">	model &#x3D; string(stdout)</span><br><span class="line"></span><br><span class="line">	if strings.Contains(model, &quot;VirtualBox&quot;) || strings.Contains(model, &quot;Virtual Machine&quot;) || strings.Contains(model, &quot;VMware Virtual Platform&quot;) ||</span><br><span class="line">		strings.Contains(model, &quot;KVM&quot;) || strings.Contains(model, &quot;Bochs&quot;) || strings.Contains(model, &quot;HVM domU&quot;) &#123;</span><br><span class="line">		return true, nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return false, nil</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果使用夜莺n9e需要更改代码</p>
+<p>将 agent.yml中 cate 改为 auto，同时agent/report/report.go 更改如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line">func report() error &#123;</span><br><span class="line">	name, err :&#x3D; os.Hostname()</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return fmt.Errorf(&quot;cannot get hostname: %s&quot;, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	fields, err :&#x3D; gatherFields(config.Config.Report.Fields)</span><br><span class="line">	if err !&#x3D; nil &#123;</span><br><span class="line">		return err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	&#x2F;&#x2F;这里考虑区分物理机还是虚拟机, 当类型是auto 时, 判断处理</span><br><span class="line">	var hostCategory string</span><br><span class="line">	if  config.Config.Report.Cate &#x3D;&#x3D; &quot;auto&quot; &#123;</span><br><span class="line">		isVM, _ :&#x3D; utils.IsVirtualMachine()</span><br><span class="line">		if isVM &#123;</span><br><span class="line">			hostCategory &#x3D;&quot;virtual&quot;</span><br><span class="line">		&#125;else&#123;</span><br><span class="line">			hostCategory &#x3D;&quot;physical&quot;</span><br><span class="line">		&#125;</span><br><span class="line">		logger.Debugf(&quot;ident: %s , category: %s&quot;, ident,hostCategory)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	form :&#x3D; hostRegisterForm&#123;</span><br><span class="line">		SN:      sn,</span><br><span class="line">		IP:      ip,</span><br><span class="line">		Ident:   ident,</span><br><span class="line">		Name:    name,</span><br><span class="line">		Cate:    hostCategory, &#x2F;&#x2F;config.Config.Report.Cate</span><br><span class="line">		UniqKey: config.Config.Report.UniqKey,</span><br><span class="line">		Fields:  fields,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	content :&#x3D; form.SN + form.IP + form.Ident + form.Name + form.Cate + form.UniqKey</span><br><span class="line">	var keys []string</span><br><span class="line">	for key :&#x3D; range fields &#123;</span><br><span class="line">		keys &#x3D; append(keys, key, fields[key])</span><br><span class="line">	&#125;</span><br><span class="line">	sort.Strings(keys)</span><br><span class="line"></span><br><span class="line">	for _, key :&#x3D; range keys &#123;</span><br><span class="line">		content +&#x3D; fields[key]</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	form.Digest &#x3D; str.MD5(content)</span><br><span class="line"></span><br><span class="line">	servers :&#x3D; address.GetHTTPAddresses(&quot;ams&quot;)</span><br><span class="line">	for _, i :&#x3D; range rand.Perm(len(servers)) &#123;</span><br><span class="line">		url :&#x3D; fmt.Sprintf(&quot;http:&#x2F;&#x2F;%s&#x2F;v1&#x2F;ams-ce&#x2F;hosts&#x2F;register&quot;, servers[i])</span><br><span class="line"></span><br><span class="line">		logger.Debugf(&quot;report: %+v&quot;, form)</span><br><span class="line"></span><br><span class="line">		var body errRes</span><br><span class="line">		err :&#x3D; httplib.Post(url).JSONBodyQuiet(form).Header(&quot;X-Srv-Token&quot;, config.Config.Report.Token).SetTimeout(time.Second * 5).ToJSON(&amp;body)</span><br><span class="line">		if err !&#x3D; nil &#123;</span><br><span class="line">			js, _ :&#x3D; json.Marshal(form)</span><br><span class="line">			logger.Errorf(&quot;report payload: %s, token: %s&quot;, string(js), config.Config.Report.Token)</span><br><span class="line">			return fmt.Errorf(&quot;curl %s fail: %v&quot;, url, err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		if body.Err !&#x3D; &quot;&quot; &#123;</span><br><span class="line">			return fmt.Errorf(body.Err)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		return nil</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return fmt.Errorf(&quot;all server instance is dead&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/29/golang%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E4%B8%BB%E6%9C%BA%E6%98%AF%E7%89%A9%E7%90%86%E6%9C%BA%E8%BF%98%E6%98%AF%E8%99%9A%E6%8B%9F%E6%9C%BA/" data-id="ckj9wlgd30000b0167l7g2itn" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mariadb-10-1-yum安装" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" class="article-date">
+  <time datetime="2020-12-28T02:14:32.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/">mariadb 10.1 yum安装</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># MariaDB 10.1 CentOS repository list - created 2020-03-09 13:45 UTC</span><br><span class="line"># http:&#x2F;&#x2F;downloads.mariadb.org&#x2F;mariadb&#x2F;repositories&#x2F;</span><br><span class="line">[mariadb]</span><br><span class="line">name &#x3D; MariaDB</span><br><span class="line">baseurl &#x3D; http:&#x2F;&#x2F;yum.mariadb.org&#x2F;10.1&#x2F;centos7-amd64</span><br><span class="line">gpgkey&#x3D;https:&#x2F;&#x2F;yum.mariadb.org&#x2F;RPM-GPG-KEY-MariaDB</span><br><span class="line">gpgcheck&#x3D;1</span><br></pre></td></tr></table></figure>
+
+<p>After the file is in place, install MariaDB with:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install MariaDB-server MariaDB-client</span><br></pre></td></tr></table></figure>
+
+
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/28/mariadb-10-1-yum%E5%AE%89%E8%A3%85/" data-id="ckj7xix5t0004u816f8yr9lde" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-vim-报错E437" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" class="article-date">
+  <time datetime="2020-12-28T02:13:11.000Z" itemprop="datePublished">2020-12-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/">vim 报错E437</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>E437: terminal capability “cm” required</p>
+<p>这个错误一般是环境变量TERM没有配置或者配置错误所致。</p>
+<p>解决办法：</p>
+<p>执行export TERM=xterm;</p>
+<p>或者将export TERM=xterm 添加至/etc/profile文件中即可。</p>
+<p>或者</p>
+<p>方法1：要是偷懒，那直接执行命令 export TERM=linux 或者 export TERM=xterm </p>
+<p>方法2：要下一劳永逸，将上述命令写入 /etc/bashrc 文件确保永久生效，切记保存后顺手执行 source /etc/bashrc</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/28/vim-%E6%8A%A5%E9%94%99E437/" data-id="ckj7xix5v0007u816ftf2ccvc" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-mariadb-常见故障解决" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" class="article-date">
+  <time datetime="2020-12-23T08:46:42.000Z" itemprop="datePublished">2020-12-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/">mariadb 常见故障解决</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="常见mariadb-故障解决"><a href="#常见mariadb-故障解决" class="headerlink" title="常见mariadb 故障解决"></a>常见mariadb 故障解决</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1. 启动异常</span><br><span class="line">sed -i &#39;s#safe_to_bootstrap: 0#safe_to_bootstrap: 1#&#39; &#x2F;var&#x2F;lib&#x2F;docker&#x2F;volumes&#x2F;mariadb&#x2F;_data&#x2F;grastate.dat</span><br><span class="line"></span><br><span class="line">2. galera cluster 启动一个节点时出现this member has applied more events than the primary component.Data loss is possible. Aborting.</span><br><span class="line">解决：</span><br><span class="line"></span><br><span class="line">cd &#x2F;var&#x2F;lib&#x2F;mysql</span><br><span class="line"></span><br><span class="line">rm grastate.dat ib_log* -f</span><br><span class="line"></span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用kolla安装的openstack-mariadb为集群所有节点无法启动"><a href="#使用kolla安装的openstack-mariadb为集群所有节点无法启动" class="headerlink" title="使用kolla安装的openstack mariadb为集群所有节点无法启动"></a>使用kolla安装的openstack mariadb为集群所有节点无法启动</h1><p>转载<a target="_blank" rel="noopener" href="https://me.csdn.net/weixin_30301449">R芮R</a> 最后发布于2018-08-20 22:31:00 阅读数 228 收藏</p>
+<p>展开</p>
+<p>当在做测试时，把所有的openstack节点都关机，再开启做测试时，发现mariadb galera集群启不来，相当于所有的mariadb集群都停止了（跟所有节点断电情况相似），这时候怎么办呢，重新建立galera集群</p>
+<p>方法1：、如果集群中的机器全部重启，如机房断电，第一台启动的服务器必须以空地址启动</p>
+<p>编辑第一个控制节点的 cat /etc/kolla/mariadb/config.json</p>
+<p>…</p>
+<p>“command”: “/usr/bin/mysqld_safe –wsrep_cluster_address=gcomm://“,</p>
+<p>…</p>
+<p>方法2：</p>
+<p>选择节点一个mariadb节点，修改安全启动状态。</p>
+<p>sed -i ‘s/safe_to_bootstrap: 0/safe_to_bootstrap: 1/g’  /var/lib/docker/volumes/mariadb/_data/grastate.dat</p>
+<p>grep “New cluster view” /var/lib/docker/volumes/kolla_logs/_data/mariadb/mariadb.log |awk  -F: ‘END { print $1”:”$2”:”$3 $6”:”$7}’   # 显示如下，显示序列号</p>
+<p>180822 21:45:32 [Note] WSREP 05d50ff4-a17b-11e8-8cfc-02fd70253581:140645, view# -1</p>
+<p>修改seqno:-1</p>
+<p>重启这个mariadb容器</p>
+<p>docker restart mariadb</p>
+<p>接着接入这个容器</p>
+<p>docker exec -it mariadb /bin/bash</p>
+<p>执行mysqld_safe –wsrep-new-cluster</p>
+<p>然后再重启其他的docker节点</p>
+<p>为能正常启动 galera集群，最好正常关闭mariadb docker，命令docker stop mariadb</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/23/mariadb-%E5%B8%B8%E8%A7%81%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/" data-id="ckj7xix5i0000u816520b36li" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-shell-经典常用命令宝典" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/" class="article-date">
@@ -311,276 +558,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-mariadb-更改用户密码" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" class="article-date">
-  <time datetime="2020-12-08T02:32:41.000Z" itemprop="datePublished">2020-12-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/">mariadb-更改用户密码</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>通过yum安装的MariaDB直接就能登陆，默认密码为空！需要修改root密码</p>
-<h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> mysql;</span><br><span class="line"><span class="keyword">update</span> <span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">password</span>(<span class="string">&#x27;new password&#x27;</span>) <span class="keyword">where</span> <span class="keyword">user</span> = <span class="string">&#x27;root&#x27;</span>;</span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span>;</span><br><span class="line">exit;1234</span><br></pre></td></tr></table></figure>
-
-<p>或者</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span> <span class="keyword">password</span> <span class="keyword">for</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>=<span class="keyword">password</span>(<span class="string">&#x27;new password&#x27;</span>);</span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" data-id="ckio8h1ng00016s16c2336vnf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-kvm-qemu-kvm以及libvirt之间的关系" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" class="article-date">
-  <time datetime="2020-12-04T04:28:19.000Z" itemprop="datePublished">2020-12-04</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">openstack, kvm, qemu-kvm以及libvirt之间的关系</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>KVM是最底层的hypervisor，它是用来模拟CPU的运行，它缺少了对network和周边I/O的支持，所以我们是没法直接用它的。</p>
-<p>QEMU-KVM就是一个完整的模拟器，它是构建基于KVM上面的，它提供了完整的网络和I/O支持。</p>
-<p>Openstack不会直接控制qemu-kvm，它会用一个叫libvirt的库去间接控制qemu-kvm。libvirt提供了跨VM平台的功能，它可以控制除了QEMU之外的模拟器，包括vmware, virtualbox， xen等等。</p>
-<p>所以为了openstack的跨VM性，所以openstack只会用libvirt而不直接用qemu-kvm。libvirt还提供了一些高级的功能，例如pool/vol管理。</p>
-<p><img src="/images/openstack_kvm_qemu_libvirt.png"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" data-id="ckiciu7av0000bg166jy6360f" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-核心组件kubelet-讲解" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" class="article-date">
-  <time datetime="2020-12-03T08:10:10.000Z" itemprop="datePublished">2020-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/">核心组件kubelet 讲解</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="一-kubelet概述"><a href="#一-kubelet概述" class="headerlink" title="一    kubelet概述"></a>一    kubelet概述</h2><h3 id="1-1-kubelet作用"><a href="#1-1-kubelet作用" class="headerlink" title="1.1    kubelet作用"></a>1.1    kubelet作用</h3><p>在Kubernetes集群中，在每个Node（又称Minion）上都会启动一个kubelet服务进程。该进程用于处理Master下发到本节点的任务，管理Pod及Pod中的容器。每个kubelet进程都会在API Server上注册节点自身的信息，定期向Master汇报节点资源的使用情况，并通过cAdvisor监控容器和节点资源。</p>
-<h2 id="二-节点管理"><a href="#二-节点管理" class="headerlink" title="二    节点管理"></a>二    节点管理</h2><p>节点通过设置kubelet的启动参数“–register-node”，来决定是否向API Server注册自己。如果该参数的值为true，那么kubelet将试着通过API Server注册自己。在自注册时，kubelet启动时还包含下列参数。</p>
-<ul>
-<li>–api-servers：API Server的位置。</li>
-<li>–kubeconfig：kubeconfig文件，用于访问API Server的安全配置文件。</li>
-<li>–cloud-provider：云服务商（IaaS）地址，仅用于公有云环境。</li>
-</ul>
-<p><strong>提示：通常可能每个kubelet都被授予创建和修改任何节点的权限。生产环境中，建议kubelet的权限进行限制，仅允许它修改和创建所在节点的权限。</strong></p>
-<p>如果在集群运行过程中遇到集群资源不足的情况，用户就很容易通过添加机器及运用kubelet的自注册模式来实现扩容。</p>
-<p>在某些情况下，Kubernetes集群中的某些kubelet没有选择自注册模式，用户需要自己去配置Node的资源信息，同时告知Node上Kubelet API Server的位置，需要手动创建和修改节点信息。</p>
-<p>如果需要手动创建节点信息，则通过设置kubelet的启动参数“–registernode=false”即可关闭自注册模式。</p>
-<p>kubelet在启动时通过API Server注册节点信息，并定时向API Server发送节点的新消息，API Server在接收到这些信息后，将这些信息写入etcd。通过kubelet的启动参数“–node-status-update-frequency”设置kubelet每隔多长时间向API Server报告节点状态，默认为10s。</p>
-<h2 id="三-Pod管理"><a href="#三-Pod管理" class="headerlink" title="三    Pod管理"></a>三    Pod管理</h2><p>kubelet通过以下几种方式获取自身Node上要运行的Pod清单。</p>
-<ol>
-<li>文件：kubelet启动参数“–config”指定的配置文件目录下的文件（默认目录为“/etc/kubernetes/manifests/”）。通过–file-checkfrequency设置检查该文件目录的时间间隔，默认为20s。</li>
-<li>HTTP端点（URL）：通过“–manifest-url”参数设置。通过–http-check-frequency设置检查该HTTP端点数据的时间间隔，默认为20s。</li>
-<li>API Server：kubelet通过API Server监听etcd目录，同步Pod列表。</li>
-</ol>
-<p>所有以非API Server方式创建的Pod都叫作Static Pod。kubelet将Static Pod的状态汇报给API Server，API Server为该Static Pod创建一个Mirror Pod和其相匹配。Mirror Pod的状态将真实反映Static Pod的状态。当Static Pod被删除时，与之相对应的Mirror Pod也会被删除。</p>
-<p>对于通过API Server获得Pod清单的方式，kubelet会使用API Server Client的Watch加List的方式监听“/registry/nodes/$”当前节点的名称和“/registry/pods”目录，将获取的信息同步到本地缓存中。</p>
-<p>kubelet监听etcd，所有针对Pod的操作都会被kubelet监听。如果发现有新的绑定到本节点的Pod，则按照Pod清单的要求创建该Pod。如果发现本地的Pod被修改，则kubelet会做出相应的修改，比如在删除Pod中的某个容器时，会通过Docker Client删除该容器。</p>
-<p>如果发现删除本节点的Pod，则删除相应的Pod，并通过Docker Client删除Pod中的容器。</p>
-<p>kubelet读取所监听的信息，如果是创建和修改Pod任务，则做如下处理：</p>
-<ol>
-<li>为该Pod创建一个数据目录。</li>
-<li>从API Server读取该Pod清单。</li>
-<li>为该Pod挂载外部卷（ExternalVolume）。</li>
-<li>下载Pod用到的Secret。</li>
-<li>检查已经运行在节点上的Pod，如果该Pod没有容器或Pause容器（“kubernetes/pause”镜像创建的容器）没有启动，则先停止Pod里所有容器的进程。如果在Pod中有需要删除的容器，则删除这些容器。</li>
-<li>用“kubernetes/pause”镜像为每个Pod都创建一个容器。该Pause容器用于接管Pod中所有其他容器的网络。每创建一个新的Pod，kubelet都会先创建一个Pause容器，然后创建其他容器。“kubernetes/pause”镜像大概有200KB，是个非常小的容器镜像。</li>
-<li>为Pod中的每个容器做如下处理：<ul>
-<li>为容器计算一个Hash值，然后用容器的名称去查询对应Docker容器的Hash值。若查找到容器，且二者的Hash值不同，则停止Docker中容器的进程，并停止与之关联的Pause容器的进程；若二者相同，则不做任何处理。</li>
-<li>如果容器被终止了，且容器没有指定的restartPolicy（重启策略），则不做任何处理。</li>
-<li>调用Docker Client下载容器镜像，调用Docker Client运行容器。</li>
-</ul>
-</li>
-</ol>
-<h2 id="四-容器健康检查"><a href="#四-容器健康检查" class="headerlink" title="四    容器健康检查"></a>四    容器健康检查</h2><h3 id="4-1-健康检查方法"><a href="#4-1-健康检查方法" class="headerlink" title="4.1    健康检查方法"></a>4.1    健康检查方法</h3><p>Pod通过两类探针来检查容器的健康状态,LivenessProbe探针和ReadinessProbe探针。</p>
-<h3 id="4-2-LivenessProbe探针"><a href="#4-2-LivenessProbe探针" class="headerlink" title="4.2    LivenessProbe探针"></a>4.2    LivenessProbe探针</h3><p>LivenessProbe探针，用于判断容器是否健康并反馈给kubelet。如果LivenessProbe探针探测到容器不健康，则kubelet将删除该容器，并根据容器的重启策略做相应的处理。如果一个容器不包含LivenessProbe探针，那么kubelet认为该容器的LivenessProbe探针返回的值永远是Success。</p>
-<p>kubelet定期调用容器中的LivenessProbe探针来诊断容器的健康状况。LivenessProbe包含以下3种实现方式：</p>
-<ol>
-<li>ExecAction：在容器内部执行一个命令，如果该命令的退出状态码为0，则表明容器健康。</li>
-<li>TCPSocketAction：通过容器的IP地址和端口号执行TCP检查，如果端口能被访问，则表明容器健康。</li>
-<li>HTTPGetAction：通过容器的IP地址和端口号及路径调用HTTPGet方法，如果响应的状态码大于等于200且小于等于400，则认为容器状态健康。</li>
-</ol>
-<p>LivenessProbe探针被包含在Pod定义的spec.containers.{某个容器}中。</p>
-<p>示例1：HTTP检查方式</p>
-<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       httpGet:</span><br><span class="line"><span class="number">15</span>         path: /index.html</span><br><span class="line"><span class="number">16</span>         port: <span class="number">8080</span></span><br><span class="line"><span class="number">17</span>         httpHeaders:</span><br><span class="line"><span class="number">18</span>         - name: X-Custom-Header</span><br><span class="line"><span class="number">19</span>           value: Awesome</span><br><span class="line"><span class="number">20</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">21</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">22 #kubelet发送一个HTTP请求到本地主机、端口及指定的路径，来检查容器的健康状态。</span><br></pre></td></tr></table></figure>
-
-<p>示例2：运行一个具体的命令。</p>
-<p>[root@k8smaster01 study]# vi myweb-liveness.yaml  </p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"> <span class="number">1</span> apiVersion: v1</span><br><span class="line"> <span class="number">2</span> kind: Pod</span><br><span class="line"> <span class="number">3</span> metadata:</span><br><span class="line"> <span class="number">4</span>   labels:</span><br><span class="line"> <span class="number">5</span>     test: liveness</span><br><span class="line"> <span class="number">6</span>   name: myweb</span><br><span class="line"> <span class="number">7</span> spec:</span><br><span class="line"> <span class="number">8</span>   containers:</span><br><span class="line"> <span class="number">9</span>   - name: myweb</span><br><span class="line"><span class="number">10</span>     image: kubeguide/tomcat-app:v1</span><br><span class="line"><span class="number">11</span>     ports:</span><br><span class="line"><span class="number">12</span>     - containerPort: <span class="number">8080</span></span><br><span class="line"><span class="number">13</span>     livenessProbe:</span><br><span class="line"><span class="number">14</span>       exec:</span><br><span class="line"><span class="number">15</span>         command:</span><br><span class="line"><span class="number">16</span>           - cat</span><br><span class="line"><span class="number">17</span>           - <span class="regexp">/tmp/</span>health</span><br><span class="line"><span class="number">18</span>       initialDelaySeconds: <span class="number">5</span></span><br><span class="line"><span class="number">19</span>       timeoutSeconds: <span class="number">1</span></span><br><span class="line">20 #kubelet在容器中执行“cat /tmp/health”命令，如果该命令返回的值为0，则表明容器处于健康状态，否则表明容器处于不健康状态。</span><br></pre></td></tr></table></figure>
-
-<h3 id="4-3-ReadinessProbe探针"><a href="#4-3-ReadinessProbe探针" class="headerlink" title="4.3    ReadinessProbe探针"></a>4.3    ReadinessProbe探针</h3><p>另一类是ReadinessProbe探针，用于判断容器是否启动完成，且准备接收请求。如果ReadinessProbe探针检测到容器启动失败，则Pod的状态将被修改，Endpoint Controller将从Service的Endpoint中删除包含该容器所在Pod的IP地址的Endpoint条目。</p>
-<h2 id="五-cAdvisor资源监控"><a href="#五-cAdvisor资源监控" class="headerlink" title="五    cAdvisor资源监控"></a>五    cAdvisor资源监控</h2><h3 id="5-1-cAdvisor概览"><a href="#5-1-cAdvisor概览" class="headerlink" title="5.1    cAdvisor概览"></a>5.1    cAdvisor概览</h3><p>在Kubernetes集群中，应用程序生命周期内的信息可以在不同的级别上进行监测，如：容器、Pod、Service和整个集群。</p>
-<p>Kubernetes尽可能提供用户详细的各个级别的资源使用信息，从而能深入地了解应用的执行情况，并找到应用中可能的瓶颈。</p>
-<p>cAdvisor是一个开源的分析容器资源使用率和性能特性的代理工具，它是因为容器而产生的，因此也支持Docker容器。在Kubernetes项目中，cAdvisor被集成到Kubernetes代码中，kubelet则通过cAdvisor获取其所在节点及容器的数据</p>
-<h3 id="5-2-cAdvisor原理及作用"><a href="#5-2-cAdvisor原理及作用" class="headerlink" title="5.2    cAdvisor原理及作用"></a>5.2    cAdvisor原理及作用</h3><p>cAdvisor自动查找所有在其所在Node上的容器，自动采集CPU、内存、文件系统和网络使用的统计信息。通常cAdvisor通过它所在Node的4194端口暴露一个简单的UI。</p>
-<p>kubelet作为连接Kubernetes Master和各Node之间的桥梁，管理运行在Node上的Pod和容器。kubelet将每个Pod都转换成它的成员容器，同时从cAdvisor获取单独的容器使用统计信息，然后通过该REST API暴露这些聚合后的Pod资源使用的统计信息。</p>
-<p>cAdvisor只能提供2～3min的监控数据，对性能数据也没有持久化，因此在Kubernetes早期版本中需要依靠Heapster来实现集群范围内全部容器性能指标的采集和查询功能。</p>
-<p>从Kubernetes1.8版本开始，性能指标数据的查询接口升级为标准的Metrics API，后端服务则升级为全新的Metrics Server。因此，cAdvisor在4194端口提供的UI和API服务从Kubernetes1.10版本开始进入弃用流程，并于1.12版本完全关闭。</p>
-<p>若需要重新启用该服务，可手动部署一个DaemonSet在每个Node上启动一个cAdvisor来提供UI和API，参考：<a target="_blank" rel="noopener" href="https://github.com/google/cadvisor%E3%80%82">https://github.com/google/cadvisor。</a></p>
-<p>在新的Kubernetes监控体系中，Metrics Server用于提供CoreMetrics（核心指标），包括Node和Pod的CPU和内存使用数据。其他CustomMetrics（自定义指标）则由第三方组件（如Prometheus）采集和存储。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" data-id="cki8ta3dx00033w16eu5912fy" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-证书过期之kubeadm重新生成s证书" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" class="article-date">
-  <time datetime="2020-11-30T11:44:28.000Z" itemprop="datePublished">2020-11-30</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/">证书过期之kubeadm重新生成s证书</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h5 id="k8s证书过期之kubeadm重新生成证书"><a href="#k8s证书过期之kubeadm重新生成证书" class="headerlink" title="k8s证书过期之kubeadm重新生成证书"></a>k8s证书过期之kubeadm重新生成证书</h5><p>重新生成证书<br>检查过期<br>新版本(1.15+)：kubeadm alpha certs check-expiration<br>或<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>证书备份<br>cp -rp /etc/kubernetes /etc/kubernetes.bak<br>移除过期证书<br>rm -f /etc/kubernetes/pki/apiserver*<br>rm -f /etc/kubernetes/pki/front-proxy-client.*<br>rm -rf /etc/kubernetes/pki/etcd/healthcheck-client.*<br>rm -rf /etc/kubernetes/pki/etcd/server.*<br>rm -rf /etc/kubernetes/pki/etcd/peer.*<br>备注：可以使用命令openssl x509 -in [证书全路径] -noout -text查看证书详情。</p>
-<p>重新生成证书<br>老版本：kubeadm alpha phase certs all<br>或<br>新版本(1.15+)：kubeadm alpha certs renew all 使用该命令不用提前删除过期证书<br>重新生成配置文件</p>
-<h4 id="重新生成配置"><a href="#重新生成配置" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>mv /etc/kubernetes/*.conf /tmp/<br>老版本：kubeadm alpha phase kubeconfig all<br>或<br>新版本(1.15+)：kubeadm init phase kubeconfig all</p>
-<h4 id="重新生成配置-1"><a href="#重新生成配置-1" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>cp /etc/kubernetes/admin.conf ~/.kube/config<br>重启kubelet<br>systemctl restart kubelet<br>证书过期时间确认<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>集群确认<br>kubectl get nodes</p>
-<h4 id="如果发现集群，能读不能写，则请重启一下组件："><a href="#如果发现集群，能读不能写，则请重启一下组件：" class="headerlink" title="如果发现集群，能读不能写，则请重启一下组件："></a>如果发现集群，能读不能写，则请重启一下组件：</h4><p>docker ps | grep apiserver<br>docker ps  | grep scheduler<br>docker ps  | grep controller-manager</p>
-<p>docker restart 容器标识<br>做一个有底蕴的软件工作者</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" data-id="cki74313h000bko168wysbr1g" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CentOS-8-使用python3作为默认python" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" class="article-date">
-  <time datetime="2020-11-25T06:56:20.000Z" itemprop="datePublished">2020-11-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/">CentOS 8 使用python3作为默认python</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>CentOS 8 .上没有默认的<code>python</code>命令。要运行python 3，需要使用命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#dnf install python3</span><br><span class="line">#alternatives --set python &#x2F;usr&#x2F;bin&#x2F;python3</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" data-id="ckhx95mrp0000s816409w45xl" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -618,7 +595,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -631,23 +608,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2022/01/05/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
+            <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
           </li>
         
           <li>
-            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
+            <a href="/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/">openstack-基于智能网卡的热迁移实现</a>
           </li>
         
           <li>
-            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
+            <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/">openstack-基于packer自动化build镜像</a>
           </li>
         
           <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/">虚拟化-ovn入门到精通(四)</a>
+            <a href="/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/">openstack-兼容海光hygon服务器</a>
           </li>
         
           <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
+            <a href="/2022/01/25/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
           </li>
         
       </ul>

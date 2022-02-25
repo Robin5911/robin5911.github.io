@@ -79,6 +79,356 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-虚拟化-ovn入门到精通(二)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/" class="article-date">
+  <time datetime="2021-12-02T04:31:34.000Z" itemprop="datePublished">2021-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/">虚拟化-ovn入门到精通(二)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="OVN安装部署"><a href="#OVN安装部署" class="headerlink" title="OVN安装部署"></a>OVN安装部署</h2><p>基于CentOS 7 x86_64</p>
+<table>
+<thead>
+<tr>
+<th>主机</th>
+<th>角色</th>
+<th>网卡</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10.175.160.66</td>
+<td>Central</td>
+<td>eth0/eth1</td>
+<td>目前仅支持单节点</td>
+</tr>
+<tr>
+<td>10.175.160.59</td>
+<td>Node1</td>
+<td>eth0/eth1</td>
+<td>vm1/vm11</td>
+</tr>
+<tr>
+<td>10.175.160.60</td>
+<td>Node2</td>
+<td>eth0/eth1</td>
+<td>vm2/vm12</td>
+</tr>
+</tbody></table>
+<h4 id="一、-系统初始化"><a href="#一、-系统初始化" class="headerlink" title="一、 系统初始化"></a>一、 系统初始化</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">配置repo源,ovn&#x2F;ovs版本2.11.0</span><br><span class="line">#vim &#x2F;etc&#x2F;yum.repos.d&#x2F;stein.repo</span><br><span class="line">[openstack-stein]</span><br><span class="line">name&#x3D;OpenStack Stein Repository</span><br><span class="line">#baseurl&#x3D;http:&#x2F;&#x2F;mirror.centos.org&#x2F;centos&#x2F;7&#x2F;cloud&#x2F;$basearch&#x2F;openstack-stein&#x2F;</span><br><span class="line">mirrorlist&#x3D;http:&#x2F;&#x2F;mirrorlist.centos.org&#x2F;?release&#x3D;7&amp;arch&#x3D;$basearch&amp;repo&#x3D;cloud-openstack-stein</span><br><span class="line">gpgcheck&#x3D;0</span><br><span class="line">enabled&#x3D;1</span><br><span class="line">gpgkey&#x3D;file:&#x2F;&#x2F;&#x2F;etc&#x2F;pki&#x2F;rpm-gpg&#x2F;RPM-GPG-KEY-CentOS-SIG-Cloud</span><br><span class="line">关闭防火墙&#x2F;selinux</span><br><span class="line">#systemctl stop firewalld</span><br><span class="line">#systemctl disable firewalld</span><br></pre></td></tr></table></figure>
+
+<h3 id="二、部署服务"><a href="#二、部署服务" class="headerlink" title="二、部署服务"></a>二、部署服务</h3><h5 id="Central-节点"><a href="#Central-节点" class="headerlink" title="Central 节点"></a>Central 节点</h5><p># yum install -y openvswitch-ovn-central.x86_64 openvswitch-ovn-host.x86_64</p>
+<p>#yum install libibverbs -y</p>
+<p># systemctl enable ovn-northd openvswitch ovn-controller</p>
+<p># systemctl start ovn-northd ovn-controller </p>
+<h5 id="Node节点"><a href="#Node节点" class="headerlink" title="Node节点"></a>Node节点</h5><p># yum install -y openvswitch.x86_64 openvswitch-ovn-host.x86_64 </p>
+<p>#yum install libibverbs -y</p>
+<p>#systemctl enable openvswitch ovn-controller </p>
+<p>#systemctl start ovn-controller </p>
+<h3 id="三、-配置OVN"><a href="#三、-配置OVN" class="headerlink" title="三、 配置OVN"></a>三、 配置OVN</h3><p>配置ovs与ovn相连接</p>
+<h5 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.160.66</span><br><span class="line">#ovn-nbctl set-connection ptcp:6641:$Centralip</span><br><span class="line">#ovn-sbctl set-connection ptcp:6642:$Centralip</span><br><span class="line">#netstat -ntlp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn-01.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">overlay网络使用geneve，当然支持geneve,vxlan,gre等</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$Centralip</span><br></pre></td></tr></table></figure>
+
+<h5 id="node-1-节点"><a href="#node-1-节点" class="headerlink" title="node 1 节点"></a>node 1 节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.160.66</span><br><span class="line">#export NodeIP&#x3D;10.175.160.59</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$NodeIP</span><br></pre></td></tr></table></figure>
+
+<h5 id="node2-节点"><a href="#node2-节点" class="headerlink" title="node2 节点"></a>node2 节点</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#export Centralip&#x3D;10.175.160.66</span><br><span class="line">#export NodeIP&#x3D;10.175.160.60</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-remote&#x3D;tcp:$Centralip:6642</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-type&#x3D;geneve</span><br><span class="line">#ovs-vsctl set open . external-ids:ovn-encap-ip&#x3D;$NodeIP</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/images/ovn/ovn-2.png"></p>
+<p><img src="/images/ovn/ovn-3.png"></p>
+<p>所有服务器重启一下</p>
+<p>#reboot</p>
+<p>至此安装完成~</p>
+<h4 id="排错"><a href="#排错" class="headerlink" title="排错"></a>排错</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">net_mlx5: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">net_mlx5: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx5)</span><br><span class="line">PMD: net_mlx4: cannot load glue library: libibverbs.so.1: cannot open shared object file: No such file or directory</span><br><span class="line">PMD: net_mlx4: cannot initialize PMD due to missing run-time dependency on rdma-core libraries (libibverbs, libmlx4)</span><br><span class="line">解决：#yum install libibverbs -y</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/" data-id="cky1083mq000hlg169ufj7pc3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-虚拟化-ovn入门到精通(一)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/" class="article-date">
+  <time datetime="2021-12-02T04:30:45.000Z" itemprop="datePublished">2021-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/">虚拟化-ovn入门到精通（一)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h4><p>OVS甚至可以说是网络虚拟化里最重要的工业级开源产品，OVS模仿物理交换机设备的工作流程，实现了很多物理交换机当时才支持的许多网络功能。OVN提供了许多原生的虚拟网络功能，提升了OVS的工作效率和性能。<br>OVN是OpenvSwitch项目组为OpenvSwitch开发SDN控制器，同其他SDN产品相比，OVN对OpenvSwitch 及OpenStack有更好的兼容性和性能。<br>在2016年的OpenStack Austin 峰会上，OVN项目组有个演讲提到了的OVN存在的意义（目标），原文是</p>
+<ul>
+<li>Production-quality</li>
+<li>Straightforward design</li>
+<li>Scale to 1000s of hypervisors (each with many VMs/containers)</li>
+<li>Improved performance and stability over existing OpenStack OVS plugin</li>
+<li>Become preferred method for OpenStack+OVS integration for the majority of use cases</li>
+</ul>
+<p>中文翻译如下：</p>
+<ul>
+<li>可用于生产环境</li>
+<li>简洁的设计</li>
+<li>支持1000台以上的物理机环境（也支持相当数量的虚拟机/容器环境）</li>
+<li>基于已有的OpenStack OVS 插件 来提升性能和稳定性</li>
+<li>成为OpenStack+OVS集成场景下的首选方案</li>
+</ul>
+<h4 id="二、OVN的实现了哪些功能？拥有哪些特性？"><a href="#二、OVN的实现了哪些功能？拥有哪些特性？" class="headerlink" title="二、OVN的实现了哪些功能？拥有哪些特性？"></a>二、OVN的实现了哪些功能？拥有哪些特性？</h4><p>Logical switches：逻辑交换机，用来做二层转发。<br>L2/L3/L4 ACLs：二到四层的 ACL，可以根据报文的 MAC 地址，IP 地址，端口号来做访问控制。<br>Logical routers：逻辑路由器，分布式的，用来做三层转发。<br>Multiple tunnel overlays：支持多种隧道封装技术，有 Geneve，STT 和 VXLAN。<br>TOR switch or software logical switch gateways：支持使用硬件 TOR switch 或者软件逻辑 switch 当作网关来连接物理网络和虚拟网络。</p>
+<p>OVN网关发布的时候，还存在着某些限制：</p>
+<ul>
+<li><p>网关路由器仅可以经由逻辑交换机连接到其他路由器，而DLR已经可以经由一条链路直连路由器。社区正在进行相关工作来解决掉这个限制。</p>
+</li>
+<li><p>OVN支持多个网关路由器绑定到环境中，这意味着可以逻辑空间执行入站ECMP路由。然而，OVN当前不支持网关路由器之间的出站ECMP。这个特性也同样是OVN未来需要加强的。</p>
+</li>
+</ul>
+<h4 id="三、架构"><a href="#三、架构" class="headerlink" title="三、架构"></a>三、架构</h4><p>基于OVN的neutron网络架构如下</p>
+<p> <img src="https://www.debugger.wiki/sourceimg/190706/cc51795bdcf29c2b9ff4e8e37d0f3826.jpg" alt="技术图片"></p>
+<p>总的来说，ovn的出现 既大大精简了openstack neutron侧架构的实现，又提高了网络侧的性能。</p>
+<h2 id="ovs-ovn-学习资料"><a href="#ovs-ovn-学习资料" class="headerlink" title="[ovs ovn 学习资料]"></a>[ovs ovn 学习资料]</h2><p><strong>1、Open Virtual Networking With Docker</strong></p>
+<p><a target="_blank" rel="noopener" href="http://docs.openvswitch.org/en/latest/howto/docker/">http://docs.openvswitch.org/en/latest/howto/docker/</a></p>
+<p><strong>2、Multi-Host Docker network</strong></p>
+<p><a target="_blank" rel="noopener" href="https://wiredcraft.com/blog/multi-host-docker-network/">https://wiredcraft.com/blog/multi-host-docker-network/</a></p>
+<p><strong>3、ovn-namespace</strong></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/shettyg/ovn-namespace">https://github.com/shettyg/ovn-namespace</a></p>
+<p> <strong>4、OVN简介PPT</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/slides/OVN_Barcelona.pdf">http://openvswitch.org/support/slides/OVN_Barcelona.pdf</a></p>
+<p><strong>5、What is Open Virtual Network (OVN)? How It Works （包含了各种关于网络虚拟化的介绍的连接）</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/">https://www.sdxcentral.com/sdn/network-virtualization/definitions/what-is-open-virtual-network-ovn-how-it-works/</a></p>
+<p><strong>6、Open vSwitch 相关论文</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/papers/">http://openvswitch.org/support/papers/</a></p>
+<p><strong>７、OVN, Bringing Native Virtual Networking to OVS</strong></p>
+<p><a target="_blank" rel="noopener" href="https://networkheresy.com/category/open-vswitch/">https://networkheresy.com/category/open-vswitch/</a></p>
+<p><strong>8、基于Open vSwitch的OpenFlow实践</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.chenshake.com/based-on-openflow-practices-open-vswitch/">http://www.chenshake.com/based-on-openflow-practices-open-vswitch/</a></p>
+<p><strong>9、ovs源码分析</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/column/details/openvswitch.html">http://blog.csdn.net/column/details/openvswitch.html</a></p>
+<p><strong>10、ovs orbit</strong></p>
+<p><a target="_blank" rel="noopener" href="https://ovsorbit.org/">https://ovsorbit.org/</a></p>
+<p><strong>11、introduction to ovn</strong></p>
+<p><a target="_blank" rel="noopener" href="http://galsagie.github.io/2015/04/20/ovn-1/">http://galsagie.github.io/2015/04/20/ovn-1/</a></p>
+<p><strong>12、Russell Bryant的博客</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/category/ovs/">https://blog.russellbryant.net/category/ovs/</a></p>
+<p><strong>13、ovn architecture</strong></p>
+<p><a target="_blank" rel="noopener" href="http://openvswitch.org/support/dist-docs/ovn-architecture.7.html">http://openvswitch.org/support/dist-docs/ovn-architecture.7.html</a></p>
+<p><strong>14、OVN Logical Flows and ovn-trace</strong></p>
+<p><a target="_blank" rel="noopener" href="https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/">https://blog.russellbryant.net/2016/11/11/ovn-logical-flows-and-ovn-trace/</a></p>
+<p><strong>15、Justin Pettit的个人主页（其中包含了ovs, ovn相关的各种论文，博客和视频）</strong> </p>
+<p><a target="_blank" rel="noopener" href="http://yuba.stanford.edu/~jpettit/">http://yuba.stanford.edu/~jpettit/</a></p>
+<p><strong>16、ovs 2.5.0源码分析</strong></p>
+<p><a target="_blank" rel="noopener" href="http://blog.csdn.net/one_clouder/article/category/6359278/1">http://blog.csdn.net/one_clouder/article/category/6359278/1</a></p>
+<p><strong>17、netwoking-ovn - OpenStack Neutron integration with OVN</strong></p>
+<p><a target="_blank" rel="noopener" href="https://docs.openstack.org/networking-ovn/latest/">https://docs.openstack.org/networking-ovn/latest/</a></p>
+<p><strong>18、OVN路由功能详解</strong></p>
+<p><a target="_blank" rel="noopener" href="https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html">https://www.ibm.com/developerworks/cn/cloud/library/1605-ovn-introduction/index.html</a></p>
+<p><strong>19、OVS博客</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.cnblogs.com/popsuper1982/p/5848879.html">http://www.cnblogs.com/popsuper1982/p/5848879.html</a></p>
+<p><strong>20、OVSDB RFC</strong></p>
+<p><a target="_blank" rel="noopener" href="https://datatracker.ietf.org/doc/rfc7047/">https://datatracker.ietf.org/doc/rfc7047/</a></p>
+<p><strong>21、openstack底层技术-openflow在ovs中的应用</strong></p>
+<p><a target="_blank" rel="noopener" href="http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/">http://www.isjian.com/openstack/openstack-base-openflow-in-openvswitch/</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/" data-id="cky1083mn000clg16cd6054t3" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说容器编排之Kubernetes-CRI" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/" class="article-date">
+  <time datetime="2021-10-29T06:31:39.000Z" itemprop="datePublished">2021-10-29</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/">小白解说容器编排之Kubernetes-CRI</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给白白们讲解一下Kubernetes中的概念CRI (Container Runtime Interface)- 容器运行时接口。<br>一、CRI的由来<br>容器的兴起起自Docker，后来有了Kubernetes，所以在Kubernetes CRI 出现之前（也就是 Kubernetes v1.5 之前），Docker 作为第一个容器运行时，Kubelet 通过内嵌的 dockershim 操作 Docker API 来操作容器，进而达到一个面向终态的效果。在这之后，又出现了一种新的容器运行时 - rkt，它也想要成为 Kubernetes 支持的一个容器运行时，当时它也合到了 Kubelet 的代码之中。这两个容器运行时的加入使得 Kubernetes 的代码越来越复杂、难以维护。之后 hyber.sh 加入社区，也想成为第三个容器运行时。</p>
+<p>此时就有人站出来说，想到了标准化，将容器运行时的操作抽象出一个接口，将 Kubelet 代码与具体的容器运行时的实现代码解耦开，只要实现了这样一套接口，就能接入到 Kubernetes 的体系中，这就是我们后来见到的 Container Runtime Interface (CRI)。</p>
+<p>二、CRI实现</p>
+<p>引入了 CRI 接口之后，Kubelet 的架构如上图所示。<br>跟容器最相关的一个 Manager 是 Generic Runtime Manager，就是一个通用的运行时管理器。我们可以看到目前 dockershim 还是存在于 Kubelet 的代码中的，它是当前性能最稳定的一个容器运行时的实现。remote 指的就是 CRI 接口。CRI 接口主要包含两个部分：<br>一个是 CRI Server，即通用的比如说创建、删除容器这样的接口；<br>另外一个是流式数据的接口 Streaming Server，比如 exec、port-forward 这些流式数据的接口。<br>这里需要注意的是，我们的 CNI（容器网络接口）也是在 CRI 进行操作的，因为我们在创建 Pod 的时候需要同时创建网络资源然后注入到 Pod 中。</p>
+<p>目前 CRI 的主要实现：</p>
+<ol>
+<li>CRI-containerd</li>
+<li>CRI-O<br>等等<br>CRI-containerd 是目前社区中比较主流的新一代 CRI 的实现，CRI-O 来自于红帽公司其他就不一一介绍了。</li>
+</ol>
+<p>CRI-containerd<br>这套 CRI 接口是基于 containerd 实现的。在早期的实现中，CRI 其实是作为一个独立进程的，再跟 containerd 进行交互。这样一来又多了一层进程跟进程之间的开销，因此在后来的版本中 CRI 的是直接以插件的形式实现到 containerd 中的，成为了 containerd 的一部分，从而能够可插拔地使用 CRI 接口。</p>
+<p>整个架构看起来非常直观。这里的 Meta services、Runtime service 与 Storage service 都是 containerd 提供的接口。它们是通用的容器相关的接口，包括镜像管理、容器运行时管理等。CRI 在这之上包装了一个 gRPC 的服务。右侧就是具体的容器的实现，比如说，创建容器时就要创建具体的 runtime 和它的 shim，它们和 Container 一起组成了一个 Pod Sandbox。</p>
+<p>CRI-containerd 的一个好处是，containerd 还额外实现了更丰富的容器接口，所以它可以用 containerd 提供的 ctr 工具来调用这些丰富的容器运行时接口，而不只是 CRI 接口。<br>CRI-O<br>CRI-O是通过直接在 OCI 上包装容器接口来实现的一个 CRI 服务。它对外提供的只有具体的 CRI 接口，没有我们前面所提到的 containerd 提供的更丰富的接口。它主要包含两个部分，首先是对容器 runtime 的管理，另一个是对镜像的管理。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/" data-id="cky1083mk0005lg16e1w488s1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之资源控制技术cgroup" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/" class="article-date">
+  <time datetime="2021-10-28T08:29:05.000Z" itemprop="datePublished">2021-10-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/">小白解说之资源控制技术cgroup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给大家讲解一下Linux下的资源控制cgroup。<br>提到cgroup，可能有的同学一时不太清楚做什么用的，但大家应该都用过openstack虚拟机或者docker/kubernetes容器，套餐1C2G，如何实现的呢，答案就是cgroup啦~</p>
+<p>一、何为cgroup<br>Linux cgroups 的全称是 Linux Control Groups，它是 Linux 内核的特性，主要作用是限制、记录和隔离进程组（process groups）使用的物理资源（cpu、memory、IO 等）。<br>cgroups 从设计之初使命就很明确，为进程提供资源控制，它主要的功能包括：<br>    资源限制：限制进程使用的资源上限，比如最大内存、文件系统缓存使用限制<br>    优先级控制：不同的组可以有不同的优先级，比如 CPU 使用和磁盘 IO 吞吐<br>    审计：计算 group 的资源使用情况，可以用来计费<br>    控制：挂起一组进程，或者重启一组进程<br>目前 cgroups 已经成为很多技术的基础，比如 Openstack、LXC、Docker、Kubernetes、systemd等。</p>
+<p>二、cgroup概念<br>cgroup 全程control group，除了它本身的概念，还有 Hierarchy（层级结构） 和 subsystem（子系统） 的概念</p>
+<ol>
+<li><p>cgroups子系统<br>cgroups 的全称是control groups，cgroups为每种可以控制的资源定义了一个子系统。典型的子系统介绍如下：<br> cpu 子系统，主要限制进程的 cpu 使用率。<br> cpuacct 子系统，可以统计 cgroups 中的进程的 cpu 使用报告。<br> cpuset 子系统，可以为 cgroups 中的进程分配单独的 cpu 节点或者内存节点。<br> memory 子系统，可以限制进程的 memory 使用量。<br> blkio 子系统，可以限制进程的块设备 io。<br> devices 子系统，可以控制进程能够访问某些设备。<br> net_cls 子系统，可以标记 cgroups 中进程的网络数据包，然后可以使用 tc 模块（traffic control）对数据包进行控制。<br> freezer 子系统，可以挂起或者恢复 cgroups 中的进程。<br> ns 子系统，可以使不同 cgroups 下面的进程使用不同的 namespace。<br>这里面每一个子系统都需要与内核的其他模块配合来完成资源的控制，比如对 cpu 资源的限制是通过进程调度模块根据 cpu 子系统的配置来完成的；对内存资源的限制则是内存模块根据 memory 子系统的配置来完成的，而对网络数据包的控制则需要 Traffic Control 子系统来配合完成。本文不会讨论内核是如何使用每一个子系统来实现资源的限制，而是重点放在内核是如何把 cgroups 对资源进行限制的配置有效的组织起来的，和内核如何把cgroups 配置和进程进行关联的，以及内核是如何通过 cgroups 文件系统把cgroups的功能暴露给用户态的。</p>
+</li>
+<li><p>cgroups 层级结构（Hierarchy）</p>
+</li>
+</ol>
+<p>内核使用 cgroup 结构体来表示一个 control group 对某一个或者某几个 cgroups 子系统的资源限制。cgroup 结构体可以组织成一颗树的形式，每一棵cgroup 结构体组成的树称之为一个 cgroups 层级结构。cgroups层级结构可以 attach 一个或者几个 cgroups 子系统，当前层级结构可以对其 attach 的 cgroups 子系统进行资源的限制。每一个 cgroups 子系统只能被 attach 到一个 cpu 层级结构中。<br>3. cgroup概念间的关系<br>    系统创建hierarchy 之后，所有的进程都会加入这个hierarchy的cgroup的根节点。在这个cgroup根节点是hierarchy默认创建的。<br>    一个subsystem只能附加到一个hierarchy上面。<br>    一个进程可以作为多个cgroup的成员，但是cgroup必须在不同的hierarchy中。<br>    一个进程fork的子进程和父进程在同一个cgroup中也可以根据需要移到其他cgroup中。<br>三、容器如何使用cgroup的</p>
+<ol>
+<li>Docker容器和cgroup<br>Docker 容器的内存限制放在了 /sys/fs/cgroup/memory/docker 目录下，比如：</li>
+</ol>
+<ol start="2">
+<li>Kubernetes Pod和cgroup<br>CRI-O 是被设计面向 Kubernetes 的，所以在一些目录名中就有浓浓的 k8s 风格。<br>CRI-O 容器的内存限制放在了 /sys/fs/cgroup/memory/kubepods.slice 目录下，这一层目录下，又根据 QoS 创建了三个子目录 kubepods-besteffort.slice、kubepods-burstable.slice、kubepods-guaranteed.sice 分别表示三种不同 QoS Class的内存限制。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#kubectl -n wcloud get pods</span><br><span class="line">#docker inspect k8s_xxxx-scheduler_xxxx-scheduler-0_wcloud_e9ea0db4-cbbb-4902-99d2-21c9b9b3d20b_0 |grep CgroupParent</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;CgroupParent&quot;: &quot;&#x2F;kubepods&#x2F;besteffort&#x2F;pode9ea0db4-cbbb-4902-99d2-21c9b9b3d20b&quot;,</span><br></pre></td></tr></table></figure>
+Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的是Linux Cgroup 。<br>Linux Cgroup 限制资源，是限制进程，只需要在Cgroup配置目录的tasks文件中，添加进程ID，限制立即生效。<br>Linux Cgroup 不仅仅可以限制CPU，内存，还可以限制磁盘IO等。</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/" data-id="cky1083mf0000lg161rtxaj8r" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之gRPC入门" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/" class="article-date">
+  <time datetime="2021-10-27T02:31:14.000Z" itemprop="datePublished">2021-10-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/">小白解说之gRPC入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给大家讲解一下grpc通信</p>
+<p>一、先了解rpc<br>远程过程调用（英语：Remote Procedure Call，缩写为 RPC）这个应该都有所耳闻，这是一种计算机通信协议。该协议允许运行于一台计算机的程序调用另一个地址空间（通常为一个开放网络的一台计算机）的子程序，而程序员就像调用本地程序一样，无需额外地为这个交互作用编程（无需关注细节）。RPC是一种服务器-客户端（Client/Server）模式，经典实现是一个通过发送请求-接受回应进行信息交互的系统。<br>二、了解gRPC<br>这些年云计算最火热的莫过于Kubernetes，随之带动了微服务的发展。而分布式/微服务之间的通信, 自然会联想到rpc通信。<br>gRPC是一个由Google开源的，跨语言的，高性能的远程过程调用（RPC）框架，能够运行于任意环境之中。最初由谷歌进行开发。它使用HTTP/2作为传输协议，使用 Protocol Buffers 作为序列化协议。<br>三、gRPC好处<br>    *现代高性能轻量级 RPC 框架。<br>    *协定优先 API 开发，默认使用协议缓冲区，允许与语言无关的实现。<br>    *可用于多种语言的工具，以生成强类型服务器和客户端。<br>    *支持客户端、服务器和双向流式处理调用。<br>    *使用 Protobuf 二进制序列化这会大幅减少需要传输的数据量，从而大幅提高性能。<br>    *gRPC可以方便地支持流式通信。</p>
+<p>四、了解Protocol Buffers<br>protocol buffers （ProtoBuf）是一种语言无关、平台无关、可扩展的序列化结构数据的方法，它可用于（数据）通信协议、数据存储等。具有灵活，高效，自动化机制的结构数据序列化方法－可类比 XML，但是比 XML 更小（3 ~ 10倍）、更快（20 ~ 100倍）、更为简单。<br>json\xml都是基于文本格式，protobuf是二进制格式。<br>使用上通过定义数据结构，然后通过 ProtoBuf 工具生成各种语言版本的数据结构类库，用于操作 ProtoBuf 协议数据。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/" data-id="ckvaiowiu0007lc161mzr0cxr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-小白解说容器编排之Kubernetes资源对象" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/26/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/" class="article-date">
@@ -334,317 +684,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-小白解说之KataContainer入门" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-19T06:57:17.000Z" itemprop="datePublished">2021-10-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/">小白解说之KataContainer</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大家好，我是小白。下面由我给白白们讲解一下Kata Container…</p>
-<h4 id="一、Kata-Container背景"><a href="#一、Kata-Container背景" class="headerlink" title="一、Kata Container背景"></a>一、Kata Container背景</h4><p>我们知道，容器的本质是宿主机上的进程，通过namespace实现资源隔离，通过cgroups实现资源限制，通过写时复制机制实现高效的文件操作。所以，容器和宿主机使用的是同一操作系统内核,如果公有云用户使用容器过程中探测到内核安全漏洞，后果可想而知。那么问题来了，如何提高容器的安全性？答案就是kata Container！</p>
-<p>  Kata Container的设计思路:</p>
-<ol>
-<li>如今最安全的莫过于VM虚拟机，只要能做到「secure of VM」，那这个安全性就可以满足公有云的需求了</li>
-<li>操作系统本身的容器机制没法解决安全性问题，需要一个隔离层，<br>借鉴虚拟机的实现方式吧</li>
-<li>虚拟机中如果有个内核，就可以支持我们刚才所提到的 OCI 的定义，也就是说提供了 Linux ABI 的运行环境，在这个运行环境中跑一个 Linux 应用不太难实现。<h4 id="二、Kata-Container架构"><a href="#二、Kata-Container架构" class="headerlink" title="二、Kata Container架构"></a>二、Kata Container架构</h4>目前kata 已经发展到v2版本，对架构做了很大改进，下面内容均以v2版本说明<br><img src="/images/kata/kata-k8s.jpg" alt="avatar"></li>
-</ol>
-<p><img src="/images/kata/kataV2_arch.jpg" alt="avatar"></p>
-<p>上面图片就是kata container的架构图, 由图中我们可以看出, kata 其实和runc是平级的，不同的是runc直接启动容器，而kata启动的是 hypervisor，当hypervisor启动VM之后，agent也启动好了，再grpc通知agent启动容器。<br>具体的过程是这样的：</p>
-<p>当 containerd 拿到一个请求的时候，它会首先创建一个 shim-v2。这个 shim-v2 就是一个 PodSandbox 的代表，也就是那个 VMM 的代表；</p>
-<p>每一个 Pod 都会有一个 shim-v2 来为 containerd/CRI-O 来执行各种各样的操作。shim-v2 会为这个 Pod 启动一个hypervisor虚拟机，在每个hypervisor虚拟机里面分别运行着一个 linux os kernel。比如这里面用的是 qemu 的话，这里使用的是qemu-lite, 一个社区高效精简过的qemu。同时这个里面也没有额外的 Guest 操作系统，不会跑一个完整的像 CentOS, Ubuntu 这样的操作系统；</p>
-<p>后我们会把这个容器的 spec 以及这个容器本身打包的存储，包括 rootfs 和文件系统，交给这个 PodSandbox。这个 PodSandbox 会在虚机中由 kata-agent 把容器启动起来；</p>
-<p>依照 CRI 语义和 OCI 规范，在一个 Pod 里面是可以启动多个相关联的容器的。它们会被放到同一个虚拟机里面，并且可以根据需求共享某些 namespace；</p>
-<p>除了这些之外，其它的一些外置的存储和卷也可以通过热插拔的方式来插到这个 PodSandbox 里面来；</p>
-<p>对于网络来说，目前使用 tcfilter 就可以无缝地接入几乎所有的 Kubernetes 的 CNI 插件。而且我们还提供了一个 enlightened 的模式，这样的话会有一个特制的 CNI 插件来提高容器的网络能力。</p>
-<p>这里可能会有些疑问：</p>
-<ol>
-<li>hypervisor 的选择 qemu / cloud-hypervisor / firecraker ， 速度会如何？</li>
-<li>为什么会有个agent？</li>
-<li></li>
-</ol>
-<h4 id="三、Kata-Container蓝图"><a href="#三、Kata-Container蓝图" class="headerlink" title="三、Kata Container蓝图"></a>三、Kata Container蓝图</h4>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/" data-id="ckuzbjk5r0008nk165w094fha" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-小白解说容器编排之Kubernetes入门" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-19T06:57:07.000Z" itemprop="datePublished">2021-10-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/">小白大话容器编排之Kubernetes入门</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大家好，我是小白。下面由我给白白们讲解一下云计算火热的容器编排之王Kubernetes…</p>
-<p>上文咱们讲解了Linux容器技术docker，有些基础后理解Kubernetes后就更好理解啦~<br>简言之呢，docker虽然帮助我们实现了容器化，但仅仅是个使用工具，而我们并不仅仅只需要运行一个容器就能满足我们的需求，我们需要自动化部署，弹性伸缩，负载均衡，服务自动发现等等云原生的一整套的生态化需求，而这就是kubernetes能帮我们做到的。<br><img src="/images/k8s/kubernetes_diagram-v3-770x717_0.png" alt="avatar"></p>
-<h4 id="一、何为Kubernetes"><a href="#一、何为Kubernetes" class="headerlink" title="一、何为Kubernetes"></a>一、何为Kubernetes</h4><p>Kubernetes 是谷歌开源的容器集群管理系统，是 Google 多年大规模容器管理技术 Borg 的开源版本，主要功能包括：<br>    基于容器的应用部署、维护和滚动升级<br>    负载均衡和服务发现<br>    跨机器和跨地区的集群调度<br>    自动伸缩<br>    无状态服务和有状态服务<br>    广泛的 Volume 支持<br>    插件机制保证扩展性<br>Kubernetes 发展非常迅速，已经成为容器编排领域的领导者。</p>
-<h4 id="二、Kubernetes架构"><a href="#二、Kubernetes架构" class="headerlink" title="二、Kubernetes架构"></a>二、Kubernetes架构</h4><p><img src="/images/k8s/k8s_arch.png" alt="avatar"><br>Kubernetes 主要由以下几个核心组件组成：<br>    1.etcd 集群持久化数据存储, 保存了整个集群的状态信息等；<br>    2.apiserver 提供了资源操作的唯一入口，并提供认证、授权、访问控制、API 注册和发现等机制；<br>    3.controller manager 负责维护集群的状态，比如故障检测、自动扩展、滚动更新等；<br>    4.scheduler 负责资源的调度，按照预定的调度策略将 Pod 调度到相应的机器上；<br>    5.kubelet 负责维护容器的生命周期，同时也负责 Volume（CVI）和网络（CNI）的管理；<br>    6.Container runtime 负责镜像管理以及 Pod 和容器的真正运行（CRI）；<br>    7.kube-proxy 负责为 Service 提供 cluster 内部的服务发现和负载均衡<br><img src="/images/k8s/kubernetes_diagram-v3-770x717_0.png" alt="avatar"><br>除了核心组件，还有一些推荐的 Add-ons：<br>    *kube-dns 负责为整个集群提供 DNS 服务<br>    *Ingress Controller 为服务提供外网入口<br>    *Heapster 提供资源监控<br>    *Dashboard 提供 GUI<br>    *Federation 提供跨可用区的集群<br>    *Fluentd-elasticsearch 提供集群日志采集、存储与查询</p>
-<h4 id="三、Kubernetes-设计理念"><a href="#三、Kubernetes-设计理念" class="headerlink" title="三、Kubernetes 设计理念"></a>三、Kubernetes 设计理念</h4><p><img src="/images/k8s/k8s.jpg" alt="avatar"><br>1.API设计<br>    *所有API应该是声明式的。<br>    *API对象是彼此互补而且可组合的。<br>    *高层API以操作意图为基础设计<br>    *低层API根据高层API的控制需要设计<br>    *尽量避免简单封装，不要有在外部API无法显式知道的内部隐藏的机制<br>    *API操作复杂度与对象数量成正比<br>    *API对象状态不能依赖于网络连接状态<br>    *尽量避免让操作机制依赖于全局状态，因为在分布式系统中要保证全局状态的同步是非常困难的。<br>2.控制机制设计<br>    *控制逻辑应该只依赖于当前状态。<br>    *尽量避免复杂状态机，控制逻辑不要依赖无法监控的内部状态。<br>    *假设任何错误的可能，并做容错处理。<br>    *假设任何操作都可能被任何操作对象拒绝，甚至被错误解析。<br>    *每个模块都可以在出错后自动恢复。<br>    *每个模块都可以在必要时优雅地降级服务。<br>3. 架构设计<br>    *只有apiserver可以直接访问etcd存储，其他服务必须通过Kubernetes API来访问集群状态<br>    *单节点故障不应该影响集群的状态<br>    *在没有新请求的情况下，所有组件应该在故障恢复后继续执行上次最后收到的请求（比如网络分区或服务重启等）<br>    *所有组件都应该在内存中保持所需要的状态，apiserver将状态写入etcd存储，而其他组件则通过apiserver更新并监听所有的变化<br>    *优先使用事件监听而不是轮询</p>
-<h4 id="四、Kubernetes核心概念"><a href="#四、Kubernetes核心概念" class="headerlink" title="四、Kubernetes核心概念"></a>四、Kubernetes核心概念</h4><p><img src="/images/k8s/pods.png" alt="avatar"><br>pod： 一组容器集合，k8s最小调度部署单元<br>      *k8s不能直接控制容器，通过控制pod来间接管理容器<br>      *pod是由pod templates创建而来的，pod template包含于控制器中<br>      *不同控制器对模板的处理方式方式不同，比如，有的会立即删除旧pod，依据新模板创建新pod来保持最新<br>      *一个pod包含一个或多个容器<br>      *一个pod的所有容器共享共享 PID、IPC、Network 和 UTS namespace<br>      *重启一个pod中的容器不会重启pod，因为pod不是进程而是一个容器运行环境，pod会一直存在除非它被删除<br>    pod生命周期中的状态/阶段<br>      *pending：k8s已经知道pod的存在，此时pod还没完全准备好，比如容器还没创建完成、正在下载镜像等，即在做前期的准备工作<br>      *running：pod已经分配到一个节点上了，并且至少有一个容器在运行<br>      *succeeded：终止在pod上的所有容器，全部成功终止，且不重启<br>      *unknown：由于出现了一些错误而使非上边提到的任何一种状态<br>      *failed：终止pod上所有rq，有的容器关闭失败<br>    pod的生命和人类一样，只有一次，从出生到死亡，不可重活<br>控制器controller：控制器，控制pod（启动、停止、删除……）<br>    *ReplicaSet：确保预期pod副本数，保证任何时候都是固定pod数量在工作（动态地根据需求增删pod），通过Deployment来设置ReplicaSet<br>    *ReplicationController：自动增删pod，同ReplicaSet功能相同，ReplicaSet是它的升级版<br>    *Deployment：无状态应用部署，是比ReplicationController更高一层的api，还可以更新回滚ReplicaSet<br>    *StatefulSet：有状态应用部署<br>    *DaemonSet：确保所有node运行同一个pod<br>    *Job：一次性任务，<br>    *Cronjob：定时任务<br>服务service：将一组相关pod关联起来，对外提供服务，提供统一入口，使得pod地址改变不影响服务<br>    *提供负载均衡<br>    *服务的自动发现<br>    *内部DNS域名服务<br>    *定义相关pod访问策略<br>标签label：标记pod,node等资源<br>    *便于识别pod,node<br>    *亲和反亲和等策略<br>命名空间namespace：提供逻辑隔离<br>    *租户隔离</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/" data-id="cky1083mm0008lg16g9yh4nry" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-进击的Kata-Container-2-0" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/19/%E8%BF%9B%E5%87%BB%E7%9A%84Kata-Container-2-0/" class="article-date">
-  <time datetime="2021-10-19T06:54:55.000Z" itemprop="datePublished">2021-10-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E8%BF%9B%E5%87%BB%E7%9A%84Kata-Container-2-0/">进击的Kata Container 2.0</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E8%BF%9B%E5%87%BB%E7%9A%84Kata-Container-2-0/" data-id="ckuzbjk5v000cnk163yp3gssb" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-nvmf-基本使用" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" class="article-date">
-  <time datetime="2021-10-19T04:19:36.000Z" itemprop="datePublished">2021-10-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">nvmf 基本使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>背景: 虚拟化openstack测试使用nvmf<br>配置 NVMe/RDMA 客户端</p>
-<p>安装mlnx_nvme-ofed driver</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">下载 MLNX_OFED_LINUX-5.4-1.0.3.0-rhel8.1-x86_64.iso</span><br><span class="line">安装 kmod-mlnx-nvme-5.4-OFED.5.4.1.0.3.1.rhel8u1.x86_64</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum install nvme-cli</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># modprobe nvme-rdma</span><br></pre></td></tr></table></figure>
-
-<h4 id="troubleshooting"><a href="#troubleshooting" class="headerlink" title="troubleshooting"></a>troubleshooting</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># nvme connect -t rdma -n nqn.2021-10.io.spdk:cnode2 -a 10.224.129.226 -s 4420</span><br><span class="line">Failed to open &#x2F;dev&#x2F;nvme-fabrics: No such file or directory</span><br><span class="line"></span><br><span class="line">解决:</span><br><span class="line">#modprobe nvme_fabrics</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">Failed to write to &#x2F;dev&#x2F;nvme-fabrics: Invalid argument</span><br><span class="line">nvme_fabrics: no handler found for transport rdma.</span><br><span class="line">解决: 安装mlx_ofd drvier</span><br><span class="line">https:&#x2F;&#x2F;www.mellanox.com&#x2F;products&#x2F;infiniband-drivers&#x2F;linux&#x2F;mlnx_ofed</span><br><span class="line">下载 MLNX_OFED_LINUX-5.4-1.0.3.0-rhel8.1-x86_64.iso</span><br><span class="line">安装 kmod-mlnx-nvme-5.4-OFED.5.4.1.0.3.1.rhel8u1.x86_64</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/nvmf-%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" data-id="ckuzbjk5m0002nk169azc9t6y" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kubernetes集群集成Kata" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/14/kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" class="article-date">
-  <time datetime="2021-10-14T01:58:24.000Z" itemprop="datePublished">2021-10-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/14/kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/">kubernetes集群集成Kata</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>环境 : CentOS 8.1 x86_64</p>
-<p>kata 2 做了很多优化, 故使用kata 2 版本, 操作系统选用高内核, CentOS 8 (社区CentOS 7只支持kata 1) , 同时操作系统开启 ipv6</p>
-<h5 id="一、部署kubernetes"><a href="#一、部署kubernetes" class="headerlink" title="一、部署kubernetes"></a>一、部署kubernetes</h5><p>使用 <a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/kubespray">kubespray</a> 部署生产kubernetes集群 , CNI插件使用了kube-ovn</p>
-<p>遇到网络问题，需离线下载镜像,以及确保能访问github(<a href="https://blog.kubestack.cn/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/">github加速</a>)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">images&#x3D;(</span><br><span class="line">  kube-apiserver:v1.18.10</span><br><span class="line">  kube-controller-manager:v1.18.10</span><br><span class="line">  kube-scheduler:v1.18.10</span><br><span class="line">  kube-proxy:v1.18.10</span><br><span class="line">  pause:3.2</span><br><span class="line">  k8s-dns-node-cache:1.15.13</span><br><span class="line">  cluster-proportional-autoscaler-amd64:1.8.1</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">for imageName in $&#123;images[@]&#125; ; do</span><br><span class="line">    docker pull registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">    docker tag registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName k8s.gcr.io&#x2F;$imageName</span><br><span class="line">    docker rmi registry.cn-hangzhou.aliyuncs.com&#x2F;google_containers&#x2F;$imageName</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
-
-<p>kubernetes部署步骤参考kubespray官网即可略</p>
-<h5 id="二、安装kata-2-0"><a href="#二、安装kata-2-0" class="headerlink" title="二、安装kata 2.0"></a>二、安装kata 2.0</h5><h5 id="2-1-安装kata-组件"><a href="#2-1-安装kata-组件" class="headerlink" title="2.1 安装kata 组件"></a>2.1 安装kata 组件</h5><p>Install the Kata Containers components with the following commands:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$ sudo -E dnf install -y centos-release-advanced-virtualization</span><br><span class="line">$ sudo -E dnf module disable -y virt:rhel</span><br><span class="line">$ source &#x2F;etc&#x2F;os-release</span><br><span class="line">$ cat &lt;&lt;EOF | sudo -E tee &#x2F;etc&#x2F;yum.repos.d&#x2F;kata-containers.repo</span><br><span class="line">  [kata-containers]</span><br><span class="line">  name&#x3D;Kata Containers</span><br><span class="line">  baseurl&#x3D;http:&#x2F;&#x2F;mirror.centos.org&#x2F;$contentdir&#x2F;$releasever&#x2F;virt&#x2F;$basearch&#x2F;kata-containers</span><br><span class="line">  enabled&#x3D;1</span><br><span class="line">  gpgcheck&#x3D;1</span><br><span class="line">  skip_if_unavailable&#x3D;1</span><br><span class="line">  EOF</span><br><span class="line">$ sudo -E dnf install -y kata-containers</span><br></pre></td></tr></table></figure>
-
-<h5 id="2-2-检测硬件是否支持-Kata"><a href="#2-2-检测硬件是否支持-Kata" class="headerlink" title="2.2 检测硬件是否支持 Kata"></a>2.2 检测硬件是否支持 Kata</h5><p>Kata 对硬件的要求需要满足以下任意条件：</p>
-<ul>
-<li>Intel VT-x technology.</li>
-<li>ARM Hyp mode (virtualization extension).</li>
-<li>IBM Power Systems.</li>
-<li>IBM Z mainframes.</li>
-</ul>
-<p>安装完 <code>kata-runtime</code> 之后，执行检测命令：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#kata-runtime kata-check</span><br><span class="line"></span><br><span class="line">System is capable of running Kata Containers</span><br><span class="line">System can currently create Kata Containers</span><br></pre></td></tr></table></figure>
-
-<p>这里的输出表示，运行环境支持 Kata Containers 。</p>
-<h5 id="2-3-配置集成kubelet"><a href="#2-3-配置集成kubelet" class="headerlink" title="2.3 配置集成kubelet"></a>2.3 配置集成kubelet</h5><ul>
-<li>新增配置文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;</span><br><span class="line">cat &lt;&lt; EOF | sudo tee  &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;0-containerd.conf</span><br><span class="line">[Service]                                                 </span><br><span class="line">Environment&#x3D;&quot;KUBELET_EXTRA_ARGS&#x3D;--container-runtime&#x3D;remote --runtime-request-timeout&#x3D;15m --container-runtime-endpoint&#x3D;unix:&#x2F;&#x2F;&#x2F;run&#x2F;containerd&#x2F;containerd.sock&quot;</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>重启生效</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart kubelet</span><br></pre></td></tr></table></figure>
-
-<p>这里使用的是 containerd 。如果使用 CRI-O ，配置会不一样。</p>
-<h5 id="2-5-给-Kubernetes-提供-kata-runtime"><a href="#2-5-给-Kubernetes-提供-kata-runtime" class="headerlink" title="2.5 给 Kubernetes 提供 kata-runtime"></a>2.5 给 Kubernetes 提供 kata-runtime</h5><p>通过直接创建 Container 可以使用 kata-runtime 。但在集群中，我们该如何告诉 Kubernetes 哪些负载需要使用 kata-runtime 呢？根据不同的版本，Kata 提供了不同的方式。</p>
-<p>首先都需要生成 containerd 配置文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">containerd config default &gt; &#x2F;etc&#x2F;containerd&#x2F;config.toml</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>RuntimeClass 的方式</li>
-</ul>
-<p>这种方式对相关组件版本有要求：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Kata Containers v1.5.0 or above (including 1.5.0-rc)</span><br><span class="line">Containerd v1.2.0 or above</span><br><span class="line">Kubernetes v1.12.0 or above</span><br></pre></td></tr></table></figure>
-
-<p>我所使用的是</p>
-<p>kubernetes: 1.18.10</p>
-<p>containerd: 1.2.13</p>
-<p>kata : 1.10</p>
-<p>在 config.toml 配置文件中，“no_pivot = false”下增加如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.runtimes]</span><br><span class="line">  [plugins.cri.containerd.runtimes.runc]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.runc.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;runc&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br><span class="line">  [plugins.cri.containerd.runtimes.kata]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.kata.v2&quot;</span><br><span class="line">  [plugins.cri.containerd.runtimes.katacli]</span><br><span class="line">     runtime_type &#x3D; &quot;io.containerd.runc.v1&quot;</span><br><span class="line">     [plugins.cri.containerd.runtimes.katacli.options]</span><br><span class="line">       NoPivotRoot &#x3D; false</span><br><span class="line">       NoNewKeyring &#x3D; false</span><br><span class="line">       ShimCgroup &#x3D; &quot;&quot;</span><br><span class="line">       IoUid &#x3D; 0</span><br><span class="line">       IoGid &#x3D; 0</span><br><span class="line">       BinaryName &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br><span class="line">       Root &#x3D; &quot;&quot;</span><br><span class="line">       CriuPath &#x3D; &quot;&quot;</span><br><span class="line">       SystemdCgroup &#x3D; false</span><br></pre></td></tr></table></figure>
-
-<p>这里 <code>[plugins.cri.containerd.runtimes.kata]</code> 中的 kata 将被作为 RuntimeClass handler 关键字。</p>
-<ul>
-<li>使用 <code>untrusted_workload_runtime</code> 的方式</li>
-</ul>
-<p>对于不符合上述版本要求的环境，可以使用之前的方式。</p>
-<p>在配置文件中新增如下内容：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[plugins.cri.containerd.untrusted_workload_runtime]</span><br><span class="line">  runtime_type &#x3D; &quot;io.containerd.runtime.v1.linux&quot;</span><br><span class="line">  runtime_engine &#x3D; &quot;&#x2F;usr&#x2F;bin&#x2F;kata-runtime&quot;</span><br></pre></td></tr></table></figure>
-
-<p>最后，都需要重启 containerd。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#systemctl daemon-reload</span><br><span class="line">#systemctl restart containerd</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/kata/2020-12-17_18h31_55.png"></p>
-<h4 id="三、使用kata-runtime"><a href="#三、使用kata-runtime" class="headerlink" title="三、使用kata-runtime"></a>三、使用kata-runtime</h4><h5 id="3-1-RuntimeClass-方式"><a href="#3-1-RuntimeClass-方式" class="headerlink" title="3.1 RuntimeClass 方式"></a>3.1 RuntimeClass 方式</h5><ul>
-<li>创建 RuntimeClass</li>
-</ul>
-<p>kata-runtime.yaml</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">kind: RuntimeClass</span><br><span class="line">apiVersion: node.k8s.io&#x2F;v1beta1</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-containers</span><br><span class="line">handler: kata</span><br></pre></td></tr></table></figure>
-
-<p>#kubectl create -f kata-runtime.yaml</p>
-<p>也可以为 runc 创建 RuntimeClass</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">kubectl get runtimeclass</span><br><span class="line"></span><br><span class="line">NAME              CREATED AT</span><br><span class="line">kata-containers   2020-08-30</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>创建负载 kata-pod.yaml</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: kata-nginx</span><br><span class="line">spec:</span><br><span class="line">  runtimeClassName: kata-containers</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>#kubectl apply -f kata-pod.yaml</p>
-<ul>
-<li>查看负载</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kata-runtime list</span><br></pre></td></tr></table></figure>
-<p>检查hypervisor是否运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps axu|grep qemu</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/14/kubernetes%E9%9B%86%E7%BE%A4%E9%9B%86%E6%88%90Kata/" data-id="ckuzbjk5l0001nk169ea1dfts" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -682,7 +721,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -695,23 +734,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2022/01/05/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
+            <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
           </li>
         
           <li>
-            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/">虚拟化-ovn入门到精通(五)</a>
+            <a href="/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/">openstack-基于智能网卡的热迁移实现</a>
           </li>
         
           <li>
-            <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
+            <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/">openstack-基于packer自动化build镜像</a>
           </li>
         
           <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/">虚拟化-ovn入门到精通(四)</a>
+            <a href="/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/">openstack-兼容海光hygon服务器</a>
           </li>
         
           <li>
-            <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
+            <a href="/2022/01/25/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
           </li>
         
       </ul>
