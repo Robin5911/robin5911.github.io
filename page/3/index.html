@@ -79,6 +79,100 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-ceph-auth创建账号" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" class="article-date">
+  <time datetime="2021-10-20T02:00:32.000Z" itemprop="datePublished">2021-10-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" data-id="ckuzbjk5f0000nk16ddql458h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之Docker容器入门" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" class="article-date">
+  <time datetime="2021-10-19T07:10:06.000Z" itemprop="datePublished">2021-10-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/">小白解说之Docker容器入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。下面由我给白白们讲解一下火热的容器技术Docker</p>
+<h4 id="Linux容器技术"><a href="#Linux容器技术" class="headerlink" title="Linux容器技术"></a>Linux容器技术</h4><p>Linux 容器LXC 是一个在单一 Linux 主机上提供多个隔离的 Linux 环境的操作系统级虚拟技术。不像虚拟机（VM），容器并不需要运行专用的访客guest操作系统。容器们共享宿主机的host操作系统内核，并使用访客操作系统的系统库来提供所需的功能。由于不需要专用的操作系统，因此容器要比虚拟器启动快得多。<br>容器借助 Linux 内核的 Namespaces、Apparmor、SELinux 情景模式profile、chroot 和 CGroup 等功能来提供类似于虚拟机的隔离环境。Linux 的安全模块可以确保正确地控制容器对宿主机和内核的访问，从而避免各种入侵活动。此外，在宿主机上可以运行不同的 Linux 发行版，只要它们运行在同样的 CPU 架构下。</p>
+<p>简单来说，容器技术就是基于Linux内核提供的一套进程隔离技术，提供的是一种基于各种 Linux 发行版创建容器镜像的方法、一套管理容器生命周期的 API、与该 API 交互的客户端工具、保存快照的功能、在宿主机之间迁移容器实例的能力，等等。</p>
+<h4 id="容器好在哪里"><a href="#容器好在哪里" class="headerlink" title="容器好在哪里"></a>容器好在哪里</h4><p>假设您在开发一个应用。您使用的是一台笔记本电脑，而且您的开发环境具有特定的配置。其他开发人员身处的环境配置可能稍有不同。您正在开发的应用不止依赖于您当前的配置，还需要某些特定的库、依赖项和文件。与此同时，您的企业还拥有标准化的开发和生产环境，有着自己的配置和一系列支持文件。您希望尽可能多在本地模拟这些环境，而不产生重新创建服务器环境的开销。因此，您要如何确保应用能够在这些环境中运行和通过质量检测，并且在部署过程中不出现令人头疼的问题，也无需重新编写代码和进行故障修复？答案就是使用容器。</p>
+<p>容器可以确保您的应用拥有必需的库、依赖项和文件，让您可以在生产中自如地迁移这些应用，无需担心会出现任何负面影响。实际上，您可以将容器镜像中的内容，视为 Linux 发行版的一个安装实例，因为其中完整包含 RPM 软件包、配置文件等内容。但是，安装容器镜像发行版，要比安装新的操作系统副本容易得多。这样可以避免危机，做到皆大欢喜。</p>
+<p>虽然这只是一个常见情况的示例，但在需要很高的可移植性、可配置性和隔离的情况下，我们可以利用 Linux 容器通过很多方式解决难题。Linux 容器的价值在于，它能加速开发并满足新出现的业务需求。在某些情形中（如通过 Apache Kafka 进行实时数据流处理），容器是不可或缺的，因为它们是提供应用所需的可扩展性的唯一途径。无论基础架构是在企业内部还是在云端，或者混合使用两者，容器都能满足您的需求。当然，选择正确的容器平台也同样重要。</p>
+<h4 id="Docker又是什么"><a href="#Docker又是什么" class="headerlink" title="Docker又是什么"></a>Docker又是什么</h4><p>Docker 技术使用 Linux 内核和内核功能（例如 Cgroups 和 namespaces）来分隔进程，以便各进程相互独立运行。这种独立性正是采用容器的目的所在；它可以独立运行多种进程、多个应用，更加充分地发挥基础设施的作用，同时保持各个独立系统的安全性。</p>
+<p>容器工具（包括 Docker）可提供基于镜像的部署模式。这使得它能够轻松跨多种环境，与其依赖程序共享应用或服务组。Docker 还可在这一容器环境中自动部署应用（或者合并多种流程，以构建单个应用）。</p>
+<p>此外，由于这些工具基于 Linux 容器构建，使得 Docker 既易于使用，又别具一格——它可为用户提供前所未有的高度应用程访问权限、快速部署以及版本控制和分发能力。</p>
+<p>Docker技术是否与传统的 Linux 容器相同？<br>否。Docker 技术最初是基于 LXC 技术构建（大多数人都会将这一技术与“传统的”Linux 容器联系在一起），但后来它逐渐摆脱了对这种技术的依赖。就轻量级 虚拟化 这一功能来看，LXC 非常有用，但它无法提供出色的开发人员或用户体验。除了运行容器之外，Docker 技术还具备其他多项功能，包括简化用于构建容器、传输镜像以及控制镜像版本的流程。</p>
+<p>Docker和container的主要区别在于，Docker是一个构建、运行和管理软件容器的平台，而container是一个轻量级软件，它提供操作系统虚拟化，以便在资源隔离的进程中运行应用程序及其依赖项。 容器是一种软件，它捆绑了自己的工具、库和配置文件。 在一个操作系统内核中可以运行多个容器。<br>特点：</p>
+<ol>
+<li>模块化<br>Docker 容器化方法非常注重在不停止整个应用的情况下，单独截取部分应用进行更新或修复的能力。除了这种基于微服务的方法，您还可以采用与面向服务的架构（SOA）类似的使用方法，在多个应用间共享进程。</li>
+<li>层和镜像版本控制<br>每个 Docker 镜像文件都包含多个层。这些层组合在一起，构成单个镜像。每当镜像发生改变时，就会创建一个新的镜像层。用户每次发出命令（例如 run 或 copy）时，都会创建一个新的镜像层。<br>Docker 重复使用这些层来构建新容器，借此帮助加快流程构建。镜像之间会共享中间变化，从而进一步提升速度、规模以及效率。版本控制是镜像层本身自带的能力。每次发生新的更改时，您大都会获得一个内置的更改日志，实现对容器镜像的全盘管控。</li>
+<li>回滚<br>回滚也许是层最值得一提的功能。每个镜像都拥有多个层。举例而言，如果您不喜欢迭代后的镜像版本，完全可以通过回滚，返回之前的版本。这一功能还支持敏捷开发方法，帮助持续实施集成和部署（CI/CD），使其在工具层面成为一种现实。</li>
+<li>快速部署<br>启动和运行新硬件、实施部署并投入使用，这在过去一般需要数天时间。投入的心力和成本往往也让人不堪重负。基于 Docker 的容器可将部署时间缩短到几秒。通过为每个进程构建容器，您可以快速将这些类似进程应用到新的应用程序中。而且，由于无需启动操作系统即可添加或移动容器，因此大幅缩短了部署时间。除此之外，得益于这种部署速度，您可以轻松无虞、经济高效地创建和销毁容器创建的数据。</li>
+</ol>
+<p>因此，Docker 技术是一种更加精细、可控、基于微服务的技术，可为企业提供更高的效率价值。</p>
+<h4 id="Docker蓝图"><a href="#Docker蓝图" class="headerlink" title="Docker蓝图"></a>Docker蓝图</h4><p>docker的主要目标是”Build,Ship and Run any App,Angwhere”,构建，运输，处处运行</p>
+<p>构建：做一个docker镜像<br>运输：docker pull<br>运行：启动一个容器<br>每一个容器，他都有自己的文件系统rootfs.</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" data-id="ckuzbjk5p0007nk169usm656a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-小白解说之KataContainer入门" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/" class="article-date">
@@ -540,125 +634,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-openstack-cinder-nvmf-target-测试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/" class="article-date">
-  <time datetime="2021-10-13T04:26:33.000Z" itemprop="datePublished">2021-10-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/">openstack-cinder nvmf target 测试</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/" data-id="ckup7keh20002uc16hs9635fr" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CentOS-8-libvirt-7-编译安装" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2021-09-28T03:40:37.000Z" itemprop="datePublished">2021-09-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基于CentOS 8 x86_64编译安装libvirt 7.2</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#dnf --enablerepo&#x3D;PowerTools install gcc cmake libxslt-devel</span><br><span class="line">#dnf --enablerepo&#x3D;PowerTools install meson rpcgen</span><br><span class="line">#wget https:&#x2F;&#x2F;libvirt.org&#x2F;sources&#x2F;libvirt-7.2.0.tar.xz</span><br><span class="line">#tar xvf libvirt-7.2.0.tar.xz</span><br><span class="line">#cd libvirt-7.2.0</span><br><span class="line">#meson build --prefix&#x3D;&#x2F;usr</span><br><span class="line">#ninja -C build</span><br><span class="line">#ninja -C build install</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#libvirtd --version</span><br></pre></td></tr></table></figure>
-
-
-
-<p>启动测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;sbin&#x2F;libvirtd --listen</span><br></pre></td></tr></table></figure>
-
-<p>报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : libvirt version: 7.2.0</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : hostname: openstack160.********</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: error : virNetTLSContextCheckCertFile:110 : Cannot read CA certificate &#39;&#x2F;etc&#x2F;pki&#x2F;CA&#x2F;cacert.pem&#39;: No such file or directory</span><br><span class="line"></span><br><span class="line">先临时修改了&#x2F;etc&#x2F;libvirt&#x2F;libvirtd.conf 关闭tls</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">error: Failed to start domain &#39;instance-00000018&#39;</span><br><span class="line">error: can&#39;t connect to virtlogd: Failed to connect socket to &#39;&#x2F;var&#x2F;run&#x2F;libvirt&#x2F;virtlogd-sock&#39;: No such file or directory</span><br><span class="line"></span><br><span class="line">解决 ：virtlogd &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><ol>
-<li>ERROR: Program ‘rpcgen portable-rpcgen’ not found</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rpcgen</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>ERROR: Dependency “gnutls” not found, tried pkgconfig</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gnutls-devel</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>ERROR: Dependency “libxml-2.0” not found, tried pkgconfig</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libxml2-devel</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>ERROR: Problem encountered: XDR is required for remote driver</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libtirpc-devel</span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>meson.build:918:2: ERROR: Program ‘rst2html5 rst2html5.py rst2html5-3’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install rst2html5</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “libapparmor” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;rpmfind.net&#x2F;linux&#x2F;opensuse&#x2F;distribution&#x2F;leap&#x2F;15.3&#x2F;repo&#x2F;oss&#x2F;x86_64&#x2F;libapparmor1-2.13.6-1.24.x86_64.rpm</span><br><span class="line">wget https:&#x2F;&#x2F;ftp.lysator.liu.se&#x2F;pub&#x2F;opensuse&#x2F;distribution&#x2F;leap&#x2F;15.3&#x2F;repo&#x2F;oss&#x2F;x86_64&#x2F;libapparmor-devel-2.13.6-1.24.x86_64.rpm</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li>ERROR: C shared or static library ‘attr’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libattr-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: C shared or static library ‘audit’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install audit-libs audit-libs-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “bash-completion” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install bash-completion</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: C shared or static library ‘cap-ng’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libcap-ng-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “libcurl” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libcurl-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “libfuse glusterfs-api libiscsi libnl pcap-config libssh libssh2 netcf numa openwsman pciaccess readline libsasl2 libudev wireshark yajl” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install fuse-devel glusterfs-api-devel libiscsi-devel libnl3-devel libssh-devel libssh2-devel netcf-devel numactl-devel libwsman-devel libpciaccess-devel readline-devel cyrus-sasl-devel systemd-devel wireshark-devel yajl-devel</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" data-id="cku40uuy90000ss16ebg94xqc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -696,7 +671,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -709,6 +684,14 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/">虚拟化-numa架构讲解(1)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/">go-实用方法-判断字符串为uuid类型</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
           </li>
         
@@ -718,14 +701,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/">openstack-基于packer自动化build镜像</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/">openstack-兼容海光hygon服务器</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/25/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
           </li>
         
       </ul>

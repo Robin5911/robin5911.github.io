@@ -79,6 +79,94 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-更换mysql地址" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" class="article-date">
+  <time datetime="2020-12-16T04:22:45.000Z" itemprop="datePublished">2020-12-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/">openstack-更换mysql地址</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>因为延时问题，openstack 集群因为需要更换mysql地址，</p>
+<p>原本以为变更完yaml使用 kolla-ansible reconfigure 一下就可以了，但发现仍然有部分连接旧mysql数据库</p>
+<p>排查发现连接的nova_cell0数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#grep mysql -R &#x2F;etc&#x2F;kolla</span><br><span class="line">排查数据库地址都是正确的，为什么仍然有连接旧数据库的地址呢？ 怀疑数据库表数据存在写死的问题~</span><br></pre></td></tr></table></figure>
+
+<p>由于是连接的nova_cell0 ， 想到cell设计为了拆分数据库等，查一下数据库吧？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#mysql -h***************</span><br><span class="line">发现nova_api的cell_mappings表中记录的mysql的endpoint，但cell0的仍然是旧的</span><br><span class="line">&gt;update cell_mappings set database_connection&#x3D;&#39;mysql+pymysql:&#x2F;&#x2F;nova:********@10.220.*.*:21200&#x2F;nova_cell0&#39; where id&#x3D;1;</span><br></pre></td></tr></table></figure>
+
+<p>问题解决~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/16/openstack-%E6%9B%B4%E6%8D%A2mysql%E5%9C%B0%E5%9D%80/" data-id="ckishnwvo00024s165774eazg" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-linux-python生成主机唯一UUID" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" class="article-date">
+  <time datetime="2020-12-14T04:22:28.000Z" itemprop="datePublished">2020-12-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/">linux-python生成主机唯一UUID</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>主机需要有一个唯一的uuid，对于物理机存在主板uuid获取不到的情况，所以根据相关信息，生成一个</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;usr&#x2F;bin&#x2F;env python</span><br><span class="line">#coding: utf-8</span><br><span class="line">import re</span><br><span class="line">import subprocess</span><br><span class="line"></span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">    兼容python2&#x2F;python3</span><br><span class="line">&#39;&#39;&#39;</span><br><span class="line">#默认shell执行函数</span><br><span class="line">def shellutil(cmd):</span><br><span class="line">    p &#x3D; subprocess.Popen(cmd,stdin&#x3D;subprocess.PIPE,stdout&#x3D;subprocess.PIPE,stderr&#x3D;subprocess.PIPE,shell&#x3D;True)</span><br><span class="line">    return p.communicate()</span><br><span class="line">#获取厂商信息</span><br><span class="line">def getManufacturer():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep Manufacturer|awk -F&#39;: &#39; &#39;&#123;print $2&#125;&#39;&quot;</span><br><span class="line">    resp&#x3D;shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower().zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;null&quot;</span><br><span class="line">#获取主板sn</span><br><span class="line">def getSN():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -t 1|grep &#39;Serial Number&#39;|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        return resp[0].decode(&#39;UTF-8&#39;).lower()[0:4].zfill(4)</span><br><span class="line">    else:</span><br><span class="line">        return &quot;0000&quot;</span><br><span class="line">#获取设备UUID</span><br><span class="line">def getUUID():</span><br><span class="line">    cmd&#x3D;&quot;dmidecode -s system-uuid&quot;</span><br><span class="line">    resp &#x3D; shellutil(cmd)</span><br><span class="line">    uuid &#x3D; resp[0].decode(&#39;UTF-8&#39;)</span><br><span class="line">    match &#x3D; re.match(r&#39;(.*?)-(.*?)-(.*?)-(.*?)-(.*?)&#39;, uuid, re.M | re.I)</span><br><span class="line">    if resp[1] &#x3D;&#x3D; &quot;&quot; and match:</span><br><span class="line">        return resp[0].strip()</span><br><span class="line">    else:</span><br><span class="line">        return &quot;ERROR&quot;</span><br><span class="line">#获取默认路由网卡mac</span><br><span class="line">def getFirstIpMac():</span><br><span class="line">    resp&#x3D;[]</span><br><span class="line">    eth_cmd&#x3D;&quot;ip route|grep default|awk &#39;&#123;print $NF&#125;&#39;&quot;</span><br><span class="line">    eth_resp &#x3D; shellutil(eth_cmd)</span><br><span class="line">    if eth_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(0,eth_resp[0].strip().decode(&#39;UTF-8&#39;).lower().zfill(4))</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(0,&quot;lo&quot;.lower().zfill(4))</span><br><span class="line">    mac_cmd&#x3D;&#39;ifconfig eth2|egrep &quot;:[0-9a-z]*:&quot;|awk \&#39;&#123;print $2&#125;\&#39;&#39;</span><br><span class="line">    mac_resp&#x3D;shellutil(mac_cmd)</span><br><span class="line">    if mac_resp[1] &#x3D;&#x3D; &quot;&quot;:</span><br><span class="line">        resp.insert(1,mac_resp[0].decode(&#39;UTF-8&#39;).replace(&quot;:&quot;,&quot;&quot;)[4:])</span><br><span class="line">    else:</span><br><span class="line">        resp.insert(1,&quot;00000000&quot;)</span><br><span class="line">    return resp</span><br><span class="line">def main():</span><br><span class="line">    uuid_err_pre &#x3D; &quot;00000000&quot;</span><br><span class="line">    uuid&#x3D;getUUID()</span><br><span class="line">    route_eth&#x3D; getFirstIpMac()[0]</span><br><span class="line">    route_eth_mac&#x3D;getFirstIpMac()[1]</span><br><span class="line">    if uuid !&#x3D; &quot;ERROR&quot;:</span><br><span class="line">        print(uuid)</span><br><span class="line">    else:</span><br><span class="line">        fact&#x3D;getManufacturer()[0:4]</span><br><span class="line">        print(&#39;&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;-&#123;&#125;&#39;.format(uuid_err_pre,fact,getSN(),route_eth,route_eth_mac))</span><br><span class="line">if __name__ &#x3D;&#x3D; &#39;__main__&#39;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2020/12/14/linux-python%E7%94%9F%E6%88%90%E4%B8%BB%E6%9C%BA%E5%94%AF%E4%B8%80UUID/" data-id="ckio8h1ne00006s16e29d7qfd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/" rel="tag">python</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-mariadb-更改用户密码" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/12/08/mariadb-%E6%9B%B4%E6%94%B9%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81/" class="article-date">
@@ -505,106 +593,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-通过ssh隧道转发本地ssh" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/" class="article-date">
-  <time datetime="2020-11-14T12:18:41.000Z" itemprop="datePublished">2020-11-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/">通过ssh隧道转发本地ssh</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>实际场景，有A服务器，位于某内网环境，没有外网IP，外面无法SSH</p>
-<p>但我自己有比如阿里云上的一台服务器B，我想直接SSH A服务器，怎么办？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">B 服务器IP 101.198.*.*</span><br><span class="line">A 服务器执行</span><br><span class="line">#ssh -R 2201:0.0.0.0:22 -p 22 USERNAME@101.198.*.* -f -N</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/11/14/%E9%80%9A%E8%BF%87ssh%E9%9A%A7%E9%81%93%E8%BD%AC%E5%8F%91%E6%9C%AC%E5%9C%B0ssh/" data-id="ckhhotkf20005lk162nga79ti" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-etcd-查询数据" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time datetime="2020-11-14T12:07:25.000Z" itemprop="datePublished">2020-11-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/">etcd 查询数据</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>etcd2和etcd3是不兼容的，两者的api参数也不一样，详细请查看 etcdctl -h</p>
-<p>api2 使用方法<br> ETCDCTL_API=2 etcdctl ls /</p>
-<p>api3 使用方法<br> 从kubernetes 1.6开始，etcd集群使用version 3, 现在生产很多集群都是1.18的了。。。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#export ETCDCTL_API&#x3D;3</span><br><span class="line">#export ETCD_ENDPOINTS&#x3D;https:&#x2F;&#x2F;192.168.132.2:2379、</span><br><span class="line">#export ETCDCTL_CACERT&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;ca.pem</span><br><span class="line">#export ETCDCTL_CERT&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;etcd.pem</span><br><span class="line">#export ETCDCTL_KEY&#x3D;&#x2F;etc&#x2F;kubernetes&#x2F;ssl&#x2F;etcd-key.pem</span><br><span class="line">#etcdctl --endpoints&#x3D;$&#123;ETCD_ENDPOINTS&#125; --cacert&#x3D;$&#123;ETCDCTL_CACERT&#125; --cert&#x3D;$&#123;ETCDCTL_CERT&#125; --key&#x3D;$&#123;ETCDCTL_KEY&#125; get &#x2F; --prefix --keys-only&#x3D;true</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>查看某个具体的key的值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#etcdctl --endpoints&#x3D;$&#123;ETCD_ENDPOINTS&#125; --cacert&#x3D;$&#123;ETCDCTL_CACERT&#125; --cert&#x3D;$&#123;ETCDCTL_CERT&#125; --key&#x3D;$&#123;ETCDCTL_KEY&#125; get &#x2F;registry&#x2F;services&#x2F;endpoints&#x2F;default&#x2F;kubernetes --keys-only&#x3D;false</span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/11/14/etcd-%E6%9F%A5%E8%AF%A2%E6%95%B0%E6%8D%AE/" data-id="ckhhotkek0000lk16h5ouaoiq" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -642,7 +630,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -655,6 +643,14 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
+            <a href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/">虚拟化-numa架构讲解(1)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/">go-实用方法-判断字符串为uuid类型</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
           </li>
         
@@ -664,14 +660,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/">openstack-基于packer自动化build镜像</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/">openstack-兼容海光hygon服务器</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/25/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
           </li>
         
       </ul>

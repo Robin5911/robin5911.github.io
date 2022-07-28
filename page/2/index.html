@@ -79,6 +79,124 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-虚拟化-ovn入门到精通(四)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/" class="article-date">
+  <time datetime="2021-12-02T08:07:57.000Z" itemprop="datePublished">2021-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/">虚拟化-ovn入门到精通(四)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="OVN-L3-路由"><a href="#OVN-L3-路由" class="headerlink" title="OVN-L3 路由"></a>OVN-L3 路由</h2><p>前面我们已经将ovn二层网络打通，下面测试一下三层网关路由功能。</p>
+<p>拓扑图如下</p>
+<p><img src="/images/ovn/router-topo.png"></p>
+<h4 id="central"><a href="#central" class="headerlink" title="central"></a>central</h4><p>创建租户路由器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl lr-add router-tenant1</span><br></pre></td></tr></table></figure>
+
+<p>联通路由器router-tenant1到logicswitch_01</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">给路由器新增连接logicswitch_01的端口 router-ls01,对应的路由器端口IP地址是 172.16.250.1</span><br><span class="line">#ovn-nbctl lrp-add router-tenant1 router-ls01 02:d4:1d:8b:d9:8a 172.16.250.1&#x2F;24</span><br><span class="line">给交换机logicswitch_01新增连接路由器 router_tenant1的端口 logicswitch_01-router</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 logicswitch_01-router</span><br><span class="line">设置 端口logicswitch_01-router 类型是路由器</span><br><span class="line">#ovn-nbctl lsp-set-type logicswitch_01-router router</span><br><span class="line">设置 端口logicswitch_01-router 的mac是02:d5:1d:8b:d9:8a</span><br><span class="line">#ovn-nbctl lsp-set-addresses logicswitch_01-router 02:d4:1d:8b:d9:8a</span><br><span class="line"></span><br><span class="line">#ovn-nbctl lsp-set-options logicswitch_01-router router-port&#x3D;router-ls01</span><br></pre></td></tr></table></figure>
+
+<p>联通路由器router-tenant1到logicswitch_02</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">给路由器新增连接logicswitch_01的端口 router-ls02,对应的路由器端口IP地址是 172.16.251.1</span><br><span class="line">#ovn-nbctl lrp-add router-tenant1 router-ls02 02:d4:1d:8a:d9:8b 172.16.251.1&#x2F;24</span><br><span class="line">给交换机logicswitch_02新增连接路由器 router_tenant1的端口 logicswitch_02-router</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 logicswitch_02-router</span><br><span class="line">设置 端口logicswitch_02-router 类型是路由器</span><br><span class="line">#ovn-nbctl lsp-set-type logicswitch_02-router router</span><br><span class="line">设置 端口logicswitch_02-router 的mac是02:d3:1d:8a:d9:8b</span><br><span class="line">#ovn-nbctl lsp-set-addresses logicswitch_02-router 02:d4:1d:8a:d9:8b</span><br><span class="line"></span><br><span class="line">#ovn-nbctl lsp-set-options logicswitch_02-router router-port&#x3D;router-ls02</span><br></pre></td></tr></table></figure>
+
+<p>VPC 之间的路由已经联通<del>~</del></p>
+<p><img src="/images/ovn/ovn-40.png"></p>
+<p>接下来测试打通172.16.250.0/24 和 172.16.251.0/24</p>
+<h4 id="node"><a href="#node" class="headerlink" title="node"></a>node</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 route add default gw 172.16.250.1</span><br><span class="line">#ip netns exec ns11 route add default gw 172.16.251.1</span><br><span class="line"></span><br><span class="line">#ip netns exec ns2 route add default gw 172.16.250.1</span><br><span class="line">#ip netns exec ns12 route add default gw 172.16.251.1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-41.png"></p>
+<p><img src="/images/ovn/ovn-42.png"></p>
+<p>至此，已通过逻辑路由器，打通两个逻辑交换机下的两个VPC网络~</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/" data-id="cky1083mr000klg164mpw9984" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-虚拟化-ovn入门到精通(三)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/" class="article-date">
+  <time datetime="2021-12-02T07:04:02.000Z" itemprop="datePublished">2021-12-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/">虚拟化-ovn入门到精通(三)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="OVN-L2测试"><a href="#OVN-L2测试" class="headerlink" title="OVN-L2测试"></a>OVN-L2测试</h2><p>前面我们已经将ovn集群部署完成，下面测试一下二层网络的联通性</p>
+<p>定义逻辑网络:创建一个逻辑交换机，然后添加两个交换机端口，并为端口设置IP地址，测试二层联通性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#export vm1_mac&#x3D;02:d4:1d:8c:d9:8f</span><br><span class="line">#export vm2_mac&#x3D;02:d4:1d:8c:d9:8e</span><br><span class="line">#export vm1_ip&#x3D;172.16.250.11</span><br><span class="line">#export vm2_ip&#x3D;172.16.250.12</span><br><span class="line">------------------------------------------------------</span><br><span class="line">#export vm11_mac&#x3D;02:d4:1d:8c:d8:8f</span><br><span class="line">#export vm12_mac&#x3D;02:d4:1d:8c:d8:8e</span><br><span class="line">#export vm11_ip&#x3D;172.16.251.11</span><br><span class="line">#export vm12_ip&#x3D;172.16.251.12</span><br></pre></td></tr></table></figure>
+
+<h4 id="central节点"><a href="#central节点" class="headerlink" title="central节点"></a>central节点</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">交换机 01</span><br><span class="line">#ovn-nbctl ls-add logicswitch_01</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 ls1-vm1</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls1-vm1 $vm1_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls1-vm1 $vm1_mac</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_01 ls1-vm2</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls1-vm2 $vm2_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls1-vm2 $vm2_mac</span><br><span class="line">---------------------------------------------------------------------------------------</span><br><span class="line">交换机 02</span><br><span class="line">#ovn-nbctl ls-add logicswitch_02</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 ls2-vm11</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls2-vm11 $vm11_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls2-vm11 $vm11_mac</span><br><span class="line">#ovn-nbctl lsp-add logicswitch_02 ls2-vm12</span><br><span class="line">#ovn-nbctl lsp-set-addresses ls2-vm12 $vm12_mac</span><br><span class="line">#ovn-nbctl lsp-set-port-security ls2-vm12 $vm12_mac</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-4.png"></p>
+<p>伪造虚拟机: 通过创建网络命名空间，并在br-int上添加端口，然后将端口添加到命名空间，最后通过设置端口的MAC地址和网卡名完成和交换机端口的映射</p>
+<p><img src="/images/ovn/ovn-5.png"></p>
+<h5 id="node1节点-vm1"><a href="#node1节点-vm1" class="headerlink" title="node1节点(vm1)"></a>node1节点(vm1)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机01</span><br><span class="line">#ip netns add ns1</span><br><span class="line">#ovs-vsctl add-port br-int vm1 -- set interface vm1 type&#x3D;internal</span><br><span class="line">#ip link set vm1 netns ns1</span><br><span class="line">#ip netns exec ns1 ip link set vm1 address $vm1_mac</span><br><span class="line">#ip netns exec ns1 ip addr add $vm1_ip&#x2F;24 dev vm1</span><br><span class="line">#ip netns exec ns1 ip link set vm1 up</span><br><span class="line">#ovs-vsctl set Interface vm1 external_ids:iface-id&#x3D;ls1-vm1</span><br><span class="line">#ip netns exec ns1 ip addr show</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机02</span><br><span class="line">#ip netns add ns11</span><br><span class="line">#ovs-vsctl add-port br-int vm11 -- set interface vm11 type&#x3D;internal</span><br><span class="line">#ip link set vm11 netns ns11</span><br><span class="line">#ip netns exec ns11 ip link set vm11 address $vm11_mac</span><br><span class="line">#ip netns exec ns11 ip addr add $vm11_ip&#x2F;24 dev vm11</span><br><span class="line">#ip netns exec ns11 ip link set vm11 up</span><br><span class="line">#ovs-vsctl set Interface vm11 external_ids:iface-id&#x3D;ls2-vm11</span><br><span class="line">#ip netns exec ns11 ip addr show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-6.png"></p>
+<h5 id="node2节点-vm2"><a href="#node2节点-vm2" class="headerlink" title="node2节点(vm2)"></a>node2节点(vm2)</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机01</span><br><span class="line">#ip netns add ns2</span><br><span class="line">#ovs-vsctl add-port br-int vm2 -- set interface vm2 type&#x3D;internal</span><br><span class="line">#ip link set vm2 netns ns2</span><br><span class="line">#ip netns exec ns2 ip link set vm2 address $vm2_mac</span><br><span class="line">#ip netns exec ns2 ip addr add $vm2_ip&#x2F;24 dev vm2</span><br><span class="line">#ip netns exec ns2 ip link set vm2 up</span><br><span class="line">#ovs-vsctl set Interface vm2 external_ids:iface-id&#x3D;ls1-vm2</span><br><span class="line">#ip netns exec ns2 ip addr show</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">交换机02</span><br><span class="line">#ip netns add ns12</span><br><span class="line">#ovs-vsctl add-port br-int vm12 -- set interface vm12 type&#x3D;internal</span><br><span class="line">#ip link set vm12 netns ns12</span><br><span class="line">#ip netns exec ns12 ip link set vm12 address $vm12_mac</span><br><span class="line">#ip netns exec ns12 ip addr add $vm12_ip&#x2F;24 dev vm12</span><br><span class="line">#ip netns exec ns12 ip link set vm12 up</span><br><span class="line">#ovs-vsctl set Interface vm12 external_ids:iface-id&#x3D;ls2-vm12</span><br><span class="line">#ip netns exec ns12 ip addr show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-7.png"></p>
+<p><img src="/images/ovn/ovn-9.png"></p>
+<p><img src="/images/ovn/ovn-12.png"></p>
+<p><strong>交换机01喝交换机02下的二层网络已经连通 <del>~</del></strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/" data-id="cky1083mp000elg168krw71ww" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-虚拟化-ovn入门到精通(二)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/" class="article-date">
@@ -590,100 +708,6 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
 
 
   
-    <article id="post-openstack-ceph-auth创建账号" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" class="article-date">
-  <time datetime="2021-10-20T02:00:32.000Z" itemprop="datePublished">2021-10-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" data-id="ckuzbjk5f0000nk16ddql458h" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-小白解说之Docker容器入门" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" class="article-date">
-  <time datetime="2021-10-19T07:10:06.000Z" itemprop="datePublished">2021-10-19</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/">小白解说之Docker容器入门</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大家好，我是小白。下面由我给白白们讲解一下火热的容器技术Docker</p>
-<h4 id="Linux容器技术"><a href="#Linux容器技术" class="headerlink" title="Linux容器技术"></a>Linux容器技术</h4><p>Linux 容器LXC 是一个在单一 Linux 主机上提供多个隔离的 Linux 环境的操作系统级虚拟技术。不像虚拟机（VM），容器并不需要运行专用的访客guest操作系统。容器们共享宿主机的host操作系统内核，并使用访客操作系统的系统库来提供所需的功能。由于不需要专用的操作系统，因此容器要比虚拟器启动快得多。<br>容器借助 Linux 内核的 Namespaces、Apparmor、SELinux 情景模式profile、chroot 和 CGroup 等功能来提供类似于虚拟机的隔离环境。Linux 的安全模块可以确保正确地控制容器对宿主机和内核的访问，从而避免各种入侵活动。此外，在宿主机上可以运行不同的 Linux 发行版，只要它们运行在同样的 CPU 架构下。</p>
-<p>简单来说，容器技术就是基于Linux内核提供的一套进程隔离技术，提供的是一种基于各种 Linux 发行版创建容器镜像的方法、一套管理容器生命周期的 API、与该 API 交互的客户端工具、保存快照的功能、在宿主机之间迁移容器实例的能力，等等。</p>
-<h4 id="容器好在哪里"><a href="#容器好在哪里" class="headerlink" title="容器好在哪里"></a>容器好在哪里</h4><p>假设您在开发一个应用。您使用的是一台笔记本电脑，而且您的开发环境具有特定的配置。其他开发人员身处的环境配置可能稍有不同。您正在开发的应用不止依赖于您当前的配置，还需要某些特定的库、依赖项和文件。与此同时，您的企业还拥有标准化的开发和生产环境，有着自己的配置和一系列支持文件。您希望尽可能多在本地模拟这些环境，而不产生重新创建服务器环境的开销。因此，您要如何确保应用能够在这些环境中运行和通过质量检测，并且在部署过程中不出现令人头疼的问题，也无需重新编写代码和进行故障修复？答案就是使用容器。</p>
-<p>容器可以确保您的应用拥有必需的库、依赖项和文件，让您可以在生产中自如地迁移这些应用，无需担心会出现任何负面影响。实际上，您可以将容器镜像中的内容，视为 Linux 发行版的一个安装实例，因为其中完整包含 RPM 软件包、配置文件等内容。但是，安装容器镜像发行版，要比安装新的操作系统副本容易得多。这样可以避免危机，做到皆大欢喜。</p>
-<p>虽然这只是一个常见情况的示例，但在需要很高的可移植性、可配置性和隔离的情况下，我们可以利用 Linux 容器通过很多方式解决难题。Linux 容器的价值在于，它能加速开发并满足新出现的业务需求。在某些情形中（如通过 Apache Kafka 进行实时数据流处理），容器是不可或缺的，因为它们是提供应用所需的可扩展性的唯一途径。无论基础架构是在企业内部还是在云端，或者混合使用两者，容器都能满足您的需求。当然，选择正确的容器平台也同样重要。</p>
-<h4 id="Docker又是什么"><a href="#Docker又是什么" class="headerlink" title="Docker又是什么"></a>Docker又是什么</h4><p>Docker 技术使用 Linux 内核和内核功能（例如 Cgroups 和 namespaces）来分隔进程，以便各进程相互独立运行。这种独立性正是采用容器的目的所在；它可以独立运行多种进程、多个应用，更加充分地发挥基础设施的作用，同时保持各个独立系统的安全性。</p>
-<p>容器工具（包括 Docker）可提供基于镜像的部署模式。这使得它能够轻松跨多种环境，与其依赖程序共享应用或服务组。Docker 还可在这一容器环境中自动部署应用（或者合并多种流程，以构建单个应用）。</p>
-<p>此外，由于这些工具基于 Linux 容器构建，使得 Docker 既易于使用，又别具一格——它可为用户提供前所未有的高度应用程访问权限、快速部署以及版本控制和分发能力。</p>
-<p>Docker技术是否与传统的 Linux 容器相同？<br>否。Docker 技术最初是基于 LXC 技术构建（大多数人都会将这一技术与“传统的”Linux 容器联系在一起），但后来它逐渐摆脱了对这种技术的依赖。就轻量级 虚拟化 这一功能来看，LXC 非常有用，但它无法提供出色的开发人员或用户体验。除了运行容器之外，Docker 技术还具备其他多项功能，包括简化用于构建容器、传输镜像以及控制镜像版本的流程。</p>
-<p>Docker和container的主要区别在于，Docker是一个构建、运行和管理软件容器的平台，而container是一个轻量级软件，它提供操作系统虚拟化，以便在资源隔离的进程中运行应用程序及其依赖项。 容器是一种软件，它捆绑了自己的工具、库和配置文件。 在一个操作系统内核中可以运行多个容器。<br>特点：</p>
-<ol>
-<li>模块化<br>Docker 容器化方法非常注重在不停止整个应用的情况下，单独截取部分应用进行更新或修复的能力。除了这种基于微服务的方法，您还可以采用与面向服务的架构（SOA）类似的使用方法，在多个应用间共享进程。</li>
-<li>层和镜像版本控制<br>每个 Docker 镜像文件都包含多个层。这些层组合在一起，构成单个镜像。每当镜像发生改变时，就会创建一个新的镜像层。用户每次发出命令（例如 run 或 copy）时，都会创建一个新的镜像层。<br>Docker 重复使用这些层来构建新容器，借此帮助加快流程构建。镜像之间会共享中间变化，从而进一步提升速度、规模以及效率。版本控制是镜像层本身自带的能力。每次发生新的更改时，您大都会获得一个内置的更改日志，实现对容器镜像的全盘管控。</li>
-<li>回滚<br>回滚也许是层最值得一提的功能。每个镜像都拥有多个层。举例而言，如果您不喜欢迭代后的镜像版本，完全可以通过回滚，返回之前的版本。这一功能还支持敏捷开发方法，帮助持续实施集成和部署（CI/CD），使其在工具层面成为一种现实。</li>
-<li>快速部署<br>启动和运行新硬件、实施部署并投入使用，这在过去一般需要数天时间。投入的心力和成本往往也让人不堪重负。基于 Docker 的容器可将部署时间缩短到几秒。通过为每个进程构建容器，您可以快速将这些类似进程应用到新的应用程序中。而且，由于无需启动操作系统即可添加或移动容器，因此大幅缩短了部署时间。除此之外，得益于这种部署速度，您可以轻松无虞、经济高效地创建和销毁容器创建的数据。</li>
-</ol>
-<p>因此，Docker 技术是一种更加精细、可控、基于微服务的技术，可为企业提供更高的效率价值。</p>
-<h4 id="Docker蓝图"><a href="#Docker蓝图" class="headerlink" title="Docker蓝图"></a>Docker蓝图</h4><p>docker的主要目标是”Build,Ship and Run any App,Angwhere”,构建，运输，处处运行</p>
-<p>构建：做一个docker镜像<br>运输：docker pull<br>运行：启动一个容器<br>每一个容器，他都有自己的文件系统rootfs.</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" data-id="ckuzbjk5p0007nk169usm656a" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -721,7 +745,7 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
     </div>
   </div>
 
@@ -734,6 +758,14 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
       <ul>
         
           <li>
+            <a href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/">虚拟化-numa架构讲解(1)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/">go-实用方法-判断字符串为uuid类型</a>
+          </li>
+        
+          <li>
             <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
           </li>
         
@@ -743,14 +775,6 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
         
           <li>
             <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/">openstack-基于packer自动化build镜像</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/">openstack-兼容海光hygon服务器</a>
-          </li>
-        
-          <li>
-            <a href="/2022/01/25/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/">虚拟化-OVS-DPDK在CentOS7上的部署调试</a>
           </li>
         
       </ul>
