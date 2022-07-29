@@ -26,7 +26,7 @@ var _hmt = _hmt || [];
 <meta property="og:description" content="golang 当中操作 etcd 必须 go get go.etcd.io&#x2F;etcd&#x2F;clientv3但是会报错如下： github.com&#x2F;coreos&#x2F;etcd&#x2F;clientv3&#x2F;balancer&#x2F;pickerF:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\picker\err.go:37:">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-02-25T09:26:39.000Z">
-<meta property="article:modified_time" content="2022-02-25T09:28:48.096Z">
+<meta property="article:modified_time" content="2022-07-29T04:15:35.187Z">
 <meta property="article:author" content="Tonyzhang1989">
 <meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary">
@@ -105,6 +105,8 @@ var _hmt = _hmt || [];
         <p>golang 当中操作 etcd 必须 go get go.etcd.io/etcd/clientv3<br>但是会报错如下：</p>
 <h1 id="github-com-coreos-etcd-clientv3-balancer-picker"><a href="#github-com-coreos-etcd-clientv3-balancer-picker" class="headerlink" title="github.com/coreos/etcd/clientv3/balancer/picker"></a>github.com/coreos/etcd/clientv3/balancer/picker</h1><p>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\picker\err.go:37:44: undefined: balancer.PickOptions<br>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\picker\roundrobin_balanced.go:55:54: undefined: balancer.PickOptions</p>
 <h1 id="github-com-coreos-etcd-clientv3-balancer-resolver-endpoint"><a href="#github-com-coreos-etcd-clientv3-balancer-resolver-endpoint" class="headerlink" title="github.com/coreos/etcd/clientv3/balancer/resolver/endpoint"></a>github.com/coreos/etcd/clientv3/balancer/resolver/endpoint</h1><p>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\resolver\endpoint\endpoint.go:114:78: undefined: resolver.BuildOption<br>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\resolver\endpoint\endpoint.go:182:31: undefined: resolver.ResolveNowOption<br>大概是说原因是 google.golang.org/grpc 1.26 后的版本是不支持 clientv3 的。</p>
+<a id="more"></a>
+
 <p>也就是说要把这个改成 1.26 版本的就可以了。</p>
 <p>第一种方式：<br>具体操作方法是在 go.mod 里加上：</p>
 <p>replace google.golang.org/grpc =&gt; google.golang.org/grpc v1.26.0<br>或者<br>go mod edit -require=google.golang.org/grpc@v1.26.0<br>如下图所示：</p>

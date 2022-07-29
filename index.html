@@ -186,17 +186,11 @@ var _hmt = _hmt || [];
         <p>golang 当中操作 etcd 必须 go get go.etcd.io/etcd/clientv3<br>但是会报错如下：</p>
 <h1 id="github-com-coreos-etcd-clientv3-balancer-picker"><a href="#github-com-coreos-etcd-clientv3-balancer-picker" class="headerlink" title="github.com/coreos/etcd/clientv3/balancer/picker"></a>github.com/coreos/etcd/clientv3/balancer/picker</h1><p>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\picker\err.go:37:44: undefined: balancer.PickOptions<br>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\picker\roundrobin_balanced.go:55:54: undefined: balancer.PickOptions</p>
 <h1 id="github-com-coreos-etcd-clientv3-balancer-resolver-endpoint"><a href="#github-com-coreos-etcd-clientv3-balancer-resolver-endpoint" class="headerlink" title="github.com/coreos/etcd/clientv3/balancer/resolver/endpoint"></a>github.com/coreos/etcd/clientv3/balancer/resolver/endpoint</h1><p>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\resolver\endpoint\endpoint.go:114:78: undefined: resolver.BuildOption<br>F:\Go\pkg\mod\github.com\coreos\etcd@v3.3.22+incompatible\clientv3\balancer\resolver\endpoint\endpoint.go:182:31: undefined: resolver.ResolveNowOption<br>大概是说原因是 google.golang.org/grpc 1.26 后的版本是不支持 clientv3 的。</p>
-<p>也就是说要把这个改成 1.26 版本的就可以了。</p>
-<p>第一种方式：<br>具体操作方法是在 go.mod 里加上：</p>
-<p>replace google.golang.org/grpc =&gt; google.golang.org/grpc v1.26.0<br>或者<br>go mod edit -require=google.golang.org/grpc@v1.26.0<br>如下图所示：</p>
-<p>然后继续 go.etcd.io/etcd/clientv3 看是否还报错！</p>
-<p>如果不行那你就尝试下边的</p>
-<p>第二种方式：<br>更新 grpc 的版本为 1.26.0 版本试试看：</p>
-<p>go get -u -x google.golang.org/grpc@v1.26.0<br>下载完成后将 $GOPATH/pkg/mod/google.golang.org/grpc@v1.26.0 文件重命名为 grpc ，并放到 $GOPATH/src/google.golang.org/grpc 目录下</p>
-<p>=====================================================================</p>
-<p>现在你去编译自己的 go 文件的时候可能会报错：<br>undefined: grpc.SupportPackageIsVersion6 grpc.ClientConnInterface 的问题<br>这是由于 protoc 的 go 语言插件 protoc-gen-go 与 google.golang.org/grpc 版本不兼容所致，<br>因为 grpc 降了到了 v1.26.0，高版本 protoc-gen-go 编译出来的 your-module.pb.go 不兼容低版本的 grpc,<br>所以 protoc-gen-go 也要相应降级。<br>我使用二分法找到 protoc-gen-go 兼容 grpc v1.26.0 的最新版本是 v1.3.2.<br>知道对应版本之后接下来就简单了，运行下面的命令获取该版本并编译二进制文件 GOPATH/bin/protoc-gen-go</p>
-<p>go get github.com/golang/protobuf/protoc-gen-go@v1.3.2<br>重新编译 your.proto 生成 your-module.pb.go 文件，最后重新编译工程你会发现编译错误消失了</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
