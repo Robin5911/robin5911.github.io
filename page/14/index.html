@@ -1,755 +1,763 @@
 <!DOCTYPE html>
-<html>
+<html lang=zh>
 <head>
   <meta charset="utf-8">
   
-<script type="text/javascript">
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?ae11d5a19bdcf766771692d64967eeb1";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
   
-
   
-  <title>小白博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>Hexo</title>
   <meta name="description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:type" content="website">
-<meta property="og:title" content="小白博客">
+<meta property="og:title" content="小白技术博客">
 <meta property="og:url" content="https://blog.kubestack.cn/page/14/index.html">
-<meta property="og:site_name" content="小白博客">
+<meta property="og:site_name" content="小白技术博客">
 <meta property="og:description" content="云计算&#x2F;编程语言&#x2F;数据库&#x2F;容器化&#x2F;虚拟化">
 <meta property="og:locale">
 <meta property="article:author" content="Tonyzhang1989">
 <meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.kubestack.cn/page/14/index.html">
   
-    <link rel="alternate" href="/atom.xml" title="小白博客" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="小白技术博客" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="https://fonts.lug.ustc.edu.cn/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
   
   
 <link rel="stylesheet" href="/css/style.css">
 
-<meta name="google-site-verification" content="XkIGmrbqh5J83cILz5wx9StkgaQzjhGx0UfHTxlma00" />
-
+  
+  
+  
+  
 <meta name="generator" content="Hexo 5.2.0"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">小白博客</a>
-      </h1>
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
       
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.kubestack.cn"></form>
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
       </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="Search" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="Type something..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
     </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">Home</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">Archives</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">Categories</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">Tags</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">Repository</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">Books</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">Links</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">About</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
   </div>
 </header>
-      <div class="outer">
-        <section id="main">
+
   
-    <article id="post-kubernetes-架构刨析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/" class="article-date">
-  <time datetime="2020-10-14T09:29:46.000Z" itemprop="datePublished">2020-10-14</time>
-</a>
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">Board</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">19</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">35</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">8</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/ELK/" style="font-size: 13px;">ELK</a> <a href="/tags/Linux/" style="font-size: 13.73px;">Linux</a> <a href="/tags/django/" style="font-size: 13px;">django</a> <a href="/tags/docker/" style="font-size: 13.36px;">docker</a> <a href="/tags/elastic/" style="font-size: 13px;">elastic</a> <a href="/tags/etcd/" style="font-size: 13px;">etcd</a> <a href="/tags/git/" style="font-size: 13px;">git</a> <a href="/tags/go/" style="font-size: 13.91px;">go</a> <a href="/tags/grpc/" style="font-size: 13.09px;">grpc</a> <a href="/tags/iptables/" style="font-size: 13px;">iptables</a> <a href="/tags/kata/" style="font-size: 13.45px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 13px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 13.82px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 13.64px;">linux</a> <a href="/tags/mariadb/" style="font-size: 13px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.36px;">mysql</a> <a href="/tags/openstack/" style="font-size: 14px;">openstack</a> <a href="/tags/python/" style="font-size: 13.18px;">python</a> <a href="/tags/spdk/" style="font-size: 13.27px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 13px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 13px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 13px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 13px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 13px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 13px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 13px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 13.55px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 13px;">面试题</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Archive</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/" class="title">虚拟化-numa架构讲解(1)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-28T07:43:26.000Z" itemprop="datePublished">2022-07-28</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/" class="title">go-实用方法-判断字符串为uuid类型</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-07-27T02:41:41.000Z" itemprop="datePublished">2022-07-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/" class="title">go-etcd clientv3 包冲突问题</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-25T09:26:39.000Z" itemprop="datePublished">2022-02-25</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/" class="title">openstack-基于智能网卡的热迁移实现</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-16T03:09:01.000Z" itemprop="datePublished">2022-02-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/" class="title">openstack-基于packer自动化build镜像</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-02-14T01:57:22.000Z" itemprop="datePublished">2022-02-14</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
     
   </div>
-  <div class="article-inner">
+</aside>
+
+  
+  <main class="main" role="main">
+  
+  <div class="content article-list">
     
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/">kubernetes 架构刨析</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Kubernetes主要由以下几个核心组件组成：</p>
-<ul>
-<li>etcd保存了整个集群的状态；</li>
-<li>apiserver提供了资源操作的唯一入口，并提供认证、授权、访问控制、API注册和发现等机制；</li>
-<li>controller manager负责维护集群的状态，比如故障检测、自动扩展、滚动更新等；</li>
-<li>scheduler负责资源的调度，按照预定的调度策略将Pod调度到相应的机器上；</li>
-<li>kubelet负责维护容器的生命周期，同时也负责Volume（CVI）和网络（CNI）的管理；</li>
-<li>Container runtime负责镜像管理以及Pod和容器的真正运行（CRI）；</li>
-<li>kube-proxy负责为Service提供cluster内部的服务发现和负载均衡；</li>
-</ul>
-<p>除了核心组件，还有一些推荐的Add-ons：</p>
-<ul>
-<li>kube-dns负责为整个集群提供DNS服务</li>
-<li>Ingress Controller为服务提供外网入口</li>
-<li>Heapster提供资源监控</li>
-<li>Dashboard提供GUI</li>
-<li>Federation提供跨可用区的集群</li>
-<li>Fluentd-elasticsearch提供集群日志采集、存储与查询</li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/" data-id="ckgbuomck00037g164ph2dv3u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/" class="article-date">
+	  <time datetime="2020-10-14T09:29:46.000Z" itemprop="datePublished">Oct 14</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/kubernetes/" rel="tag">kubernetes</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/14/kubernetes-%E6%9E%B6%E6%9E%84%E5%88%A8%E6%9E%90/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-vmware-ovf转qcow2导入openstack" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/" class="article-date">
-  <time datetime="2020-10-09T08:53:44.000Z" itemprop="datePublished">2020-10-09</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/">vmware ovf转qcow2导入openstack</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>将vmware虚机Win2003 导出ovf格式，并导入openstack 镜像中使用</p>
-<p>文件列表：</p>
-<p>  Win2K3-disk1.vmdk</p>
-<p>  Win2K3.ovf</p>
-<p>  Win2K3.mf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#yum -y install qemu-img</span><br><span class="line">#openstack image create &quot;win2k3-fvm&quot; \</span><br><span class="line"> --file Win2K3-disk1.raw \</span><br><span class="line"> --disk-format raw --container-format bare \</span><br><span class="line"> --public --min-disk 50 \</span><br><span class="line"> --property hw_disk_bus&#x3D;virtio --property hw_scsi_model&#x3D;virtio-scsi \</span><br><span class="line"> --property hw_video_model&#x3D;qxl --property vm_mode&#x3D;hvm \</span><br><span class="line"> --property os_distro&#x3D;win2k3 \</span><br><span class="line"> --property os_type&#x3D;windows</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/" data-id="ckgbuomco000b7g16hewxhgl1" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/" class="article-date">
+	  <time datetime="2020-10-09T08:53:44.000Z" itemprop="datePublished">Oct 9</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/openstack/" rel="tag">openstack</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/09/vmware-ovf%E8%BD%ACqcow2%E5%AF%BC%E5%85%A5openstack/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-grpc-python-安装grpc" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" class="article-date">
-  <time datetime="2020-10-09T03:12:21.000Z" itemprop="datePublished">2020-10-09</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/">grpc python 安装grpc</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>基于CentOS 7 , Python 3.6 安装grpc模块</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#pip3 install --upgrade pip</span><br><span class="line"></span><br><span class="line">#pip3 install grpcio</span><br><span class="line">#pip3 install grpcio --ignore-installed</span><br><span class="line"></span><br><span class="line">#pip3 install grpcio-tools</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" data-id="ckg1ynecf0001v8167jbnf0md" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/" class="article-date">
+	  <time datetime="2020-10-09T03:12:21.000Z" itemprop="datePublished">Oct 9</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/grpc/" rel="tag">grpc</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/09/grpc-python-%E5%AE%89%E8%A3%85grpc/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-grpc-grpc简介" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/" class="article-date">
-  <time datetime="2020-10-09T03:02:20.000Z" itemprop="datePublished">2020-10-09</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/">grpc简介</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="一、GRPC-是什么？"><a href="#一、GRPC-是什么？" class="headerlink" title="一、GRPC 是什么？"></a>一、GRPC 是什么？</h1><p>gRPC，其实就是RPC框架的一种，前面带了一个g，代表是RPC中的大哥，龙头老大的意思，另外g也有global的意思，意思是全球化比较fashion，是一个高性能、开源和通用的 RPC 框架，面向服务端和移动端，基于 HTTP/2 设计, gRPC 支持 C++ Java Python Go Ruby C# Node.js PHP Dart 等语言。</p>
-<h2 id="RPC框架是什么？"><a href="#RPC框架是什么？" class="headerlink" title="RPC框架是什么？"></a>RPC框架是什么？</h2><p>RPC 框架说白了就是让你可以像调用本地方法一样调用远程服务提供的方法，而不需要关心底层的通信细节。简单地说就让远程服务调用更加简单、透明。<br>RPC包含了客户端（Client）和服务端（Server）</p>
-<p>常见的RPC框架有</p>
-<ol>
-<li>gRPC。谷歌出品</li>
-<li>Thrift。Apache出品</li>
-<li>Dubbo。阿里出品，也是一个微服务框架</li>
-</ol>
-<h2 id="gRPC的特性"><a href="#gRPC的特性" class="headerlink" title="gRPC的特性"></a>gRPC的特性</h2><p>看<a target="_blank" rel="noopener" href="https://grpc.io/">官方文档</a>的介绍，有以下4点特性：</p>
-<ol>
-<li>使用Protocal Buffers这个强大的结构数据序列化工具</li>
-<li>grpc可以跨语言使用</li>
-<li>安装简单，扩展方便（用该框架每秒可达到百万个RPC）</li>
-<li>基于HTTP2协议</li>
-</ol>
-<h2 id="gRPC使用流程"><a href="#gRPC使用流程" class="headerlink" title="gRPC使用流程"></a>gRPC使用流程</h2><p>gprc的使用流程一般是这样的：</p>
-<ol>
-<li>定义标准的proto文件</li>
-<li>生成标准代码</li>
-<li>服务端使用生成的代码提供服务</li>
-<li>客户端使用生成的代码调用服务</li>
-</ol>
-<h1 id="二、Protocol-Buffers是什么？"><a href="#二、Protocol-Buffers是什么？" class="headerlink" title="二、Protocol Buffers是什么？"></a>二、Protocol Buffers是什么？</h1><p>谷歌开源的一种结构数据序列化的工具，比方说JSON、XML也是结构数据序列化的工具，不同的是，</p>
-<ol>
-<li>Protocol Buffers序列化后的数据是不可读的，因为是二进制流</li>
-<li>使用Protocol Buffer需要事先定义数据的格式(.proto 协议文件)，还原一个序列化之后的数据需要使用到这个数据格式</li>
-<li>Protocol Buffer 比 XML、JSON快很多，因为是基于二进制流，比字符串更省带宽，传输速度快<br>Protocol Buffer语法：查看<a target="_blank" rel="noopener" href="https://developers.google.com/protocol-buffers/docs/proto3">官方文档</a></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/" data-id="ckg1ynec90000v816dmrk73rj" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/" class="article-date">
+	  <time datetime="2020-10-09T03:02:20.000Z" itemprop="datePublished">Oct 9</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/grpc/" rel="tag">grpc</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/09/grpc-grpc%E7%AE%80%E4%BB%8B/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-linux-定位流量过高进程" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
-  <time datetime="2020-10-09T02:05:32.000Z" itemprop="datePublished">2020-10-09</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位流量过高进程</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>服务器流量过高，需要定位具体哪个进程/服务将流量跑高</p>
-<p>定位工具：iftop/nethogs/iptraf</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#iftop -P -i eth2 -N</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" data-id="ckg1ynecq0006v8168pnkbicj" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
+	  <time datetime="2020-10-09T02:05:32.000Z" itemprop="datePublished">Oct 9</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Linux/" rel="tag">Linux</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8D%E6%B5%81%E9%87%8F%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-linux-定位IO过高进程" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
-  <time datetime="2020-10-09T01:54:02.000Z" itemprop="datePublished">2020-10-09</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/">linux 定位IO过高进程</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?c0c97dd3c86f2db4668210a512b92762";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
-
-<p>操作系统IO过高，可以通过基础工具 top/iostat 查看</p>
-<ol>
-<li><p>通过 top 的 %cpu 的wa（wait）指标</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#top</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<ol start="2">
-<li><p>iostat 的%util 指标</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#iostat -dx 1</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<p>如何定位具体哪个进程/服务造成io过高呢？</p>
-<ol>
-<li><p>最简单的可以通过 iotop 定位， 通过IO百分比定位进程</p>
-</li>
-<li><p>通过判断进程是 D状态 定位</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for x in &#96;seq 1 1 10&#96;; do ps -eo state,pid,cmd | grep &quot;^D&quot;; echo &quot;----&quot;; sleep 5; done</span><br></pre></td></tr></table></figure>
-
-<p>ps 进程状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">PROCESS STATE CODES </span><br><span class="line">    D uninterruptible sleep (usually IO) </span><br><span class="line">    R running or runnable (on run queue) </span><br><span class="line">    S interruptible sleep (waiting for an event to complete) </span><br><span class="line">    T stopped, either by a job control signal or because it is being traced. </span><br><span class="line">    W paging (not valid since the 2.6.xx kernel) </span><br><span class="line">    X dead (should never be seen) </span><br><span class="line">    Z defunct (&quot;zombie&quot;) process, terminated but not reaped by its parent.</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>定位哪个文件造成IO过高，可以通过 lsof 或者 pt-ioprofile 跟踪进程pid来继续定位</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" data-id="ckg1lssot0000hc1600955y6u" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/" class="article-date">
+	  <time datetime="2020-10-09T01:54:02.000Z" itemprop="datePublished">Oct 9</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/Linux/" rel="tag">Linux</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/10/09/linux-%E5%AE%9A%E4%BD%8DIO%E8%BF%87%E9%AB%98%E8%BF%9B%E7%A8%8B/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-容器-linux-namespace及网络" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" class="article-date">
-  <time datetime="2020-09-30T09:23:26.000Z" itemprop="datePublished">2020-09-30</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/">容器虚拟化 linux namespace及虚拟网卡/路由网络</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>网络命名空间<br>在 Linux 中，网络名字空间可以被认为是隔离的拥有单独网络栈（网卡、路由转发表、iptables）的环境。网络名字空间经常用来隔离网络设备和服务，只有拥有同样网络名字空间的设备，才能看到彼此。</p>
-<p>从逻辑上说，网络命名空间是网络栈的副本，有自己的网络设备、路由选择表、邻接表、Netfilter表、网络套接字、网络procfs条目、网络sysfs条目和其他网络资源。</p>
-<p>从系统的角度来看，当通过clone()系统调用创建新进程时，传递标志CLONE_NEWNET将在新进程中创建一个全新的网络命名空间。</p>
-<p>从用户的角度来看，我们只需使用工具ip（package is iproute2）来创建一个新的持久网络命名空间。</p>
-<p>创建netns<br>查看是否存在命名空间：ip netns list</p>
-<p>若报错，需要更新系统内核，以及 ip 工具程序。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">列出网卡</span><br><span class="line">#ip netns list</span><br><span class="line">添加命名空间</span><br><span class="line">#ip netns add ns1</span><br></pre></td></tr></table></figure>
-
-<p>创建新的虚拟网卡：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link add veth0 type veth peer name veth1</span><br></pre></td></tr></table></figure>
-
-<p>同时创建veth0和veth1两个虚拟网卡<br>这个时候这两个网卡还都属于“default”或“global”命名空间，和物理网卡一样。<br>把其中一个网卡转移到命名空间ns1中：ip link set veth1 netns ns1</p>
-<p>验证：ip netns exec ns1 ip link list<br>删除：ip netns exec ns1 ip link del veth1</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ip link set veth1 netns ns1</span><br></pre></td></tr></table></figure>
-
-<p>配置命名空间中的端口：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip addr add 10.1.1.100&#x2F;24 dev veth1</span><br><span class="line">#ip netns exec ns1 ip link set veth1 up</span><br><span class="line">#ip netns exec ns1 ip link set lo up</span><br></pre></td></tr></table></figure>
-
-<p>配置宿主机上网卡ip：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ip addr add 10.1.1.101&#x2F;24 dev veth0</span><br><span class="line">#ip link set veth0 up</span><br></pre></td></tr></table></figure>
-<p>此时在ns1中ping自己10.1.1.100能通： (掩码都是24,网络在一个二层内)<br>ip netns exec ns1 ping 10.1.1.100<br>PING 10.1.1.100 (10.1.1.100) 56(84) bytes of data.<br>64 bytes from 10.1.1.100: icmp_seq=1 ttl=64 time=0.058 ms</p>
-<p>但还不能ping通10.1.1.101，因为ns1中未设置路由。<br><img src="../images/2020-09-30_17h44_36.png"><br>设置命名空间路由<br>设置默认路由</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ip route add default via 10.1.1.100</span><br><span class="line">#ip netns exec ns1 ip route show</span><br><span class="line">default via 10.1.1.100 dev veth1</span><br></pre></td></tr></table></figure>
-<p>此时能够ping通主机：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping 10.1.1.101</span><br><span class="line">PING 10.1.1.2 (10.1.1.101) 56(84) bytes of data.</span><br><span class="line">64 bytes from 10.1.1.101: icmp_seq&#x3D;1 ttl&#x3D;64 time&#x3D;0.086 ms</span><br></pre></td></tr></table></figure>
-
-<p>使能IP转发<br>但是到了这里依旧还不够，ns1命名空间中已经可以联通主机上的网络，但是依旧连不同主机以外的外部网络。这个时候必须在host主机上启动转发，并且在iptables中设置伪装。</p>
-<p>Linux系统的IP转发的意思是，当Linux主机存在多个网卡的时候，允许一个网卡的数据包转发到另外一张网卡；在linux系统中默认禁止IP转发功能，可以打开如下文件查看，如果值为0说明禁止进行IP转发：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cat &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward：</span><br><span class="line"></span><br><span class="line">#使能ip转发</span><br><span class="line"></span><br><span class="line">echo 1 &gt; &#x2F;proc&#x2F;sys&#x2F;net&#x2F;ipv4&#x2F;ip_forward</span><br></pre></td></tr></table></figure>
-<p>#刷新forward规则<br>iptables -F FORWARD<br>iptables -t nat -F</p>
-<p>#刷新nat规则<br>iptables -t nat -L -n</p>
-<p>#使能IP伪装<br>iptables -t nat -A POSTROUTING -s 10.1.1.0/255.255.255.0 -o ens32 -j MASQUERADE # ens32连接外网<br><img src="../images/2020-09-30_17h55_58.png"><br>#允许veth0和ens32之间的转发<br>iptables -A FORWARD -i ens32 -o veth0 -j ACCEPT<br>iptables -A FORWARD -o ens32 -i veth0 -j ACCEPT</p>
-<p>使能IP伪装这条语句，添加了一条规则到NAT表的POSTROUTING链中，对于源IP地址为10.1.1.0网段的数据包，用ens32网口的IP地址替换并发送。<br>iptables -A FORWARD这两条语句使能物理网口ens32和veth0之间的数据转发<br>总结<br>Linux网络命名空间提供了强大的虚拟化功能，使用得当能够达到事半功倍的效果。</p>
-<p>本文简要介绍了Linux提供的6种命名空间，对命名空间的作用和使用场景作了详细的介绍。</p>
-<p>着重对Linux网络命名空间进行了讲解，包括命名空间的创建、使用，与主机通信以及与外部网络的连接等。</p>
-<p>对于一般的应用而言，掌握网络命名空间的创建、使用、ip命令等就能顺当使用命名空间了。</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" data-id="ckfp8dl5e000jpg16b1q5glwf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/" class="article-date">
+	  <time datetime="2020-09-30T09:23:26.000Z" itemprop="datePublished">Sep 30</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/linux/" rel="tag">linux</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/09/30/%E5%AE%B9%E5%99%A8-linux-namespace%E5%8F%8A%E7%BD%91%E7%BB%9C/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-django-3-0-启用swagger" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" class="article-date">
-  <time datetime="2020-09-30T08:34:36.000Z" itemprop="datePublished">2020-09-30</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/">django 3.0 使用swagger</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?affcd4898fc23124d935a5a4f09bf4b2";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-<p>以前我们熟知的swaggger已经不再支持 django 3.0，可以使用 drf_yasg<br>支持如下：</p>
-<p>Django Rest Framework: 3.8, 3.9, 3.10, 3.11<br>Django: 1.11, 2.2, 3.0<br>Python: 2.7, 3.6, 3.7, 3.8</p>
-<p>安装drf_yasg</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -U drf-yasg</span><br></pre></td></tr></table></figure>
-<p>settings.py 开启app</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS &#x3D; [</span><br><span class="line">   ...</span><br><span class="line">   &#39;drf_yasg&#39;,</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>根 url.py</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">from rest_framework import permissions</span><br><span class="line">from drf_yasg.views import get_schema_view</span><br><span class="line">from drf_yasg import openapi</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">schema_view &#x3D; get_schema_view(</span><br><span class="line">   openapi.Info(</span><br><span class="line">      title&#x3D;&quot;Snippets API&quot;,</span><br><span class="line">      default_version&#x3D;&#39;v1&#39;,</span><br><span class="line">      description&#x3D;&quot;Test description&quot;,</span><br><span class="line">      terms_of_service&#x3D;&quot;https:&#x2F;&#x2F;www.google.com&#x2F;policies&#x2F;terms&#x2F;&quot;,</span><br><span class="line">      contact&#x3D;openapi.Contact(email&#x3D;&quot;contact@snippets.local&quot;),</span><br><span class="line">      license&#x3D;openapi.License(name&#x3D;&quot;BSD License&quot;),</span><br><span class="line">   ),</span><br><span class="line">   public&#x3D;True,</span><br><span class="line">   permission_classes&#x3D;(permissions.AllowAny,),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">urlpatterns &#x3D; [</span><br><span class="line">   url(r&#39;^swagger(?P&lt;format&gt;\.json|\.yaml)$&#39;, schema_view.without_ui(cache_timeout&#x3D;0), name&#x3D;&#39;schema-json&#39;),</span><br><span class="line">   url(r&#39;^swagger&#x2F;$&#39;, schema_view.with_ui(&#39;swagger&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-swagger-ui&#39;),</span><br><span class="line">   url(r&#39;^redoc&#x2F;$&#39;, schema_view.with_ui(&#39;redoc&#39;, cache_timeout&#x3D;0), name&#x3D;&#39;schema-redoc&#39;),</span><br><span class="line">   ...</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-<p>访问/swagger 看一下吧 </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" data-id="ckfp8dl580009pg169tgxf6dl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/django/" rel="tag">django</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/" class="article-date">
+	  <time datetime="2020-09-30T08:34:36.000Z" itemprop="datePublished">Sep 30</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/django/" rel="tag">django</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/09/30/django-3-0-%E5%90%AF%E7%94%A8swagger/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-glance-镜像导入" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" class="article-date">
-  <time datetime="2020-09-29T14:26:42.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/">glance 镜像导入</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基于rbd存储, 上传glance镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">openstack image create &quot;CentOS 7.6 64bit&quot; \</span><br><span class="line"> --disk-format raw --container-format bare \</span><br><span class="line"> --public --min-disk 50 \</span><br><span class="line"> --property hw_disk_bus&#x3D;scsi --property hw_scsi_model&#x3D;virtio-scsi \</span><br><span class="line"> --property hw_video_model&#x3D;qxl --property vm_mode&#x3D;hvm \</span><br><span class="line"> --property os_distro&#x3D;centos \</span><br><span class="line"> --property os_type&#x3D;linux \</span><br><span class="line"> --property hw_qemu_guest_agent&#x3D;yes</span><br></pre></td></tr></table></figure>
-
-<p>#rbd -p sata_pool1 import –image-format 2 CentOS76.raw</p>
-<p>#rbd -p sata_pool1 snap create –image  CentOS76.raw –snap snap  </p>
-<p>#rbd -p sata_pool1 snap protect –image  CentOS76.raw –snap snap</p>
-<p>#glance location-add –url rbd://$ceph_fsid/sata_pool1/CentOS76.raw/snap $image_uuid</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" data-id="ckfp8dl540005pg16enu18g1f" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/" class="article-date">
+	  <time datetime="2020-09-29T14:26:42.000Z" itemprop="datePublished">Sep 29</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/openstack/" rel="tag">openstack</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/09/29/glance-%E9%95%9C%E5%83%8F%E5%AF%BC%E5%85%A5/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-    <article id="post-go-goproxy代理" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" class="article-date">
-  <time datetime="2020-09-29T14:23:55.000Z" itemprop="datePublished">2020-09-29</time>
-</a>
     
-  </div>
-  <div class="article-inner">
+      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+  <div class="article-header">
     
-    
-      <header class="article-header">
-        
   
     <h1 itemprop="name">
       <a class="article-title" href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/">go goproxy代理</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> In Linux or macOS, you can execute the below commands. </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Enable the go modules feature</span><br><span class="line">export GO111MODULE&#x3D;on</span><br><span class="line"># Set the GOPROXY environment variable</span><br><span class="line">export GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io</span><br></pre></td></tr></table></figure>
-
-<p>Or, write it into the <code>.bashrc</code> or <code>.bash_profile</code> file.</p>
-<p>In Windows, you can execute the below commands.</p>
-<p>PowerShell Copy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Enable the go modules feature</span><br><span class="line">$env:GO111MODULE&#x3D;&quot;on&quot;</span><br><span class="line"># Set the GOPROXY environment variable</span><br><span class="line">$env:GOPROXY&#x3D;&quot;https:&#x2F;&#x2F;goproxy.io&quot;</span><br></pre></td></tr></table></figure>
-
-<p>Now, when you build and run your applications, go will fetch dependencies via goproxy.io. See more information in the <a target="_blank" rel="noopener" href="https://github.com/goproxyio/goproxy">goproxy repository</a>.</p>
-<p>If your Go version &gt;= 1.13, the GOPRIVATE environment variable controls which modules the go command considers to be private (not available publicly) and should therefore not use the proxy or checksum database. For example:</p>
-<p>Go version &gt;= 1.13 Copy</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">go env -w GOPROXY&#x3D;https:&#x2F;&#x2F;goproxy.io,direct</span><br><span class="line"># Set environment variable allow bypassing the proxy for selected modules</span><br><span class="line">go env -w GOPRIVATE&#x3D;*.corp.example.com</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" data-id="ckfp8dl5c000gpg169sii8jcg" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
   </div>
   
+  <p class="article-meta">
+    <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/" class="article-date">
+	  <time datetime="2020-09-29T14:23:55.000Z" itemprop="datePublished">Sep 29</time>
+	</a>
+</span>
+    
+    
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/go/" rel="tag">go</a>
+  </span>
+
+
+    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/09/29/go-goproxy%E4%BB%A3%E7%90%86/#comments" class="article-comment-link">Comments</a></span>
+    
+  </p>
 </article>
 
-
-  
-
-
-  <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/13/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/12/">12</a><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/15/">Next &amp;raquo;</a>
-  </nav>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 17.27px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 13.64px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19.09px;">go</a> <a href="/tags/grpc/" style="font-size: 10.91px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 14.55px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18.18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 16.36px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 13.64px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 11.82px;">python</a> <a href="/tags/spdk/" style="font-size: 12.73px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 15.45px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
-    </div>
   </div>
 
   
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
-    </div>
-  </div>
-
-
-  
+    <nav class="bar bar-footer clearfix" data-stick-bottom>
+        <div class="bar-inner">
+        <ul class="pager pull-left">
+            
+            <li class="prev">
+                <a href="/page/13/">
+                    <i class="icon icon-angle-left"></i>
+                    Prev
+                </a>
+            </li>
+            
+            
+            <li class="next">
+                <a href="/page/15/">
+                    Next
+                    <i class="icon icon-angle-right"></i>
+                </a>
+            </li>
+            
+        </ul>
+            <div class="total-article bar-right">Page 14 of 15</div>
+        </div>
+    </nav>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/">虚拟化-numa架构讲解(1)</a>
-          </li>
-        
-          <li>
-            <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/">go-实用方法-判断字符串为uuid类型</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/">openstack-基于智能网卡的热迁移实现</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/">openstack-基于packer自动化build镜像</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
+ 
+</main>
 
-  
-</aside>
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
         
-      </div>
-      <footer id="footer">
-  
-  <div class="outer" style="text-align:center;color:white;" >
-    <div id="footer-info" class="inner">
-      <!--2022 Tonyzhang1989<br>-->
-       <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2020043539号-1</a>
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
     </div>
-  </div>
 </footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
 
-<script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/js/plugin.min.js"></script>
 
 
-  
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-
-  
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script src="/js/application.js"></script>
 
 
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
 
 
-<script src="/js/script.js"></script>
 
 
 
 
-  </div>
+   
+
+
+
+
+
+
+
+
+
 </body>
 </html>
