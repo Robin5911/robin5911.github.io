@@ -59,9 +59,11 @@ var _hmt = _hmt || [];
       <nav id="main-nav">
         <a id="main-nav-toggle" class="nav-icon"></a>
         
-          <a class="main-nav-link" href="/">Home</a>
+          <a class="main-nav-link" href="/">首页</a>
         
-          <a class="main-nav-link" href="/archives">Archives</a>
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
         
       </nav>
       <nav id="sub-nav">
@@ -78,6 +80,83 @@ var _hmt = _hmt || [];
 </header>
       <div class="outer">
         <section id="main">
+  
+    <article id="post-虚拟化-ovn入门到精通(五)-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" class="article-date">
+  <time datetime="2021-12-03T03:21:39.000Z" itemprop="datePublished">2021-12-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="OVN-L3-网关连接外部网络"><a href="#OVN-L3-网关连接外部网络" class="headerlink" title="OVN-L3 网关连接外部网络"></a>OVN-L3 网关连接外部网络</h2><h4 id="1-网关联通"><a href="#1-网关联通" class="headerlink" title="1. 网关联通"></a>1. 网关联通</h4><p>参考网上，TOPO是这么个意思~</p>
+<p><img src="/images/ovn/OVN-network-fig-2.png"></p>
+<p>正如上面所看到的，我们添加了以下新组件：</p>
+<ul>
+<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
+</ul>
+<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层, NAT出去<del>~</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">     | eth1 |  Physical Network</span><br><span class="line">     ----------</span><br><span class="line">          |</span><br><span class="line">      ____|_____</span><br><span class="line">     |  bridge  |  br-ex 192.168.0.100</span><br><span class="line">      ----------</span><br><span class="line">         | mapping</span><br><span class="line">      outside(sw)</span><br><span class="line">         |                port: tenant1-outside &lt;192.168.0.101&#x2F;24&gt;                               </span><br><span class="line">      router-tenant1(dr)  port: tenant1-localnet &lt;172.16.250.1&#x2F;24，172.16.251.1&#x2F;24&gt;</span><br><span class="line">     &#x2F;        \</span><br><span class="line">  ls01(sw)    ls02(sw)</span><br><span class="line">  &#x2F;  |        &#x2F;  \</span><br><span class="line">vm1 vm2   vm11 vm12</span><br></pre></td></tr></table></figure>
+
+<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，相当于是集中式的网络节点吧）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-50.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;edge1 options:classis&#x3D;32209610-88c9-495e-ab88-134923afea59</span><br></pre></td></tr></table></figure>
+
+<p>创建outside交换机用于连接外网和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器</p>
+<ol>
+<li>联通路由器tenant1到逻辑交换机outside上</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/images/ovn/ovn-61.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># create new port on router &#39;tenant1&#39;</span><br><span class="line">ovn-nbctl lrp-add router-tenant1 tenant1-outside 02:0a:7f:18:01:02 192.168.0.101&#x2F;24</span><br><span class="line"># set gateway chassis(通过ovn-sbctl show 选取central节点作为vtep网关节点)</span><br><span class="line">ovn-nbctl lrp-set-gateway-chassis tenant1-outside fda80787-897d-40af-811c-2c9f7caedb3b</span><br><span class="line"></span><br><span class="line"># create new logical switch and connect it to &#39;router0&#39;</span><br><span class="line">ovn-nbctl ls-add outside</span><br><span class="line">ovn-nbctl lsp-add outside outside-tenant1</span><br><span class="line">ovn-nbctl lsp-set-type outside-tenant1 router</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-tenant1 02:0a:7f:18:01:02</span><br><span class="line">ovn-nbctl lsp-set-options outside-tenant1 router-port&#x3D;tenant1-outside</span><br><span class="line"># ovn-nbctl lsp-set-options outside-tenant1  nat-addresses&#x3D;router router-port&#x3D;tenant1-outside</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建ovs网桥br-ex，并关联逻辑交换机outside</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># create localnet port on &#39;outside&#39;. set the network name to &quot;phynet&quot;</span><br><span class="line">ovn-nbctl lsp-add outside outside-localnet</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-localnet unknown</span><br><span class="line">ovn-nbctl lsp-set-type outside-localnet localnet</span><br><span class="line">ovn-nbctl lsp-set-options outside-localnet network_name&#x3D;phynet1</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在central节点上创建ovs网桥br-ex，然后将eth1挂到ovs网桥上<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># create a bridge , then mapping outside port</span><br><span class="line">ovs-vsctl add-br br-ex</span><br><span class="line">ovs-vsctl set Open_vSwitch . external-ids:ovn-bridge-mappings&#x3D;phynet1:br-ex</span><br><span class="line"></span><br><span class="line"># add nic eth1</span><br><span class="line">ovs-vsctl add-port br-ex eth1</span><br></pre></td></tr></table></figure>
+给 central节点br-ex 配置ip测试联通<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ifconfig br-ex 192.168.0.100&#x2F;24</span><br><span class="line">#ip link set br-ex up</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.101</span><br><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.100</span><br><span class="line">结果发现 虚机能联通 192.168.0.101，确不能联通192.168.0.100</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>通过snat实现访问外网。通过dnat_and_snat实现fip<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># snat 连外网</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;snat&quot; logical_ip&#x3D;172.16.250.0&#x2F;24 external_ip&#x3D;192.168.0.101 -- add logical_router router-tenant1 nat @nat</span><br><span class="line"># fip</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;dnat_and_snat&quot; logical_ip&#x3D;172.16.250.11 external_ip&#x3D;192.168.0.102 -- add logical_router router-tenant1 nat @nat</span><br></pre></td></tr></table></figure>
+<img src="/images/ovn/ovn-62.png"><br><img src="/images/ovn/ovn-63.png"></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" data-id="cky1083ms000mlg1689qt47i9" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
   
     <article id="post-虚拟化-ovn入门到精通(四)" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
@@ -649,70 +728,11 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
 
 
   
-    <article id="post-小白解说之Docker高级用法" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" class="article-date">
-  <time datetime="2021-10-25T01:52:03.000Z" itemprop="datePublished">2021-10-25</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/">小白解说之Docker高级用法</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大家好，我是小白。上文中给白白们讲解了docker的入门知识，今天讲解一下docker的干活，常规以及高级用法吧。</p>
-<p>下面以自定义启动一台nginx server为例为大家延时一下docker的魅力吧~<br>一、镜像使用<br>镜像是 Docker 的三大组件之一。<br>Docker 运行容器前需要本地存在对应的镜像，如果镜像不存在本地，Docker 会从镜像仓库下载（默认是 Docker Hub 公共注册服务器中的仓库），我们也可以搭建一个本地的镜像仓库比如docker registry或者harbor等。<br>默认社区docker hub已经提供了很丰富的镜像，比如直接docker pull nginx 即可，这里以自定义diy一下nginx镜像为例尝试一下吧。</p>
-<p>下载镜像</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#docker pull centos:7</span><br></pre></td></tr></table></figure>
-<p>使用Dockerfile自定义build镜像<br>#vim nginx.dockerfile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM centos:7</span><br><span class="line">#使用aliyun repo源</span><br><span class="line">RUN curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo</span><br><span class="line">RUN curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;epel.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;epel-7.repo</span><br><span class="line">RUN yum -y install nginx</span><br><span class="line">#定义向外暴露的端口号,多个端口用空格做间隔,启动容器的时候&quot;-p&quot;需要使用此端向外端映射.</span><br><span class="line">EXPOSE 80&#x2F;tcp 443&#x2F;tcp</span><br><span class="line">#定义前台运行的命令,每个Docker只能有一条，如果定义了多条&quot;CMD&quot;指令那么最后一条CMD指令会覆盖之前的(即只有最后一条CMD被执行).</span><br><span class="line">CMD [ &quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot; ]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>#docker build -t mynginx:latest -f nginx.dockerfile .</p>
-<p>二、数据存储<br>通常情况下，我们是不会在容器中存储数据的。docker有个概念叫数据卷volume, 我们会挂载一个主机的文件夹作为数据卷到容器中去，该数据卷可以被许多需要访问的容器访问得到。数据卷可以将本地的磁盘数据和docker容器链接起来，使用容器的应用加载本地的数据，这样就很方便我们的开发。</p>
-<p>而且可以保持数据持久化，当将容器删除时，数据不会丢失。，同时也增强来应用的可移植性（不改变容器配置）。</p>
-<p>Docker内部以及容器之间管理数据，在容器中管理数据主要有两种方式(挂载宿主机目录或挂载docker volume的方式)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-v&#x3D;[]:                 Create a bind mount with: [host-dir]:[container-dir]:[rw|ro].</span><br><span class="line">                       If &quot;container-dir&quot; is missing, then docker creates a new volume.</span><br><span class="line">--volumes-from&#x3D;&quot;&quot;:     Mount all volumes from the given container(s)</span><br></pre></td></tr></table></figure>
-<p>创建volume<br>#docker volume create data</p>
-<p>挂载volume使用<br>#docker *<strong>* -v data:/usr/share/nginx/html ***</strong></p>
-<p>三、网络相关<br>安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络）、 none 、host<br>我们在使用docker run创建Docker容器时，可以用 –net 选项指定容器的网络模式，Docker可以有以下4种网络模式：<br>host模式：使用 –net=host 指定。<br>none模式：使用 –net=none 指定。<br>bridge模式：使用 –net=bridge 指定，默认设置。<br>container模式：使用 –net=container:NAME_or_ID 指定。</p>
-<p>四、资源限制<br>默认情况下，容器是没有资源限制的，它会尽可能地使用宿主机能够分配给它的资源。Docker提供了一种控制分配多少量的内存、CPU或阻塞I/O给一个容器的方式，即通过在docker run或docker create命令时设置运行时配置的标志。</p>
-<ol>
-<li>限制内存使用<br>在Docker中可以强行限制容器的资源使用的限制，即只允许容器使用不超过给定数量的系统内存或其他软限制。下面介绍几个最常用的选项，我们可以在docker run或docker create创建容器时指定，用以限制容器的资源使用限制。</li>
-<li>限制CPU使用<br>默认情况下，每个容器对主机CPU周期的访问权限是不受限制的。我们可以设置各种约束来限制给定容器访问主机的CPU周期。大多数用户使用和配置CFS调度程序（默认）或实时调度程序。下面介绍几个常用的选项，用于配置默认的CFS调度程序，以限制容器对于CPU的使用。</li>
-</ol>
-<p>五、示例<br>使用制作的nginx 镜像，对外提供WEB服务吧~</p>
-<p>创建volume用于保存网页数据<br>#docker volume create nginx_code<br>#echo ‘my web’ &gt; /var/lib/docker/volumes/nginx_code/_data/index.html<br>使用默认网络，并转发80端口到宿主机80端口，-d 后台运行<br>#docker run -d -it –net=bridge  –name=volume-nginx -p 80:80 -v nginx_code:/usr/share/nginx/html mynginx:latest<br>浏览器访问看看吧</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" data-id="ckvaiowir0003lc16arxl8nyx" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -726,7 +746,7 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">19</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">36</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -745,7 +765,7 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -756,6 +776,10 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/">openstack-nova虚拟机热迁移源码刨析</a>
+          </li>
         
           <li>
             <a href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/">虚拟化-numa架构讲解(1)</a>
@@ -771,10 +795,6 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
         
           <li>
             <a href="/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/">openstack-基于智能网卡的热迁移实现</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/14/openstack-%E5%9F%BA%E4%BA%8Epacker%E8%87%AA%E5%8A%A8%E5%8C%96build%E9%95%9C%E5%83%8F/">openstack-基于packer自动化build镜像</a>
           </li>
         
       </ul>
@@ -797,9 +817,11 @@ Kubernete对资源的限制，靠的是cri-o，cri-o对资源的限制，靠的�
     </div>
     <nav id="mobile-nav">
   
-    <a href="/" class="mobile-nav-link">Home</a>
+    <a href="/" class="mobile-nav-link">首页</a>
   
-    <a href="/archives" class="mobile-nav-link">Archives</a>
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
   
 </nav>
     
