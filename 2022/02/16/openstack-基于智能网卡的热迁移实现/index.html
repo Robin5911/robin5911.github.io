@@ -16,13 +16,13 @@ var _hmt = _hmt || [];
   
 
   
-  <title>openstack-基于智能网卡的热迁移实现 | 小白技术博客</title>
+  <title>openstack-基于智能网卡的热迁移实现 | Robin5991 的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="最近在调研智能网卡，对于使用智能网卡的环境下，如何实现虚拟机的热迁移呢，这里分享一下。 热迁移的过程分以下几步完成：   发起热迁移后，在目的物理机上会启动一个VM，命令参数等同于源物理机上正在运行的VM的启动参数。  标记RAM中所有需要迁移的page为dirty。  发送标记为dirty的page到目的机的VM中，重复多次，直到dirty的page数量减少到某个临界值，或者是达到其他可以触发本">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack-基于智能网卡的热迁移实现">
 <meta property="og:url" content="https://blog.kubestack.cn/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/index.html">
-<meta property="og:site_name" content="小白技术博客">
+<meta property="og:site_name" content="Robin5991 的博客">
 <meta property="og:description" content="最近在调研智能网卡，对于使用智能网卡的环境下，如何实现虚拟机的热迁移呢，这里分享一下。 热迁移的过程分以下几步完成：   发起热迁移后，在目的物理机上会启动一个VM，命令参数等同于源物理机上正在运行的VM的启动参数。  标记RAM中所有需要迁移的page为dirty。  发送标记为dirty的page到目的机的VM中，重复多次，直到dirty的page数量减少到某个临界值，或者是达到其他可以触发本">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-02-16T03:09:01.000Z">
@@ -31,7 +31,7 @@ var _hmt = _hmt || [];
 <meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternate" href="/atom.xml" title="小白技术博客" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="Robin5991 的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -54,7 +54,7 @@ var _hmt = _hmt || [];
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">小白技术博客</a>
+        <a href="/" id="logo">Robin5991 的博客</a>
       </h1>
       
     </div>

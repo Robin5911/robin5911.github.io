@@ -16,13 +16,13 @@ var _hmt = _hmt || [];
   
 
   
-  <title>openstack, kvm, qemu-kvm以及libvirt之间的关系 | 小白技术博客</title>
+  <title>openstack, kvm, qemu-kvm以及libvirt之间的关系 | Robin5991 的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="KVM是最底层的hypervisor，它是用来模拟CPU的运行，它缺少了对network和周边I&#x2F;O的支持，所以我们是没法直接用它的。 QEMU-KVM就是一个完整的模拟器，它是构建基于KVM上面的，它提供了完整的网络和I&#x2F;O支持。 Openstack不会直接控制qemu-kvm，它会用一个叫libvirt的库去间接控制qemu-kvm。libvirt提供了跨VM平台的功能，它可以控制除了QEMU">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack, kvm, qemu-kvm以及libvirt之间的关系">
 <meta property="og:url" content="https://blog.kubestack.cn/2020/12/04/openstack-kvm-qemu-kvm%E4%BB%A5%E5%8F%8Alibvirt%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/index.html">
-<meta property="og:site_name" content="小白技术博客">
+<meta property="og:site_name" content="Robin5991 的博客">
 <meta property="og:description" content="KVM是最底层的hypervisor，它是用来模拟CPU的运行，它缺少了对network和周边I&#x2F;O的支持，所以我们是没法直接用它的。 QEMU-KVM就是一个完整的模拟器，它是构建基于KVM上面的，它提供了完整的网络和I&#x2F;O支持。 Openstack不会直接控制qemu-kvm，它会用一个叫libvirt的库去间接控制qemu-kvm。libvirt提供了跨VM平台的功能，它可以控制除了QEMU">
 <meta property="og:locale">
 <meta property="og:image" content="https://blog.kubestack.cn/images/openstack_kvm_qemu_libvirt.png">
@@ -33,7 +33,7 @@ var _hmt = _hmt || [];
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://blog.kubestack.cn/images/openstack_kvm_qemu_libvirt.png">
   
-    <link rel="alternate" href="/atom.xml" title="小白技术博客" type="application/atom+xml">
+    <link rel="alternate" href="/atom.xml" title="Robin5991 的博客" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -56,7 +56,7 @@ var _hmt = _hmt || [];
   <div id="header-outer" class="outer">
     <div id="header-title" class="inner">
       <h1 id="logo-wrap">
-        <a href="/" id="logo">小白技术博客</a>
+        <a href="/" id="logo">Robin5991 的博客</a>
       </h1>
       
     </div>
