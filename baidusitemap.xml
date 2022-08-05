@@ -2,7 +2,59 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://blog.kubestack.cn/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/</loc>
-    <lastmod>2022-08-01</lastmod>
+    <lastmod>2022-08-05</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2022/08/03/openstack-neutron-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/10/26/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/</loc>
+    <lastmod>2022-08-03</lastmod>
+  </url>
+  <url>
+    <loc>https://blog.kubestack.cn/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/</loc>
+    <lastmod>2022-08-03</lastmod>
   </url>
   <url>
     <loc>https://blog.kubestack.cn/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/</loc>
@@ -15,10 +67,6 @@
   <url>
     <loc>https://blog.kubestack.cn/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/</loc>
     <lastmod>2022-07-29</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/</loc>
-    <lastmod>2022-07-28</lastmod>
   </url>
   <url>
     <loc>https://blog.kubestack.cn/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/</loc>
@@ -69,36 +117,8 @@
     <lastmod>2021-11-23</lastmod>
   </url>
   <url>
-    <loc>https://blog.kubestack.cn/2021/10/28/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8B%E8%B5%84%E6%BA%90%E6%8E%A7%E5%88%B6%E6%8A%80%E6%9C%AFcgroup/</loc>
-    <lastmod>2021-11-01</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/</loc>
-    <lastmod>2021-10-29</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/10/27/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BgRPC%E5%85%A5%E9%97%A8/</loc>
-    <lastmod>2021-10-29</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/10/26/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/</loc>
-    <lastmod>2021-10-28</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/</loc>
-    <lastmod>2021-10-28</lastmod>
-  </url>
-  <url>
     <loc>https://blog.kubestack.cn/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/</loc>
     <lastmod>2021-10-26</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/</loc>
-    <lastmod>2021-10-25</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/</loc>
-    <lastmod>2021-10-25</lastmod>
   </url>
   <url>
     <loc>https://blog.kubestack.cn/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/</loc>
@@ -165,10 +185,6 @@
     <lastmod>2021-10-08</lastmod>
   </url>
   <url>
-    <loc>https://blog.kubestack.cn/2021/09/17/openstack-qemu%E6%BA%90%E7%A0%81%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/</loc>
-    <lastmod>2021-10-08</lastmod>
-  </url>
-  <url>
     <loc>https://blog.kubestack.cn/2020/11/17/centos7-rabbitmq-3-8-%E9%9B%86%E7%BE%A4%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2021-09-29</lastmod>
   </url>
@@ -179,10 +195,6 @@
   <url>
     <loc>https://blog.kubestack.cn/2021/09/13/elastic-panic-elastic-Error-all-shards-failed/</loc>
     <lastmod>2021-09-18</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/09/17/openstack-qemu%E4%B8%8D%E6%94%AF%E6%8C%81%E8%87%AA%E5%AE%9A%E4%B9%89%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D/</loc>
-    <lastmod>2021-09-17</lastmod>
   </url>
   <url>
     <loc>https://blog.kubestack.cn/2021/09/15/es-%E5%88%9B%E5%BB%BA%E7%B4%A2%E5%BC%95/</loc>
@@ -345,10 +357,6 @@
     <lastmod>2021-03-24</lastmod>
   </url>
   <url>
-    <loc>https://blog.kubestack.cn/2021/03/19/openstack-neutron%E5%88%9B%E5%BB%BAkeepalived-vip/</loc>
-    <lastmod>2021-03-19</lastmod>
-  </url>
-  <url>
     <loc>https://blog.kubestack.cn/2021/03/16/openstack-%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E6%8E%92%E6%9F%A5/</loc>
     <lastmod>2021-03-15</lastmod>
   </url>
@@ -401,10 +409,6 @@
     <lastmod>2021-02-08</lastmod>
   </url>
   <url>
-    <loc>https://blog.kubestack.cn/2021/01/26/go-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%98%AF%E5%90%A6%E5%8C%85%E5%90%AB%E5%9C%A8%E6%95%B0%E7%BB%84%E4%B8%AD/</loc>
-    <lastmod>2021-01-26</lastmod>
-  </url>
-  <url>
     <loc>https://blog.kubestack.cn/2020/12/23/shell-%E7%BB%8F%E5%85%B8%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E5%AE%9D%E5%85%B8/</loc>
     <lastmod>2021-01-14</lastmod>
   </url>
@@ -415,10 +419,6 @@
   <url>
     <loc>https://blog.kubestack.cn/2021/01/06/openstack-gnocchi-metric%E6%8A%A5%E9%94%99/</loc>
     <lastmod>2021-01-06</lastmod>
-  </url>
-  <url>
-    <loc>https://blog.kubestack.cn/2021/01/05/go-%E5%B8%B8%E7%94%A8%E6%A0%BC%E5%BC%8F%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/</loc>
-    <lastmod>2021-01-05</lastmod>
   </url>
   <url>
     <loc>https://blog.kubestack.cn/2021/01/04/go-%E5%BC%80%E5%90%AFgo-module/</loc>

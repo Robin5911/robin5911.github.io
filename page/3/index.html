@@ -81,6 +81,49 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-小白解说之Prometheus监控入门" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/" class="article-date">
+  <time datetime="2021-10-25T01:52:37.000Z" itemprop="datePublished">2021-10-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/">小白解说之Prometheus监控入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给大家讲解一下云原生界的监控扛把子普罗米修斯Prometheus。<br><img src="/images/monitor/prometheus.png" alt="avatar"><br>一、开源监控方案<br>开源监控系统种类繁多，随着这么多年技术的革新，云计算大数据等技术的发展, 目前还比较流行的是Prometheus、Nightingale、Open-falcon、Zabbix.<br>大家感兴趣可以自行Google了解一下这些监控系统，我理解各有利弊吧，根据实际场合选择最合适的吧,总而言之，Prometheus更适合云场景下吧。</p>
+<p>二、Prometheus简介<br>Prometheus受启发于Google的Brogmon监控系统（相似的Kubernetes是从Google的Brog系统演变而来），从2012年开始由前Google工程师在Soundcloud以开源软件的形式进行研发，并且于2015年早期对外发布早期版本。2016年5月继Kubernetes之后成为第二个正式加入CNCF基金会的项目，同年6月正式发布1.0版本。2017年底发布了基于全新存储层的2.0版本，能更好地与容器平台、云平台配合。<br><img src="/images/monitor/prometheus-release-roadmaps.png" alt="avatar"><br>Prometheus作为新一代的云原生监控系统，目前已经有超过650+位贡献者参与到Prometheus的研发工作上，并且超过120+项的第三方集成。</p>
+<p>三、Prometheus优缺点<br>优点:<br>  *自定义多维数据模型(时序列数据由metric名和一组key/value标签组成)<br>  *非常高效的存储 平均一个采样数据占 ~3.5 bytes左右，320万的时间序列，每30秒采样，保持60天，消耗磁盘大概228G。<br>  *在多维度上灵活且强大的查询语言(PromQl), 数据查询语句表现力更强大，内置更强大的统计函数。<br>  *不依赖分布式存储，支持单主节点工作<br>  *通过基于HTTP的pull方式采集时序数据<br>  *可以通过push gateway进行时序列数据推送(pushing)<br>  *可以通过服务发现或者静态配置去获取要采集的目标服务器<br>  *多种可视化图表及仪表盘支持<br>  *支持对云或容器的监控，其他大多数监控系统主要对主机监控。<br>缺点:<br>  *Prometheus 是基于 Metric 的监控，不适用于日志（Logs）、事件(Event)、调用链(Tracing)。<br>  *Prometheus 默认是 Pull 模型，HTTP请求 target的url 地址, 合理规划你的网络，尽量不要转发。<br>  *Prometheus不提供持久的长期存储、异常检测、自动水平缩放和用户管理,需要合理选择 Federate、Cortex、Thanos等方案。</p>
+<p>四、Prometheus监控全家桶<br>Prometheus主要由Prometheus Server、Pushgateway、Job/Exporter、Service Discovery、Alertmanager、Dashboard这6个核心模块构成。Prometheus通过服务发现机制发现target，这些目标可以是长时间执行的Job，也可以是短时间执行的Job，还可以是通过Exporter监控的第三方应用程序。被抓取的数据会存储起来，通过PromQL语句在仪表盘等可视化系统中供查询，或者向Alertmanager发送告警信息，告警会通过页面、电子邮件、钉钉信息或者其他形式呈现。</p>
+<p><img src="/images/monitor/prometheus_arch.png" alt="avatar"><br><img src="/images/monitor/prom_grafana.png" alt="avatar"><br><img src="/images/monitor/prom_alert.png" alt="avatar"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/" data-id="ckvaiowit0006lc16d01a5b6p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-小白解说之Docker高级用法" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" class="article-date">
@@ -107,24 +150,11 @@ var _hmt = _hmt || [];
 <p>下面以自定义启动一台nginx server为例为大家延时一下docker的魅力吧~<br>一、镜像使用<br>镜像是 Docker 的三大组件之一。<br>Docker 运行容器前需要本地存在对应的镜像，如果镜像不存在本地，Docker 会从镜像仓库下载（默认是 Docker Hub 公共注册服务器中的仓库），我们也可以搭建一个本地的镜像仓库比如docker registry或者harbor等。<br>默认社区docker hub已经提供了很丰富的镜像，比如直接docker pull nginx 即可，这里以自定义diy一下nginx镜像为例尝试一下吧。</p>
 <p>下载镜像</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#docker pull centos:7</span><br></pre></td></tr></table></figure>
-<p>使用Dockerfile自定义build镜像<br>#vim nginx.dockerfile</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">FROM centos:7</span><br><span class="line">#使用aliyun repo源</span><br><span class="line">RUN curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;CentOS-Base.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;Centos-7.repo</span><br><span class="line">RUN curl -o &#x2F;etc&#x2F;yum.repos.d&#x2F;epel.repo http:&#x2F;&#x2F;mirrors.aliyun.com&#x2F;repo&#x2F;epel-7.repo</span><br><span class="line">RUN yum -y install nginx</span><br><span class="line">#定义向外暴露的端口号,多个端口用空格做间隔,启动容器的时候&quot;-p&quot;需要使用此端向外端映射.</span><br><span class="line">EXPOSE 80&#x2F;tcp 443&#x2F;tcp</span><br><span class="line">#定义前台运行的命令,每个Docker只能有一条，如果定义了多条&quot;CMD&quot;指令那么最后一条CMD指令会覆盖之前的(即只有最后一条CMD被执行).</span><br><span class="line">CMD [ &quot;nginx&quot;, &quot;-g&quot;, &quot;daemon off;&quot; ]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>#docker build -t mynginx:latest -f nginx.dockerfile .</p>
-<p>二、数据存储<br>通常情况下，我们是不会在容器中存储数据的。docker有个概念叫数据卷volume, 我们会挂载一个主机的文件夹作为数据卷到容器中去，该数据卷可以被许多需要访问的容器访问得到。数据卷可以将本地的磁盘数据和docker容器链接起来，使用容器的应用加载本地的数据，这样就很方便我们的开发。</p>
-<p>而且可以保持数据持久化，当将容器删除时，数据不会丢失。，同时也增强来应用的可移植性（不改变容器配置）。</p>
-<p>Docker内部以及容器之间管理数据，在容器中管理数据主要有两种方式(挂载宿主机目录或挂载docker volume的方式)：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-v&#x3D;[]:                 Create a bind mount with: [host-dir]:[container-dir]:[rw|ro].</span><br><span class="line">                       If &quot;container-dir&quot; is missing, then docker creates a new volume.</span><br><span class="line">--volumes-from&#x3D;&quot;&quot;:     Mount all volumes from the given container(s)</span><br></pre></td></tr></table></figure>
-<p>创建volume<br>#docker volume create data</p>
-<p>挂载volume使用<br>#docker *<strong>* -v data:/usr/share/nginx/html ***</strong></p>
-<p>三、网络相关<br>安装Docker时，它会自动创建三个网络，bridge（创建容器默认连接到此网络）、 none 、host<br>我们在使用docker run创建Docker容器时，可以用 –net 选项指定容器的网络模式，Docker可以有以下4种网络模式：<br>host模式：使用 –net=host 指定。<br>none模式：使用 –net=none 指定。<br>bridge模式：使用 –net=bridge 指定，默认设置。<br>container模式：使用 –net=container:NAME_or_ID 指定。</p>
-<p>四、资源限制<br>默认情况下，容器是没有资源限制的，它会尽可能地使用宿主机能够分配给它的资源。Docker提供了一种控制分配多少量的内存、CPU或阻塞I/O给一个容器的方式，即通过在docker run或docker create命令时设置运行时配置的标志。</p>
-<ol>
-<li>限制内存使用<br>在Docker中可以强行限制容器的资源使用的限制，即只允许容器使用不超过给定数量的系统内存或其他软限制。下面介绍几个最常用的选项，我们可以在docker run或docker create创建容器时指定，用以限制容器的资源使用限制。</li>
-<li>限制CPU使用<br>默认情况下，每个容器对主机CPU周期的访问权限是不受限制的。我们可以设置各种约束来限制给定容器访问主机的CPU周期。大多数用户使用和配置CFS调度程序（默认）或实时调度程序。下面介绍几个常用的选项，用于配置默认的CFS调度程序，以限制容器对于CPU的使用。</li>
-</ol>
-<p>五、示例<br>使用制作的nginx 镜像，对外提供WEB服务吧~</p>
-<p>创建volume用于保存网页数据<br>#docker volume create nginx_code<br>#echo ‘my web’ &gt; /var/lib/docker/volumes/nginx_code/_data/index.html<br>使用默认网络，并转发80端口到宿主机80端口，-d 后台运行<br>#docker run -d -it –net=bridge  –name=volume-nginx -p 80:80 -v nginx_code:/usr/share/nginx/html mynginx:latest<br>浏览器访问看看吧</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
@@ -201,24 +231,11 @@ var _hmt = _hmt || [];
         <p>大家好，我是小白。下面由我给白白们讲解一下火热的容器技术Docker</p>
 <h4 id="Linux容器技术"><a href="#Linux容器技术" class="headerlink" title="Linux容器技术"></a>Linux容器技术</h4><p>Linux 容器LXC 是一个在单一 Linux 主机上提供多个隔离的 Linux 环境的操作系统级虚拟技术。不像虚拟机（VM），容器并不需要运行专用的访客guest操作系统。容器们共享宿主机的host操作系统内核，并使用访客操作系统的系统库来提供所需的功能。由于不需要专用的操作系统，因此容器要比虚拟器启动快得多。<br>容器借助 Linux 内核的 Namespaces、Apparmor、SELinux 情景模式profile、chroot 和 CGroup 等功能来提供类似于虚拟机的隔离环境。Linux 的安全模块可以确保正确地控制容器对宿主机和内核的访问，从而避免各种入侵活动。此外，在宿主机上可以运行不同的 Linux 发行版，只要它们运行在同样的 CPU 架构下。</p>
 <p>简单来说，容器技术就是基于Linux内核提供的一套进程隔离技术，提供的是一种基于各种 Linux 发行版创建容器镜像的方法、一套管理容器生命周期的 API、与该 API 交互的客户端工具、保存快照的功能、在宿主机之间迁移容器实例的能力，等等。</p>
-<h4 id="容器好在哪里"><a href="#容器好在哪里" class="headerlink" title="容器好在哪里"></a>容器好在哪里</h4><p>假设您在开发一个应用。您使用的是一台笔记本电脑，而且您的开发环境具有特定的配置。其他开发人员身处的环境配置可能稍有不同。您正在开发的应用不止依赖于您当前的配置，还需要某些特定的库、依赖项和文件。与此同时，您的企业还拥有标准化的开发和生产环境，有着自己的配置和一系列支持文件。您希望尽可能多在本地模拟这些环境，而不产生重新创建服务器环境的开销。因此，您要如何确保应用能够在这些环境中运行和通过质量检测，并且在部署过程中不出现令人头疼的问题，也无需重新编写代码和进行故障修复？答案就是使用容器。</p>
-<p>容器可以确保您的应用拥有必需的库、依赖项和文件，让您可以在生产中自如地迁移这些应用，无需担心会出现任何负面影响。实际上，您可以将容器镜像中的内容，视为 Linux 发行版的一个安装实例，因为其中完整包含 RPM 软件包、配置文件等内容。但是，安装容器镜像发行版，要比安装新的操作系统副本容易得多。这样可以避免危机，做到皆大欢喜。</p>
-<p>虽然这只是一个常见情况的示例，但在需要很高的可移植性、可配置性和隔离的情况下，我们可以利用 Linux 容器通过很多方式解决难题。Linux 容器的价值在于，它能加速开发并满足新出现的业务需求。在某些情形中（如通过 Apache Kafka 进行实时数据流处理），容器是不可或缺的，因为它们是提供应用所需的可扩展性的唯一途径。无论基础架构是在企业内部还是在云端，或者混合使用两者，容器都能满足您的需求。当然，选择正确的容器平台也同样重要。</p>
-<h4 id="Docker又是什么"><a href="#Docker又是什么" class="headerlink" title="Docker又是什么"></a>Docker又是什么</h4><p>Docker 技术使用 Linux 内核和内核功能（例如 Cgroups 和 namespaces）来分隔进程，以便各进程相互独立运行。这种独立性正是采用容器的目的所在；它可以独立运行多种进程、多个应用，更加充分地发挥基础设施的作用，同时保持各个独立系统的安全性。</p>
-<p>容器工具（包括 Docker）可提供基于镜像的部署模式。这使得它能够轻松跨多种环境，与其依赖程序共享应用或服务组。Docker 还可在这一容器环境中自动部署应用（或者合并多种流程，以构建单个应用）。</p>
-<p>此外，由于这些工具基于 Linux 容器构建，使得 Docker 既易于使用，又别具一格——它可为用户提供前所未有的高度应用程访问权限、快速部署以及版本控制和分发能力。</p>
-<p>Docker技术是否与传统的 Linux 容器相同？<br>否。Docker 技术最初是基于 LXC 技术构建（大多数人都会将这一技术与“传统的”Linux 容器联系在一起），但后来它逐渐摆脱了对这种技术的依赖。就轻量级 虚拟化 这一功能来看，LXC 非常有用，但它无法提供出色的开发人员或用户体验。除了运行容器之外，Docker 技术还具备其他多项功能，包括简化用于构建容器、传输镜像以及控制镜像版本的流程。</p>
-<p>Docker和container的主要区别在于，Docker是一个构建、运行和管理软件容器的平台，而container是一个轻量级软件，它提供操作系统虚拟化，以便在资源隔离的进程中运行应用程序及其依赖项。 容器是一种软件，它捆绑了自己的工具、库和配置文件。 在一个操作系统内核中可以运行多个容器。<br>特点：</p>
-<ol>
-<li>模块化<br>Docker 容器化方法非常注重在不停止整个应用的情况下，单独截取部分应用进行更新或修复的能力。除了这种基于微服务的方法，您还可以采用与面向服务的架构（SOA）类似的使用方法，在多个应用间共享进程。</li>
-<li>层和镜像版本控制<br>每个 Docker 镜像文件都包含多个层。这些层组合在一起，构成单个镜像。每当镜像发生改变时，就会创建一个新的镜像层。用户每次发出命令（例如 run 或 copy）时，都会创建一个新的镜像层。<br>Docker 重复使用这些层来构建新容器，借此帮助加快流程构建。镜像之间会共享中间变化，从而进一步提升速度、规模以及效率。版本控制是镜像层本身自带的能力。每次发生新的更改时，您大都会获得一个内置的更改日志，实现对容器镜像的全盘管控。</li>
-<li>回滚<br>回滚也许是层最值得一提的功能。每个镜像都拥有多个层。举例而言，如果您不喜欢迭代后的镜像版本，完全可以通过回滚，返回之前的版本。这一功能还支持敏捷开发方法，帮助持续实施集成和部署（CI/CD），使其在工具层面成为一种现实。</li>
-<li>快速部署<br>启动和运行新硬件、实施部署并投入使用，这在过去一般需要数天时间。投入的心力和成本往往也让人不堪重负。基于 Docker 的容器可将部署时间缩短到几秒。通过为每个进程构建容器，您可以快速将这些类似进程应用到新的应用程序中。而且，由于无需启动操作系统即可添加或移动容器，因此大幅缩短了部署时间。除此之外，得益于这种部署速度，您可以轻松无虞、经济高效地创建和销毁容器创建的数据。</li>
-</ol>
-<p>因此，Docker 技术是一种更加精细、可控、基于微服务的技术，可为企业提供更高的效率价值。</p>
-<h4 id="Docker蓝图"><a href="#Docker蓝图" class="headerlink" title="Docker蓝图"></a>Docker蓝图</h4><p>docker的主要目标是”Build,Ship and Run any App,Angwhere”,构建，运输，处处运行</p>
-<p>构建：做一个docker镜像<br>运输：docker pull<br>运行：启动一个容器<br>每一个容器，他都有自己的文件系统rootfs.</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
@@ -319,10 +336,11 @@ var _hmt = _hmt || [];
         <p>大家好，我是小白。下面由我给白白们讲解一下云计算火热的容器编排之王Kubernetes…</p>
 <p>上文咱们讲解了Linux容器技术docker，有些基础后理解Kubernetes后就更好理解啦~<br>简言之呢，docker虽然帮助我们实现了容器化，但仅仅是个使用工具，而我们并不仅仅只需要运行一个容器就能满足我们的需求，我们需要自动化部署，弹性伸缩，负载均衡，服务自动发现等等云原生的一整套的生态化需求，而这就是kubernetes能帮我们做到的。<br><img src="/images/k8s/kubernetes_diagram-v3-770x717_0.png" alt="avatar"></p>
 <h4 id="一、何为Kubernetes"><a href="#一、何为Kubernetes" class="headerlink" title="一、何为Kubernetes"></a>一、何为Kubernetes</h4><p>Kubernetes 是谷歌开源的容器集群管理系统，是 Google 多年大规模容器管理技术 Borg 的开源版本，主要功能包括：<br>    基于容器的应用部署、维护和滚动升级<br>    负载均衡和服务发现<br>    跨机器和跨地区的集群调度<br>    自动伸缩<br>    无状态服务和有状态服务<br>    广泛的 Volume 支持<br>    插件机制保证扩展性<br>Kubernetes 发展非常迅速，已经成为容器编排领域的领导者。</p>
-<h4 id="二、Kubernetes架构"><a href="#二、Kubernetes架构" class="headerlink" title="二、Kubernetes架构"></a>二、Kubernetes架构</h4><p><img src="/images/k8s/k8s_arch.png" alt="avatar"><br>Kubernetes 主要由以下几个核心组件组成：<br>    1.etcd 集群持久化数据存储, 保存了整个集群的状态信息等；<br>    2.apiserver 提供了资源操作的唯一入口，并提供认证、授权、访问控制、API 注册和发现等机制；<br>    3.controller manager 负责维护集群的状态，比如故障检测、自动扩展、滚动更新等；<br>    4.scheduler 负责资源的调度，按照预定的调度策略将 Pod 调度到相应的机器上；<br>    5.kubelet 负责维护容器的生命周期，同时也负责 Volume（CVI）和网络（CNI）的管理；<br>    6.Container runtime 负责镜像管理以及 Pod 和容器的真正运行（CRI）；<br>    7.kube-proxy 负责为 Service 提供 cluster 内部的服务发现和负载均衡<br><img src="/images/k8s/kubernetes_diagram-v3-770x717_0.png" alt="avatar"><br>除了核心组件，还有一些推荐的 Add-ons：<br>    *kube-dns 负责为整个集群提供 DNS 服务<br>    *Ingress Controller 为服务提供外网入口<br>    *Heapster 提供资源监控<br>    *Dashboard 提供 GUI<br>    *Federation 提供跨可用区的集群<br>    *Fluentd-elasticsearch 提供集群日志采集、存储与查询</p>
-<h4 id="三、Kubernetes-设计理念"><a href="#三、Kubernetes-设计理念" class="headerlink" title="三、Kubernetes 设计理念"></a>三、Kubernetes 设计理念</h4><p><img src="/images/k8s/k8s.jpg" alt="avatar"><br>1.API设计<br>    *所有API应该是声明式的。<br>    *API对象是彼此互补而且可组合的。<br>    *高层API以操作意图为基础设计<br>    *低层API根据高层API的控制需要设计<br>    *尽量避免简单封装，不要有在外部API无法显式知道的内部隐藏的机制<br>    *API操作复杂度与对象数量成正比<br>    *API对象状态不能依赖于网络连接状态<br>    *尽量避免让操作机制依赖于全局状态，因为在分布式系统中要保证全局状态的同步是非常困难的。<br>2.控制机制设计<br>    *控制逻辑应该只依赖于当前状态。<br>    *尽量避免复杂状态机，控制逻辑不要依赖无法监控的内部状态。<br>    *假设任何错误的可能，并做容错处理。<br>    *假设任何操作都可能被任何操作对象拒绝，甚至被错误解析。<br>    *每个模块都可以在出错后自动恢复。<br>    *每个模块都可以在必要时优雅地降级服务。<br>3. 架构设计<br>    *只有apiserver可以直接访问etcd存储，其他服务必须通过Kubernetes API来访问集群状态<br>    *单节点故障不应该影响集群的状态<br>    *在没有新请求的情况下，所有组件应该在故障恢复后继续执行上次最后收到的请求（比如网络分区或服务重启等）<br>    *所有组件都应该在内存中保持所需要的状态，apiserver将状态写入etcd存储，而其他组件则通过apiserver更新并监听所有的变化<br>    *优先使用事件监听而不是轮询</p>
-<h4 id="四、Kubernetes核心概念"><a href="#四、Kubernetes核心概念" class="headerlink" title="四、Kubernetes核心概念"></a>四、Kubernetes核心概念</h4><p><img src="/images/k8s/pods.png" alt="avatar"><br>pod： 一组容器集合，k8s最小调度部署单元<br>      *k8s不能直接控制容器，通过控制pod来间接管理容器<br>      *pod是由pod templates创建而来的，pod template包含于控制器中<br>      *不同控制器对模板的处理方式方式不同，比如，有的会立即删除旧pod，依据新模板创建新pod来保持最新<br>      *一个pod包含一个或多个容器<br>      *一个pod的所有容器共享共享 PID、IPC、Network 和 UTS namespace<br>      *重启一个pod中的容器不会重启pod，因为pod不是进程而是一个容器运行环境，pod会一直存在除非它被删除<br>    pod生命周期中的状态/阶段<br>      *pending：k8s已经知道pod的存在，此时pod还没完全准备好，比如容器还没创建完成、正在下载镜像等，即在做前期的准备工作<br>      *running：pod已经分配到一个节点上了，并且至少有一个容器在运行<br>      *succeeded：终止在pod上的所有容器，全部成功终止，且不重启<br>      *unknown：由于出现了一些错误而使非上边提到的任何一种状态<br>      *failed：终止pod上所有rq，有的容器关闭失败<br>    pod的生命和人类一样，只有一次，从出生到死亡，不可重活<br>控制器controller：控制器，控制pod（启动、停止、删除……）<br>    *ReplicaSet：确保预期pod副本数，保证任何时候都是固定pod数量在工作（动态地根据需求增删pod），通过Deployment来设置ReplicaSet<br>    *ReplicationController：自动增删pod，同ReplicaSet功能相同，ReplicaSet是它的升级版<br>    *Deployment：无状态应用部署，是比ReplicationController更高一层的api，还可以更新回滚ReplicaSet<br>    *StatefulSet：有状态应用部署<br>    *DaemonSet：确保所有node运行同一个pod<br>    *Job：一次性任务，<br>    *Cronjob：定时任务<br>服务service：将一组相关pod关联起来，对外提供服务，提供统一入口，使得pod地址改变不影响服务<br>    *提供负载均衡<br>    *服务的自动发现<br>    *内部DNS域名服务<br>    *定义相关pod访问策略<br>标签label：标记pod,node等资源<br>    *便于识别pod,node<br>    *亲和反亲和等策略<br>命名空间namespace：提供逻辑隔离<br>    *租户隔离</p>
-
+        
+          <p class="article-more-link">
+            <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E5%85%A5%E9%97%A8/#more">Read More</a>
+          </p>
+        
       
     </div>
     <footer class="article-footer">
@@ -588,71 +606,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-Linux-CentOS-关闭ipv6" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" class="article-date">
-  <time datetime="2021-10-13T08:37:09.000Z" itemprop="datePublished">2021-10-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/">Linux-CentOS 关闭ipv6</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Post describes procedure to disable IPv6 on CentOS/RHEL 7. There are 2 ways to do this :</p>
-<ol>
-<li>Disable IPv6 in kernel module (requires reboot)</li>
-<li>Disable IPv6 using sysctl settings (no reboot required)</li>
-</ol>
-<p>To verify if IPv6 is enabled or not, execute :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ifconfig -a | grep inet6</span><br></pre></td></tr></table></figure>
-<pre><code>    inet6 fe80::211:aff:fe6a:9de4  prefixlen 64  scopeid 0x20
-    inet6 ::1  prefixlen 128  scopeid 0x10[host]</code></pre>
-<ol>
-<li>Disable IPv6 in kernel module (requires reboot)</li>
-<li>Edit /etc/default/grub and add ipv6.disable=1 in line GRUB_CMDLINE_LINUX, e.g.:</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cat &#x2F;etc&#x2F;default&#x2F;grub</span><br></pre></td></tr></table></figure>
-<p>GRUB_TIMEOUT=5<br>GRUB_DEFAULT=saved<br>GRUB_DISABLE_SUBMENU=true<br>GRUB_TERMINAL_OUTPUT=”console”<br>GRUB_CMDLINE_LINUX=”ipv6.disable=1 crashkernel=auto rhgb quiet”<br>GRUB_DISABLE_RECOVERY=”true”<br>2. Regenerate a GRUB configuration file and overwrite existing one:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># grub2-mkconfig -o &#x2F;boot&#x2F;grub2&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>Restart system and verify no line “inet6” in “ip addr show” command output.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># shutdown -r now</span><br><span class="line"># ip addr show | grep net6</span><br></pre></td></tr></table></figure></li>
-<li>Disable IPv6 using sysctl settings (no reboot required)</li>
-<li>Append below lines in /etc/sysctl.conf:</li>
-</ol>
-<p>net.ipv6.conf.all.disable_ipv6 = 1<br>net.ipv6.conf.default.disable_ipv6 = 1<br>NOTE : To disable IPv6 on a single interface add below lines to /etc/sysctl.conf :<br>net.ipv6.conf.[interface].disable_ipv6 = 1 ### put interface name here [interface]<br>net.ipv6.conf.default.disable_ipv6 = 1<br>2. To make the settings affective, execute :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure>
-<p>NOTE : make sure the file /etc/ssh/sshd_config contains the line AddressFamily inet to avoid breaking SSH Xforwarding if you are using the sysctl method<br>3. Add the AddressFamily line to sshd_config :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span><br></pre></td></tr></table></figure>
-<p>….<br>AddressFamily inet<br>….<br>Restart sshd for changes to get get effect :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl restart sshd</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" data-id="ckupbrtp70000ww16c1u5aini" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -671,7 +624,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">19</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">36</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">13</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">37</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -690,7 +643,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -703,7 +656,11 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/">openstack-nova虚拟机热迁移源码刨析</a>
+            <a href="/2022/08/03/openstack-neutron-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/">openstack-neutron-常用网络命令</a>
+          </li>
+        
+          <li>
+            <a href="/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/">openstack-nova-虚拟机热迁移过程源码刨析</a>
           </li>
         
           <li>
@@ -716,10 +673,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/">openstack-基于智能网卡的热迁移实现</a>
           </li>
         
       </ul>
