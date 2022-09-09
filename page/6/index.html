@@ -81,6 +81,59 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-裸金属ironic创建及调度-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/" class="article-date">
+  <time datetime="2021-04-25T07:02:40.000Z" itemprop="datePublished">2021-04-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/">openstack-裸金属ironic创建及调度-2</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="创建裸金属实例Flavor"><a href="#创建裸金属实例Flavor" class="headerlink" title="创建裸金属实例Flavor"></a>创建裸金属实例Flavor</h2><p><strong>官方文档</strong>：<a target="_blank" rel="noopener" href="https://docs.openstack.org/ironic/latest/install/configure-nova-flavors.html">https://docs.openstack.org/ironic/latest/install/configure-nova-flavors.html</a></p>
+<p>在 Queen 版本中，Ironic 项目新增 Trait API，节点的 traits 信息可以注册到计算服务的 Placement API 中，用于创建虚拟机时的调度。添加 Trait API 后，注册到 Ironic 的裸机也可以通过 Trait API 注册到 Placement 资源清单中，最终支持裸机的部署调度。</p>
+<p>本文我们实践通过 Placement 来完成裸机的调度，通过 Resource Class 来标识 ironic node 的资源类型，通过 Resource Traits 来标识 ironic node 的特征，还可以通过 resources:VCPU=0、resources:MEMORY_MB=0、resources:DISK_GB=0 来 disable scheduling。</p>
+<ul>
+<li><strong>创建 Flavor</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">openstack flavor create --ram 262144 --vcpus 40 --disk 600 bms.test </span><br><span class="line">openstack flavor set --property resources:CUSTOM_BAREMETAL&#x3D;1 bms.test</span><br><span class="line">openstack flavor set --property resources:VCPU&#x3D;0 bms.test </span><br><span class="line">openstack flavor set --property resources:MEMORY_MB&#x3D;0 bms.test </span><br><span class="line">openstack flavor set --property resources:DISK_GB&#x3D;0 bms.test</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>验证，获取 Placement 候选人</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@controller ~]# openstack allocation candidate list --resource VCPU&#x3D;40 --resource DISK_GB&#x3D;600 --resource MEMORY_MB&#x3D;262144 --resource CUSTOM_BAREMETAL&#x3D;1</span><br><span class="line">+---+-----------------------------------------------------------+--------------------------------------+-------------------------------------------------------------------+------------------------------+</span><br><span class="line">| # | allocation                                                | resource provider                    | inventory used&#x2F;capacity                                           | traits                       |</span><br><span class="line">+---+-----------------------------------------------------------+--------------------------------------+-------------------------------------------------------------------+------------------------------+</span><br><span class="line">| 1 | MEMORY_MB&#x3D;8192,VCPU&#x3D;2,DISK_GB&#x3D;100,CUSTOM_BAREMETAL_TEST&#x3D;1 | e322f49a-ad50-468d-a031-29bde068c290 | VCPU&#x3D;0&#x2F;2,MEMORY_MB&#x3D;0&#x2F;8192,DISK_GB&#x3D;0&#x2F;100,CUSTOM_BAREMETAL_TEST&#x3D;0&#x2F;1 | HW_CPU_X86_VMX,CUSTOM_TRAIT1 |</span><br><span class="line">+---+-----------------------------------------------------------+--------------------------------------+--------</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@17471e0f8de8 sh1]# openstack allocation candidate list   --resource CUSTOM_BAREMETAL&#x3D;1                                                             </span><br><span class="line">+---+--------------------+--------------------------------------+-------------------------+---------------------------------------------+</span><br><span class="line">| # | allocation         | resource provider                    | inventory used&#x2F;capacity | traits                                      |</span><br><span class="line">+---+--------------------+--------------------------------------+-------------------------+---------------------------------------------+</span><br><span class="line">| 1 | CUSTOM_BAREMETAL&#x3D;1 | 5e10c067-c0c6-48be-ac6e-749a70045b97 | CUSTOM_BAREMETAL&#x3D;0&#x2F;1    | HW_CPU_X86_VMX,COMPUTE_NET_ATTACH_INTERFACE |</span><br><span class="line">+---+--------------------+--------------------------------------+-------------------------+---------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-2/" data-id="ckssanb410008to165fjafrtb" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-openstack-裸金属ironic创建及调度-1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/04/25/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E5%88%9B%E5%BB%BA%E5%8F%8A%E8%B0%83%E5%BA%A6-1/" class="article-date">
@@ -542,10 +595,10 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-openstack-弹性伸缩调研-2" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-openstack-裸金属ironic整理-3" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" class="article-date">
-  <time datetime="2021-04-02T04:05:51.000Z" itemprop="datePublished">2021-04-02</time>
+    <a href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-3/" class="article-date">
+  <time datetime="2021-04-01T02:54:58.000Z" itemprop="datePublished">2021-04-01</time>
 </a>
     
   </div>
@@ -556,7 +609,7 @@ var _hmt = _hmt || [];
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/">openstack-弹性伸缩调研-2</a>
+      <a class="article-title" href="/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-3/">openstack-裸金属ironic整理-3</a>
     </h1>
   
 
@@ -564,49 +617,25 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <h2 id="网络"><a href="#网络" class="headerlink" title="网络"></a>网络</h2><p>需要配置网络，以便裸金属服务管理baremetal节点可以与neutron网络服务通信以实现DHCP，PXE引导和其他要求。</p>
+<p><img src="https://support.huaweicloud.com/dpmg-kunpengcpfs/zh-cn_image_0000001088626391.png" alt="点击放大"></p>
+<p><img src="https://res-img3.huaweicloud.com/content/dam/cloudbu-site/archive/china/zh-cn/support/resource/framework/v3/images/support-doc-new-note.svg" alt="img">说明：</p>
+<p>要求：</p>
+<ol>
+<li>裸金属服务管理baremetal节点与 IPMI OOB Network（即BMC管理网络）互通：Ironic Conductor节点可以通过 ipmitool管理BM Node，可以在ironic-conductor节点通过ipmi命令操作裸金属服务器节点验证。</li>
+<li>Provisioning Network复用External Network 与 BM Nodes二层互通：BM Node可以从 Provisioning Network DHCP获取到IP地址和TFTP服务器的访问接口，要求裸金属服务器PXE网口和裸金属服务发放Provisioning network在二层互通。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-2/" data-id="ckssanb400005to16hj994xp2" class="article-share-link">Share</a>
+      <a data-url="https://blog.kubestack.cn/2021/04/01/openstack-%E8%A3%B8%E9%87%91%E5%B1%9Eironic%E6%95%B4%E7%90%86-3/" data-id="ckssanb44000dto164emc7ebw" class="article-share-link">Share</a>
       
       
-    </footer>
-  </div>
-  
-</article>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
 
-
-  
-    <article id="post-openstack-弹性伸缩调研-1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-1/" class="article-date">
-  <time datetime="2021-04-02T04:05:47.000Z" itemprop="datePublished">2021-04-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-1/">openstack-弹性伸缩调研-1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2021/04/02/openstack-%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E8%B0%83%E7%A0%94-1/" data-id="ckssanb400007to162d4lajwr" class="article-share-link">Share</a>
-      
-      
     </footer>
   </div>
   
@@ -618,7 +647,7 @@ var _hmt = _hmt || [];
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/5/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><a class="extend next" rel="next" href="/page/7/">Next &amp;raquo;</a>
+    <a class="extend prev" rel="prev" href="/page/5/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/">15</a><a class="extend next" rel="next" href="/page/7/">Next &amp;raquo;</a>
   </nav>
 
 </section>
@@ -651,7 +680,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">14</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -662,6 +691,10 @@ var _hmt = _hmt || [];
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/08/15/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/">openstack-记一次虚机创建失败问题</a>
+          </li>
         
           <li>
             <a href="/2022/08/03/openstack-neutron-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/">openstack-neutron-常用网络命令</a>
@@ -677,10 +710,6 @@ var _hmt = _hmt || [];
         
           <li>
             <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/">go-实用方法-判断字符串为uuid类型</a>
-          </li>
-        
-          <li>
-            <a href="/2022/02/25/go-etcd-clientv3-%E5%8C%85%E5%86%B2%E7%AA%81%E9%97%AE%E9%A2%98/">go-etcd clientv3 包冲突问题</a>
           </li>
         
       </ul>
