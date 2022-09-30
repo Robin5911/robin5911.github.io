@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+<script type="text/javascript">
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?ae11d5a19bdcf766771692d64967eeb1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+  
+
+  
+  <title>openstack-nova-虚拟机创建流程以及源码分析(一) | robin5911 的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="openstack 虚机创建流程以及源码分析(一)基于openstack stein虚机创建流程图 上图是虚拟机创建流程的整体流程，可以看到整体虚拟机创建流程一次经过了API、Conductor、Scheduler、Placement、Compute等主要服务。 下表列出了每个步骤中实例的状态：    Status Task Power state Steps    Build schedulin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openstack-nova-虚拟机创建流程以及源码分析(一)">
+<meta property="og:url" content="https://blog.kubestack.cn/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/index.html">
+<meta property="og:site_name" content="robin5911 的博客">
+<meta property="og:description" content="openstack 虚机创建流程以及源码分析(一)基于openstack stein虚机创建流程图 上图是虚拟机创建流程的整体流程，可以看到整体虚拟机创建流程一次经过了API、Conductor、Scheduler、Placement、Compute等主要服务。 下表列出了每个步骤中实例的状态：    Status Task Power state Steps    Build schedulin">
+<meta property="og:locale">
+<meta property="og:image" content="https://blog.kubestack.cn/images/openstack/instance-creation.png">
+<meta property="article:published_time" content="2022-09-19T02:26:20.000Z">
+<meta property="article:modified_time" content="2022-09-30T09:28:50.475Z">
+<meta property="article:author" content="robin5911">
+<meta property="article:tag" content="openstack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.kubestack.cn/images/openstack/instance-creation.png">
+  
+    <link rel="alternate" href="/atom.xml" title="robin5911 的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="https://fonts.lug.ustc.edu.cn/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="google-site-verification" content="XkIGmrbqh5J83cILz5wx9StkgaQzjhGx0UfHTxlma00" />
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">robin5911 的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">归档</a>
+        
+          <a class="main-nav-link" href="/about">关于</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.kubestack.cn"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-openstack-nova-虚拟机创建流程以及源码分析(一)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/" class="article-date">
+  <time datetime="2022-09-19T02:26:20.000Z" itemprop="datePublished">2022-09-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      openstack-nova-虚拟机创建流程以及源码分析(一)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="openstack-虚机创建流程以及源码分析-一"><a href="#openstack-虚机创建流程以及源码分析-一" class="headerlink" title="openstack 虚机创建流程以及源码分析(一)"></a>openstack 虚机创建流程以及源码分析(一)</h4><h6 id="基于openstack-stein"><a href="#基于openstack-stein" class="headerlink" title="基于openstack stein"></a>基于openstack stein</h6><h6 id="虚机创建流程图"><a href="#虚机创建流程图" class="headerlink" title="虚机创建流程图"></a>虚机创建流程图</h6><p><img src="/images/openstack/instance-creation.png"></p>
+<p>上图是虚拟机创建流程的整体流程，可以看到整体虚拟机创建流程一次经过了API、Conductor、Scheduler、Placement、Compute等主要服务。</p>
+<p><strong>下表列出了每个步骤中实例的状态：</strong></p>
+<table>
+<thead>
+<tr>
+<th><strong>Status</strong></th>
+<th><strong>Task</strong></th>
+<th><strong>Power state</strong></th>
+<th><strong>Steps</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Build</td>
+<td>scheduling</td>
+<td>None</td>
+<td>3-12</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>networking</td>
+<td>None</td>
+<td>22-24</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>block_device_mapping</td>
+<td>None</td>
+<td>25-27</td>
+</tr>
+<tr>
+<td>Build</td>
+<td>spawing</td>
+<td>None</td>
+<td>28</td>
+</tr>
+<tr>
+<td>Active</td>
+<td>none</td>
+<td>Running</td>
+<td></td>
+</tr>
+</tbody></table>
+<h6 id=""><a href="#" class="headerlink" title=""></a><a id="more"></a></h6><p>首先对从HTTP请求的获取的req和body中的相关信息进行验证，验证完成后调用nova-api的create函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;api&#x2F;openstack&#x2F;compute&#x2F;servers.py #ServersController</span><br><span class="line">def create(self, req, body):</span><br><span class="line">		......................</span><br><span class="line">		self._process_bdms_for_create(</span><br><span class="line">            context, target, server_dict, create_kwargs,</span><br><span class="line">            supports_device_tagging)</span><br><span class="line"></span><br><span class="line">        image_uuid &#x3D; self._image_from_req_data(server_dict, create_kwargs)</span><br><span class="line"></span><br><span class="line">        self._process_networks_for_create(</span><br><span class="line">            context, target, server_dict, create_kwargs,</span><br><span class="line">            supports_device_tagging)</span><br><span class="line"></span><br><span class="line">        flavor_id &#x3D; self._flavor_id_from_req_data(body)</span><br><span class="line">        try:</span><br><span class="line">            inst_type &#x3D; flavors.get_flavor_by_flavor_id(</span><br><span class="line">                    flavor_id, ctxt&#x3D;context, read_deleted&#x3D;&quot;no&quot;)</span><br><span class="line"></span><br><span class="line">            supports_multiattach &#x3D; common.supports_multiattach_volume(req)</span><br><span class="line">            supports_port_resource_request &#x3D; \</span><br><span class="line">                common.supports_port_resource_request(req)</span><br><span class="line">            (instances, resv_id) &#x3D; self.compute_api.create(context,</span><br><span class="line">                inst_type,</span><br><span class="line">                image_uuid,</span><br><span class="line">                display_name&#x3D;name,</span><br><span class="line">                display_description&#x3D;description,</span><br><span class="line">                availability_zone&#x3D;availability_zone,</span><br><span class="line">                forced_host&#x3D;host, forced_node&#x3D;node,</span><br><span class="line">                metadata&#x3D;server_dict.get(&#39;metadata&#39;, &#123;&#125;),</span><br><span class="line">                admin_password&#x3D;password,</span><br><span class="line">                check_server_group_quota&#x3D;True,</span><br><span class="line">                supports_multiattach&#x3D;supports_multiattach,</span><br><span class="line">                supports_port_resource_request&#x3D;supports_port_resource_request,</span><br><span class="line">                **create_kwargs)</span><br><span class="line">        except (exception.QuotaError,</span><br><span class="line">                exception.PortLimitExceeded) as error:</span><br><span class="line">            raise exc.HTTPForbidden(</span><br><span class="line">                explanation&#x3D;error.format_message())</span><br><span class="line"></span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+
+<p>其中nova-api有两种类型，即根据配置参数进行选择self.compute_api的类型。如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;compute&#x2F;__init__.py</span><br><span class="line">CELL_TYPE_TO_CLS_NAME &#x3D; &#123;&#39;api&#39;: &#39;nova.compute.cells_api.ComputeCellsAPI&#39;,</span><br><span class="line">                         &#39;compute&#39;: &#39;nova.compute.api.API&#39;,</span><br><span class="line">                         None: &#39;nova.compute.api.API&#39;,</span><br><span class="line">                        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def _get_compute_api_class_name():</span><br><span class="line">    &quot;&quot;&quot;Returns the name of compute API class.&quot;&quot;&quot;</span><br><span class="line">    cell_type &#x3D; nova.cells.opts.get_cell_type()</span><br><span class="line">    return CELL_TYPE_TO_CLS_NAME[cell_type]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">def API(*args, **kwargs):</span><br><span class="line">    class_name &#x3D; _get_compute_api_class_name()</span><br><span class="line">    return importutils.import_object(class_name, *args, **kwargs)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>即根据/etc/nova/nova.conf配置文件cells字段下面的enable参数来设置nova-api的类型，由于我们的环境采用默认配置，stein版本默认cell v2就是打开的，即enable=true，所以get_cell_type函数将返回api 值，因此nova-api为nova.compute.cells_api.ComputeCellsAPI，即self.compute_api为nova.compute.cells_api.ComputeCellsAPI对象。所以将会调用nova.compute.cells_api.ComputeCellsAPI中的create函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;compute&#x2F;cells_api.py</span><br><span class="line">class ComputeCellsAPI(compute_api.API):</span><br><span class="line">    def create(self, *args, **kwargs):</span><br><span class="line">        &quot;&quot;&quot;We can use the base functionality, but I left this here just</span><br><span class="line">        for completeness.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return super(ComputeCellsAPI, self).create(*args, **kwargs)</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+
+<p>nova.compute.cells_api.ComputeCellsAPI中的create函数, 这里默认调用的父类 nova.compute.api中的create函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;compute&#x2F;api.py</span><br><span class="line">    def create(self, context, instance_type,</span><br><span class="line">               image_href, kernel_id&#x3D;None, ramdisk_id&#x3D;None,</span><br><span class="line">               min_count&#x3D;None, max_count&#x3D;None,</span><br><span class="line">               display_name&#x3D;None, display_description&#x3D;None,</span><br><span class="line">               key_name&#x3D;None, key_data&#x3D;None, security_groups&#x3D;None,</span><br><span class="line">               availability_zone&#x3D;None, forced_host&#x3D;None, forced_node&#x3D;None,</span><br><span class="line">               user_data&#x3D;None, metadata&#x3D;None, injected_files&#x3D;None,</span><br><span class="line">               admin_password&#x3D;None, block_device_mapping&#x3D;None,</span><br><span class="line">               access_ip_v4&#x3D;None, access_ip_v6&#x3D;None, requested_networks&#x3D;None,</span><br><span class="line">               config_drive&#x3D;None, auto_disk_config&#x3D;None, scheduler_hints&#x3D;None,</span><br><span class="line">               legacy_bdm&#x3D;True, shutdown_terminate&#x3D;False,</span><br><span class="line">               check_server_group_quota&#x3D;False, tags&#x3D;None,</span><br><span class="line">               supports_multiattach&#x3D;False, trusted_certs&#x3D;None,</span><br><span class="line">               supports_port_resource_request&#x3D;False):</span><br><span class="line">        &quot;&quot;&quot;Provision instances, sending instance information to the</span><br><span class="line">        scheduler.  The scheduler will determine where the instance(s)</span><br><span class="line">        go and will handle creating the DB entries.</span><br><span class="line"></span><br><span class="line">        Returns a tuple of (instances, reservation_id)</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        if requested_networks and max_count is not None and max_count &gt; 1:</span><br><span class="line">            self._check_multiple_instances_with_specified_ip(</span><br><span class="line">                requested_networks)</span><br><span class="line">            if utils.is_neutron():</span><br><span class="line">                self._check_multiple_instances_with_neutron_ports(</span><br><span class="line">                    requested_networks)</span><br><span class="line"></span><br><span class="line">        if availability_zone:</span><br><span class="line">            available_zones &#x3D; availability_zones.\</span><br><span class="line">                get_availability_zones(context.elevated(), True)</span><br><span class="line">            if forced_host is None and availability_zone not in \</span><br><span class="line">                    available_zones:</span><br><span class="line">                msg &#x3D; _(&#39;The requested availability zone is not available&#39;)</span><br><span class="line">                raise exception.InvalidRequest(msg)</span><br><span class="line"></span><br><span class="line">        filter_properties &#x3D; scheduler_utils.build_filter_properties(</span><br><span class="line">                scheduler_hints, forced_host, forced_node, instance_type)</span><br><span class="line"></span><br><span class="line">        return self._create_instance(</span><br><span class="line">            context, instance_type,</span><br><span class="line">            image_href, kernel_id, ramdisk_id,</span><br><span class="line">            min_count, max_count,</span><br><span class="line">            display_name, display_description,</span><br><span class="line">            key_name, key_data, security_groups,</span><br><span class="line">            availability_zone, user_data, metadata,</span><br><span class="line">            injected_files, admin_password,</span><br><span class="line">            access_ip_v4, access_ip_v6,</span><br><span class="line">            requested_networks, config_drive,</span><br><span class="line">            block_device_mapping, auto_disk_config,</span><br><span class="line">            filter_properties&#x3D;filter_properties,</span><br><span class="line">            legacy_bdm&#x3D;legacy_bdm,</span><br><span class="line">            shutdown_terminate&#x3D;shutdown_terminate,</span><br><span class="line">            check_server_group_quota&#x3D;check_server_group_quota,</span><br><span class="line">            tags&#x3D;tags, supports_multiattach&#x3D;supports_multiattach,</span><br><span class="line">            trusted_certs&#x3D;trusted_certs,</span><br><span class="line">            supports_port_resource_request&#x3D;supports_port_resource_request)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;compute&#x2F;api.py</span><br><span class="line">def _create_instance(self, context, instance_type,</span><br><span class="line">               image_href, kernel_id, ramdisk_id,</span><br><span class="line">               min_count, max_count,</span><br><span class="line">               display_name, display_description,</span><br><span class="line">               key_name, key_data, security_groups,</span><br><span class="line">               availability_zone, user_data, metadata, injected_files,</span><br><span class="line">               admin_password, access_ip_v4, access_ip_v6,</span><br><span class="line">               requested_networks, config_drive,</span><br><span class="line">               block_device_mapping, auto_disk_config, filter_properties,</span><br><span class="line">               reservation_id&#x3D;None, legacy_bdm&#x3D;True, shutdown_terminate&#x3D;False,</span><br><span class="line">               check_server_group_quota&#x3D;False, tags&#x3D;None,</span><br><span class="line">               supports_multiattach&#x3D;False, trusted_certs&#x3D;None,</span><br><span class="line">               supports_port_resource_request&#x3D;False):</span><br><span class="line">        ..............</span><br><span class="line">		self._checks_for_create_and_rebuild(context, image_id, boot_meta,</span><br><span class="line">                instance_type, metadata, injected_files,</span><br><span class="line">                block_device_mapping.root_bdm(), validate_numa&#x3D;False)</span><br><span class="line"></span><br><span class="line">        instance_group &#x3D; self._get_requested_instance_group(context,</span><br><span class="line">                                   filter_properties)</span><br><span class="line"></span><br><span class="line">        tags &#x3D; self._create_tag_list_obj(context, tags)</span><br><span class="line"></span><br><span class="line">        instances_to_build &#x3D; self._provision_instances(</span><br><span class="line">            context, instance_type, min_count, max_count, base_options,</span><br><span class="line">            boot_meta, security_groups, block_device_mapping,</span><br><span class="line">            shutdown_terminate, instance_group, check_server_group_quota,</span><br><span class="line">            filter_properties, key_pair, tags, trusted_certs,</span><br><span class="line">            supports_multiattach, network_metadata)      </span><br><span class="line">                if CONF.cells.enable:</span><br><span class="line">            # NOTE(danms): CellsV1 can&#39;t do the new thing, so we</span><br><span class="line">            # do the old thing here. We can remove this path once</span><br><span class="line">            # we stop supporting v1.</span><br><span class="line">            for instance in instances:</span><br><span class="line">                instance.create()</span><br><span class="line">            # NOTE(melwitt): We recheck the quota after creating the objects</span><br><span class="line">            # to prevent users from allocating more resources than their</span><br><span class="line">            # allowed quota in the event of a race. This is configurable</span><br><span class="line">            # because it can be expensive if strict quota limits are not</span><br><span class="line">            # required in a deployment.</span><br><span class="line">            if CONF.quota.recheck_quota:</span><br><span class="line">                try:</span><br><span class="line">                    compute_utils.check_num_instances_quota(</span><br><span class="line">                        context, instance_type, 0, 0,</span><br><span class="line">                        orig_num_req&#x3D;len(instances))</span><br><span class="line">                except exception.TooManyInstances:</span><br><span class="line">                    with excutils.save_and_reraise_exception():</span><br><span class="line">                        # Need to clean up all the instances we created</span><br><span class="line">                        # along with the build requests, request specs,</span><br><span class="line">                        # and instance mappings.</span><br><span class="line">                        self._cleanup_build_artifacts(instances,</span><br><span class="line">                                                      instances_to_build)</span><br><span class="line"></span><br><span class="line">            self.compute_task_api.build_instances(context,</span><br><span class="line">                instances&#x3D;instances, image&#x3D;boot_meta,</span><br><span class="line">                filter_properties&#x3D;filter_properties,</span><br><span class="line">                admin_password&#x3D;admin_password,</span><br><span class="line">                injected_files&#x3D;injected_files,</span><br><span class="line">                requested_networks&#x3D;requested_networks,</span><br><span class="line">                security_groups&#x3D;security_groups,</span><br><span class="line">                block_device_mapping&#x3D;block_device_mapping,</span><br><span class="line">                legacy_bdm&#x3D;False)</span><br></pre></td></tr></table></figure>
+
+<p>这里调用 _create_instance创建虚拟机，nova-api 在数据库中 为新实例创建一个数据库条目，最终调用 compute_task_api.build_instances 创建虚拟机</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;conductor&#x2F;api.py</span><br><span class="line">    def build_instances(self, context, instances, image, filter_properties,</span><br><span class="line">            admin_password, injected_files, requested_networks,</span><br><span class="line">            security_groups, block_device_mapping, legacy_bdm&#x3D;True,</span><br><span class="line">            request_spec&#x3D;None, host_lists&#x3D;None):</span><br><span class="line">        self.conductor_compute_rpcapi.build_instances(context,</span><br><span class="line">                instances&#x3D;instances, image&#x3D;image,</span><br><span class="line">                filter_properties&#x3D;filter_properties,</span><br><span class="line">                admin_password&#x3D;admin_password, injected_files&#x3D;injected_files,</span><br><span class="line">                requested_networks&#x3D;requested_networks,</span><br><span class="line">                security_groups&#x3D;security_groups,</span><br><span class="line">                block_device_mapping&#x3D;block_device_mapping,</span><br><span class="line">                legacy_bdm&#x3D;legacy_bdm, request_spec&#x3D;request_spec,</span><br><span class="line">                host_lists&#x3D;host_lists)</span><br></pre></td></tr></table></figure>
+
+<p>消息调用conductor的rpcapi 接口从而传给conductor，让它来build instance</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;api&#x2F;openstack&#x2F;server.py</span><br><span class="line">def build_instances(self, context, instances, image, filter_properties,</span><br><span class="line">            admin_password, injected_files, requested_networks,</span><br><span class="line">            security_groups, block_device_mapping, legacy_bdm&#x3D;True,</span><br><span class="line">            request_spec&#x3D;None, host_lists&#x3D;None):</span><br><span class="line">    ..........</span><br><span class="line">	cctxt.cast(context, &#39;build_instances&#39;, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>为什么通过RPC的cast调用就会调用到该位置的build_instances函数呢？这是因为在nova-conductor服务启动时，会去创建相关的RPC-server，而这些RPC-server创建时候将会去指定一些endpoints(与keystone中的endpoints含义不同，这里只是名称相同而已)，而这些endpoints中包括一些对象列表，当RPC-client去调用相应的RPC-server中的函数时，则会在这些endpoints的对象列表中进行查找，然后调用相应的函数，具体可以看下 <em>#/nova/service.py:Service</em> start 流程， 更加详细的可以查询openstack rpc相关。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;conductor&#x2F;manager.py</span><br><span class="line">def build_instances(self, context, instances, image, filter_properties,</span><br><span class="line">            admin_password, injected_files, requested_networks,</span><br><span class="line">            security_groups, block_device_mapping&#x3D;None, legacy_bdm&#x3D;True,</span><br><span class="line">            request_spec&#x3D;None, host_lists&#x3D;None):</span><br><span class="line">            </span><br><span class="line">	 try:</span><br><span class="line">            # check retry policy. Rather ugly use of instances[0]...</span><br><span class="line">            # but if we&#39;ve exceeded max retries... then we really only</span><br><span class="line">            # have a single instance.</span><br><span class="line">            # TODO(sbauza): Provide directly the RequestSpec object</span><br><span class="line">            # when populate_retry() accepts it</span><br><span class="line">            scheduler_utils.populate_retry(</span><br><span class="line">                filter_properties, instances[0].uuid)</span><br><span class="line">            instance_uuids &#x3D; [instance.uuid for instance in instances]</span><br><span class="line">            spec_obj &#x3D; objects.RequestSpec.from_primitives(</span><br><span class="line">                    context, legacy_request_spec, filter_properties)</span><br><span class="line">            LOG.debug(&quot;Rescheduling: %s&quot;, is_reschedule)</span><br><span class="line">            if is_reschedule:</span><br><span class="line">                # Make sure that we have a host, as we may have exhausted all</span><br><span class="line">                # our alternates</span><br><span class="line">                if not host_lists[0]:</span><br><span class="line">                    # We have an empty list of hosts, so this instance has</span><br><span class="line">                    # failed to build.</span><br><span class="line">                    msg &#x3D; (&quot;Exhausted all hosts available for retrying build &quot;</span><br><span class="line">                           &quot;failures for instance %(instance_uuid)s.&quot; %</span><br><span class="line">                           &#123;&quot;instance_uuid&quot;: instances[0].uuid&#125;)</span><br><span class="line">                    raise exception.MaxRetriesExceeded(reason&#x3D;msg)</span><br><span class="line">            else:</span><br><span class="line">                # This is not a reschedule, so we need to call the scheduler to</span><br><span class="line">                # get appropriate hosts for the request.</span><br><span class="line">                # NOTE(gibi): We only call the scheduler if using cells v1 or</span><br><span class="line">                # we are rescheduling from a really old compute. In</span><br><span class="line">                # either case we do not support externally-defined resource</span><br><span class="line">                # requests, like port QoS. So no requested_resources are set</span><br><span class="line">                # on the RequestSpec here.</span><br><span class="line">                host_lists &#x3D; self._schedule_instances(context, spec_obj,</span><br><span class="line">                        instance_uuids, return_alternates&#x3D;True)</span><br></pre></td></tr></table></figure>
+
+<p>第一次不会重新调度，调用 _schedule_instances 里的 self.query_client.select_destinations 选择计算节点，conductor调用scheduler client 发起rpc请求 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;scheduler&#x2F;client&#x2F;query.py</span><br><span class="line">class SchedulerQueryClient(object):</span><br><span class="line">    &quot;&quot;&quot;Client class for querying to the scheduler.&quot;&quot;&quot;</span><br><span class="line"></span><br><span class="line">    def __init__(self):</span><br><span class="line">        self.scheduler_rpcapi &#x3D; scheduler_rpcapi.SchedulerAPI()</span><br><span class="line"></span><br><span class="line">    def select_destinations(self, context, spec_obj, instance_uuids,</span><br><span class="line">            return_objects&#x3D;False, return_alternates&#x3D;False):</span><br><span class="line">        &quot;&quot;&quot;Returns destinations(s) best suited for this request_spec and</span><br><span class="line">        filter_properties.</span><br><span class="line"></span><br><span class="line">        When return_objects is False, the result will be the &quot;old-style&quot; list</span><br><span class="line">        of dicts with &#39;host&#39;, &#39;nodename&#39; and &#39;limits&#39; as keys. The value of</span><br><span class="line">        return_alternates is ignored.</span><br><span class="line"></span><br><span class="line">        When return_objects is True, the result will be a list of lists of</span><br><span class="line">        Selection objects, with one list per instance. Each instance&#39;s list</span><br><span class="line">        will contain a Selection representing the selected (and claimed) host,</span><br><span class="line">        and, if return_alternates is True, zero or more Selection objects that</span><br><span class="line">        represent alternate hosts. The number of alternates returned depends on</span><br><span class="line">        the configuration setting &#96;CONF.scheduler.max_attempts&#96;.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        return self.scheduler_rpcapi.select_destinations(context, spec_obj,</span><br><span class="line">                instance_uuids, return_objects, return_alternates)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;scheduler&#x2F;rpcapi.py</span><br><span class="line">    def select_destinations(self, ctxt, spec_obj, instance_uuids,</span><br><span class="line">            return_objects&#x3D;False, return_alternates&#x3D;False):</span><br><span class="line">        # Modify the parameters if an older version is requested</span><br><span class="line">        .................</span><br><span class="line">        return cctxt.call(ctxt, &#39;select_destinations&#39;, **msg_args)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>消息通过rpc请求发给了scheduler</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;scheduler&#x2F;manager.py</span><br><span class="line">def select_destinations(self, ctxt, request_spec&#x3D;None,</span><br><span class="line">            filter_properties&#x3D;None, spec_obj&#x3D;_sentinel, instance_uuids&#x3D;None,</span><br><span class="line">            return_objects&#x3D;False, return_alternates&#x3D;False):</span><br><span class="line">        .........................</span><br><span class="line">        if self.driver.USES_ALLOCATION_CANDIDATES and not is_rebuild:</span><br><span class="line">            # Only process the Placement request spec filters when Placement</span><br><span class="line">            # is used.</span><br><span class="line">            try:</span><br><span class="line">                request_filter.process_reqspec(ctxt, spec_obj)</span><br><span class="line">            except exception.RequestFilterFailed as e:</span><br><span class="line">                raise exception.NoValidHost(reason&#x3D;e.message)</span><br><span class="line"></span><br><span class="line">            resources &#x3D; utils.resources_from_request_spec(spec_obj)</span><br><span class="line">            res &#x3D; self.placement_client.get_allocation_candidates(ctxt,</span><br><span class="line">                                                                  resources)</span><br><span class="line">            if res is None:</span><br><span class="line">                # We have to handle the case that we failed to connect to the</span><br><span class="line">                # Placement service and the safe_connect decorator on</span><br><span class="line">                # get_allocation_candidates returns None.</span><br><span class="line">                alloc_reqs, provider_summaries, allocation_request_version &#x3D; (</span><br><span class="line">                        None, None, None)</span><br><span class="line">            else:</span><br><span class="line">                (alloc_reqs, provider_summaries,</span><br><span class="line">                            allocation_request_version) &#x3D; res</span><br><span class="line">            if not alloc_reqs:</span><br><span class="line">                LOG.info(&quot;Got no allocation candidates from the Placement &quot;</span><br><span class="line">                         &quot;API. This could be due to insufficient resources &quot;</span><br><span class="line">                         &quot;or a temporary occurrence as compute nodes start &quot;</span><br><span class="line">                         &quot;up.&quot;)</span><br><span class="line">                raise exception.NoValidHost(reason&#x3D;&quot;&quot;)</span><br><span class="line">            else:</span><br><span class="line">                # Build a dict of lists of allocation requests, keyed by</span><br><span class="line">                # provider UUID, so that when we attempt to claim resources for</span><br><span class="line">                # a host, we can grab an allocation request easily</span><br><span class="line">                alloc_reqs_by_rp_uuid &#x3D; collections.defaultdict(list)</span><br><span class="line">                for ar in alloc_reqs:</span><br><span class="line">                    for rp_uuid in ar[&#39;allocations&#39;]:</span><br><span class="line">                        alloc_reqs_by_rp_uuid[rp_uuid].append(ar)</span><br><span class="line"></span><br><span class="line">        # Only return alternates if both return_objects and return_alternates</span><br><span class="line">        # are True.</span><br><span class="line">        return_alternates &#x3D; return_alternates and return_objects</span><br><span class="line">        selections &#x3D; self.driver.select_destinations(ctxt, spec_obj,</span><br><span class="line">                instance_uuids, alloc_reqs_by_rp_uuid, provider_summaries,</span><br><span class="line">                allocation_request_version, return_alternates)</span><br><span class="line">        # If &#96;return_objects&#96; is False, we need to convert the selections to</span><br><span class="line">        # the older format, which is a list of host state dicts.</span><br><span class="line">        if not return_objects:</span><br><span class="line">            selection_dicts &#x3D; [sel[0].to_dict() for sel in selections]</span><br><span class="line">            return jsonutils.to_primitive(selection_dicts)</span><br><span class="line">        return selections</span><br></pre></td></tr></table></figure>
+
+<p>scheduler选择目标节点时会查询placement选择合适候选人 , 再调用 scheduler自身的filter 选择节点 self.driver.select_destinations</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#nova&#x2F;scheduler&#x2F;filter_scheduler.py</span><br><span class="line">def select_destinations(self, context, spec_obj, instance_uuids,</span><br><span class="line">            alloc_reqs_by_rp_uuid, provider_summaries,</span><br><span class="line">            allocation_request_version&#x3D;None, return_alternates&#x3D;False):</span><br><span class="line">.....................</span><br><span class="line">        host_selections &#x3D; self._schedule(context, spec_obj, instance_uuids,</span><br><span class="line">                alloc_reqs_by_rp_uuid, provider_summaries,</span><br><span class="line">                allocation_request_version, return_alternates)</span><br><span class="line">        self.notifier.info(</span><br><span class="line">            context, &#39;scheduler.select_destinations.end&#39;,</span><br><span class="line">            dict(request_spec&#x3D;spec_obj.to_legacy_request_spec_dict()))</span><br><span class="line">        compute_utils.notify_about_scheduler_action(</span><br><span class="line">            context&#x3D;context, request_spec&#x3D;spec_obj,</span><br><span class="line">            action&#x3D;fields_obj.NotificationAction.SELECT_DESTINATIONS,</span><br><span class="line">            phase&#x3D;fields_obj.NotificationPhase.END)</span><br><span class="line">        return host_selections</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">def _schedule(self, context, spec_obj, instance_uuids,</span><br><span class="line">            alloc_reqs_by_rp_uuid, provider_summaries,</span><br><span class="line">            allocation_request_version&#x3D;None, return_alternates&#x3D;False):</span><br><span class="line">    .......        </span><br><span class="line">    hosts &#x3D; self._get_all_host_states(elevated, spec_obj,</span><br><span class="line">                provider_summaries) </span><br><span class="line">	.........</span><br><span class="line">	for num, instance_uuid in enumerate(instance_uuids):</span><br><span class="line">		hosts &#x3D; self._get_sorted_hosts(spec_obj, hosts, num)</span><br><span class="line">		</span><br><span class="line">	.........</span><br><span class="line">	# Check if we were able to fulfill the request. If not, this call will</span><br><span class="line">        # raise a NoValidHost exception.</span><br><span class="line">        self._ensure_sufficient_hosts(context, claimed_hosts, num_instances,</span><br><span class="line">                claimed_instance_uuids)</span><br></pre></td></tr></table></figure>
+
+<p>获取前面placement 候选人 resource provider的主机状态信息, select_destinations 调度选择好计算节点</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://blog.kubestack.cn/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/" data-id="cl8oac2e10009u41631j9bt7f" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/09/19/centos7-%E5%8D%87%E7%BA%A7%E8%87%B34-%E5%86%85%E6%A0%B8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          centos7-升级至4.* 内核
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">openstack-nova-虚拟机创建流程以及源码分析(一)</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">41</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/09/27/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%89/">openstack-nova-虚拟机创建流程以及源码分析(三)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/27/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/">openstack-nova-虚拟机创建流程以及源码分析(二)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/19/docker-%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8ipvlan%E7%BD%91%E7%BB%9C/">docker-容器使用ipvlan网络</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/19/centos7-%E5%8D%87%E7%BA%A7%E8%87%B34-%E5%86%85%E6%A0%B8/">centos7-升级至4.* 内核</a>
+          </li>
+        
+          <li>
+            <a href="/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/">openstack-nova-虚拟机创建流程以及源码分析(一)</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer" style="text-align:center;color:white;" >
+    <div id="footer-info" class="inner">
+      <!--2022 robin5911<br>-->
+       <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2020043539号-1</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+    <a href="/about" class="mobile-nav-link">关于</a>
+  
+</nav>
+    
+
+<script src="//apps.bdimg.com/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
