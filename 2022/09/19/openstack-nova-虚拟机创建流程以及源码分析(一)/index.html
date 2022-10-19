@@ -21,17 +21,17 @@ var _hmt = _hmt || [];
   <meta name="description" content="openstack 虚机创建流程以及源码分析(一)基于openstack stein虚机创建流程图 上图是虚拟机创建流程的整体流程，可以看到整体虚拟机创建流程一次经过了API、Conductor、Scheduler、Placement、Compute等主要服务。 下表列出了每个步骤中实例的状态：    Status Task Power state Steps    Build schedulin">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack-nova-虚拟机创建流程以及源码分析(一)">
-<meta property="og:url" content="https://blog.kubestack.cn/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/index.html">
+<meta property="og:url" content="https://tonyzhang1989.github.io/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/index.html">
 <meta property="og:site_name" content="robin5911 的博客">
 <meta property="og:description" content="openstack 虚机创建流程以及源码分析(一)基于openstack stein虚机创建流程图 上图是虚拟机创建流程的整体流程，可以看到整体虚拟机创建流程一次经过了API、Conductor、Scheduler、Placement、Compute等主要服务。 下表列出了每个步骤中实例的状态：    Status Task Power state Steps    Build schedulin">
 <meta property="og:locale">
-<meta property="og:image" content="https://blog.kubestack.cn/images/openstack/instance-creation.png">
+<meta property="og:image" content="https://tonyzhang1989.github.io/images/openstack/instance-creation.png">
 <meta property="article:published_time" content="2022-09-19T02:26:20.000Z">
 <meta property="article:modified_time" content="2022-09-30T09:28:50.475Z">
 <meta property="article:author" content="robin5911">
 <meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://blog.kubestack.cn/images/openstack/instance-creation.png">
+<meta name="twitter:image" content="https://tonyzhang1989.github.io/images/openstack/instance-creation.png">
   
     <link rel="alternate" href="/atom.xml" title="robin5911 的博客" type="application/atom+xml">
   
@@ -78,7 +78,7 @@ var _hmt = _hmt || [];
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://blog.kubestack.cn"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
       </div>
     </div>
   </div>
@@ -190,7 +190,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://blog.kubestack.cn/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/" data-id="cl8oac2e10009u41631j9bt7f" class="article-share-link">Share</a>
+      <a data-url="https://tonyzhang1989.github.io/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/" data-id="cl8oac2e10009u41631j9bt7f" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
