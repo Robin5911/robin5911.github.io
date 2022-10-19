@@ -21,7 +21,7 @@ var _hmt = _hmt || [];
   <meta name="description" content="背景：VPC网络内，用户两台虚机，VM1 138，VM2 181，用户需要把138流量牵引至181，所以将138 网关改成 181，当客户端 138 发起外网ping 114.114.114.114 时，无法联网 排查原因：  通过tcpdump抓网关网卡包  ​    网关181回包后138 收不到 ![&#x2F;images&#x2F;openstack&#x2F;image-20210220172329798.png)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack-记一次虚机代理网关网络不通问题排查">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/index.html">
+<meta property="og:url" content="https://robin5911.github.io/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/index.html">
 <meta property="og:site_name" content="robin5911 的博客">
 <meta property="og:description" content="背景：VPC网络内，用户两台虚机，VM1 138，VM2 181，用户需要把138流量牵引至181，所以将138 网关改成 181，当客户端 138 发起外网ping 114.114.114.114 时，无法联网 排查原因：  通过tcpdump抓网关网卡包  ​    网关181回包后138 收不到 ![&#x2F;images&#x2F;openstack&#x2F;image-20210220172329798.png)">
 <meta property="og:locale">
@@ -76,7 +76,7 @@ var _hmt = _hmt || [];
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robin5911.github.io"></form>
       </div>
     </div>
   </div>
@@ -131,7 +131,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" data-id="ckldj7pc900000k16fiv1axho" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2021/02/20/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E4%BB%A3%E7%90%86%E7%BD%91%E5%85%B3%E7%BD%91%E7%BB%9C%E4%B8%8D%E9%80%9A%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" data-id="ckldj7pc900000k16fiv1axho" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>

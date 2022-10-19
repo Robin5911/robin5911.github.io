@@ -21,7 +21,7 @@ var _hmt = _hmt || [];
   <meta name="description" content="最近在调研智能网卡，对于使用智能网卡的环境下，如何实现虚拟机的热迁移呢，这里分享一下。 热迁移的过程分以下几步完成：   发起热迁移后，在目的物理机上会启动一个VM，命令参数等同于源物理机上正在运行的VM的启动参数。  标记RAM中所有需要迁移的page为dirty。  发送标记为dirty的page到目的机的VM中，重复多次，直到dirty的page数量减少到某个临界值，或者是达到其他可以触发本">
 <meta property="og:type" content="article">
 <meta property="og:title" content="openstack-基于智能网卡的热迁移实现">
-<meta property="og:url" content="https://tonyzhang1989.github.io/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/index.html">
+<meta property="og:url" content="https://robin5911.github.io/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="robin5911 的博客">
 <meta property="og:description" content="最近在调研智能网卡，对于使用智能网卡的环境下，如何实现虚拟机的热迁移呢，这里分享一下。 热迁移的过程分以下几步完成：   发起热迁移后，在目的物理机上会启动一个VM，命令参数等同于源物理机上正在运行的VM的启动参数。  标记RAM中所有需要迁移的page为dirty。  发送标记为dirty的page到目的机的VM中，重复多次，直到dirty的page数量减少到某个临界值，或者是达到其他可以触发本">
 <meta property="og:locale">
@@ -76,7 +76,7 @@ var _hmt = _hmt || [];
         <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://tonyzhang1989.github.io"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://robin5911.github.io"></form>
       </div>
     </div>
   </div>
@@ -111,7 +111,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://tonyzhang1989.github.io/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/" data-id="cl027px0o00064016949ghfa0" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/" data-id="cl027px0o00064016949ghfa0" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
