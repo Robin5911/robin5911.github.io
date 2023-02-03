@@ -81,6 +81,250 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-openstack-cinder-volume创建流程以及源码分析-三" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%89/" class="article-date">
+  <time datetime="2023-02-03T08:04:06.000Z" itemprop="datePublished">2023-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%89/">openstack cinder volume创建流程以及源码分析(三)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="本文基于openstack-Stein-版本"><a href="#本文基于openstack-Stein-版本" class="headerlink" title="本文基于openstack Stein 版本"></a>本文基于openstack Stein 版本</h6><p>上文中，volume创建经scheduler 已经rpc  cast 传给了 volume.</p>
+<p>(1) cinder\volume\manager.py<br>VolumeManager.create_volume 函数对创建请求进行响应，并调用cinder.volume.flows.api.get_flow来创建。。</p>
+<p>OnFailureReschedulerTask 当scheduer失败时重试，ExtractVolumeSpecTask 获取volume创建spec内容，NotifyVolumeActionTask 通知volume 创建动作，最终开始干活 CreateVolumeFromSpecTask 创建volume，以及 CreateVolumeOnFinishTask 通知volume创建完成。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cinder.volume.manager.VolumeManager.create_volume</span><br><span class="line">   try:</span><br><span class="line">           # NOTE(flaper87): Driver initialization is</span><br><span class="line">           # verified by the task itself.</span><br><span class="line">           flow_engine &#x3D; create_volume.get_flow(</span><br><span class="line">               context_elevated,</span><br><span class="line">               self,</span><br><span class="line">               self.db,</span><br><span class="line">               self.driver,</span><br><span class="line">               self.scheduler_rpcapi,</span><br><span class="line">               self.host,</span><br><span class="line">               volume,</span><br><span class="line">               allow_reschedule,</span><br><span class="line">               context,</span><br><span class="line">               request_spec,</span><br><span class="line">               filter_properties,</span><br><span class="line">               image_volume_cache&#x3D;self.image_volume_cache,</span><br><span class="line">           )</span><br><span class="line">       except Exception:</span><br><span class="line">           msg &#x3D; _(&quot;Create manager volume flow failed.&quot;)</span><br><span class="line">           LOG.exception(msg, resource&#x3D;&#123;&#39;type&#39;: &#39;volume&#39;, &#39;id&#39;: volume.id&#125;)</span><br><span class="line">           raise exception.CinderException(msg)</span><br></pre></td></tr></table></figure>
+
+<p> CreateVolumeFromSpecTask  中又根据创建类型，是普通volume，还是image，还是备份还是快照等动作会有区别，这里已使用ceph的image创建为例，最终调用rbd的 _clone 函数clone 出一个块设备，最终resize 一下大小，同时更新根据image 元数据更新volume相关信息，最终更新volume 数据库相关信息。</p>
+<p>CreateVolumeOnFinishTask 当volume创建完之后，更新volume 数据库状态信息。</p>
+<p>支持volume 已经创建完成！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%89/" data-id="cldobzxqi0000og16abum06e8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-cinder-volume创建流程以及源码分析-二" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/" class="article-date">
+  <time datetime="2023-02-03T08:03:58.000Z" itemprop="datePublished">2023-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/">openstack cinder volume创建流程以及源码分析(二)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="本文基于openstack-Stein-版本"><a href="#本文基于openstack-Stein-版本" class="headerlink" title="本文基于openstack Stein 版本"></a>本文基于openstack Stein 版本</h6><p>上文中，volume创建经api已经rpc  cast 传给了 scheduler.</p>
+<p>(1) cinder\scheduler\manager.py<br>SchedulerManager.create_volume 函数对创建请求进行响应，并调用cinder.scheduler.flows.api.get_flow来创建。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">cinder.scheduler.manager.SchedulerManager.create_volume</span><br><span class="line">        try:</span><br><span class="line">            flow_engine &#x3D; create_volume.get_flow(context,</span><br><span class="line">                                                 self.driver,</span><br><span class="line">                                                 request_spec,</span><br><span class="line">                                                 filter_properties,</span><br><span class="line">                                                 volume,</span><br><span class="line">                                                 snapshot_id,</span><br><span class="line">                                                 image_id,</span><br><span class="line">                                                 backup_id)</span><br><span class="line">        except Exception:</span><br><span class="line">            msg &#x3D; _(&quot;Failed to create scheduler manager volume flow&quot;)</span><br><span class="line">            LOG.exception(msg)</span><br><span class="line">            raise exception.CinderException(msg)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>(2) cinder\scheduler\flows\api\create_volume.py<br>get_flow函数先执行 ExtractSchedulerSpecTask 任务获取请求信息，再调用 ScheduleCreateVolumeTask  调度volume。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">cinder.scheduler.flows.create_volume.ScheduleCreateVolumeTask.execute:</span><br><span class="line">        try:</span><br><span class="line">            if CONF.enable_multi_ceph:</span><br><span class="line">                get_remote_image_service &#x3D; glance.get_remote_image_service</span><br><span class="line">                image_href &#x3D; request_spec.get(&#39;image_id&#39;)</span><br><span class="line">                if image_href:</span><br><span class="line">                    image_service, image_id &#x3D; get_remote_image_service(context,</span><br><span class="line">                                                                   image_href)</span><br><span class="line">                    image_location &#x3D; image_service.get_location(context,</span><br><span class="line">                                                                image_id)</span><br><span class="line">                    filter_properties[&#39;image_location&#39;] &#x3D; image_location</span><br><span class="line">            self.driver_api.schedule_create_volume(context, request_spec,</span><br><span class="line">                                                   filter_properties)</span><br><span class="line">        except Exception as e:</span><br><span class="line">            self.message_api.create(</span><br><span class="line">                context,</span><br><span class="line">                message_field.Action.SCHEDULE_ALLOCATE_VOLUME,</span><br><span class="line">                resource_uuid&#x3D;request_spec[&#39;volume_id&#39;],</span><br><span class="line">                exception&#x3D;e)</span><br><span class="line">            # An error happened, notify on the scheduler queue and log that</span><br><span class="line">            # this happened and set the volume to errored out and reraise the</span><br><span class="line">            # error *if* exception caught isn&#39;t NoValidBackend. Otherwise *do</span><br><span class="line">            # not* reraise (since what&#39;s the point?)</span><br><span class="line">            with excutils.save_and_reraise_exception(</span><br><span class="line">                    reraise&#x3D;not isinstance(e, exception.NoValidBackend)):</span><br><span class="line">                try:</span><br><span class="line">                    self._handle_failure(context, request_spec, e)</span><br><span class="line">                finally:</span><br><span class="line">                    common.error_out(volume, reason&#x3D;e)</span><br></pre></td></tr></table></figure>
+
+<p>(3) cinder\scheduler\filter_scheduler.py</p>
+<p>FilterScheduler. schedule_create_volume 函数对创建请求调度选出backend，如果没有合适的backend则抛异常报no weighed backend,  调用 _get_weighted_candidates 从 cinder service中根据scheduler的filter选出合适的backends，再调用 get_weighed_backends 选出最优的backends， 最终调用volume rpc 来创建volume。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br></pre></td><td class="code"><pre><span class="line">cinder.scheduler.filter_scheduler.FilterScheduler.schedule_create_volume:</span><br><span class="line">   def _get_weighted_candidates(self, context, request_spec,</span><br><span class="line">                                 filter_properties&#x3D;None):</span><br><span class="line">        &quot;&quot;&quot;Return a list of backends that meet required specs.</span><br><span class="line"></span><br><span class="line">        Returned list is ordered by their fitness.</span><br><span class="line">        &quot;&quot;&quot;</span><br><span class="line">        elevated &#x3D; context.elevated()</span><br><span class="line"></span><br><span class="line">        # Since Cinder is using mixed filters from Oslo and it&#39;s own, which</span><br><span class="line">        # takes &#39;resource_XX&#39; and &#39;volume_XX&#39; as input respectively, copying</span><br><span class="line">        # &#39;volume_XX&#39; to &#39;resource_XX&#39; will make both filters happy.</span><br><span class="line">        volume_type &#x3D; request_spec.get(&quot;volume_type&quot;)</span><br><span class="line">        resource_type &#x3D; volume_type if volume_type is not None else &#123;&#125;</span><br><span class="line"></span><br><span class="line">        config_options &#x3D; self._get_configuration_options()</span><br><span class="line"></span><br><span class="line">        if filter_properties is None:</span><br><span class="line">            filter_properties &#x3D; &#123;&#125;</span><br><span class="line">        self._populate_retry(filter_properties,</span><br><span class="line">                             request_spec)</span><br><span class="line"></span><br><span class="line">        request_spec_dict &#x3D; jsonutils.to_primitive(request_spec)</span><br><span class="line"></span><br><span class="line">        filter_properties.update(&#123;&#39;context&#39;: context,</span><br><span class="line">                                  &#39;request_spec&#39;: request_spec_dict,</span><br><span class="line">                                  &#39;config_options&#39;: config_options,</span><br><span class="line">                                  &#39;volume_type&#39;: volume_type,</span><br><span class="line">                                  &#39;resource_type&#39;: resource_type&#125;)</span><br><span class="line"></span><br><span class="line">        self.populate_filter_properties(request_spec,</span><br><span class="line">                                        filter_properties)</span><br><span class="line"></span><br><span class="line">        # If multiattach is enabled on a volume, we need to add</span><br><span class="line">        # multiattach to extra specs, so that the capability</span><br><span class="line">        # filtering is enabled.</span><br><span class="line">        multiattach &#x3D; request_spec[&#39;volume_properties&#39;].get(&#39;multiattach&#39;,</span><br><span class="line">                                                            False)</span><br><span class="line">        if multiattach and &#39;multiattach&#39; not in resource_type.get(</span><br><span class="line">                &#39;extra_specs&#39;, &#123;&#125;):</span><br><span class="line">            if &#39;extra_specs&#39; not in resource_type:</span><br><span class="line">                resource_type[&#39;extra_specs&#39;] &#x3D; &#123;&#125;</span><br><span class="line"></span><br><span class="line">            resource_type[&#39;extra_specs&#39;].update(</span><br><span class="line">                multiattach&#x3D;&#39;&lt;is&gt; True&#39;)</span><br><span class="line"></span><br><span class="line">        # Revert volume consumed capacity if it&#39;s a rescheduled request</span><br><span class="line">        retry &#x3D; filter_properties.get(&#39;retry&#39;, &#123;&#125;)</span><br><span class="line">        if retry.get(&#39;backends&#39;, []):</span><br><span class="line">            self.host_manager.revert_volume_consumed_capacity(</span><br><span class="line">                retry[&#39;backends&#39;][-1],</span><br><span class="line">                request_spec[&#39;volume_properties&#39;][&#39;size&#39;])</span><br><span class="line">        # Find our local list of acceptable backends by filtering and</span><br><span class="line">        # weighing our options. we virtually consume resources on</span><br><span class="line">        # it so subsequent selections can adjust accordingly.</span><br><span class="line"></span><br><span class="line">        # Note: remember, we are using an iterator here. So only</span><br><span class="line">        # traverse this list once.</span><br><span class="line">        backends &#x3D; self.host_manager.get_all_backend_states(elevated)</span><br><span class="line"></span><br><span class="line">        # Filter local hosts based on requirements ...</span><br><span class="line">        backends &#x3D; self.host_manager.get_filtered_backends(backends,</span><br><span class="line">                                                           filter_properties)</span><br><span class="line">        if not backends:</span><br><span class="line">            return []</span><br><span class="line"></span><br><span class="line">        LOG.debug(&quot;Filtered %s&quot;, backends)</span><br><span class="line">        # weighted_backends &#x3D; WeightedHost() ... the best</span><br><span class="line">        # backend for the job.</span><br><span class="line">        weighed_backends &#x3D; self.host_manager.get_weighed_backends(</span><br><span class="line">            backends, filter_properties)</span><br><span class="line">        return weighed_backends</span><br><span class="line">    def _schedule(self, context, request_spec, filter_properties&#x3D;None):</span><br><span class="line">        weighed_backends &#x3D; self._get_weighted_candidates(context, request_spec,</span><br><span class="line">                                                         filter_properties)</span><br><span class="line">        # When we get the weighed_backends, we clear those backends that don&#39;t</span><br><span class="line">        # match the resource&#39;s backend (it could be assigend from group,</span><br><span class="line">        # snapshot or volume).</span><br><span class="line">        resource_backend &#x3D; request_spec.get(&#39;resource_backend&#39;)</span><br><span class="line">        if weighed_backends and resource_backend:</span><br><span class="line">            resource_backend_has_pool &#x3D; bool(utils.extract_host(</span><br><span class="line">                resource_backend, &#39;pool&#39;))</span><br><span class="line">            # Get host name including host@backend#pool info from</span><br><span class="line">            # weighed_backends.</span><br><span class="line">            for backend in weighed_backends[::-1]:</span><br><span class="line">                backend_id &#x3D; (</span><br><span class="line">                    backend.obj.backend_id if resource_backend_has_pool</span><br><span class="line">                    else utils.extract_host(backend.obj.backend_id)</span><br><span class="line">                )</span><br><span class="line">                if backend_id !&#x3D; resource_backend:</span><br><span class="line">                    weighed_backends.remove(backend)</span><br><span class="line">        if not weighed_backends:</span><br><span class="line">            LOG.warning(&#39;No weighed backend found for volume &#39;</span><br><span class="line">                        &#39;with properties: %s&#39;,</span><br><span class="line">                        filter_properties[&#39;request_spec&#39;].get(&#39;volume_type&#39;))</span><br><span class="line">            return None</span><br><span class="line">        return self._choose_top_backend(weighed_backends, request_spec)</span><br><span class="line">   def schedule_create_volume(self, context, request_spec, filter_properties):</span><br><span class="line">        backend &#x3D; self._schedule(context, request_spec, filter_properties)</span><br><span class="line"></span><br><span class="line">        if not backend:</span><br><span class="line">            raise exception.NoValidBackend(reason&#x3D;_(&quot;No weighed backends &quot;</span><br><span class="line">                                                    &quot;available&quot;))</span><br><span class="line"></span><br><span class="line">        backend &#x3D; backend.obj</span><br><span class="line">        volume_id &#x3D; request_spec[&#39;volume_id&#39;]</span><br><span class="line"></span><br><span class="line">        updated_volume &#x3D; driver.volume_update_db(</span><br><span class="line">            context, volume_id,</span><br><span class="line">            backend.host,</span><br><span class="line">            backend.cluster_name,</span><br><span class="line">            availability_zone&#x3D;backend.service[&#39;availability_zone&#39;])</span><br><span class="line">        self._post_select_populate_filter_properties(filter_properties,</span><br><span class="line">                                                     backend)</span><br><span class="line"></span><br><span class="line">        # context is not serializable</span><br><span class="line">        filter_properties.pop(&#39;context&#39;, None)</span><br><span class="line"></span><br><span class="line">        self.volume_rpcapi.create_volume(context, updated_volume, request_spec,</span><br><span class="line">                                         filter_properties,</span><br><span class="line">                                         allow_reschedule&#x3D;True)     </span><br></pre></td></tr></table></figure>
+
+<p>至此，scheduler侧的任务已经完成！</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/" data-id="cldobzxr40004og16bua0ah3p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-cinder-volume创建流程以及源码分析-一" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%80/" class="article-date">
+  <time datetime="2023-02-03T07:44:38.000Z" itemprop="datePublished">2023-02-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%80/">openstack cinder volume创建流程以及源码分析(一)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h6 id="本文基于openstack-Stein-版本"><a href="#本文基于openstack-Stein-版本" class="headerlink" title="本文基于openstack Stein 版本"></a>本文基于openstack Stein 版本</h6><h4 id="1-cinder-创建整体流程"><a href="#1-cinder-创建整体流程" class="headerlink" title="1. cinder 创建整体流程"></a>1. cinder 创建整体流程</h4><p><img src="/images/openstack/71de5178-d61e-11e5-8d7c-6b9f0a244e41.png"></p>
+<p>如整体架构图所示，创建卷涉及的答题步骤主要有以下几步：<br>a. Client发送请求，通过RESTFUL接口访问cinder-api。<br>b. Api解析响应请求，api解析由Client发送来的请求，并通过rpc进一步调用cinder-scheduler。<br>c. Scheduler对资源进行调度，scheduler选择合适的节点进行。<br>d. Volume调用Driver创建卷，volume通过指定Driver进行卷的创建。</p>
+<h4 id="2-源码详解"><a href="#2-源码详解" class="headerlink" title="2. 源码详解"></a>2. 源码详解</h4><p>(1) cinder\api\v3\volumes.py<br>VolumeController. create函数对创建请求进行响应，首先函数对name, size，volume_type、metadata、snapshot等信息进行获取，然后调用Volume API的create进行创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">cinder.api.v3.volumes.VolumeController.create:</span><br><span class="line">    # 对name,size,volume_type、metadata、snapshot等信息进行获取</span><br><span class="line">    new_volume &#x3D; self.volume_api.create(context,</span><br><span class="line">                                            size,</span><br><span class="line">                                            volume.get(&#39;display_name&#39;),</span><br><span class="line">                                            volume.get(&#39;display_description&#39;),</span><br><span class="line">                                            **kwargs)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>(2) cinder\volume\api.py<br>API.create函数对source_volume、volume_type等参数进行进一步检查，确保无误，并调用cinder.volume.flows.api.get_flow来创建。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">cinder.volume.api.API.create:</span><br><span class="line">     try:</span><br><span class="line">            sched_rpcapi &#x3D; (self.scheduler_rpcapi if (</span><br><span class="line">                            not cgsnapshot and not source_cg and</span><br><span class="line">                            not group_snapshot and not source_group)</span><br><span class="line">                            else None)</span><br><span class="line">            volume_rpcapi &#x3D; (self.volume_rpcapi if (</span><br><span class="line">                             not cgsnapshot and not source_cg and</span><br><span class="line">                             not group_snapshot and not source_group)</span><br><span class="line">                             else None)</span><br><span class="line">            flow_engine &#x3D; create_volume.get_flow(self.db,</span><br><span class="line">                                                 self.image_service,</span><br><span class="line">                                                 availability_zones,</span><br><span class="line">                                                 create_what,</span><br><span class="line">                                                 sched_rpcapi,</span><br><span class="line">                                                 volume_rpcapi)</span><br><span class="line">        except Exception:</span><br><span class="line">            msg &#x3D; _(&#39;Failed to create api volume flow.&#39;)</span><br><span class="line">            LOG.exception(msg)</span><br><span class="line">            raise exception.CinderException(msg)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>(3) cinder\volume\flows\api\create_volume.py<br>get_flow函数检查Quata配额，最后创建EntryCreateTask及VolumeCastTask等任务，<br>其中EntryCreateTask会将卷的创建过程写入数据库，此时卷的状态为”creating”。<br>VolumeCastTask.excute函数会调用VoumeCastTask._cast_create_volume<br>VolumeCastTask._cast_create_volume函数，如果未传入host，则会经过调度进行创建卷，通过scheduler_rpcapi.create_volume创建卷；如果未传入host则直接交由Volume Manager去创建卷。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cinder.volume.flows.api.create_volume.VolumeCastTask._cast_create_volume:</span><br><span class="line">  self.scheduler_rpcapi.create_volume(</span><br><span class="line">            context,</span><br><span class="line">            volume,</span><br><span class="line">            snapshot_id&#x3D;snapshot_id,</span><br><span class="line">            image_id&#x3D;image_id,</span><br><span class="line">            request_spec&#x3D;request_spec,</span><br><span class="line">            filter_properties&#x3D;filter_properties,</span><br><span class="line">            backup_id&#x3D;backup_id)</span><br></pre></td></tr></table></figure>
+
+<p>至此为止，Cinder API部分完成了自己的工作。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%80/" data-id="cldobzxqp0001og1617ylf5gy" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-虚拟化-ovs-常用命令集合" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/01/17/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/" class="article-date">
+  <time datetime="2023-01-17T02:30:24.000Z" itemprop="datePublished">2023-01-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/01/17/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/">虚拟化-ovs-常用命令集合</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="整理常用的ovs命令集合"><a href="#整理常用的ovs命令集合" class="headerlink" title="整理常用的ovs命令集合"></a>整理常用的ovs命令集合</h4><h6 id="ovs-vsctl"><a href="#ovs-vsctl" class="headerlink" title="ovs-vsctl"></a>ovs-vsctl</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">显示主机已有网桥以及端口port信息,以及vxlan隧道信息</span><br><span class="line">#ovs-vsctl show</span><br><span class="line"></span><br><span class="line">添加网桥</span><br><span class="line">#ovs-vsctl add-br br-test</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="ovs-ofctl"><a href="#ovs-ofctl" class="headerlink" title="ovs-ofctl"></a>ovs-ofctl</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">输出交换机信息，输出交换机上的网卡以及端口port信息</span><br><span class="line">#ovs-ofctl show br-int</span><br><span class="line"></span><br><span class="line">输出交换机的端口统计信息，包括收发包、丢包、错误包等数量</span><br><span class="line">#ovs-ofctl dump-ports br-int</span><br><span class="line"></span><br><span class="line">查看交换机流表信息</span><br><span class="line">#ovs-ofctl dump-flows br-int</span><br><span class="line"></span><br><span class="line">添加交换机流表</span><br><span class="line">#ovs-ofctl add-flow br-int ********</span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="ovs-dpctl"><a href="#ovs-dpctl" class="headerlink" title="ovs-dpctl"></a>ovs-dpctl</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">显示所有datapath基本信息</span><br><span class="line">#ovs-dpctl show</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h6 id="ovs-appctl"><a href="#ovs-appctl" class="headerlink" title="ovs-appctl"></a>ovs-appctl</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查询虚机mac fa:16:3e:ac:21:48 到 虚机 fa:16:3e:b0:bf:cc的流表trace路径</span><br><span class="line">#ovs-appctl ofproto&#x2F;trace br-int in_port&#x3D;27,dl_src&#x3D;fa:16:3e:ac:21:48,dl_dst&#x3D;fa:16:3e:b0:bf:cc</span><br></pre></td></tr></table></figure>
+
+<h6 id="例-查询虚机-test01-宿主机-hyper123-到虚机-test02-宿主机hyper09-的路径"><a href="#例-查询虚机-test01-宿主机-hyper123-到虚机-test02-宿主机hyper09-的路径" class="headerlink" title="例 :  查询虚机 test01 (宿主机 hyper123) 到虚机 test02(宿主机hyper09)的路径"></a>例 :  查询虚机 test01 (宿主机 hyper123) 到虚机 test02(宿主机hyper09)的路径</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. 查询虚机test01和 test02 的相关port</span><br><span class="line">   #</span><br><span class="line">2. 查询虚机test02相关port</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2023/01/17/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/" data-id="cldobzxrn0007og1654ywb9u8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ovs/" rel="tag">ovs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-虚拟化-ovs-学习-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2023/01/16/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%AD%A6%E4%B9%A0-1/" class="article-date">
+  <time datetime="2023-01-16T03:28:45.000Z" itemprop="datePublished">2023-01-16</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2023/01/16/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%AD%A6%E4%B9%A0-1/">虚拟化-ovs-学习(1)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="Open-vSwitch"><a href="#Open-vSwitch" class="headerlink" title="Open vSwitch"></a>Open vSwitch</h4><p>Open vSwitch 是一个开源的虚拟交换机实现。广泛应用在云计算行业，为网络管理员提供虚拟云主机之间和之内的流量可见性与可控性。Open vSwitch 旨在用虚拟化方案解决网络问题，与控制器软件一起实现分布式的虚拟交换技术。这意味着，交换机和控制器软件能够在多个服务器之间创建集群网络配置，从而不需要在每一台云主机和物理主机上单独配置网络。这个交换机还支持 VLAN 中继，通过 NetFlow、sFlow 和 RSPAN 实现可见性，通过 OpenFlow 协议进行管理。它还有其他一些特性：严格流量控制，它由 OpenFlow 交换协议实现；远程管理功能，它能通过网络策略实现更多控制。</p>
+<p>在虚拟交换机的 Flow 控制器或管理工具方面，OvS 需要借助第三方控制器或管理工具实现复杂的转发策略。例如 OvS 支持 OpenFlow 协议，我们就可以使用任何支持 OpenFlow 协议的控制器来对 OvS 进行远程管理。但这并不意味着 OvS 必须要有一个控制器才能工作。在不连接外部控制器情况下，OvS 自身可以依靠 MAC 地址学习实现二层数据包转发功能，就像 Linux Bridge。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2023/01/16/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%AD%A6%E4%B9%A0-1/" data-id="cldobzxrh0006og16ewtzf5me" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ovs/" rel="tag">ovs</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-openstack-nova-虚拟机创建流程以及源码分析-二" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2022/09/27/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/" class="article-date">
@@ -344,230 +588,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-openstack-记一次虚机创建失败问题" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/15/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/" class="article-date">
-  <time datetime="2022-08-15T09:26:28.000Z" itemprop="datePublished">2022-08-15</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/15/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/">openstack-记一次虚机创建失败问题</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>d</p>
-<h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>某天，突然openstack无法创建虚拟机，MQ消息大量堆积</p>
-<h4 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h4><ol>
-<li>nova-conductor报大量数据库超时</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[SQL: UPDATE services SET updated_at&#x3D;%(updated_at)s, report_count&#x3D;%(report_count)s, last_seen_up&#x3D;%(last_seen_up)s WHERE services.id &#x3D; %(services_id)s]</span><br><span class="line">[parameters: &#123;&#39;last_seen_up&#39;: datetime.datetime(2022, 8, 9, 11, 4, 54, 153870), &#39;services_id&#39;: 7, &#39;updated_at&#39;: datetime.datetime(2022, 8, 9, 11, 4, 54, 256605), &#39;report_count&#39;: 2340897&#125;]</span><br><span class="line">(Background on this error at: http:&#x2F;&#x2F;sqlalche.me&#x2F;e&#x2F;e3q8)</span><br><span class="line">2022-08-09 19:05:00.293 67 ERROR nova.servicegroup.drivers.db Traceback (most recent call last):</span><br><span class="line">2022-08-09 19:05:00.293 67 ERROR nova.servicegroup.drivers.db   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;servicegroup&#x2F;drivers&#x2F;db.py&quot;, line 92, in _report_state</span><br><span class="line">2022-08-09 19:05:00.293 67 ERROR nova.servicegroup.drivers.db     service.service_ref.save()</span><br><span class="line">2022-08-09 19:05:00.293 67 ERROR nova.servicegroup.drivers.db   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;oslo_versionedobjects&#x2F;base.py&quot;, line 226, in wrapper</span><br><span class="line">2022-08-09 19:05:00.293 67 ERROR nova.servicegroup.drivers.db     return fn(self, *args, **kwargs)</span><br><span class="line">2022-08-09 19:05:00.293 67 ERROR nova.servicegroup.drivers.db   File &quot;&#x2F;var&#x2F;lib&#x2F;kolla&#x2F;venv&#x2F;lib&#x2F;python2.7&#x2F;site-packages&#x2F;nova&#x2F;objects&#x2F;service.py&quot;, line 406, in save</span><br></pre></td></tr></table></figure>
-
-<p>2. </p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/08/15/openstack-%E8%AE%B0%E4%B8%80%E6%AC%A1%E8%99%9A%E6%9C%BA%E5%88%9B%E5%BB%BA%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/" data-id="cl7uby8wg00004w168hxv4iwe" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-neutron-常用网络命令" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/03/openstack-neutron-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/" class="article-date">
-  <time datetime="2022-08-03T07:28:23.000Z" itemprop="datePublished">2022-08-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/03/openstack-neutron-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/">openstack-neutron-常用网络命令</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>**创建默认vxlan网络 **</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#neutron net-create vpc1</span><br></pre></td></tr></table></figure>
-
-<p>**创建子网 **</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#neutron subnet-create vpc1-subnet 192.168.0.0&#x2F;24</span><br></pre></td></tr></table></figure>
-        
-          <p class="article-more-link">
-            <a href="/2022/08/03/openstack-neutron-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/08/03/openstack-neutron-%E5%B8%B8%E7%94%A8%E7%BD%91%E7%BB%9C%E5%91%BD%E4%BB%A4/" data-id="cl6g5feaq00003s16hnoth2lz" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-nova虚拟机热迁移源码刨析" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/" class="article-date">
-  <time datetime="2022-08-01T11:10:59.000Z" itemprop="datePublished">2022-08-01</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/">openstack-nova-虚拟机热迁移过程源码刨析</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>热迁移主要包括三个阶段：</p>
-<ul>
-<li><strong>pre_live_migration 阶段</strong>：热迁移前的准备阶段，主要在目的计算节点上提前准备虚拟机资源，包括网络资源，例如：建立虚拟机的网卡，然后将网卡加入 OvS br-int 网桥。如果该阶段失败，会有回滚操作。</li>
-<li><strong>内存迁移阶段</strong>：该阶段完全虚拟机虚拟内存数据的迁移，如果虚拟机的系统盘在计算节点本地，那么系统盘数据也会在此时进行迁移。如果该阶段失败，会有回滚操作，回滚流程和 pre_live_migration 阶段一致。</li>
-<li><strong>post_live_migration 阶段</strong>：热迁移完成后资源清理阶段，源计算节点主要是断开源计算节点上虚拟机的卷连接、清理源计算节点虚拟机的网卡资源；目的节点主要是调用 neutronclient，更新 Port Host 属性为目的计算节点。(NOTE：该阶段无需回滚流程，因为虚拟机实际上已经成功迁移，再回滚没有意义）</li>
-</ul>
-        
-          <p class="article-more-link">
-            <a href="/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/08/01/openstack-nova%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%83%AD%E8%BF%81%E7%A7%BB%E6%BA%90%E7%A0%81%E5%88%A8%E6%9E%90/" data-id="cl6bpn5ea0001zg16c4nn478g" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-虚拟化-numa架构讲解-1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/" class="article-date">
-  <time datetime="2022-07-28T07:43:26.000Z" itemprop="datePublished">2022-07-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/">虚拟化-numa架构讲解(1)</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>d</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/07/28/%E8%99%9A%E6%8B%9F%E5%8C%96-numa%E6%9E%B6%E6%9E%84%E8%AE%B2%E8%A7%A3-1/" data-id="cl64xx6q10000k416bsr7d0bl" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-go-实用方法-判断字符串为uuid类型" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/" class="article-date">
-  <time datetime="2022-07-27T02:41:41.000Z" itemprop="datePublished">2022-07-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/">go-实用方法-判断字符串为uuid类型</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>go 遇到需要判断字符串是否为uuid 类型，函数如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func IsValidUUID(uuid string) bool &#123;</span><br><span class="line">	r :&#x3D; regexp.MustCompile(&quot;^[a-fA-F0-9]&#123;8&#125;-[a-fA-F0-9]&#123;4&#125;-4[a-fA-F0-9]&#123;3&#125;-[8|9|aA|bB][a-fA-F0-9]&#123;3&#125;-[a-fA-F0-9]&#123;12&#125;$&quot;)</span><br><span class="line">	return r.MatchString(uuid)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-        
-          <p class="article-more-link">
-            <a href="/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/07/27/go-%E5%AE%9E%E7%94%A8%E6%96%B9%E6%B3%95-%E5%88%A4%E6%96%AD%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%BAuuid%E7%B1%BB%E5%9E%8B/" data-id="cl64xx6q60001k4166i0m8y9w" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/" rel="tag">go</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -586,7 +606,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">40</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">43</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ovs/" rel="tag">ovs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -596,7 +616,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/ovs/" style="font-size: 11px;">ovs</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -605,7 +625,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -618,23 +638,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2022/09/27/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/">openstack-nova-虚拟机创建流程以及源码分析(二)</a>
+            <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%89/">openstack cinder volume创建流程以及源码分析(三)</a>
           </li>
         
           <li>
-            <a href="/2022/09/19/docker-%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8ipvlan%E7%BD%91%E7%BB%9C/">docker-容器使用ipvlan网络</a>
+            <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/">openstack cinder volume创建流程以及源码分析(二)</a>
           </li>
         
           <li>
-            <a href="/2022/09/19/centos7-%E5%8D%87%E7%BA%A7%E8%87%B34-%E5%86%85%E6%A0%B8/">centos7-升级至4.* 内核</a>
+            <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%80/">openstack cinder volume创建流程以及源码分析(一)</a>
           </li>
         
           <li>
-            <a href="/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/">openstack-nova-虚拟机创建流程以及源码分析(一)</a>
+            <a href="/2023/01/17/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/">虚拟化-ovs-常用命令集合</a>
           </li>
         
           <li>
-            <a href="/2022/09/13/openstack-placement-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">openstack-placement-常用命令</a>
+            <a href="/2023/01/16/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%AD%A6%E4%B9%A0-1/">虚拟化-ovs-学习(1)</a>
           </li>
         
       </ul>
@@ -649,7 +669,7 @@ var _hmt = _hmt || [];
   
   <div class="outer" style="text-align:center;color:white;" >
     <div id="footer-info" class="inner">
-      <!--2022 robin5911<br>-->
+      <!--2023 robin5911<br>-->
        <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2020043539号-1</a>
     </div>
   </div>

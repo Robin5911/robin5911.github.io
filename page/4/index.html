@@ -81,6 +81,219 @@ var _hmt = _hmt || [];
       <div class="outer">
         <section id="main">
   
+    <article id="post-小白解说容器编排之Kubernetes资源对象" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/26/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/" class="article-date">
+  <time datetime="2021-10-26T06:07:33.000Z" itemprop="datePublished">2021-10-26</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/26/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/">小白解说容器编排之Kubernetes资源对象</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Kubernetes 主要概念和对象介绍有下面这些。<br>    Autoscaling (HPA)<br>    ConfigMap<br>    CronJob<br>    CustomResourceDefinition<br>    DaemonSet<br>    Deployment<br>    Ingress<br>    Job<br>    LocalVolume<br>    Namespace<br>    NetworkPolicy<br>    Node<br>    PersistentVolume<br>    Pod<br>    PodPreset<br>    ReplicaSet<br>    Resource Quota<br>    Secret<br>    SecurityContext<br>    Service<br>    ServiceAccount<br>    StatefulSet<br>    Volume</p>
+        
+          <p class="article-more-link">
+            <a href="/2021/10/26/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2021/10/26/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes%E8%B5%84%E6%BA%90%E5%AF%B9%E8%B1%A1/" data-id="cky1083mn000alg161188dppq" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之Prometheus监控入门" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/" class="article-date">
+  <time datetime="2021-10-25T01:52:37.000Z" itemprop="datePublished">2021-10-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/">小白解说之Prometheus监控入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。今天给大家讲解一下云原生界的监控扛把子普罗米修斯Prometheus。<br><img src="/images/monitor/prometheus.png" alt="avatar"><br>一、开源监控方案<br>开源监控系统种类繁多，随着这么多年技术的革新，云计算大数据等技术的发展, 目前还比较流行的是Prometheus、Nightingale、Open-falcon、Zabbix.<br>大家感兴趣可以自行Google了解一下这些监控系统，我理解各有利弊吧，根据实际场合选择最合适的吧,总而言之，Prometheus更适合云场景下吧。</p>
+<p>二、Prometheus简介<br>Prometheus受启发于Google的Brogmon监控系统（相似的Kubernetes是从Google的Brog系统演变而来），从2012年开始由前Google工程师在Soundcloud以开源软件的形式进行研发，并且于2015年早期对外发布早期版本。2016年5月继Kubernetes之后成为第二个正式加入CNCF基金会的项目，同年6月正式发布1.0版本。2017年底发布了基于全新存储层的2.0版本，能更好地与容器平台、云平台配合。<br><img src="/images/monitor/prometheus-release-roadmaps.png" alt="avatar"><br>Prometheus作为新一代的云原生监控系统，目前已经有超过650+位贡献者参与到Prometheus的研发工作上，并且超过120+项的第三方集成。</p>
+<p>三、Prometheus优缺点<br>优点:<br>  *自定义多维数据模型(时序列数据由metric名和一组key/value标签组成)<br>  *非常高效的存储 平均一个采样数据占 ~3.5 bytes左右，320万的时间序列，每30秒采样，保持60天，消耗磁盘大概228G。<br>  *在多维度上灵活且强大的查询语言(PromQl), 数据查询语句表现力更强大，内置更强大的统计函数。<br>  *不依赖分布式存储，支持单主节点工作<br>  *通过基于HTTP的pull方式采集时序数据<br>  *可以通过push gateway进行时序列数据推送(pushing)<br>  *可以通过服务发现或者静态配置去获取要采集的目标服务器<br>  *多种可视化图表及仪表盘支持<br>  *支持对云或容器的监控，其他大多数监控系统主要对主机监控。<br>缺点:<br>  *Prometheus 是基于 Metric 的监控，不适用于日志（Logs）、事件(Event)、调用链(Tracing)。<br>  *Prometheus 默认是 Pull 模型，HTTP请求 target的url 地址, 合理规划你的网络，尽量不要转发。<br>  *Prometheus不提供持久的长期存储、异常检测、自动水平缩放和用户管理,需要合理选择 Federate、Cortex、Thanos等方案。</p>
+<p>四、Prometheus监控全家桶<br>Prometheus主要由Prometheus Server、Pushgateway、Job/Exporter、Service Discovery、Alertmanager、Dashboard这6个核心模块构成。Prometheus通过服务发现机制发现target，这些目标可以是长时间执行的Job，也可以是短时间执行的Job，还可以是通过Exporter监控的第三方应用程序。被抓取的数据会存储起来，通过PromQL语句在仪表盘等可视化系统中供查询，或者向Alertmanager发送告警信息，告警会通过页面、电子邮件、钉钉信息或者其他形式呈现。</p>
+<p><img src="/images/monitor/prometheus_arch.png" alt="avatar"><br><img src="/images/monitor/prom_grafana.png" alt="avatar"><br><img src="/images/monitor/prom_alert.png" alt="avatar"></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BPrometheus%E7%9B%91%E6%8E%A7%E5%85%A5%E9%97%A8/" data-id="ckvaiowit0006lc16d01a5b6p" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之Docker高级用法" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" class="article-date">
+  <time datetime="2021-10-25T01:52:03.000Z" itemprop="datePublished">2021-10-25</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/">小白解说之Docker高级用法</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。上文中给白白们讲解了docker的入门知识，今天讲解一下docker的干活，常规以及高级用法吧。</p>
+<p>下面以自定义启动一台nginx server为例为大家延时一下docker的魅力吧~<br>一、镜像使用<br>镜像是 Docker 的三大组件之一。<br>Docker 运行容器前需要本地存在对应的镜像，如果镜像不存在本地，Docker 会从镜像仓库下载（默认是 Docker Hub 公共注册服务器中的仓库），我们也可以搭建一个本地的镜像仓库比如docker registry或者harbor等。<br>默认社区docker hub已经提供了很丰富的镜像，比如直接docker pull nginx 即可，这里以自定义diy一下nginx镜像为例尝试一下吧。</p>
+<p>下载镜像</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#docker pull centos:7</span><br></pre></td></tr></table></figure>
+        
+          <p class="article-more-link">
+            <a href="/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2021/10/25/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95/" data-id="ckvaiowir0003lc16arxl8nyx" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-openstack-ceph-auth创建账号" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" class="article-date">
+  <time datetime="2021-10-20T02:00:32.000Z" itemprop="datePublished">2021-10-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/">openstack-ceph auth创建账号</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2021/10/20/openstack-ceph-auth%E5%88%9B%E5%BB%BA%E8%B4%A6%E5%8F%B7/" data-id="ckuzbjk5f0000nk16ddql458h" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-小白解说之Docker容器入门" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" class="article-date">
+  <time datetime="2021-10-19T07:10:06.000Z" itemprop="datePublished">2021-10-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/">小白解说之Docker容器入门</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家好，我是小白。下面由我给白白们讲解一下火热的容器技术Docker</p>
+<h4 id="Linux容器技术"><a href="#Linux容器技术" class="headerlink" title="Linux容器技术"></a>Linux容器技术</h4><p>Linux 容器LXC 是一个在单一 Linux 主机上提供多个隔离的 Linux 环境的操作系统级虚拟技术。不像虚拟机（VM），容器并不需要运行专用的访客guest操作系统。容器们共享宿主机的host操作系统内核，并使用访客操作系统的系统库来提供所需的功能。由于不需要专用的操作系统，因此容器要比虚拟器启动快得多。<br>容器借助 Linux 内核的 Namespaces、Apparmor、SELinux 情景模式profile、chroot 和 CGroup 等功能来提供类似于虚拟机的隔离环境。Linux 的安全模块可以确保正确地控制容器对宿主机和内核的访问，从而避免各种入侵活动。此外，在宿主机上可以运行不同的 Linux 发行版，只要它们运行在同样的 CPU 架构下。</p>
+<p>简单来说，容器技术就是基于Linux内核提供的一套进程隔离技术，提供的是一种基于各种 Linux 发行版创建容器镜像的方法、一套管理容器生命周期的 API、与该 API 交互的客户端工具、保存快照的功能、在宿主机之间迁移容器实例的能力，等等。</p>
+        
+          <p class="article-more-link">
+            <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/#more">Read More</a>
+          </p>
+        
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BDocker%E5%AE%B9%E5%99%A8%E5%85%A5%E9%97%A8/" data-id="ckuzbjk5p0007nk169usm656a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/" rel="tag">docker</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-小白解说之KataContainer入门" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2021/10/19/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E4%B9%8BKataContainer%E5%85%A5%E9%97%A8/" class="article-date">
@@ -383,275 +596,6 @@ var _hmt = _hmt || [];
 
 
   
-    <article id="post-github下载超时加速" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/" class="article-date">
-  <time datetime="2021-10-13T09:05:16.000Z" itemprop="datePublished">2021-10-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/">github下载超时加速</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>国内访问github太慢，甚至超时，咋办？</p>
-<p>第一步：找 IP<br>首先找到 github.com 的 IP 地址，可以在 IPAddress 网站上查找。还可以添加 github.global.ssl.fastly.net 的映射，这个有助于加速。</p>
-<p>注意：隔段时间地址会变，网上找的有些都过期了，建议还是自己去查询一下。</p>
-<p>第二步：修改 host<br>vim /etc/hosts<br>将找到的最新地址映射添加到 hosts 中。</p>
-<p>亲测,确实有效果噢~</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/10/13/github%E4%B8%8B%E8%BD%BD%E8%B6%85%E6%97%B6%E5%8A%A0%E9%80%9F/" data-id="ckupbrtpc0001ww16e2x33prf" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Linux-CentOS-关闭ipv6" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" class="article-date">
-  <time datetime="2021-10-13T08:37:09.000Z" itemprop="datePublished">2021-10-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/">Linux-CentOS 关闭ipv6</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Post describes procedure to disable IPv6 on CentOS/RHEL 7. There are 2 ways to do this :</p>
-<ol>
-<li>Disable IPv6 in kernel module (requires reboot)</li>
-<li>Disable IPv6 using sysctl settings (no reboot required)</li>
-</ol>
-<p>To verify if IPv6 is enabled or not, execute :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ifconfig -a | grep inet6</span><br></pre></td></tr></table></figure>
-<pre><code>    inet6 fe80::211:aff:fe6a:9de4  prefixlen 64  scopeid 0x20
-    inet6 ::1  prefixlen 128  scopeid 0x10[host]</code></pre>
-<ol>
-<li>Disable IPv6 in kernel module (requires reboot)</li>
-<li>Edit /etc/default/grub and add ipv6.disable=1 in line GRUB_CMDLINE_LINUX, e.g.:</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cat &#x2F;etc&#x2F;default&#x2F;grub</span><br></pre></td></tr></table></figure>
-<p>GRUB_TIMEOUT=5<br>GRUB_DEFAULT=saved<br>GRUB_DISABLE_SUBMENU=true<br>GRUB_TERMINAL_OUTPUT=”console”<br>GRUB_CMDLINE_LINUX=”ipv6.disable=1 crashkernel=auto rhgb quiet”<br>GRUB_DISABLE_RECOVERY=”true”<br>2. Regenerate a GRUB configuration file and overwrite existing one:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># grub2-mkconfig -o &#x2F;boot&#x2F;grub2&#x2F;grub.cfg</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>Restart system and verify no line “inet6” in “ip addr show” command output.<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># shutdown -r now</span><br><span class="line"># ip addr show | grep net6</span><br></pre></td></tr></table></figure></li>
-<li>Disable IPv6 using sysctl settings (no reboot required)</li>
-<li>Append below lines in /etc/sysctl.conf:</li>
-</ol>
-<p>net.ipv6.conf.all.disable_ipv6 = 1<br>net.ipv6.conf.default.disable_ipv6 = 1<br>NOTE : To disable IPv6 on a single interface add below lines to /etc/sysctl.conf :<br>net.ipv6.conf.[interface].disable_ipv6 = 1 ### put interface name here [interface]<br>net.ipv6.conf.default.disable_ipv6 = 1<br>2. To make the settings affective, execute :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -p</span><br></pre></td></tr></table></figure>
-<p>NOTE : make sure the file /etc/ssh/sshd_config contains the line AddressFamily inet to avoid breaking SSH Xforwarding if you are using the sysctl method<br>3. Add the AddressFamily line to sshd_config :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vi &#x2F;etc&#x2F;ssh&#x2F;sshd_config</span><br></pre></td></tr></table></figure>
-<p>….<br>AddressFamily inet<br>….<br>Restart sshd for changes to get get effect :</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl restart sshd</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/10/13/Linux-CentOS-%E5%85%B3%E9%97%ADipv6/" data-id="ckupbrtp70000ww16c1u5aini" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-kata-Kata-Container介绍" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/" class="article-date">
-  <time datetime="2021-10-13T07:28:47.000Z" itemprop="datePublished">2021-10-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/">kata-Kata Container介绍</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>关于kata的介绍，网上资料很多，过大的官方话就不说了，下面说一些白话一点的，让小白能快速了解的。</p>
-<h4 id="1-首先kata是什么"><a href="#1-首先kata是什么" class="headerlink" title="1. 首先kata是什么"></a>1. 首先kata是什么</h4><p>kata 本质上是和runc 平级的，不同的是runc启动的是容器，而kata 启动的是hypervisor(qemu-kvm/firecraker等)，因为公有云上安全性问题，所以衍生出了kata<br><img src="/images/kata/kata-k8s.jpg" alt="img"></p>
-<h4 id="2-kata-架构是什么样子的"><a href="#2-kata-架构是什么样子的" class="headerlink" title="2. kata 架构是什么样子的"></a>2. kata 架构是什么样子的</h4><p>kata 为了实现安全性，在容器外层包了一层虚拟化hypervisor(这里以qemu-kvm为例)，从而实现了隔离，安全性更高</p>
-<p><img src="/images/kata/jiagou.png" alt="img"></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/10/13/kata-Kata-Container%E4%BB%8B%E7%BB%8D/" data-id="ckup7kegx0000uc16g0oghjm4" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kata/" rel="tag">kata</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-openstack-cinder-nvmf-target-测试" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/" class="article-date">
-  <time datetime="2021-10-13T04:26:33.000Z" itemprop="datePublished">2021-10-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/">openstack-cinder nvmf target 测试</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/10/13/openstack-cinder-nvmf-target-%E6%B5%8B%E8%AF%95/" data-id="ckup7keh20002uc16hs9635fr" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CentOS-8-libvirt-7-编译安装" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" class="article-date">
-  <time datetime="2021-09-28T03:40:37.000Z" itemprop="datePublished">2021-09-28</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/">CentOS 8-libvirt 7 编译安装</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>基于CentOS 8 x86_64编译安装libvirt 7.2</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#dnf --enablerepo&#x3D;PowerTools install gcc cmake libxslt-devel</span><br><span class="line">#dnf --enablerepo&#x3D;PowerTools install meson rpcgen</span><br><span class="line">#wget https:&#x2F;&#x2F;libvirt.org&#x2F;sources&#x2F;libvirt-7.2.0.tar.xz</span><br><span class="line">#tar xvf libvirt-7.2.0.tar.xz</span><br><span class="line">#cd libvirt-7.2.0</span><br><span class="line">#meson build --prefix&#x3D;&#x2F;usr</span><br><span class="line">#ninja -C build</span><br><span class="line">#ninja -C build install</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#libvirtd --version</span><br></pre></td></tr></table></figure>
-
-
-
-<p>启动测试</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;sbin&#x2F;libvirtd --listen</span><br></pre></td></tr></table></figure>
-
-<p>报错</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : libvirt version: 7.2.0</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: info : hostname: openstack160.********</span><br><span class="line">2021-09-28 04:27:03.665+0000: 41728: error : virNetTLSContextCheckCertFile:110 : Cannot read CA certificate &#39;&#x2F;etc&#x2F;pki&#x2F;CA&#x2F;cacert.pem&#39;: No such file or directory</span><br><span class="line"></span><br><span class="line">先临时修改了&#x2F;etc&#x2F;libvirt&#x2F;libvirtd.conf 关闭tls</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">error: Failed to start domain &#39;instance-00000018&#39;</span><br><span class="line">error: can&#39;t connect to virtlogd: Failed to connect socket to &#39;&#x2F;var&#x2F;run&#x2F;libvirt&#x2F;virtlogd-sock&#39;: No such file or directory</span><br><span class="line"></span><br><span class="line">解决 ：virtlogd &amp;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-<h4 id="Troubleshooting"><a href="#Troubleshooting" class="headerlink" title="Troubleshooting"></a>Troubleshooting</h4><ol>
-<li>ERROR: Program ‘rpcgen portable-rpcgen’ not found</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install rpcgen</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>ERROR: Dependency “gnutls” not found, tried pkgconfig</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gnutls-devel</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>ERROR: Dependency “libxml-2.0” not found, tried pkgconfig</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libxml2-devel</span><br></pre></td></tr></table></figure>
-
-<ol start="4">
-<li>ERROR: Problem encountered: XDR is required for remote driver</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install libtirpc-devel</span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>meson.build:918:2: ERROR: Program ‘rst2html5 rst2html5.py rst2html5-3’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install rst2html5</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “libapparmor” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;rpmfind.net&#x2F;linux&#x2F;opensuse&#x2F;distribution&#x2F;leap&#x2F;15.3&#x2F;repo&#x2F;oss&#x2F;x86_64&#x2F;libapparmor1-2.13.6-1.24.x86_64.rpm</span><br><span class="line">wget https:&#x2F;&#x2F;ftp.lysator.liu.se&#x2F;pub&#x2F;opensuse&#x2F;distribution&#x2F;leap&#x2F;15.3&#x2F;repo&#x2F;oss&#x2F;x86_64&#x2F;libapparmor-devel-2.13.6-1.24.x86_64.rpm</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
-<li>ERROR: C shared or static library ‘attr’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libattr-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: C shared or static library ‘audit’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install audit-libs audit-libs-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “bash-completion” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install bash-completion</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: C shared or static library ‘cap-ng’ not found<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libcap-ng-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “libcurl” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install libcurl-devel</span><br></pre></td></tr></table></figure></li>
-<li>ERROR: Dependency “libfuse glusterfs-api libiscsi libnl pcap-config libssh libssh2 netcf numa openwsman pciaccess readline libsasl2 libudev wireshark yajl” not found, tried pkgconfig and cmake<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf --enablerepo&#x3D;powertools install fuse-devel glusterfs-api-devel libiscsi-devel libnl3-devel libssh-devel libssh2-devel netcf-devel numactl-devel libwsman-devel libpciaccess-devel readline-devel cyrus-sasl-devel systemd-devel wireshark-devel yajl-devel</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/09/28/CentOS-8-libvirt-7-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85/" data-id="cku40uuy90000ss16ebg94xqc" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
 
 
   <nav id="page-nav">
@@ -670,7 +614,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">40</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ELK/" rel="tag">ELK</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/django/" rel="tag">django</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/docker/" rel="tag">docker</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/elastic/" rel="tag">elastic</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/etcd/" rel="tag">etcd</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/git/" rel="tag">git</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/go/" rel="tag">go</a><span class="tag-list-count">18</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/grpc/" rel="tag">grpc</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iptables/" rel="tag">iptables</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kata/" rel="tag">kata</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kube-ovn/" rel="tag">kube-ovn</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a><span class="tag-list-count">14</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">11</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mariadb/" rel="tag">mariadb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/mysql/" rel="tag">mysql</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openstack/" rel="tag">openstack</a><span class="tag-list-count">43</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ovs/" rel="tag">ovs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/python/" rel="tag">python</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/spdk/" rel="tag">spdk</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" rel="tag">云计算</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" rel="tag">关于作者</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag">大数据</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" rel="tag">微服务</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" rel="tag">文学生活</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" rel="tag">漏洞安全</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" rel="tag">监控系统</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a><span class="tag-list-count">9</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -680,7 +624,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
+      <a href="/tags/ELK/" style="font-size: 10px;">ELK</a> <a href="/tags/Linux/" style="font-size: 18px;">Linux</a> <a href="/tags/django/" style="font-size: 10px;">django</a> <a href="/tags/docker/" style="font-size: 15px;">docker</a> <a href="/tags/elastic/" style="font-size: 10px;">elastic</a> <a href="/tags/etcd/" style="font-size: 10px;">etcd</a> <a href="/tags/git/" style="font-size: 10px;">git</a> <a href="/tags/go/" style="font-size: 19px;">go</a> <a href="/tags/grpc/" style="font-size: 11px;">grpc</a> <a href="/tags/iptables/" style="font-size: 10px;">iptables</a> <a href="/tags/kata/" style="font-size: 15px;">kata</a> <a href="/tags/kube-ovn/" style="font-size: 10px;">kube-ovn</a> <a href="/tags/kubernetes/" style="font-size: 18px;">kubernetes</a> <a href="/tags/linux/" style="font-size: 17px;">linux</a> <a href="/tags/mariadb/" style="font-size: 10px;">mariadb</a> <a href="/tags/mysql/" style="font-size: 14px;">mysql</a> <a href="/tags/openstack/" style="font-size: 20px;">openstack</a> <a href="/tags/ovs/" style="font-size: 11px;">ovs</a> <a href="/tags/python/" style="font-size: 12px;">python</a> <a href="/tags/spdk/" style="font-size: 13px;">spdk</a> <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/" style="font-size: 10px;">云计算</a> <a href="/tags/%E5%85%B3%E4%BA%8E%E4%BD%9C%E8%80%85/" style="font-size: 10px;">关于作者</a> <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" style="font-size: 10px;">大数据</a> <a href="/tags/%E5%BE%AE%E6%9C%8D%E5%8A%A1/" style="font-size: 10px;">微服务</a> <a href="/tags/%E6%96%87%E5%AD%A6%E7%94%9F%E6%B4%BB/" style="font-size: 10px;">文学生活</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%AE%89%E5%85%A8/" style="font-size: 10px;">漏洞安全</a> <a href="/tags/%E7%9B%91%E6%8E%A7%E7%B3%BB%E7%BB%9F/" style="font-size: 10px;">监控系统</a> <a href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" style="font-size: 16px;">虚拟化</a> <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" style="font-size: 10px;">面试题</a>
     </div>
   </div>
 
@@ -689,7 +633,7 @@ var _hmt = _hmt || [];
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/02/">February 2023</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/01/">January 2023</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/09/">September 2022</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/07/">July 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/02/">February 2022</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/01/">January 2022</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/12/">December 2021</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">October 2021</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/09/">September 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/08/">August 2021</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/05/">May 2021</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/04/">April 2021</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/03/">March 2021</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/02/">February 2021</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/01/">January 2021</a><span class="archive-list-count">8</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">December 2020</a><span class="archive-list-count">16</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/11/">November 2020</a><span class="archive-list-count">19</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/10/">October 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/09/">September 2020</a><span class="archive-list-count">12</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/12/">December 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">October 2019</a><span class="archive-list-count">1</span></li></ul>
     </div>
   </div>
 
@@ -702,23 +646,23 @@ var _hmt = _hmt || [];
       <ul>
         
           <li>
-            <a href="/2022/09/27/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/">openstack-nova-虚拟机创建流程以及源码分析(二)</a>
+            <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%89/">openstack cinder volume创建流程以及源码分析(三)</a>
           </li>
         
           <li>
-            <a href="/2022/09/19/docker-%E5%AE%B9%E5%99%A8%E4%BD%BF%E7%94%A8ipvlan%E7%BD%91%E7%BB%9C/">docker-容器使用ipvlan网络</a>
+            <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%BA%8C/">openstack cinder volume创建流程以及源码分析(二)</a>
           </li>
         
           <li>
-            <a href="/2022/09/19/centos7-%E5%8D%87%E7%BA%A7%E8%87%B34-%E5%86%85%E6%A0%B8/">centos7-升级至4.* 内核</a>
+            <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%80/">openstack cinder volume创建流程以及源码分析(一)</a>
           </li>
         
           <li>
-            <a href="/2022/09/19/openstack-nova-%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90(%E4%B8%80)/">openstack-nova-虚拟机创建流程以及源码分析(一)</a>
+            <a href="/2023/01/17/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/">虚拟化-ovs-常用命令集合</a>
           </li>
         
           <li>
-            <a href="/2022/09/13/openstack-placement-%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">openstack-placement-常用命令</a>
+            <a href="/2023/01/16/%E8%99%9A%E6%8B%9F%E5%8C%96-ovs-%E5%AD%A6%E4%B9%A0-1/">虚拟化-ovs-学习(1)</a>
           </li>
         
       </ul>
@@ -733,7 +677,7 @@ var _hmt = _hmt || [];
   
   <div class="outer" style="text-align:center;color:white;" >
     <div id="footer-info" class="inner">
-      <!--2022 robin5911<br>-->
+      <!--2023 robin5911<br>-->
        <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2020043539号-1</a>
     </div>
   </div>
