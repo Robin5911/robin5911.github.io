@@ -16,19 +16,19 @@ var _hmt = _hmt || [];
   
 
   
-  <title>证书过期之kubeadm重新生成s证书 | 小白IMao 的博客</title>
+  <title>openstack-nova-虚机挂载云盘过程以及源码分析 | 小白IMao 的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="k8s证书过期之kubeadm重新生成证书重新生成证书检查过期新版本(1.15+)：kubeadm alpha certs check-expiration或openssl x509 -in &#x2F;etc&#x2F;kubernetes&#x2F;pki&#x2F;apiserver.crt -noout -text |grep ‘ Not ‘其他同理证书备份cp -rp &#x2F;etc&#x2F;kubernetes &#x2F;etc&#x2F;kubernet">
+  <meta name="description" content="本文基于openstack Stein 版本nova 侧虚机需要挂载云盘，包括创建时挂载系统盘以及普通数据盘 代码在 nova\compute]manager.py, nova 获取volume信息，并发起attach请求，最终调用cinder api发起了attach请求。 123456nova.compute.manager.ComputeManager._attach_volume:">
 <meta property="og:type" content="article">
-<meta property="og:title" content="证书过期之kubeadm重新生成s证书">
-<meta property="og:url" content="https://robin5911.github.io/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/index.html">
+<meta property="og:title" content="openstack-nova-虚机挂载云盘过程以及源码分析">
+<meta property="og:url" content="https://robin5911.github.io/2023/02/06/openstack-nova-%E8%99%9A%E6%9C%BA%E6%8C%82%E8%BD%BD%E4%BA%91%E7%9B%98%E8%BF%87%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
 <meta property="og:site_name" content="小白IMao 的博客">
-<meta property="og:description" content="k8s证书过期之kubeadm重新生成证书重新生成证书检查过期新版本(1.15+)：kubeadm alpha certs check-expiration或openssl x509 -in &#x2F;etc&#x2F;kubernetes&#x2F;pki&#x2F;apiserver.crt -noout -text |grep ‘ Not ‘其他同理证书备份cp -rp &#x2F;etc&#x2F;kubernetes &#x2F;etc&#x2F;kubernet">
+<meta property="og:description" content="本文基于openstack Stein 版本nova 侧虚机需要挂载云盘，包括创建时挂载系统盘以及普通数据盘 代码在 nova\compute]manager.py, nova 获取volume信息，并发起attach请求，最终调用cinder api发起了attach请求。 123456nova.compute.manager.ComputeManager._attach_volume:">
 <meta property="og:locale">
-<meta property="article:published_time" content="2020-11-30T11:44:28.000Z">
-<meta property="article:modified_time" content="2020-11-30T11:46:54.966Z">
+<meta property="article:published_time" content="2023-02-06T08:36:46.000Z">
+<meta property="article:modified_time" content="2023-02-06T09:28:14.656Z">
 <meta property="article:author" content="robin5911">
-<meta property="article:tag" content="kubernetes">
+<meta property="article:tag" content="openstack">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="小白IMao 的博客" type="application/atom+xml">
@@ -82,10 +82,10 @@ var _hmt = _hmt || [];
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-证书过期之kubeadm重新生成s证书" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-openstack-nova-虚机挂载云盘过程以及源码分析" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" class="article-date">
-  <time datetime="2020-11-30T11:44:28.000Z" itemprop="datePublished">2020-11-30</time>
+    <a href="/2023/02/06/openstack-nova-%E8%99%9A%E6%9C%BA%E6%8C%82%E8%BD%BD%E4%BA%91%E7%9B%98%E8%BF%87%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" class="article-date">
+  <time datetime="2023-02-06T08:36:46.000Z" itemprop="datePublished">2023-02-06</time>
 </a>
     
   </div>
@@ -96,7 +96,7 @@ var _hmt = _hmt || [];
         
   
     <h1 class="article-title" itemprop="name">
-      证书过期之kubeadm重新生成s证书
+      openstack-nova-虚机挂载云盘过程以及源码分析
     </h1>
   
 
@@ -104,20 +104,32 @@ var _hmt = _hmt || [];
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h5 id="k8s证书过期之kubeadm重新生成证书"><a href="#k8s证书过期之kubeadm重新生成证书" class="headerlink" title="k8s证书过期之kubeadm重新生成证书"></a>k8s证书过期之kubeadm重新生成证书</h5><p>重新生成证书<br>检查过期<br>新版本(1.15+)：kubeadm alpha certs check-expiration<br>或<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>证书备份<br>cp -rp /etc/kubernetes /etc/kubernetes.bak<br>移除过期证书<br>rm -f /etc/kubernetes/pki/apiserver*<br>rm -f /etc/kubernetes/pki/front-proxy-client.*<br>rm -rf /etc/kubernetes/pki/etcd/healthcheck-client.*<br>rm -rf /etc/kubernetes/pki/etcd/server.*<br>rm -rf /etc/kubernetes/pki/etcd/peer.*<br>备注：可以使用命令openssl x509 -in [证书全路径] -noout -text查看证书详情。</p>
-<p>重新生成证书<br>老版本：kubeadm alpha phase certs all<br>或<br>新版本(1.15+)：kubeadm alpha certs renew all 使用该命令不用提前删除过期证书<br>重新生成配置文件</p>
-<h4 id="重新生成配置"><a href="#重新生成配置" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>mv /etc/kubernetes/*.conf /tmp/<br>老版本：kubeadm alpha phase kubeconfig all<br>或<br>新版本(1.15+)：kubeadm init phase kubeconfig all</p>
-<h4 id="重新生成配置-1"><a href="#重新生成配置-1" class="headerlink" title="重新生成配置"></a>重新生成配置</h4><p>cp /etc/kubernetes/admin.conf ~/.kube/config<br>重启kubelet<br>systemctl restart kubelet<br>证书过期时间确认<br>openssl x509 -in /etc/kubernetes/pki/apiserver.crt -noout -text |grep ‘ Not ‘<br>其他同理<br>集群确认<br>kubectl get nodes</p>
-<h4 id="如果发现集群，能读不能写，则请重启一下组件："><a href="#如果发现集群，能读不能写，则请重启一下组件：" class="headerlink" title="如果发现集群，能读不能写，则请重启一下组件："></a>如果发现集群，能读不能写，则请重启一下组件：</h4><p>docker ps | grep apiserver<br>docker ps  | grep scheduler<br>docker ps  | grep controller-manager</p>
-<p>docker restart 容器标识<br>做一个有底蕴的软件工作者</p>
+        <h6 id="本文基于openstack-Stein-版本"><a href="#本文基于openstack-Stein-版本" class="headerlink" title="本文基于openstack Stein 版本"></a>本文基于openstack Stein 版本</h6><p>nova 侧虚机需要挂载云盘，包括创建时挂载系统盘以及普通数据盘</p>
+<p>代码在 nova\compute]manager.py, nova 获取volume信息，并发起attach请求，最终调用cinder api发起了attach请求。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nova.compute.manager.ComputeManager._attach_volume:</span><br><span class="line">    try:</span><br><span class="line">            bdm.attach(context, instance, self.volume_api, self.driver,</span><br><span class="line">                       do_driver_attach&#x3D;True)</span><br><span class="line">    ......................................</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nova.virt.block_device.DriverVolumeBlockDevice.attach</span><br><span class="line">def attach(self, context, instance, volume_api, virt_driver,</span><br><span class="line">               do_driver_attach&#x3D;False, **kwargs):</span><br><span class="line">     ...................................</span><br><span class="line">            self._do_attach(context, instance, volume, volume_api,</span><br><span class="line">                            virt_driver, do_driver_attach)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nova.virt.block_device.DriverVolumeBlockDevice.attach_volume</span><br><span class="line">def _do_attach(self, context, instance, volume, volume_api, virt_driver,</span><br><span class="line">                   do_driver_attach):</span><br><span class="line">      ...................</span><br><span class="line">            self._legacy_volume_attach(context, volume, connector, instance,</span><br><span class="line">      ..........................</span><br></pre></td></tr></table></figure>
+
+<p>这里没有attachment id调用了_legacy_volume_attach</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">nova.virt.block_device.DriverVolumeBlockDevice._legacy_volume_attach</span><br><span class="line">def _legacy_volume_attach(self, context, volume, connector, instance,</span><br><span class="line">                              volume_api, virt_driver,</span><br><span class="line">                              do_driver_attach&#x3D;False):</span><br><span class="line">        volume_id &#x3D; volume[&#39;id&#39;]</span><br><span class="line"></span><br><span class="line">        connection_info &#x3D; volume_api.initialize_connection(context,</span><br><span class="line">                                                           volume_id,</span><br><span class="line">                                                           connector)  #调用cinder client初始化connection连接信息</span><br><span class="line">       .....................................................................</span><br><span class="line">            try:</span><br><span class="line">                virt_driver.attach_volume(</span><br><span class="line">                        context, connection_info, instance,</span><br><span class="line">                        self[&#39;mount_device&#39;], disk_bus&#x3D;self[&#39;disk_bus&#39;],</span><br><span class="line">                        device_type&#x3D;self[&#39;device_type&#39;], encryption&#x3D;encryption)  #调用libvirt 连接volume云盘</span><br><span class="line">            except Exception:</span><br><span class="line">                with excutils.save_and_reraise_exception():</span><br><span class="line">                    LOG.exception(&quot;Driver failed to attach volume &quot;</span><br><span class="line">                                  &quot;%(volume_id)s at %(mountpoint)s&quot;,</span><br><span class="line">                                  &#123;&#39;volume_id&#39;: volume_id,</span><br><span class="line">                                   &#39;mountpoint&#39;: self[&#39;mount_device&#39;]&#125;,</span><br><span class="line">                                  instance&#x3D;instance)</span><br><span class="line">                    volume_api.terminate_connection(context, volume_id,</span><br><span class="line">                                                    connector)</span><br><span class="line">        self[&#39;connection_info&#39;] &#x3D; connection_info</span><br><span class="line">        if self.volume_size is None:</span><br><span class="line">            self.volume_size &#x3D; volume.get(&#39;size&#39;)</span><br><span class="line"></span><br><span class="line">        mode &#x3D; &#39;rw&#39;</span><br><span class="line">        if &#39;data&#39; in connection_info:</span><br><span class="line">            mode &#x3D; connection_info[&#39;data&#39;].get(&#39;access_mode&#39;, &#39;rw&#39;)</span><br><span class="line">        if volume[&#39;attach_status&#39;] &#x3D;&#x3D; &quot;detached&quot;:</span><br><span class="line">            # NOTE(mriedem): save our current state so connection_info is in</span><br><span class="line">            # the database before the volume status goes to &#39;in-use&#39; because</span><br><span class="line">            # after that we can detach and connection_info is required for</span><br><span class="line">            # detach.</span><br><span class="line">            self.save()</span><br><span class="line">            try:</span><br><span class="line">                volume_api.attach(context, volume_id, instance.uuid,</span><br><span class="line">                                  self[&#39;mount_device&#39;], mode&#x3D;mode)</span><br><span class="line">        ...................................</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">nova.libvirt.driver.ComputeDriver.attach_volume</span><br><span class="line">    def attach_volume(self, context, connection_info, instance, mountpoint,</span><br><span class="line">                      disk_bus&#x3D;None, device_type&#x3D;None, encryption&#x3D;None):</span><br><span class="line">        guest &#x3D; self._host.get_guest(instance)</span><br><span class="line"></span><br><span class="line">        disk_dev &#x3D; mountpoint.rpartition(&quot;&#x2F;&quot;)[2]</span><br><span class="line">        bdm &#x3D; &#123;</span><br><span class="line">            &#39;device_name&#39;: disk_dev,</span><br><span class="line">            &#39;disk_bus&#39;: disk_bus,</span><br><span class="line">            &#39;device_type&#39;: device_type&#125;</span><br><span class="line"></span><br><span class="line">        # Note(cfb): If the volume has a custom block size, check that</span><br><span class="line">        #            that we are using QEMU&#x2F;KVM and libvirt &gt;&#x3D; 0.10.2. The</span><br><span class="line">        #            presence of a block size is considered mandatory by</span><br><span class="line">        #            cinder so we fail if we can&#39;t honor the request.</span><br><span class="line">        data &#x3D; &#123;&#125;</span><br><span class="line">        if (&#39;data&#39; in connection_info):</span><br><span class="line">            data &#x3D; connection_info[&#39;data&#39;]</span><br><span class="line">        if (&#39;logical_block_size&#39; in data or &#39;physical_block_size&#39; in data):</span><br><span class="line">            if ((CONF.libvirt.virt_type !&#x3D; &quot;kvm&quot; and</span><br><span class="line">                 CONF.libvirt.virt_type !&#x3D; &quot;qemu&quot;)):</span><br><span class="line">                msg &#x3D; _(&quot;Volume sets block size, but the current &quot;</span><br><span class="line">                        &quot;libvirt hypervisor &#39;%s&#39; does not support custom &quot;</span><br><span class="line">                        &quot;block size&quot;) % CONF.libvirt.virt_type</span><br><span class="line">                raise exception.InvalidHypervisorType(msg)</span><br><span class="line"></span><br><span class="line">        self._connect_volume(context, connection_info, instance,</span><br><span class="line">                             encryption&#x3D;encryption)</span><br></pre></td></tr></table></figure>
+
+
+
+<p>上面从nova收到请求，到调用cinder client 挂载云盘，再到libvirt 连接volume，从而虚机可以识别到磁盘，至此完成！</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2020/11/30/%E8%AF%81%E4%B9%A6%E8%BF%87%E6%9C%9F%E4%B9%8Bkubeadm%E9%87%8D%E6%96%B0%E7%94%9F%E6%88%90s%E8%AF%81%E4%B9%A6/" data-id="cki74313h000bko168wysbr1g" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2023/02/06/openstack-nova-%E8%99%9A%E6%9C%BA%E6%8C%82%E8%BD%BD%E4%BA%91%E7%9B%98%E8%BF%87%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/" data-id="cldsm1rpq0000as16gjcf0e8a" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
 
     </footer>
   </div>
@@ -125,19 +137,10 @@ var _hmt = _hmt || [];
     
 <nav id="article-nav">
   
-    <a href="/2020/12/03/%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6kubelet-%E8%AE%B2%E8%A7%A3/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          核心组件kubelet 讲解
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/11/25/CentOS-8-%E4%BD%BF%E7%94%A8python3%E4%BD%9C%E4%B8%BA%E9%BB%98%E8%AE%A4python/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2023/02/03/openstack-cinder-volume%E5%88%9B%E5%BB%BA%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90-%E4%B8%89/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">CentOS 8 使用python3作为默认python</div>
+      <div class="article-nav-title">openstack cinder volume创建流程以及源码分析(三)</div>
     </a>
   
 </nav>
