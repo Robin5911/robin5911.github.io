@@ -6,7 +6,7 @@
   <link href="https://robin5911.github.io/atom.xml" rel="self"/>
   
   <link href="https://robin5911.github.io/"/>
-  <updated>2023-02-06T09:28:14.656Z</updated>
+  <updated>2023-02-06T09:59:31.312Z</updated>
   <id>https://robin5911.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>openstack-cinder-虚机挂载云盘cinder侧过程以及源码分析</title>
+    <link href="https://robin5911.github.io/2023/02/06/openstack-cinder-%E8%99%9A%E6%9C%BA%E6%8C%82%E8%BD%BD%E4%BA%91%E7%9B%98cinder%E4%BE%A7%E8%BF%87%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"/>
+    <id>https://robin5911.github.io/2023/02/06/openstack-cinder-%E8%99%9A%E6%9C%BA%E6%8C%82%E8%BD%BD%E4%BA%91%E7%9B%98cinder%E4%BE%A7%E8%BF%87%E7%A8%8B%E4%BB%A5%E5%8F%8A%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/</id>
+    <published>2023-02-06T09:53:18.000Z</published>
+    <updated>2023-02-06T09:59:31.312Z</updated>
+    
+    <content type="html"><![CDATA[<h6 id="本文基于openstack-Stein-版本"><a href="#本文基于openstack-Stein-版本" class="headerlink" title="本文基于openstack Stein 版本"></a>本文基于openstack Stein 版本</h6><p>上文分析nova挂载云盘过程中，提到调用cinder initialize_connection, 返回volume 的连接信息，比如rbd ceph 的connection info, 同时在 _parse_connection_options 中基于volume type 添加cinder io qos 信息</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">cinder.volume.manager.VolumeManager.initialize_connection</span><br><span class="line">def initialize_connection(self, context, volume, connector):</span><br><span class="line">   ...............................................</span><br><span class="line">        try:</span><br><span class="line">            conn_info &#x3D; self.driver.initialize_connection(volume, connector)</span><br><span class="line">        except Exception as err:</span><br><span class="line">            err_msg &#x3D; (_(&quot;Driver initialize connection failed &quot;</span><br><span class="line">                         &quot;(error: %(err)s).&quot;) % &#123;&#39;err&#39;: six.text_type(err)&#125;)</span><br><span class="line">            LOG.exception(err_msg, resource&#x3D;volume)</span><br><span class="line"></span><br><span class="line">            self.driver.remove_export(context.elevated(), volume)</span><br><span class="line"></span><br><span class="line">            raise exception.VolumeBackendAPIException(data&#x3D;err_msg)</span><br><span class="line"></span><br><span class="line">        conn_info &#x3D; self._parse_connection_options(context, volume, conn_info)</span><br><span class="line">        LOG.info(&quot;Initialize volume connection completed successfully.&quot;,</span><br><span class="line">                 resource&#x3D;volume)</span><br><span class="line">        return conn_info</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">def _parse_connection_options(self, context, volume, conn_info):</span><br><span class="line">       # Add qos_specs to connection info</span><br><span class="line">       typeid &#x3D; volume.volume_type_id</span><br><span class="line">       specs &#x3D; None</span><br><span class="line">       if typeid:</span><br><span class="line">           res &#x3D; volume_types.get_volume_type_qos_specs(typeid)</span><br><span class="line">           qos &#x3D; res[&#39;qos_specs&#39;]</span><br><span class="line">           # only pass qos_specs that is designated to be consumed by</span><br><span class="line">           # front-end, or both front-end and back-end.</span><br><span class="line">           if qos and qos.get(&#39;consumer&#39;) in [&#39;front-end&#39;, &#39;both&#39;]:</span><br><span class="line">               specs &#x3D; qos.get(&#39;specs&#39;)</span><br><span class="line"></span><br><span class="line">           # NOTE(mnaser): The following configures for per-GB QoS</span><br><span class="line">           if specs is not None:</span><br><span class="line">               volume_size &#x3D; int(volume.size)</span><br><span class="line">               tune_opts &#x3D; (&#39;read_iops_sec&#39;, &#39;read_bytes_sec&#39;,</span><br><span class="line">                            &#39;write_iops_sec&#39;, &#39;write_bytes_sec&#39;,</span><br><span class="line">                            &#39;total_iops_sec&#39;, &#39;total_bytes_sec&#39;)</span><br><span class="line"></span><br><span class="line">               for option in tune_opts:</span><br><span class="line">                   option_per_gb &#x3D; &#39;%s_per_gb&#39; % option</span><br><span class="line">                   option_per_gb_min &#x3D; &#39;%s_per_gb_min&#39; % option</span><br><span class="line">                   option_max &#x3D; &#39;%s_max&#39; % option</span><br><span class="line">                   option_base &#x3D; &#39;%s_base&#39; % option</span><br><span class="line">                   if option_per_gb in specs:</span><br><span class="line">                       minimum_value &#x3D; int(specs.pop(option_per_gb_min, 0))</span><br><span class="line">                       value &#x3D; int(specs[option_per_gb]) * volume_size</span><br><span class="line">                       per_gb_value &#x3D; max(minimum_value, value)</span><br><span class="line">                       base_value &#x3D; int(specs.pop(option_base, 0))</span><br><span class="line">                       final_value &#x3D; base_value + per_gb_value</span><br><span class="line">                       max_value &#x3D; int(specs.pop(option_max, final_value))</span><br><span class="line">                       specs[option] &#x3D; min(final_value, max_value)</span><br><span class="line">                       specs.pop(option_per_gb)</span><br><span class="line"></span><br><span class="line">       qos_spec &#x3D; dict(qos_specs&#x3D;specs)</span><br><span class="line">       conn_info[&#39;data&#39;].update(qos_spec)</span><br><span class="line">       ...............................................</span><br></pre></td></tr></table></figure><p>connection info 返回给了nova，nova侧使用即可，至于attachment 只是数据库里面变更一下记录而已。</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h6 id=&quot;本文基于openstack-Stein-版本&quot;&gt;&lt;a href=&quot;#本文基于openstack-Stein-版本&quot; class=&quot;headerlink&quot; title=&quot;本文基于openstack Stein 版本&quot;&gt;&lt;/a&gt;本文基于openstack Stein </summary>
+      
+    
+    
+    
+    
+    <category term="openstack" scheme="https://robin5911.github.io/tags/openstack/"/>
+    
+  </entry>
   
   <entry>
     <title>openstack-nova-虚机挂载云盘过程以及源码分析</title>
@@ -471,28 +493,6 @@
     <summary type="html">&lt;p&gt;Packer是一个从单一的模板文件来创建多平台一致性镜像的轻量级开源工具，它能够运行在常用的主流操作系统如Windows、Linux和Mac os上，能够高效的并行创建多平台例如AWS、Azure和Alicloud/OpenStack 的镜像，它的目的并不是取代Puppet/Chef等配置管理工具，实际上，当制作镜像的时候，Packer可以使用Chef或者Puppet,ansible 等工具来安装镜像所需要的软件。通过Packer自动化的创建各种平台的镜像是非常容易的。&lt;/p&gt;
 &lt;h4 id=&quot;安装packer&quot;&gt;&lt;a href=&quot;#安装packer&quot; class=&quot;headerlink&quot; title=&quot;安装packer&quot;&gt;&lt;/a&gt;安装packer&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#wget https:&amp;#x2F;&amp;#x2F;releases.hashicorp.com&amp;#x2F;packer&amp;#x2F;1.7.10&amp;#x2F;packer_1.7.10_linux_amd64.zip&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#unzip packer_1.7.10_linux_amd64.zip&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#mv packer &amp;#x2F;usr&amp;#x2F;local&amp;#x2F;bin&amp;#x2F;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#&amp;#x2F;usr&amp;#x2F;local&amp;#x2F;bin&amp;#x2F;packer --help&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;h4 id=&quot;定义packer模板&quot;&gt;&lt;a href=&quot;#定义packer模板&quot; class=&quot;headerlink&quot; title=&quot;定义packer模板&quot;&gt;&lt;/a&gt;定义packer模板&lt;/h4&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#touch openstack.json&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#vim openstack.json&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
-    
-    
-    
-    
-    <category term="openstack" scheme="https://robin5911.github.io/tags/openstack/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>openstack-兼容海光hygon服务器</title>
-    <link href="https://robin5911.github.io/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/"/>
-    <id>https://robin5911.github.io/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/</id>
-    <published>2022-02-08T01:46:21.000Z</published>
-    <updated>2022-02-08T06:55:24.788Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景:"></a>背景:</h2><p>海光处理器采用了与AMD EPYC 类似的体系结构，为了便于 QEMU 虚拟化处理器提供更好的兼容模式，需要对 QEMU-KVM进行CPU Vendor ID进行替换，进而支持 QEMU 虚拟机虚拟化 ；</p><p>QEMU在使用KVM虚拟化的时候只支持使用主机的CPU Vendor ID,目前海光处理器还不在此KVM虚拟化版本支持列表中，如果不配置就直接使用 QEMU/KVM，那么虚拟出来的虚拟机也为海光的 CPU VendorID，这将会导致某些OS虚拟机无法正常启动（例如Windows）；</p><p>Libvirt调用QEMU创建虚拟机进程，在配置Libvirt XML文件的时候需要指定CPU Model和VendorID，把这些参数传递给QEMU，虚拟机才能正常启动。</p><p>Openstack NOVA组件调用Libvirt接口控制虚拟机的生命周期，创建虚拟机的时候生成XML文件，原版的Openstack不会传递CPU的VendorID，需要做一些修改，传递相关的CPU参数才能生成正确的XML文件。</p><h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">主要修改如下文件</span><br><span class="line">nova&#x2F;objects&#x2F;image_meta.py</span><br><span class="line">nova&#x2F;objects&#x2F;virt_cpu_topology.py</span><br><span class="line">nova&#x2F;virt&#x2F;hardware.py</span><br><span class="line">nova&#x2F;virt&#x2F;libvirt&#x2F;config.py</span><br><span class="line">nova&#x2F;virt&#x2F;libvirt&#x2F;driver.py</span><br><span class="line">具体可以参考 https:&#x2F;&#x2F;hlyani.github.io&#x2F;notes&#x2F;openstack&#x2F;openstack_hygon_patch.html</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景:&quot;&gt;&lt;/a&gt;背景:&lt;/h2&gt;&lt;p&gt;海光处理器采用了与AMD EPYC 类似的体系结构，为了便于 QEMU 虚拟化处理器提供更好的兼容模式，需要对 QEMU-KVM进行CP</summary>
-      
     
     
     
