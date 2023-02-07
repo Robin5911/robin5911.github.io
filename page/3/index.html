@@ -112,7 +112,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/" data-id="cl027px0k000140164z8pgdyi" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2022/02/08/openstack-%E5%85%BC%E5%AE%B9%E6%B5%B7%E5%85%89hygon%E6%9C%8D%E5%8A%A1%E5%99%A8/" data-id="cldtmb3pi006dx016dna62fju" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openstack/" rel="tag">openstack</a></li></ul>
@@ -181,7 +181,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/01/25/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/" data-id="cky3zquwk0000oc16bgneaxbr" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2022/01/25/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E5%9C%A8CentOS7%E4%B8%8A%E7%9A%84%E9%83%A8%E7%BD%B2%E8%B0%83%E8%AF%95/" data-id="cldtmb3qj0090x016789j9hav" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
@@ -219,9 +219,86 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2022/01/18/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E8%99%9A%E6%9C%BA%E8%81%94%E9%80%9A%E6%B5%8B%E8%AF%95/" data-id="cl027px0p00084016blg24y4h" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2022/01/18/%E8%99%9A%E6%8B%9F%E5%8C%96-OVS-DPDK%E8%99%9A%E6%9C%BA%E8%81%94%E9%80%9A%E6%B5%8B%E8%AF%95/" data-id="cldtmb3qi008yx01600h4gt2s" class="article-share-link">Share</a>
       
       
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-虚拟化-ovn入门到精通(五)-1" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" class="article-date">
+  <time datetime="2021-12-03T03:21:39.000Z" itemprop="datePublished">2021-12-03</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="OVN-L3-网关连接外部网络"><a href="#OVN-L3-网关连接外部网络" class="headerlink" title="OVN-L3 网关连接外部网络"></a>OVN-L3 网关连接外部网络</h2><h4 id="1-网关联通"><a href="#1-网关联通" class="headerlink" title="1. 网关联通"></a>1. 网关联通</h4><p>参考网上，TOPO是这么个意思~</p>
+<p><img src="/images/ovn/OVN-network-fig-2.png"></p>
+<p>正如上面所看到的，我们添加了以下新组件：</p>
+<ul>
+<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
+</ul>
+<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层, NAT出去<del>~</del></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">     | eth1 |  Physical Network</span><br><span class="line">     ----------</span><br><span class="line">          |</span><br><span class="line">      ____|_____</span><br><span class="line">     |  bridge  |  br-ex 192.168.0.100</span><br><span class="line">      ----------</span><br><span class="line">         | mapping</span><br><span class="line">      outside(sw)</span><br><span class="line">         |                port: tenant1-outside &lt;192.168.0.101&#x2F;24&gt;                               </span><br><span class="line">      router-tenant1(dr)  port: tenant1-localnet &lt;172.16.250.1&#x2F;24，172.16.251.1&#x2F;24&gt;</span><br><span class="line">     &#x2F;        \</span><br><span class="line">  ls01(sw)    ls02(sw)</span><br><span class="line">  &#x2F;  |        &#x2F;  \</span><br><span class="line">vm1 vm2   vm11 vm12</span><br></pre></td></tr></table></figure>
+
+<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，相当于是集中式的网络节点吧）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/ovn/ovn-50.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;edge1 options:classis&#x3D;32209610-88c9-495e-ab88-134923afea59</span><br></pre></td></tr></table></figure>
+
+<p>创建outside交换机用于连接外网和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器</p>
+<ol>
+<li>联通路由器tenant1到逻辑交换机outside上</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/images/ovn/ovn-61.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># create new port on router &#39;tenant1&#39;</span><br><span class="line">ovn-nbctl lrp-add router-tenant1 tenant1-outside 02:0a:7f:18:01:02 192.168.0.101&#x2F;24</span><br><span class="line"># set gateway chassis(通过ovn-sbctl show 选取central节点作为vtep网关节点)</span><br><span class="line">ovn-nbctl lrp-set-gateway-chassis tenant1-outside fda80787-897d-40af-811c-2c9f7caedb3b</span><br><span class="line"></span><br><span class="line"># create new logical switch and connect it to &#39;router0&#39;</span><br><span class="line">ovn-nbctl ls-add outside</span><br><span class="line">ovn-nbctl lsp-add outside outside-tenant1</span><br><span class="line">ovn-nbctl lsp-set-type outside-tenant1 router</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-tenant1 02:0a:7f:18:01:02</span><br><span class="line">ovn-nbctl lsp-set-options outside-tenant1 router-port&#x3D;tenant1-outside</span><br><span class="line"># ovn-nbctl lsp-set-options outside-tenant1  nat-addresses&#x3D;router router-port&#x3D;tenant1-outside</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>创建ovs网桥br-ex，并关联逻辑交换机outside</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># create localnet port on &#39;outside&#39;. set the network name to &quot;phynet&quot;</span><br><span class="line">ovn-nbctl lsp-add outside outside-localnet</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-localnet unknown</span><br><span class="line">ovn-nbctl lsp-set-type outside-localnet localnet</span><br><span class="line">ovn-nbctl lsp-set-options outside-localnet network_name&#x3D;phynet1</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>在central节点上创建ovs网桥br-ex，然后将eth1挂到ovs网桥上<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># create a bridge , then mapping outside port</span><br><span class="line">ovs-vsctl add-br br-ex</span><br><span class="line">ovs-vsctl set Open_vSwitch . external-ids:ovn-bridge-mappings&#x3D;phynet1:br-ex</span><br><span class="line"></span><br><span class="line"># add nic eth1</span><br><span class="line">ovs-vsctl add-port br-ex eth1</span><br></pre></td></tr></table></figure>
+给 central节点br-ex 配置ip测试联通<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ifconfig br-ex 192.168.0.100&#x2F;24</span><br><span class="line">#ip link set br-ex up</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.101</span><br><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.100</span><br><span class="line">结果发现 虚机能联通 192.168.0.101，确不能联通192.168.0.100</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>通过snat实现访问外网。通过dnat_and_snat实现fip<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># snat 连外网</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;snat&quot; logical_ip&#x3D;172.16.250.0&#x2F;24 external_ip&#x3D;192.168.0.101 -- add logical_router router-tenant1 nat @nat</span><br><span class="line"># fip</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;dnat_and_snat&quot; logical_ip&#x3D;172.16.250.11 external_ip&#x3D;192.168.0.102 -- add logical_router router-tenant1 nat @nat</span><br></pre></td></tr></table></figure>
+<img src="/images/ovn/ovn-62.png"><br><img src="/images/ovn/ovn-63.png"></li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://robin5911.github.io/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" data-id="cldtmb3qm009ax0166ahuc2r8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
+
     </footer>
   </div>
   
@@ -304,84 +381,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/" data-id="cky1083mr000ilg16esnaf6t8" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-虚拟化-ovn入门到精通(五)-1" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" class="article-date">
-  <time datetime="2021-12-03T03:21:39.000Z" itemprop="datePublished">2021-12-03</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/">虚拟化-ovn入门到精通(五)-1</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="OVN-L3-网关连接外部网络"><a href="#OVN-L3-网关连接外部网络" class="headerlink" title="OVN-L3 网关连接外部网络"></a>OVN-L3 网关连接外部网络</h2><h4 id="1-网关联通"><a href="#1-网关联通" class="headerlink" title="1. 网关联通"></a>1. 网关联通</h4><p>参考网上，TOPO是这么个意思~</p>
-<p><img src="/images/ovn/OVN-network-fig-2.png"></p>
-<p>正如上面所看到的，我们添加了以下新组件：</p>
-<ul>
-<li>逻辑交换机（outside），用于将edge1连接到实验室网络</li>
-</ul>
-<p>我们要做的是让VPC内的虚拟机能联通underlay物理网络，打通三层, NAT出去<del>~</del></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">     | eth1 |  Physical Network</span><br><span class="line">     ----------</span><br><span class="line">          |</span><br><span class="line">      ____|_____</span><br><span class="line">     |  bridge  |  br-ex 192.168.0.100</span><br><span class="line">      ----------</span><br><span class="line">         | mapping</span><br><span class="line">      outside(sw)</span><br><span class="line">         |                port: tenant1-outside &lt;192.168.0.101&#x2F;24&gt;                               </span><br><span class="line">      router-tenant1(dr)  port: tenant1-localnet &lt;172.16.250.1&#x2F;24，172.16.251.1&#x2F;24&gt;</span><br><span class="line">     &#x2F;        \</span><br><span class="line">  ls01(sw)    ls02(sw)</span><br><span class="line">  &#x2F;  |        &#x2F;  \</span><br><span class="line">vm1 vm2   vm11 vm12</span><br></pre></td></tr></table></figure>
-
-<p>创建逻辑边界路由器，gateway router位于一个特定的chassis中。为了完成绑定，我们需要确定 central节点的chassis id（我理解这里是VTEP网关的意思，需要固定到哪一台上，相当于是集中式的网络节点吧）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br></pre></td></tr></table></figure>
-
-<p><img src="/images/ovn/ovn-50.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#ovn-nbctl create Logical_Router name&#x3D;edge1 options:classis&#x3D;32209610-88c9-495e-ab88-134923afea59</span><br></pre></td></tr></table></figure>
-
-<p>创建outside交换机用于连接外网和tenant1 ， 作用: 连接两个路由器，因为网关路由器仅可以经由逻辑交换机连接到其他路由器</p>
-<ol>
-<li>联通路由器tenant1到逻辑交换机outside上</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ovn-sbctl show</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p><img src="/images/ovn/ovn-61.png"></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"># create new port on router &#39;tenant1&#39;</span><br><span class="line">ovn-nbctl lrp-add router-tenant1 tenant1-outside 02:0a:7f:18:01:02 192.168.0.101&#x2F;24</span><br><span class="line"># set gateway chassis(通过ovn-sbctl show 选取central节点作为vtep网关节点)</span><br><span class="line">ovn-nbctl lrp-set-gateway-chassis tenant1-outside fda80787-897d-40af-811c-2c9f7caedb3b</span><br><span class="line"></span><br><span class="line"># create new logical switch and connect it to &#39;router0&#39;</span><br><span class="line">ovn-nbctl ls-add outside</span><br><span class="line">ovn-nbctl lsp-add outside outside-tenant1</span><br><span class="line">ovn-nbctl lsp-set-type outside-tenant1 router</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-tenant1 02:0a:7f:18:01:02</span><br><span class="line">ovn-nbctl lsp-set-options outside-tenant1 router-port&#x3D;tenant1-outside</span><br><span class="line"># ovn-nbctl lsp-set-options outside-tenant1  nat-addresses&#x3D;router router-port&#x3D;tenant1-outside</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>创建ovs网桥br-ex，并关联逻辑交换机outside</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># create localnet port on &#39;outside&#39;. set the network name to &quot;phynet&quot;</span><br><span class="line">ovn-nbctl lsp-add outside outside-localnet</span><br><span class="line">ovn-nbctl lsp-set-addresses outside-localnet unknown</span><br><span class="line">ovn-nbctl lsp-set-type outside-localnet localnet</span><br><span class="line">ovn-nbctl lsp-set-options outside-localnet network_name&#x3D;phynet1</span><br></pre></td></tr></table></figure>
-
-<ol start="3">
-<li>在central节点上创建ovs网桥br-ex，然后将eth1挂到ovs网桥上<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># create a bridge , then mapping outside port</span><br><span class="line">ovs-vsctl add-br br-ex</span><br><span class="line">ovs-vsctl set Open_vSwitch . external-ids:ovn-bridge-mappings&#x3D;phynet1:br-ex</span><br><span class="line"></span><br><span class="line"># add nic eth1</span><br><span class="line">ovs-vsctl add-port br-ex eth1</span><br></pre></td></tr></table></figure>
-给 central节点br-ex 配置ip测试联通<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#ifconfig br-ex 192.168.0.100&#x2F;24</span><br><span class="line">#ip link set br-ex up</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.101</span><br><span class="line">#ip netns exec ns1 ping -c 2 192.168.0.100</span><br><span class="line">结果发现 虚机能联通 192.168.0.101，确不能联通192.168.0.100</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>通过snat实现访问外网。通过dnat_and_snat实现fip<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># snat 连外网</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;snat&quot; logical_ip&#x3D;172.16.250.0&#x2F;24 external_ip&#x3D;192.168.0.101 -- add logical_router router-tenant1 nat @nat</span><br><span class="line"># fip</span><br><span class="line">ovn-nbctl -- --id&#x3D;@nat create nat type&#x3D;&quot;dnat_and_snat&quot; logical_ip&#x3D;172.16.250.11 external_ip&#x3D;192.168.0.102 -- add logical_router router-tenant1 nat @nat</span><br></pre></td></tr></table></figure>
-<img src="/images/ovn/ovn-62.png"><br><img src="/images/ovn/ovn-63.png"></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)-1/" data-id="cky1083ms000mlg1689qt47i9" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2021/12/03/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%94)/" data-id="cldtmb3qo009gx016hdu59chw" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
@@ -439,7 +439,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/" data-id="cky1083mr000klg164mpw9984" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E5%9B%9B)/" data-id="cldtmb3qn009cx016hqta9p6p" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
@@ -499,7 +499,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/" data-id="cky1083mp000elg168krw71ww" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%89)/" data-id="cldtmb3qk0094x0164cbw6jo4" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
@@ -595,7 +595,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/" data-id="cky1083mq000hlg169ufj7pc3" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%BA%8C)/" data-id="cldtmb3ql0098x016ddxb5aqs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
@@ -702,7 +702,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/" data-id="cky1083mn000clg16cd6054t3" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2021/12/02/%E8%99%9A%E6%8B%9F%E5%8C%96-ovn%E5%85%A5%E9%97%A8%E5%88%B0%E7%B2%BE%E9%80%9A(%E4%B8%80)/" data-id="cldtmb3ql0096x016ennbbtqd" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/" rel="tag">虚拟化</a></li></ul>
@@ -746,7 +746,7 @@ var _hmt = _hmt || [];
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://robin5911.github.io/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/" data-id="cky1083mk0005lg16e1w488s1" class="article-share-link">Share</a>
+      <a data-url="https://robin5911.github.io/2021/10/29/%E5%B0%8F%E7%99%BD%E8%A7%A3%E8%AF%B4%E5%AE%B9%E5%99%A8%E7%BC%96%E6%8E%92%E4%B9%8BKubernetes-CRI/" data-id="cldtmb3qe008lx016d50dd52j" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kubernetes/" rel="tag">kubernetes</a></li></ul>

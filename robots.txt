@@ -9,5 +9,5 @@ Disallow: /js/
 Disallow: /css/
 Disallow: /fonts/
 Disallow: /fancybox/
-Sitemap: https://robin5911.github.io/sitemap.xml
-Sitemap: https://robin5911.github.io/baidusitemap.xml
+Sitemap: https://blog.kubestack.cn/sitemap.xml
+Sitemap: https://blog.kubestack.cn/baidusitemap.xml
