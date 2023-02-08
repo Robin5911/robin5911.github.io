@@ -206,13 +206,10 @@ var _hmt = _hmt || [];
         <p>加载模块</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># modprobe macvlan</span><br><span class="line"># lsmod | grep macvlan</span><br><span class="line">  macvlan    19239    0</span><br></pre></td></tr></table></figure>
 
-
-
 <p>配置网卡</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">通过macvlan 虚拟出网卡 mac_eth4_1 , 通过eth4 出去</span><br><span class="line">#ip link add link eth4 mac_eth4_1 type macvlan</span><br><span class="line">#ip addr add 192.168.100.111&#x2F;24 dev mac_eth4_1</span><br></pre></td></tr></table></figure>
 
-<p>多台主机互通测试</p>
-<p><img src="/images/macvlan-1.png"></p>
+<p>多台主机互通测试~</p>
 
       
     </div>
