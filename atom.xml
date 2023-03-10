@@ -6,7 +6,7 @@
   <link href="https://robin5911.github.io/atom.xml" rel="self"/>
   
   <link href="https://robin5911.github.io/"/>
-  <updated>2023-02-09T04:00:55.528Z</updated>
+  <updated>2023-03-10T07:37:35.294Z</updated>
   <id>https://robin5911.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>数据库-SQLAlchemy 重要参数详解</title>
+    <link href="https://robin5911.github.io/2023/03/06/%E6%95%B0%E6%8D%AE%E5%BA%93-SQLAlchemy-%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/"/>
+    <id>https://robin5911.github.io/2023/03/06/%E6%95%B0%E6%8D%AE%E5%BA%93-SQLAlchemy-%E9%87%8D%E8%A6%81%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3/</id>
+    <published>2023-03-06T09:04:01.000Z</published>
+    <updated>2023-03-10T07:37:35.294Z</updated>
+    
+    <content type="html"><![CDATA[<p>sqlalchemy 连接参数</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># &#39;pool_timeout&#39; is the maximum number of seconds to wait when retrieving a</span><br><span class="line"># new connection from the pool. After the specified amount of time, an</span><br><span class="line"># exception will be thrown.</span><br><span class="line">pool_timeout&#x3D;30,  # 30 seconds</span><br><span class="line"># &#39;pool_recycle&#39; is the maximum number of seconds a connection can persist.</span><br><span class="line"># Connections that live longer than the specified amount of time will be</span><br><span class="line"># re-established</span><br><span class="line">pool_recycle&#x3D;1800,  # 30 minutes</span><br><span class="line"># Pool size is the maximum number of permanent connections to keep.</span><br><span class="line">pool_size&#x3D;5,</span><br><span class="line"># Temporarily exceeds the set pool_size if no connections are available.</span><br><span class="line">max_overflow&#x3D;2,</span><br><span class="line"># The total number of concurrent connections for your application will be</span><br><span class="line"># a total of pool_size and max_overflow.</span><br></pre></td></tr></table></figure><p>如上所知如下:</p><ol><li><p>应用程序最大db并发量 = pool_size + max_overflow</p></li><li><p>池子中的空闲conn 最大生存时间 1800s，超过的将被回收重建，此时client会和db主动断连</p></li><li><p>应用程序如果超过30s未从池子中取出可用conn，程序将触发exception</p></li></ol>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;sqlalchemy 连接参数&lt;/p&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;</summary>
+      
+    
+    
+    
+    
+    <category term="数据库" scheme="https://robin5911.github.io/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    
+  </entry>
   
   <entry>
     <title>openstack-nova-虚机重启过程以及源码分析</title>
@@ -471,30 +494,6 @@
     
     
     <category term="go" scheme="https://robin5911.github.io/tags/go/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>openstack-基于智能网卡的热迁移实现</title>
-    <link href="https://robin5911.github.io/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/"/>
-    <id>https://robin5911.github.io/2022/02/16/openstack-%E5%9F%BA%E4%BA%8E%E6%99%BA%E8%83%BD%E7%BD%91%E5%8D%A1%E7%9A%84%E7%83%AD%E8%BF%81%E7%A7%BB%E5%AE%9E%E7%8E%B0/</id>
-    <published>2022-02-16T03:09:01.000Z</published>
-    <updated>2022-02-16T03:10:10.639Z</updated>
-    
-    <content type="html"><![CDATA[<p>最近在调研智能网卡，对于使用智能网卡的环境下，如何实现虚拟机的热迁移呢，这里分享一下。</p><p>热迁移的过程分以下几步完成：</p><p>  发起热迁移后，在目的物理机上会启动一个VM，命令参数等同于源物理机上正在运行的VM的启动参数。<br>  标记RAM中所有需要迁移的page为dirty。<br>  发送标记为dirty的page到目的机的VM中，重复多次，直到dirty的page数量减少到某个临界值，或者是达到其他可以触发本阶段结束的条件。<br>  停止源物理机上VM中Guest的运行，并将剩余dirty pages和设备状态发送到目的物理机上的VM中。<br>  目的物理机上VM中Guest开始运行，源物理机上的VM退出。</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;最近在调研智能网卡，对于使用智能网卡的环境下，如何实现虚拟机的热迁移呢，这里分享一下。&lt;/p&gt;
-&lt;p&gt;热迁移的过程分以下几步完成：&lt;/p&gt;
-&lt;p&gt;  发起热迁移后，在目的物理机上会启动一个VM，命令参数等同于源物理机上正在运行的VM的启动参数。&lt;br&gt;  标记RAM中所有需</summary>
-      
-    
-    
-    
-    
-    <category term="openstack" scheme="https://robin5911.github.io/tags/openstack/"/>
     
   </entry>
   
